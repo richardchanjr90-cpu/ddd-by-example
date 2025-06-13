@@ -1,12 +1,12 @@
 using System;
 using System.IO;
-using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace LoyaltyProgram
 {
@@ -19,14 +19,14 @@ namespace LoyaltyProgram
 
             string id = req.Query["id"];
 
-            switch (req.Method.ToLower())
+            switch (req.Method)
             {
-                case "get":
+                case "GET":
 
                     log.LogInformation($"Get method was used to invoke the function ({req.Method}) with {id}");
                     break;
 
-                case "post":
+                case "POST":
 
                     string requestBody = new StreamReader(req.Body).ReadToEnd();
                     dynamic data = JsonConvert.DeserializeObject(requestBody);
@@ -35,12 +35,12 @@ namespace LoyaltyProgram
 
                     break;
 
-                case "put":
+                case "PUT":
 
                     log.LogInformation($"Put method was used to invoke the function ({req.Method}) with {id}");
                     break;
 
-                case "delete":
+                case "DELETE":
 
                     log.LogInformation($"Delete method was used to invoke the function ({req.Method}) with {id}");
                     break;
@@ -50,6 +50,31 @@ namespace LoyaltyProgram
             }
 
             return new OkObjectResult("Ok");
+        }
+
+        public static Task Get()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Task GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Task Create()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Task Update()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static Task Delete()
+        {
+            throw new NotImplementedException();
         }
     }
 }
