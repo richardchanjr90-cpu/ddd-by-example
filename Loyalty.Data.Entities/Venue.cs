@@ -17,5 +17,7 @@ namespace Loyalty.Data.Entities
         public int? ParentId { get; set; }
 
         public VenueType Type { get; set; }
+
+        public VenueCategory Category { get; set; }
     }
 }
