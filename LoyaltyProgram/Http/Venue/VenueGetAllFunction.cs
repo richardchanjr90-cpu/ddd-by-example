@@ -18,34 +18,33 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Venue
 {
-    public static class VenueGetFunction
+    public static class VenueGetAllFunction
     {
-        [FunctionName("VenueGetFunction")]
+        [FunctionName("VenueGetAllFunction")]
         public static async Task<IActionResult> Run(
-            int id,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue/{id:int}")]HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue")]HttpRequest req,
             ILogger log,
             ExecutionContext context)
         {
-            log.LogInformation($"{nameof(VenueGetFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenueGetAllFunction)} was triggered.");
 
             var di = new HostConfigurator();
             var builder = di.BuildHost(context, log);
 
             var host = builder.ConfigureServices((hostContext, services) =>
-            {
-                services.AddMediatR(typeof(BaseHandler).Assembly);
-                services.AddScoped<LoyaltyVenueAppService>();
-                services.AddScoped<IMongoDataClient, MongoDataClient>();
-                services.Configure<DbSettings>(options => hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
-            })
+                {
+                    services.AddMediatR(typeof(BaseHandler).Assembly);
+                    services.AddScoped<LoyaltyVenueAppService>();
+                    services.AddScoped<IMongoDataClient, MongoDataClient>();
+                    services.Configure<DbSettings>(options => hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
+                })
                 .Build();
 
             host.Start();
 
             var app = (LoyaltyVenueAppService)host.Services.GetService(typeof(LoyaltyVenueAppService));
 
-            return new OkObjectResult(await app.Get(id));
+            return new OkObjectResult(await app.Get());
         }
     }
 }

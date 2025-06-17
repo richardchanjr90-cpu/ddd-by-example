@@ -6,6 +6,7 @@ using Loyalty.Core.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
 
 namespace Loyalty.Venue.Service
@@ -27,6 +28,11 @@ namespace Loyalty.Venue.Service
 
         public async Task<List<VenueViewModel>> Get()
         {
+            var item = new Fixture()
+                .Create<CreateVenueCommand>();
+
+            var result = await Mediator.Send(new GetVenuesQuery());
+
             return new List<VenueViewModel>
             {
                 new Fixture()

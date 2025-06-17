@@ -17,17 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Core.Shared", "Loya
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Core.ViewModels", "Loyalty.Core.ViewModels\Loyalty.Core.ViewModels.csproj", "{3D6E16AE-67C3-44F3-8E3C-7155BD5A18DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Contracts", "Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj", "{479408DA-5CD9-478E-A232-E8B6FB0D1D3A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Contracts", "Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj", "{479408DA-5CD9-478E-A232-E8B6FB0D1D3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Handlers.Contracts", "Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj", "{44A568CC-947F-4918-87E4-CE62CD5D1978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Contracts", "Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj", "{44A568CC-947F-4918-87E4-CE62CD5D1978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Handlers", "Loyalty.Domain.Handlers\Loyalty.Domain.Handlers.csproj", "{047E2236-C49A-4160-A039-647DE14D6673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers", "Loyalty.Domain.Handlers\Loyalty.Domain.Handlers.csproj", "{047E2236-C49A-4160-A039-647DE14D6673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Venue.Service", "Loyalty.Venue.Service\Loyalty.Venue.Service.csproj", "{E812C9E2-C220-475A-A34E-FFA12177C9FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Venue.Service", "Loyalty.Venue.Service\Loyalty.Venue.Service.csproj", "{E812C9E2-C220-475A-A34E-FFA12177C9FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Handlers.Queries", "Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj", "{BBA155DE-9CF5-4813-BD56-FBA5F5099F46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Queries", "Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj", "{BBA155DE-9CF5-4813-BD56-FBA5F5099F46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Data.DataAccess", "Loyalty.Data.DataAccess\Loyalty.Data.DataAccess.csproj", "{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Data.DataAccess", "Loyalty.Data.DataAccess\Loyalty.Data.DataAccess.csproj", "{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
