@@ -5,6 +5,7 @@ using AutoFixture;
 using Loyalty.Core.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using MediatR;
 
 namespace Loyalty.Venue.Service
@@ -42,12 +43,14 @@ namespace Loyalty.Venue.Service
             };
         }
 
-        public ICommandResult Create(VenueViewModel model)
+        public Task<ICommandResult> Create(VenueViewModel model)
         {
             var item = new Fixture()
-                .Create<CommandResult>();
+                .Create<CreateVenueCommand>();
 
-            return item;
+            var result = Mediator.Send(item);
+
+            return result;
         }
 
         public ICommandResult Update(VenueViewModel model)

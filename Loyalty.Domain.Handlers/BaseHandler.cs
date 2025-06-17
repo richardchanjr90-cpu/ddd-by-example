@@ -1,15 +1,20 @@
-﻿using System;
+﻿using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace Loyalty.Domain.Handlers
 {
     public abstract class BaseHandler
     {
-        protected BaseHandler(ILoyaltyDbContext context)
+        protected BaseHandler(IMongoDataClient dbClient, IOptions<DbSettings> settings)
         {
-            Context = context;
+            DbClient = dbClient;
+            Database = dbClient.Client.GetDatabase(settings.Value.DatabaseName);
         }
 
-        public ILoyaltyDbContext Context { get; }
+        public IMongoDataClient DbClient { get; }
+
+        public IMongoDatabase Database { get; set; }
     }
 }

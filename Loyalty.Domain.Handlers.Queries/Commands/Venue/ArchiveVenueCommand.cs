@@ -5,6 +5,5 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 {
     public class ArchiveVenueCommand : IRequest<ICommandResult>
     {
-
     }
 }

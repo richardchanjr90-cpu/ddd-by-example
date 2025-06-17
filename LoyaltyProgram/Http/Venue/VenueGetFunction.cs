@@ -1,6 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
+using Loyalty.Core.Shared.Settings;
+using Loyalty.Data.Contracts;
+using Loyalty.Data.DataAccess;
 using Loyalty.Domain.Handlers;
 using Loyalty.Venue.Service;
 using MediatR;
@@ -8,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -32,7 +36,10 @@ namespace LoyaltyProgram.Http.Venue
             {
                 services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddScoped<LoyaltyVenueAppService>();
-            }).Build();
+                services.AddScoped<IMongoDataClient, MongoDataClient>();
+                services.Configure<DbSettings>(options => hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
+            })
+                .Build();
 
             host.Start();
 

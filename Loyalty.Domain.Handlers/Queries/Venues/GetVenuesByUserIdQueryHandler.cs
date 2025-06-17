@@ -1,15 +1,18 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Queries.Venue;
+using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Microsoft.Extensions.Options;
 
-namespace Loyalty.Domain.Handlers.Queries.Venue
+namespace Loyalty.Domain.Handlers.Queries.Venues
 {
     public class GetVenuesByUserIdQueryHandler : BaseHandler, IGetVenuesByUserIdQueryHandler
     {
-        public GetVenuesByUserIdQueryHandler(ILoyaltyDbContext context) : base(context)
+        public GetVenuesByUserIdQueryHandler(IMongoDataClient dbClient, IOptions<DbSettings> settings)
+            : base(dbClient, settings)
         {
         }
 

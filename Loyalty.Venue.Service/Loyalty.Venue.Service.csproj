@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Core.ViewModels\Loyalty.Core.ViewModels.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
   </ItemGroup>
 
 </Project>

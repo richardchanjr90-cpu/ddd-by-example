@@ -1,6 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared;
+using Loyalty.Core.Shared.Settings;
 using Loyalty.Core.ViewModels.Venue;
+using Loyalty.Data.Contracts;
+using Loyalty.Data.DataAccess;
 using Loyalty.Domain.Handlers;
 using Loyalty.Venue.Service;
 using MediatR;
@@ -32,7 +35,10 @@ namespace LoyaltyProgram.Http.Venue
             {
                 services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddScoped<LoyaltyVenueAppService>();
-            }).Build();
+                services.AddScoped<IMongoDataClient, MongoDataClient>();
+                services.Configure<DbSettings>(hostContext.Configuration);
+            })
+                .Build();
 
             host.Start();
 

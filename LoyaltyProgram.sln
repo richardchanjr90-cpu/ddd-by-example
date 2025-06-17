@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Venue.Service", "Lo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Handlers.Queries", "Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj", "{BBA155DE-9CF5-4813-BD56-FBA5F5099F46}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Data.DataAccess", "Loyalty.Data.DataAccess\Loyalty.Data.DataAccess.csproj", "{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{BBA155DE-9CF5-4813-BD56-FBA5F5099F46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBA155DE-9CF5-4813-BD56-FBA5F5099F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBA155DE-9CF5-4813-BD56-FBA5F5099F46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B609D99F-292A-4BE9-95A4-7FCE9F496FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{047E2236-C49A-4160-A039-647DE14D6673} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
 		{E812C9E2-C220-475A-A34E-FFA12177C9FB} = {51418814-5480-43C8-AD08-E748119E2545}
 		{BBA155DE-9CF5-4813-BD56-FBA5F5099F46} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
+		{B609D99F-292A-4BE9-95A4-7FCE9F496FC8} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {666B230A-1B30-4B4D-B6E5-48D3BE37B5D4}

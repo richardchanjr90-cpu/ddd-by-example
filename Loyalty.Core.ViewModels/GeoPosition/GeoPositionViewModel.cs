@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Loyalty.Data.Contracts
+namespace Loyalty.Core.ViewModels.GeoPosition
 {
-    public interface ILoyaltyDbContext
+    public class GeoPositionViewModel
     {
     }
 }

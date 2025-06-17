@@ -1,9 +1,16 @@
-﻿namespace Loyalty.Data.Entities.Base
+﻿using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+
+namespace Loyalty.Data.Entities.Base
 {
     public abstract class Entity
     {
-        public int Id { get; set; }
+        [BsonElement("id")]
+        public ObjectId Id { get; set; }
 
-        public bool IsNew => Id <= 0;
+        [BsonElement("itemId")]
+        public Guid ItemId { get; set; }
     }
 }
