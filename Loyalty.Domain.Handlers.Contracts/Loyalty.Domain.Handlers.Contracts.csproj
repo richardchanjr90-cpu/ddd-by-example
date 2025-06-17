@@ -4,4 +4,21 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Card\" />
+    <Folder Include="Commands\LoyaltyProduct\" />
+    <Folder Include="Commands\LoyaltyProgram\" />
+    <Folder Include="Commands\Stamp\" />
+    <Folder Include="Commands\VenueDetails\" />
+    <Folder Include="Queries\Card\" />
+    <Folder Include="Queries\LoyaltyProduct\" />
+    <Folder Include="Queries\LoyaltyProgram\" />
+    <Folder Include="Queries\Stamp\" />
+    <Folder Include="Queries\VenueDetails\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
+  </ItemGroup>
+
 </Project>

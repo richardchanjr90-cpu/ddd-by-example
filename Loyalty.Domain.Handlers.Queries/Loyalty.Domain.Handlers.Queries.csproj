@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Commands\Card\" />
     <Folder Include="Commands\LoyaltyProduct\" />
     <Folder Include="Commands\LoyaltyProgram\" />
@@ -15,11 +19,11 @@
     <Folder Include="Queries\LoyaltyProgram\" />
     <Folder Include="Queries\Stamp\" />
     <Folder Include="Queries\VenueDetails\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Data.Contracts\Loyalty.Data.Contracts.csproj" />
-    <ProjectReference Include="..\Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj" />
+    <Folder Include="QueryResults\Card\" />
+    <Folder Include="QueryResults\LoyaltyProduct\" />
+    <Folder Include="QueryResults\LoyaltyProgram\" />
+    <Folder Include="QueryResults\Stamp\" />
+    <Folder Include="QueryResults\VenueDetails\" />
   </ItemGroup>
 
 </Project>
