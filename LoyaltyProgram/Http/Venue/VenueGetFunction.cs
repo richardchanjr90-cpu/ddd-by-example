@@ -34,11 +34,9 @@ namespace LoyaltyProgram.Http.Venue
 
             var host = builder.ConfigureServices((hostContext, services) =>
             {
-                services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddScoped<LoyaltyVenueAppService>();
-                services.AddScoped<IMongoDataClient, MongoDataClient>();
-                services.Configure<DbSettings>(options => hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
             })
+                .ConfigureData()
                 .Build();
 
             host.Start();
