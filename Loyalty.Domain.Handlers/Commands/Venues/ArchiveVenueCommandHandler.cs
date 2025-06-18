@@ -23,7 +23,15 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 
         public async Task<ICommandResult> Handle(ArchiveVenueCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var filter = Builders<Venue>.Filter.Eq(v => v.ItemId, request.Id);
+
+            var collection = Database.GetCollection<Venue>(nameof(Venue));
+            await collection.FindOneAndDeleteAsync(filter, null, cancellationToken);
+
+            return new CommandResult
+            {
+                Success = true
+            };
         }
     }
 }
