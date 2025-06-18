@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Queries.Venue
 {
-    public class GetVenuesQuery: IRequest<GetVenuesQueryResult>
+    public class GetVenuesQuery : IRequest<GetVenuesQueryResult>
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoFixture;
+using AutoMapper;
 using Loyalty.Core.ViewModels;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -13,63 +13,66 @@ namespace Loyalty.Venue.Service
 {
     public class LoyaltyVenueAppService : BaseAppService
     {
-        public LoyaltyVenueAppService(IMediator mediator)
+        private readonly IMapper mapper;
+
+        public LoyaltyVenueAppService(IMediator mediator, IMapper mapper)
             : base(mediator)
         {
+            this.mapper = mapper;
         }
 
         public async Task<VenueViewModel> Get(int id)
         {
-            var model = new Fixture()
-                .Create<VenueViewModel>();
+            var result = await Mediator.Send(new GetVenueByIdQuery
+            {
+                Id = id
+            });
 
-            return model;
+            return mapper.Map<VenueViewModel>(result);
         }
 
         public async Task<List<VenueViewModel>> Get()
         {
-            var item = new Fixture()
-                .Create<CreateVenueCommand>();
-
             var result = await Mediator.Send(new GetVenuesQuery());
-
-            return new List<VenueViewModel>
-            {
-                new Fixture()
-                    .Create<VenueViewModel>()
-            };
+            return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
         public async Task<List<VenueViewModel>> Get(Guid userGuid)
         {
-            return new List<VenueViewModel>
+            var query = new GetVenuesByUserIdQuery
             {
-                new Fixture()
-                    .Create<VenueViewModel>()
+                UserId = userGuid
             };
+
+            var result = await Mediator.Send(query);
+            return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
-        public Task<ICommandResult> Create(VenueViewModel model)
+        public async Task<ICommandResult> Create(VenueViewModel model)
         {
-            var result = Mediator.Send(item);
+            var command = mapper.Map<CreateVenueCommand>(model);
 
-            return result;
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
         }
 
-        public ICommandResult Update(VenueViewModel model)
+        public async Task<ICommandResult> Update(VenueViewModel model)
         {
-            var item = new Fixture()
-                .Create<CommandResult>();
-
-            return item;
+            var command = mapper.Map<UpdateVenueCommand>(model);
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
         }
 
-        public ICommandResult Delete(int id)
+        public async Task<ICommandResult> Delete(int id)
         {
-            var item = new Fixture()
-                .Create<CommandResult>();
+            var command = new ArchiveVenueCommand
+            {
+                Id = id,
+                OwnerId = Guid.NewGuid()
+            };
 
-            return item;
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
         }
     }
 }

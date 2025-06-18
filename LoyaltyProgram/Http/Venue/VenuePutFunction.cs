@@ -1,15 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared;
 using Loyalty.Core.Shared.Settings;
-using Loyalty.Core.ViewModels.Venue;
+using Loyalty.Core.ViewModels;
 using Loyalty.Data.Contracts;
 using Loyalty.Data.DataAccess;
 using Loyalty.Domain.Handlers;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using MediatR;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;

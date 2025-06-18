@@ -7,9 +7,9 @@ namespace Loyalty.Domain.Contracts
     {
         public IMediator Mediator { get; }
 
-        public BaseAppService(IMediator mediator)
+        protected BaseAppService(IMediator mediator)
         {
-            this.Mediator = mediator;
+            Mediator = mediator;
         }
     }
 }

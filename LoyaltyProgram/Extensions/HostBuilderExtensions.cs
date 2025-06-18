@@ -1,6 +1,8 @@
-﻿using Loyalty.Core.Shared.Settings;
+﻿using AutoMapper;
+using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
 using Loyalty.Data.DataAccess;
+using Loyalty.Domain.AutoMapper;
 using Loyalty.Domain.Handlers;
 using MediatR;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +19,7 @@ namespace LoyaltyProgram.Extensions
             {
                 services.AddScoped<IMongoDataClient, MongoDataClient>();
                 services.AddMediatR(typeof(BaseHandler).Assembly);
+                services.AddAutoMapper(typeof(AutoMapperProfile));
                 services.Configure<DbSettings>(options =>
                     hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
             });

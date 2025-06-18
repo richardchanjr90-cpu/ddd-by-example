@@ -8,7 +8,7 @@ namespace Loyalty.Data.Entities
         [BsonElement("loyaltyProgramId")]
         public int LoyaltyProgramId { get; set; }
 
-        [BsonElement("ownerId")]
-        public Guid OwnerId { get; set; }
+        [BsonElement("userId")]
+        public Guid UserId { get; set; }
     }
 }

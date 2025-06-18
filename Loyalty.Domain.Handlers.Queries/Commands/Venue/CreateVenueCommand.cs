@@ -19,6 +19,8 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public float Longitude { get; set; }
 
+        public string City { get; set; }
+
         public Guid? ParentId { get; set; }
 
         public VenueType Type { get; set; }

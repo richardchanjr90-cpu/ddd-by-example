@@ -7,7 +7,7 @@ namespace Loyalty.Core.ViewModels
     public class VenueViewModel
     {
         [JsonProperty("id")]
-        public Guid ItemId { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
