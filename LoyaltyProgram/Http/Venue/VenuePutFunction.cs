@@ -6,6 +6,7 @@ using Loyalty.Data.Contracts;
 using Loyalty.Data.DataAccess;
 using Loyalty.Domain.Handlers;
 using Loyalty.Venue.Service;
+using LoyaltyProgram.Extensions;
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,7 @@ namespace LoyaltyProgram.Http.Venue
                 services.AddScoped<IMongoDataClient, MongoDataClient>();
                 services.Configure<DbSettings>(hostContext.Configuration);
             })
+                .ConfigureData()
                 .Build();
 
             host.Start();

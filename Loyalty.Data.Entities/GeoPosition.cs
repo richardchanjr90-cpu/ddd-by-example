@@ -14,8 +14,5 @@ namespace Loyalty.Data.Entities
 
         [BsonElement("longitude")]
         public float Longitude { get; set; }
-
-        [BsonElement("notificationRadius")]
-        public int? NotificationRadius { get; set; }
     }
 }

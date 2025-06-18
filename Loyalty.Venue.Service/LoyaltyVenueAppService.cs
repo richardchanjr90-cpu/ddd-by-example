@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture;
-using Loyalty.Core.ViewModels.Venue;
+using Loyalty.Core.ViewModels;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
@@ -51,9 +51,6 @@ namespace Loyalty.Venue.Service
 
         public Task<ICommandResult> Create(VenueViewModel model)
         {
-            var item = new Fixture()
-                .Create<CreateVenueCommand>();
-
             var result = Mediator.Send(item);
 
             return result;

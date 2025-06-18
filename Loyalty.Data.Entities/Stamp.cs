@@ -1,7 +1,6 @@
 ﻿using System;
 using Loyalty.Data.Entities.Base;
 using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
 
 namespace Loyalty.Data.Entities
 {
