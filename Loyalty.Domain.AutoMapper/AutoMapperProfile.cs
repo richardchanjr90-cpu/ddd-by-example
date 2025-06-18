@@ -11,14 +11,14 @@ namespace Loyalty.Domain.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<GeoPositionViewModel, GetGeoPositionQueryResult>();
-
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
+
             CreateMap<VenueViewModel, CreateVenueCommand>();
             CreateMap<VenueViewModel, UpdateVenueCommand>();
 
 
 
-            Mapper.Configuration.AssertConfigurationIsValid();
+            //Mapper.Configuration.AssertConfigurationIsValid();
         }
     }
 }

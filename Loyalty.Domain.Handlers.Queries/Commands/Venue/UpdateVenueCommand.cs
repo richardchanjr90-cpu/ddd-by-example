@@ -16,7 +16,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public string Description { get; set; }
 
-        public GetGeoPositionQueryResult GeoPosition { get; set; }
+        public GetGeoPositionQueryResult Location { get; set; }
 
         public Guid? ParentId { get; set; }
 

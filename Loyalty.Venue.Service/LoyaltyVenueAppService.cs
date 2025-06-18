@@ -25,7 +25,7 @@ namespace Loyalty.Venue.Service
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
-                Id = id
+                ItemId = id
             });
 
             return mapper.Map<VenueViewModel>(result);

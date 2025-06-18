@@ -7,13 +7,13 @@ namespace Loyalty.Core.ViewModels
     public class VenueViewModel
     {
         [JsonProperty("id")]
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("ownerId")]
-        public Guid OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -22,7 +22,7 @@ namespace Loyalty.Core.ViewModels
         public GeoPositionViewModel Location { get; set; }
 
         [JsonProperty("parentId")]
-        public Guid? ParentId { get; set; }
+        public string ParentId { get; set; }
 
         [JsonProperty("type")]
         public VenueType Type { get; set; }

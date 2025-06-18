@@ -6,8 +6,8 @@ namespace Loyalty.Data.Entities.Base
 {
     public abstract class Entity
     {
-        [BsonElement("id")]
-        public ObjectId Id { get; set; }
+        [BsonId]
+        public ObjectId InternalId { get; set; }
 
         [BsonElement("itemId")]
         public Guid ItemId { get; set; }
