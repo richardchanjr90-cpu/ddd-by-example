@@ -1,13 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared;
-using Loyalty.Core.Shared.Settings;
-using Loyalty.Data.Contracts;
-using Loyalty.Data.DataAccess;
-using Loyalty.Domain.Handlers;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
-using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -39,9 +33,7 @@ namespace LoyaltyProgram.Http.Venue
                 .ConfigureData()
                 .Build();
 
-            host.Start();
-
-            var app = (LoyaltyVenueAppService)host.Services.GetService(typeof(LoyaltyVenueAppService));
+            var app = host.StartService<LoyaltyVenueAppService>();
             return new OkObjectResult(app.Delete(id));
         }
     }

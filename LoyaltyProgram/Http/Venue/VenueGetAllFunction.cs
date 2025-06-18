@@ -32,10 +32,7 @@ namespace LoyaltyProgram.Http.Venue
                 .ConfigureData()
                 .Build();
 
-            host.Start();
-
-            var app = (LoyaltyVenueAppService)host.Services.GetService(typeof(LoyaltyVenueAppService));
-
+            var app = host.StartService<LoyaltyVenueAppService>();
             return new OkObjectResult(await app.Get());
         }
     }
