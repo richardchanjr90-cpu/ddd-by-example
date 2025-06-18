@@ -21,7 +21,7 @@ namespace Loyalty.Venue.Service
             this.mapper = mapper;
         }
 
-        public async Task<VenueViewModel> Get(int id)
+        public async Task<VenueViewModel> Get(Guid id)
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
@@ -37,7 +37,7 @@ namespace Loyalty.Venue.Service
             return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
-        public async Task<List<VenueViewModel>> Get(Guid userGuid)
+        public async Task<List<VenueViewModel>> GetByUser(Guid userGuid)
         {
             var query = new GetVenuesByUserIdQuery
             {
@@ -63,7 +63,7 @@ namespace Loyalty.Venue.Service
             return commandResult;
         }
 
-        public async Task<ICommandResult> Delete(int id)
+        public async Task<ICommandResult> Delete(Guid id)
         {
             var command = new ArchiveVenueCommand
             {

@@ -6,7 +6,7 @@ namespace Loyalty.Core.ViewModels
     public class GeoPositionViewModel
     {
         [JsonProperty("id")]
-        public Guid ItemId { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("city")]
         public string City { get; set; }

@@ -33,7 +33,7 @@ namespace LoyaltyProgram.Http.Venue
 
             var app = host.StartService<LoyaltyVenueAppService>();
 
-            return new OkObjectResult(app.Update(model));
+            return new OkObjectResult(await app.Update(model));
         }
     }
 }

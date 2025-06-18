@@ -1,6 +1,7 @@
 ﻿using System;
 using Loyalty.Core.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Queries.QueryResults.GeoPosition;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
@@ -15,11 +16,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public string Description { get; set; }
 
-        public float Latitude { get; set; }
-
-        public float Longitude { get; set; }
-
-        public string City { get; set; }
+        public GetGeoPositionQueryResult GeoPosition { get; set; }
 
         public Guid? ParentId { get; set; }
 

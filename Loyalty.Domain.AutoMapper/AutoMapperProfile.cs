@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Loyalty.Core.ViewModels;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.GeoPosition;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 
 namespace Loyalty.Domain.AutoMapper
@@ -9,9 +10,15 @@ namespace Loyalty.Domain.AutoMapper
     {
         public AutoMapperProfile()
         {
+            CreateMap<GeoPositionViewModel, GetGeoPositionQueryResult>();
+
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
             CreateMap<VenueViewModel, CreateVenueCommand>();
             CreateMap<VenueViewModel, UpdateVenueCommand>();
+
+
+
+            Mapper.Configuration.AssertConfigurationIsValid();
         }
     }
 }

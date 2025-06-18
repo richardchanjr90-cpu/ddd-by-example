@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
 using Loyalty.Venue.Service;
@@ -16,8 +17,8 @@ namespace LoyaltyProgram.Http.Venue
     {
         [FunctionName("VenueGetFunction")]
         public static async Task<IActionResult> Run(
-            int id,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue/{id:int}")]HttpRequest req,
+            Guid id,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue/{id}")]HttpRequest req,
             ILogger log,
             ExecutionContext context)
         {

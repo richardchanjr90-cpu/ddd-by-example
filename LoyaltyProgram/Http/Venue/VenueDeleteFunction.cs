@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Loyalty.Core.Shared;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Venue
@@ -17,7 +17,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenueDeleteFunction")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venue/{id}")]HttpRequest req,
-            int id,
+            Guid id,
             ILogger log,
             ExecutionContext context)
         {
@@ -34,7 +34,7 @@ namespace LoyaltyProgram.Http.Venue
                 .Build();
 
             var app = host.StartService<LoyaltyVenueAppService>();
-            return new OkObjectResult(app.Delete(id));
+            return new OkObjectResult(await app.Delete(id));
         }
     }
 }

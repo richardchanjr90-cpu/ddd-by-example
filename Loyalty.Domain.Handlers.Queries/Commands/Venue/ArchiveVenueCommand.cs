@@ -8,6 +8,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
     {
         public Guid OwnerId { get; set; }
 
-        public int Id { get; set; }
+        public Guid Id { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Loyalty.Core.Shared.Enums;
+using Loyalty.Domain.Handlers.Queries.QueryResults.GeoPosition;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 {
@@ -11,11 +12,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 
         public Guid OwnerId { get; set; }
 
-        public string Description { get; set; }
-
-        public float Latitude { get; set; }
-
-        public float Longitude { get; set; }
+        public GetGeoPositionQueryResult GeoPosition { get; set; }
 
         public string City { get; set; }
 
