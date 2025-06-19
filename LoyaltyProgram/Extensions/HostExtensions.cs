@@ -10,8 +10,8 @@ namespace LoyaltyProgram.Extensions
     {
         public static T StartService<T>(this IHost host)
         {
-            DataMigrator.MigrateData();
-            var mapper = host.Services.GetService<IMapper>();
+            DataMigrator.MigrateData(host.Services);
+            var mapper = host.Services.GetRequiredService<IMapper>();
             mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
             host.Start();
