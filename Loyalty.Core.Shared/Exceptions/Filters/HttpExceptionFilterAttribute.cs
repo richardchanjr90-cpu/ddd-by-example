@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
-namespace Loyalty.Core.Shared.Exception.Filters
+namespace Loyalty.Core.Shared.Exceptions.Filters
 {
     public class HttpExceptionFilterAttribute : FunctionExceptionFilterAttribute
     {
@@ -18,8 +18,8 @@ namespace Loyalty.Core.Shared.Exception.Filters
             }
 
             exceptionContext.Logger.LogError(exception.Message);
-            Task t = Task.FromResult(new BadRequestObjectResult(exception.Message));
-            return t;
+            Task result = Task.FromResult(new BadRequestObjectResult(exception.Message));
+            return result;
         }
     }
 }

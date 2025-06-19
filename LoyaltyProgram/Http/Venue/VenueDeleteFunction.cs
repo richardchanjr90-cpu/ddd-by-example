@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
-using Loyalty.Core.Shared.Exception;
-using Loyalty.Core.Shared.Exception.Filters;
+using Loyalty.Core.Shared.Exceptions;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +16,6 @@ namespace LoyaltyProgram.Http.Venue
     public static class VenueDeleteFunction
     {
         [FunctionName("VenueDeleteFunction")]
-        [HttpExceptionFilter]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venue/{id}")]HttpRequest req,
             string id,

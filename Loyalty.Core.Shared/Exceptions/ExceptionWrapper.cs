@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Loyalty.Core.Shared.Exception
+namespace Loyalty.Core.Shared.Exceptions
 {
     public class ExceptionWrapper
     {
@@ -12,11 +10,12 @@ namespace Loyalty.Core.Shared.Exception
         {
             try
             {
-                return await action();
+                var result = await action();
+                return result;
             }
-            catch (HttpResponseException ex)
+            catch (Exception ex)
             {
-                return new BadRequestObjectResult(ex.Response);
+                return new BadRequestObjectResult(ex.Message);
             }
         }
     }

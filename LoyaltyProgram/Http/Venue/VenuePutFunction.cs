@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared;
-using Loyalty.Core.Shared.Exception;
-using Loyalty.Core.Shared.Exception.Filters;
+using Loyalty.Core.Shared.Exceptions;
 using Loyalty.Core.ViewModels;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
@@ -16,7 +15,6 @@ namespace LoyaltyProgram.Http.Venue
     public static class VenuePutFunction
     {
         [FunctionName("VenuePutFunction")]
-        [HttpExceptionFilter]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venue")]VenueViewModel model,
             ILogger log,
@@ -37,7 +35,6 @@ namespace LoyaltyProgram.Http.Venue
             return await ExceptionWrapper.Handle(async () =>
             {
                 var app = host.StartService<LoyaltyVenueAppService>();
-
                 return new OkObjectResult(await app.Update(model));
             });
         }
