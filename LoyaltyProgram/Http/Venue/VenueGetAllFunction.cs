@@ -35,8 +35,7 @@ namespace LoyaltyProgram.Http.Venue
                 .Build();
 
             var app = host.StartService<LoyaltyVenueAppService>();
-            throw new NotImplementedException();
-            //return new OkObjectResult(await app.Get());
+            return new OkObjectResult(await app.Get());
         }
     }
 }
