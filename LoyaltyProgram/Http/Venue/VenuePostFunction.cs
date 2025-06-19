@@ -39,7 +39,7 @@ namespace LoyaltyProgram.Http.Venue
             return await ExceptionWrapper.Handle(async () =>
             {
                 var app = host.StartService<LoyaltyVenueAppService>();
-                return new OkObjectResult(await app.Create(model);
+                return new OkObjectResult(await app.Create(model));
             });
         }
     }
