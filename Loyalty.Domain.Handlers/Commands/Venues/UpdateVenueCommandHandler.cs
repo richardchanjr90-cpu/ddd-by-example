@@ -27,7 +27,7 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
             var filter = Builders<Venue>.Filter.Eq(v => v.ItemId, venue.ItemId);
 
             var collection = Database.GetCollection<Venue>(nameof(Venue));
-            await collection.ReplaceOneAsync(filter, venue, null, cancellationToken);
+            await collection.ReplaceOneAsync(filter, venue, new UpdateOptions { IsUpsert = true }, cancellationToken);
 
             return new CommandResult
             {

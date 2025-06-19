@@ -1,5 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
+using Loyalty.Core.Shared.Filters;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +16,7 @@ namespace LoyaltyProgram.Http.Venue
     public static class VenueGetAllFunction
     {
         [FunctionName("VenueGetAllFunction")]
+        [HttpExceptionFilter]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue")]HttpRequest req,
             ILogger log,
@@ -32,7 +35,8 @@ namespace LoyaltyProgram.Http.Venue
                 .Build();
 
             var app = host.StartService<LoyaltyVenueAppService>();
-            return new OkObjectResult(await app.Get());
+            throw new NotImplementedException();
+            //return new OkObjectResult(await app.Get());
         }
     }
 }

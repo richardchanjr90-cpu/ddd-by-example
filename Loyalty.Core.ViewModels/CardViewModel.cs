@@ -12,6 +12,6 @@ namespace Loyalty.Core.ViewModels
         public int LoyaltyProgramId { get; set; }
 
         [JsonProperty("userId")]
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

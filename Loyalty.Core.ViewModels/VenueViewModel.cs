@@ -1,5 +1,4 @@
 ﻿using System;
-using Loyalty.Core.Shared.Enums;
 using Newtonsoft.Json;
 
 namespace Loyalty.Core.ViewModels

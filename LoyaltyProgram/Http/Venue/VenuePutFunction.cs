@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared;
+using Loyalty.Core.Shared.Filters;
 using Loyalty.Core.ViewModels;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
@@ -14,6 +15,7 @@ namespace LoyaltyProgram.Http.Venue
     public static class VenuePutFunction
     {
         [FunctionName("VenuePutFunction")]
+        [HttpExceptionFilter]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venue")]VenueViewModel model,
             ILogger log,

@@ -6,7 +6,7 @@ namespace Loyalty.Core.ViewModels
     public class StampViewModel
     {
         [JsonProperty("id")]
-        public Guid ItemId { get; set; }
+        public string ItemId { get; set; }
 
         [JsonProperty("cardId")]
         public int CardId { get; set; }

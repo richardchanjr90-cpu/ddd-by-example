@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
+using Loyalty.Core.Shared.Filters;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +17,7 @@ namespace LoyaltyProgram.Http.Venue
     public static class VenueGetFunction
     {
         [FunctionName("VenueGetFunction")]
+        [HttpExceptionFilter]
         public static async Task<IActionResult> Run(
             string id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue/{id}")]HttpRequest req,
