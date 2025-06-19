@@ -1,10 +1,8 @@
-
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +10,7 @@ namespace LoyaltyProgram
 {
     public static class Function1
     {
-        [FunctionName("Function1")]
+        [FunctionName("Test")]
         public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -24,7 +22,7 @@ namespace LoyaltyProgram
             name = name ?? data?.name;
 
             return name != null
-                ? (ActionResult)new OkObjectResult($"Hello1, {name}")
+                ? (ActionResult)new OkObjectResult($"Hello Test, {name}")
                 : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
         }
     }
