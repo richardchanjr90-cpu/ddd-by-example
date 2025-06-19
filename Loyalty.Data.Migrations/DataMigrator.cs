@@ -64,9 +64,9 @@ namespace Loyalty.Data.Migrations
         private static bool CreateVenueGuidIndexIfExists(IMongoCollection<Venue> collection)
         {
             var builder = Builders<Venue>.IndexKeys;
-            var keys = builder.Hashed(x => x.ItemId);
+            var keys = builder.Ascending(x => x.ItemId);
 
-            var indexModel = new CreateIndexModel<Venue>(keys);
+            var indexModel = new CreateIndexModel<Venue>(keys, new CreateIndexOptions { Unique = true });
             var result = collection.Indexes.CreateOne(indexModel);
             return false;
         }

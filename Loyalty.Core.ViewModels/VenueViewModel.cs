@@ -25,9 +25,9 @@ namespace Loyalty.Core.ViewModels
         public string ParentId { get; set; }
 
         [JsonProperty("type")]
-        public VenueType Type { get; set; }
+        public int Type { get; set; }
 
         [JsonProperty("category")]
-        public VenueCategory Category { get; set; }
+        public int Category { get; set; }
     }
 }
