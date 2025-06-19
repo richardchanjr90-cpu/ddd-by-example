@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.0.100" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.19" />
   </ItemGroup>
 

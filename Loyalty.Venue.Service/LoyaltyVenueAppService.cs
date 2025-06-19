@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Loyalty.Core.ViewModels;
+using Loyalty.Core.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
@@ -50,10 +53,17 @@ namespace Loyalty.Venue.Service
 
         public async Task<ICommandResult> Create(VenueViewModel model)
         {
-            var command = mapper.Map<CreateVenueCommand>(model);
+            var validator = new VenueValidator();
+            var results = validator.Validate(model);
 
-            var commandResult = await Mediator.Send(command);
-            return commandResult;
+            if (results.IsValid)
+            {
+                var command = mapper.Map<CreateVenueCommand>(model);
+                var commandResult = await Mediator.Send(command);
+                return commandResult;
+            }
+
+            throw new ValidationException(results.Errors);
         }
 
         public async Task<ICommandResult> Update(VenueViewModel model)
