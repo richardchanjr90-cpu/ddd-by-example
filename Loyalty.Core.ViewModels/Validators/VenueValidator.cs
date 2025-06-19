@@ -12,7 +12,7 @@ namespace Loyalty.Core.ViewModels.Validators
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.OwnerId).Must(BeAValidGuid);
             RuleFor(x => x.ParentId).Must(BeAValidGuid).When(x => !string.IsNullOrEmpty(x.ParentId));
-            RuleFor(x => x.Location).NotNull();
+            RuleFor(x => x.Location).NotNull().SetValidator(new GeoPositionValidator());
         }
 
         private bool BeAValidGuid(string guid)
