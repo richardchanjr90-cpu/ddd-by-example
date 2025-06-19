@@ -1,12 +1,13 @@
+using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
-using Loyalty.Core.Shared.Filters;
+using Loyalty.Core.Shared.Exception;
+using Loyalty.Core.Shared.Exception.Filters;
 using Loyalty.Core.ViewModels;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,12 +19,11 @@ namespace LoyaltyProgram.Http.Venue
     {
         [FunctionName("VenuePostFunction")]
         [HttpExceptionFilter]
-        public static async Task<ICommandResult> Run(
+        public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venue")]VenueViewModel model,
             ILogger log,
             ExecutionContext context)
         {
-            
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
 
             var di = new HostConfigurator();
@@ -36,8 +36,11 @@ namespace LoyaltyProgram.Http.Venue
                 .ConfigureData()
                 .Build();
 
-            var app = host.StartService<LoyaltyVenueAppService>();
-            return await app.Create(model);
+            return await ExceptionWrapper.Handle(async () =>
+            {
+                var app = host.StartService<LoyaltyVenueAppService>();
+                return new OkObjectResult(await app.Create(model);
+            });
         }
     }
 }

@@ -1,7 +1,7 @@
-using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
-using Loyalty.Core.Shared.Filters;
+using Loyalty.Core.Shared.Exception;
+using Loyalty.Core.Shared.Exception.Filters;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -34,8 +34,11 @@ namespace LoyaltyProgram.Http.Venue
                 .ConfigureData()
                 .Build();
 
-            var app = host.StartService<LoyaltyVenueAppService>();
-            return new OkObjectResult(await app.Get());
+            return await ExceptionWrapper.Handle(async () =>
+            {
+                var app = host.StartService<LoyaltyVenueAppService>();
+                return new OkObjectResult(await app.Get());
+            });
         }
     }
 }

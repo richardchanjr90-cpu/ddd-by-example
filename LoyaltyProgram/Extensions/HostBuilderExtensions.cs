@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Loyalty.Core.Shared.Filters;
 using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
 using Loyalty.Data.DataAccess;
@@ -21,7 +20,6 @@ namespace LoyaltyProgram.Extensions
                 services.AddScoped<IMongoDataClient, MongoDataClient>();
                 services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddAutoMapper(typeof(AutoMapperProfile));
-                services.AddScoped<HttpExceptionFilterAttribute>();
                 services.Configure<DbSettings>(options =>
                     hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
             });

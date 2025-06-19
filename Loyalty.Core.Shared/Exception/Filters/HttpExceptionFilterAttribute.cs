@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
-namespace Loyalty.Core.Shared.Filters
+namespace Loyalty.Core.Shared.Exception.Filters
 {
     public class HttpExceptionFilterAttribute : FunctionExceptionFilterAttribute
     {
