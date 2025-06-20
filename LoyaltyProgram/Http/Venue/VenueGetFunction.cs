@@ -25,17 +25,9 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenueGetFunction)} was triggered.");
 
-            var di = new HostConfigurator();
-            var builder = di.BuildHost(context, log);
+            var host = new HostConfigurator()
+                .Setup<LoyaltyVenueAppService>(log, context);
 
-            var host = builder.ConfigureServices((hostContext, services) =>
-            {
-                services.AddScoped<LoyaltyVenueAppService>();
-            })
-                .ConfigureData()
-                .Build();
-
-            host.Start();
             return await ExceptionWrapper.Handle(async () =>
             {
                 var app = host.StartService<LoyaltyVenueAppService>();

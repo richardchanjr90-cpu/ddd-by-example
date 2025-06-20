@@ -24,16 +24,8 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
-            var di = new HostConfigurator();
-            var builder = di.BuildHost(context, log);
-
-            var host = builder.ConfigureServices((hostContext, services) =>
-            {
-                services.AddScoped<LoyaltyVenueAppService>();
-                services.AddScoped<HttpRequest>(x => req);
-            })
-                .ConfigureData()
-                .Build();
+            var host = new HostConfigurator()
+                .Setup<LoyaltyVenueAppService>(log, context);
 
             return await ExceptionWrapper.Handle(async () =>
             {

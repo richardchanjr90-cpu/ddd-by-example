@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Loyalty.Core.ViewModels.Validators.Extensions;
 
 namespace Loyalty.Core.ViewModels.Validators
 {
@@ -10,7 +9,6 @@ namespace Loyalty.Core.ViewModels.Validators
 
         public GeoPositionValidator()
         {
-            RuleFor(x => x.Id).Must(this.BeValidGuid);
             RuleFor(x => x.Latitude)
                 .GreaterThanOrEqualTo(-MaxLatitudeAbs)
                 .LessThanOrEqualTo(MaxLatitudeAbs);
