@@ -5,11 +5,18 @@ namespace Loyalty.Core.ViewModels.Validators
 {
     public class GeoPositionValidator : AbstractValidator<GeoPositionViewModel>
     {
+        private const int MaxLongitudeAbs = 180;
+        private const int MaxLatitudeAbs = 90;
+
         public GeoPositionValidator()
         {
             RuleFor(x => x.Id).Must(this.BeValidGuid);
-            RuleFor(x => x.Latitude).GreaterThanOrEqualTo(-90).LessThanOrEqualTo(90);
-            RuleFor(x => x.Longitude).GreaterThanOrEqualTo(-180).LessThanOrEqualTo(180);
+            RuleFor(x => x.Latitude)
+                .GreaterThanOrEqualTo(-MaxLatitudeAbs)
+                .LessThanOrEqualTo(MaxLatitudeAbs);
+            RuleFor(x => x.Longitude)
+                .GreaterThanOrEqualTo(-MaxLongitudeAbs)
+                .LessThanOrEqualTo(MaxLongitudeAbs);
             RuleFor(x => x.City).NotEmpty();
         }
     }
