@@ -15,6 +15,5 @@ namespace Loyalty.Core.ViewModels.Validators
             RuleFor(x => x.ParentId).Must(this.BeValidGuid).When(x => !string.IsNullOrEmpty(x.ParentId));
             RuleFor(x => x.Location).NotNull().SetValidator(new GeoPositionValidator());
         }
-
     }
 }

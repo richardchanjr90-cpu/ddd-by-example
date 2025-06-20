@@ -53,21 +53,16 @@ namespace Loyalty.Venue.Service
 
         public async Task<ICommandResult> Create(VenueViewModel model)
         {
-            var validator = new VenueValidator();
-            var results = validator.Validate(model);
+            new VenueValidator().ValidateAndThrow(model);
 
-            if (results.IsValid)
-            {
-                var command = mapper.Map<CreateVenueCommand>(model);
-                var commandResult = await Mediator.Send(command);
-                return commandResult;
-            }
-
-            throw new ValidationException(results.Errors);
+            var command = mapper.Map<CreateVenueCommand>(model);
+            return await Mediator.Send(command);
         }
 
         public async Task<ICommandResult> Update(VenueViewModel model)
         {
+            new VenueValidator().ValidateAndThrow(model);
+
             var command = mapper.Map<UpdateVenueCommand>(model);
             var commandResult = await Mediator.Send(command);
             return commandResult;
