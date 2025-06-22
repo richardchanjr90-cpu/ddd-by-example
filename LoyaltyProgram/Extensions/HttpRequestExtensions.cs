@@ -9,7 +9,7 @@ namespace LoyaltyProgram.Extensions
 {
     public static class HttpRequestExtensions
     {
-        public static async Task Authorize(this HttpRequest request, IHost host)
+        public static async Task AuthorizeAsync(this HttpRequest request, IHost host)
         {
             if (!await request.TryAuthenticate(host))
             {
