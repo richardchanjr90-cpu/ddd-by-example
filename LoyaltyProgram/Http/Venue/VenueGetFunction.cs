@@ -1,5 +1,8 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Loyalty.Core.Auth;
+using Loyalty.Core.Auth.Validation;
 using Loyalty.Core.Shared;
 using Loyalty.Core.Shared.Exceptions;
 using Loyalty.Venue.Service;
@@ -24,6 +27,7 @@ namespace LoyaltyProgram.Http.Venue
             ExecutionContext context)
         {
             log.LogInformation($"{nameof(VenueGetFunction)} was triggered.");
+            var authentication = req.TryAuthenticate(out AuthenticationModel model);
 
             var host = new HostConfigurator()
                 .Setup<LoyaltyVenueAppService>(log, context);

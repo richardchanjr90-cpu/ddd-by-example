@@ -39,7 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{2F0A21
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{E8F6F3A9-C1CE-4568-80FF-AE986C28920D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Data.Migrations", "Loyalty.Data.Migrations\Loyalty.Data.Migrations.csproj", "{5B4403E7-AEA1-4EDD-BB91-9D0E36B2F8F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Data.Migrations", "Loyalty.Data.Migrations\Loyalty.Data.Migrations.csproj", "{5B4403E7-AEA1-4EDD-BB91-9D0E36B2F8F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Core.Auth", "Loyalty.Core.Auth\Loyalty.Core.Auth.csproj", "{A78D2CE9-B068-482C-866E-BF0A65B65441}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,6 +101,10 @@ Global
 		{5B4403E7-AEA1-4EDD-BB91-9D0E36B2F8F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B4403E7-AEA1-4EDD-BB91-9D0E36B2F8F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B4403E7-AEA1-4EDD-BB91-9D0E36B2F8F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A78D2CE9-B068-482C-866E-BF0A65B65441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A78D2CE9-B068-482C-866E-BF0A65B65441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A78D2CE9-B068-482C-866E-BF0A65B65441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A78D2CE9-B068-482C-866E-BF0A65B65441}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +126,7 @@ Global
 		{2F0A21D6-7418-4ABB-BB67-33AE887342FF} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
 		{E8F6F3A9-C1CE-4568-80FF-AE986C28920D} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
 		{5B4403E7-AEA1-4EDD-BB91-9D0E36B2F8F5} = {D458F396-0D6C-480E-B9E7-0286C993DFF0}
+		{A78D2CE9-B068-482C-866E-BF0A65B65441} = {42E3DD4E-0C35-4763-A561-CF9DA73C91DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {666B230A-1B30-4B4D-B6E5-48D3BE37B5D4}
