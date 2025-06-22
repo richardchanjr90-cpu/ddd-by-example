@@ -15,10 +15,6 @@ namespace Loyalty.Domain.AutoMapper
 
             CreateMap<VenueViewModel, CreateVenueCommand>();
             CreateMap<VenueViewModel, UpdateVenueCommand>();
-
-
-
-            //Mapper.Configuration.AssertConfigurationIsValid();
         }
     }
 }
