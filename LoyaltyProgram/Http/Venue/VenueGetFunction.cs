@@ -33,18 +33,9 @@ namespace LoyaltyProgram.Http.Venue
             var host = new HostConfigurator()
                 .Setup<LoyaltyVenueAppService>(log, context);
 
-            var config = host.Services.GetService<IConfiguration>();
-            var settings = new AuthSettings();
-            config.GetSection(nameof(AuthSettings)).Bind(settings);
-
-            var jwt = req.GetJwtTokenOrNull();
-            var tokenValidator = new CachedTokenValidator(settings);
-            var token = tokenValidator.GetToken(jwt);
-
-            var p = Thread.CurrentPrincipal;
-
             return await ExceptionWrapper.Handle(async () =>
             {
+                req.Authorize(host);
                 var app = host.StartService<LoyaltyVenueAppService>();
                 return new OkObjectResult(await app.Get(Guid.Parse(id)));
             });

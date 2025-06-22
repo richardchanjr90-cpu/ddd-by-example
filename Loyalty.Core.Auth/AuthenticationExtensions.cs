@@ -2,8 +2,15 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Loyalty.Core.Auth.Validation;
+using Loyalty.Core.Shared.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Refit;
 
 namespace Loyalty.Core.Auth
@@ -45,6 +52,26 @@ namespace Loyalty.Core.Auth
             }
 
             return isAuthenticated;
+        }
+
+        public static async Task<bool> TryAuthenticate(this HttpRequest request, IHost host)
+        {
+            try
+            {
+                var config = host.Services.GetService<IConfiguration>();
+                var settings = new AuthSettings();
+                config.GetSection(nameof(AuthSettings)).Bind(settings);
+
+                var jwt = request.GetJwtTokenOrNull();
+                var tokenValidator = new CachedTokenValidator(settings);
+                var token = await tokenValidator.GetToken(jwt);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            return Thread.CurrentPrincipal != null;
         }
 
         public static string GetJwtTokenOrNull(this HttpRequest request)

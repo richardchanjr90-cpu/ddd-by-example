@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Web.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loyalty.Core.Shared.Exceptions
@@ -12,6 +13,10 @@ namespace Loyalty.Core.Shared.Exceptions
             {
                 var result = await action();
                 return result;
+            }
+            catch (HttpResponseException)
+            {
+                throw;
             }
             catch (Exception ex)
             {
