@@ -1,19 +1,13 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Auth;
-using Loyalty.Core.Auth.Validation;
 using Loyalty.Core.Shared;
 using Loyalty.Core.Shared.Exceptions;
-using Loyalty.Core.Shared.Settings;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using ExecutionContext = Microsoft.Azure.WebJobs.ExecutionContext;
 

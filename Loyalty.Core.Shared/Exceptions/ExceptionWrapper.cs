@@ -14,7 +14,7 @@ namespace Loyalty.Core.Shared.Exceptions
                 var result = await action();
                 return result;
             }
-            catch (HttpResponseException ex)
+            catch (HttpResponseException)
             {
                 return new UnauthorizedResult();
             }
