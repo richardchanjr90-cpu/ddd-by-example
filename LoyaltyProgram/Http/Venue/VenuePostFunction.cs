@@ -17,7 +17,6 @@ namespace LoyaltyProgram.Http.Venue
     public static class VenuePostFunction
     {
         [FunctionName("VenuePostFunction")]
-
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venue")]VenueViewModel model,
             HttpRequest req,
