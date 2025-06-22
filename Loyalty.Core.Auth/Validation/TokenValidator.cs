@@ -1,30 +1,63 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Threading;
+using System.Threading.Tasks;
+using Loyalty.Core.Shared.Settings;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Loyalty.Core.Auth.Validation
 {
-    public static class TokenValidator
+    public class TokenValidator
     {
-        public static JwtSecurityToken Validate(string token)
+        private readonly AuthSettings settings;
+
+        public TokenValidator(AuthSettings settings)
         {
-            string stsDiscoveryEndpoint = "https://loyaltyprogramapp.b2clogin.com/loyaltyprogramapp.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_google-web-dev-policy";
+            this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        }
 
-            ConfigurationManager<OpenIdConnectConfiguration> configManager = new ConfigurationManager<OpenIdConnectConfiguration>(stsDiscoveryEndpoint, new OpenIdConnectConfigurationRetriever());
+        protected virtual string BuildUrl => string.Format(
+            settings.DiscoveryUri,
+            settings.Tenant,
+            settings.Tenant,
+            settings.AuthPolicy);
 
-            OpenIdConnectConfiguration config = configManager.GetConfigurationAsync().Result;
-            TokenValidationParameters validationParameters = new TokenValidationParameters
+        protected virtual async Task<OpenIdConnectConfiguration> GetOpenIdConfig(string url)
+        {
+            var configManager = new ConfigurationManager<OpenIdConnectConfiguration>(
+                url,
+                new OpenIdConnectConfigurationRetriever());
+
+            return await configManager.GetConfigurationAsync();
+        }
+
+        protected virtual TokenValidationParameters ConfigureValidation(OpenIdConnectConfiguration config)
+        {
+            var validationParameters = new TokenValidationParameters
             {
-                ValidateAudience = false,
-                ValidateIssuer = false,
+                ValidateAudience = true,
+                ValidateIssuer = true,
+                ValidateLifetime = true,
+
                 IssuerSigningKeys = config.SigningKeys,
-                ValidateLifetime = false
+                ValidAudience = settings.Audience,
+                ValidIssuer = config.Issuer
             };
 
-            JwtSecurityTokenHandler tokendHandler = new JwtSecurityTokenHandler();
-            SecurityToken jwt;
-            var result = tokendHandler.ValidateToken(token, validationParameters, out jwt);
+            return validationParameters;
+        }
+
+        public virtual async Task<JwtSecurityToken> GetToken(string token)
+        {
+            var config = await GetOpenIdConfig(BuildUrl);
+            var parameters = ConfigureValidation(config);
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var result = tokenHandler.ValidateToken(token, parameters, out var jwt);
+
+            Thread.CurrentPrincipal = result;
 
             return jwt as JwtSecurityToken;
         }

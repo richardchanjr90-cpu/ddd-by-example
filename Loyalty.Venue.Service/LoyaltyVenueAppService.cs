@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using Loyalty.Core.Auth.Validation;
+using Loyalty.Core.Shared.Settings;
 using Loyalty.Core.ViewModels;
 using Loyalty.Core.ViewModels.Validators;
 using Loyalty.Domain.Contracts;

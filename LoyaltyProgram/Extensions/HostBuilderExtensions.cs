@@ -20,8 +20,12 @@ namespace LoyaltyProgram.Extensions
                 services.AddScoped<IMongoDataClient, MongoDataClient>();
                 services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddAutoMapper(typeof(AutoMapperProfile));
+
                 services.Configure<DbSettings>(options =>
                     hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
+
+                services.Configure<AuthSettings>(options =>
+                    hostContext.Configuration.GetSection(nameof(AuthSettings)).Bind(options));
             });
 
             return builder;

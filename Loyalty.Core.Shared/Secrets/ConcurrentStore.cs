@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Azure.KeyVault;
@@ -7,16 +7,16 @@ using Microsoft.Azure.Services.AppAuthentication;
 
 namespace Loyalty.Core.Shared.Secrets
 {
-    public sealed class SecretsStore
+    public sealed class ConcurrentStore
     {
         private readonly string keyVaultUrl;
-        private static readonly Dictionary<string, string> CachedDictionary = new Dictionary<string, string>();
+        private static readonly ConcurrentDictionary<string, string> CachedDictionary = new ConcurrentDictionary<string, string>();
 
         //This client is located in a shared lib and is static 
         //to share it between functions and between instances of those functions.
         private static readonly HttpClient SharedClient = new HttpClient();
 
-        public SecretsStore(string keyVaultUrl)
+        public ConcurrentStore(string keyVaultUrl)
         {
             this.keyVaultUrl = keyVaultUrl;
         }
@@ -25,16 +25,10 @@ namespace Loyalty.Core.Shared.Secrets
 
         public async Task<string> GetOrLoadSettingAsync(string secretId)
         {
-            string value;
-
-            if (CachedDictionary.ContainsKey(secretId))
-            {
-                value = CachedDictionary[secretId];
-            }
-            else
+            if (!CachedDictionary.TryGetValue(secretId, out var value))
             {
                 string tableString = (await VaultClient.Value.GetSecretAsync(keyVaultUrl, secretId)).Value;
-                CachedDictionary[secretId] = tableString;
+                CachedDictionary.TryAdd(secretId, tableString);
                 value = tableString;
             }
 

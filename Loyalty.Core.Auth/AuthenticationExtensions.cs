@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Loyalty.Core.Auth.Validation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Refit;
@@ -31,23 +30,10 @@ namespace Loyalty.Core.Auth
                                           ?? new Uri(request.GetDisplayUrl()).GetLeftPart(UriPartial.Authority))
                 };
 
-                var header = request.Headers["Authorization"].FirstOrDefault()?.Replace("Bearer", string.Empty).Trim();
-
-
-                if (!String.IsNullOrEmpty(header))
-                {
-                    //AddTokenToAuthSession(client, request, header);
-                    TokenValidator.Validate(header);
-                }
-                else if (!String.IsNullOrEmpty(request.Cookies["AppServiceAuthSession"]))
-                {
-                    AddTokenToAuthSession(client, request, request.Cookies["AppServiceAuthSession"]);
-                }
-                else
-                {
-                    //dev
-                    AddTokenToAuthSession(client, request, Environment.GetEnvironmentVariable("AuthenticationToken"));
-                }
+                AddTokenToAuthSession(client, request,
+                    !String.IsNullOrEmpty(request.Cookies["AppServiceAuthSession"])
+                        ? request.Cookies["AppServiceAuthSession"]
+                        : Environment.GetEnvironmentVariable("AuthenticationToken"));
 
                 var service = RestService.For<IAuthentication>(client);
                 model = service.GetCurrentAuthentication().Result.SingleOrDefault();
@@ -59,6 +45,13 @@ namespace Loyalty.Core.Auth
             }
 
             return isAuthenticated;
+        }
+
+        public static string GetJwtTokenOrNull(this HttpRequest request)
+        {
+            var authHeaders = request.Headers["Authorization"];
+            var header = authHeaders.FirstOrDefault()?.Replace("Bearer", string.Empty).Trim();
+            return header;
         }
 
         private static void AddTokenToAuthSession(HttpClient client, HttpRequest request, string token)

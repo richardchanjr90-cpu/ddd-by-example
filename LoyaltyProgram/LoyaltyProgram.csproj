@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Core.Auth\Loyalty.Core.Auth.csproj" />
     <ProjectReference Include="..\Loyalty.Core.Shared\Loyalty.Core.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Data.Contracts\Loyalty.Data.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Data.DataAccess\Loyalty.Data.DataAccess.csproj" />
