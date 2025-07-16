@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Core.Shared\Loyalty.Core.Shared.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Card\" />
+    <Folder Include="Commands\LoyaltyProduct\" />
+    <Folder Include="Commands\LoyaltyProgram\" />
+    <Folder Include="Commands\Stamp\" />
+    <Folder Include="Commands\VenueDetails\" />
+    <Folder Include="Queries\Card\" />
+    <Folder Include="Queries\LoyaltyProduct\" />
+    <Folder Include="Queries\LoyaltyProgram\" />
+    <Folder Include="Queries\Stamp\" />
+    <Folder Include="Queries\VenueDetails\" />
+    <Folder Include="QueryResults\Card\" />
+    <Folder Include="QueryResults\LoyaltyProduct\" />
+    <Folder Include="QueryResults\LoyaltyProgram\" />
+    <Folder Include="QueryResults\Stamp\" />
+    <Folder Include="QueryResults\VenueDetails\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+</Project>
