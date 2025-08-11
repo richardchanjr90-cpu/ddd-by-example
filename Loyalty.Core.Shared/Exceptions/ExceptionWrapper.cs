@@ -7,6 +7,8 @@ namespace Loyalty.Core.Shared.Exceptions
 {
     public class ExceptionWrapper
     {
+
+
         public static async Task<IActionResult> Handle(Func<Task<IActionResult>> action)
         {
             try
