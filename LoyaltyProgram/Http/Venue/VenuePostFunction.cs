@@ -1,9 +1,7 @@
-using System;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared;
 using Loyalty.Core.Shared.Exceptions;
 using Loyalty.Core.ViewModels;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -24,9 +22,8 @@ namespace LoyaltyProgram.Http.Venue
             ExecutionContext context)
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
-
             var host = new HostConfigurator()
-                .Setup<LoyaltyVenueAppService>(log, context);
+                .Setup<LoyaltyVenueAppService>(context);
 
             return await ExceptionWrapper.Handle(async () =>
             {

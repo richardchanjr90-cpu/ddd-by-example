@@ -2,13 +2,12 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Loyalty.Core.Shared
 {
     public class HostConfigurator
     {
-        public IHostBuilder BuildHost(ExecutionContext context, ILogger log)
+        public IHostBuilder BuildHost(ExecutionContext context)
         {
             var builder = new HostBuilder()
                 .ConfigureAppConfiguration((hostingContext, config) =>

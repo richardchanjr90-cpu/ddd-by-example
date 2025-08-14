@@ -5,6 +5,7 @@ using Loyalty.Data.DataAccess;
 using Loyalty.Domain.AutoMapper;
 using Loyalty.Domain.Handlers;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,9 +18,19 @@ namespace LoyaltyProgram.Extensions
         {
             builder.ConfigureServices((hostContext, services) =>
             {
-                services.AddScoped<IMongoDataClient, MongoDataClient>();
                 services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddAutoMapper(typeof(AutoMapperProfile));
+
+                services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
+
+                var config = builder.Build().Services.GetRequiredService<IConfiguration>();
+                var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.DatabaseName)}"];
+
+                services.AddEntityFrameworkSqlServer()
+                    .AddDbContext<LoyaltyDbContext>(
+                        options => options.UseSqlServer(
+                            connectionString
+                        ));
 
                 services.Configure<DbSettings>(options =>
                     hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));

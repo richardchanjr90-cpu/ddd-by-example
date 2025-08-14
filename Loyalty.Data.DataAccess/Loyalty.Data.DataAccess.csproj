@@ -5,16 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Bson" Version="2.7.2" />
-    <PackageReference Include="MongoDB.Driver" Version="2.7.2" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Loyalty.Core.Shared\Loyalty.Core.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Data.Contracts\Loyalty.Data.Contracts.csproj" />
+    <ProjectReference Include="..\Loyalty.Data.Entities\Loyalty.Data.Entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

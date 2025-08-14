@@ -20,9 +20,8 @@ namespace LoyaltyProgram.Http.Venue
             ExecutionContext context)
         {
             log.LogInformation($"{nameof(VenueGetAllFunction)} was triggered.");
-
             var host = new HostConfigurator()
-                .Setup<LoyaltyVenueAppService>(log, context);
+                .Setup<LoyaltyVenueAppService>(context);
 
             return await ExceptionWrapper.Handle(async () =>
             {

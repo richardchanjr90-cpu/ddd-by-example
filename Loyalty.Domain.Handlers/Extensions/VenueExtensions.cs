@@ -15,7 +15,6 @@ namespace Loyalty.Domain.Handlers.Extensions
             {
                 Category = command.Category,
                 Description = command.Description,
-                ItemId = command.Id,
                 ParentId = command.ParentId,
                 Name = command.Name,
                 Type = command.Type,
@@ -37,7 +36,6 @@ namespace Loyalty.Domain.Handlers.Extensions
             {
                 Category = command.Category,
                 Description = command.Description,
-                ItemId = command.Id,
                 ParentId = command.ParentId,
                 Name = command.Name,
                 Type = command.Type,
@@ -59,7 +57,6 @@ namespace Loyalty.Domain.Handlers.Extensions
             {
                 Category = item.Category,
                 Description = item.Description,
-                Id = item.ItemId,
                 ParentId = item.ParentId,
                 Name = item.Name,
                 Type = item.Type,

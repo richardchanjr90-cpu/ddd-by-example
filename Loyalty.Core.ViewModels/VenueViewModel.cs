@@ -30,3 +30,5 @@ namespace Loyalty.Core.ViewModels
         public int Category { get; set; }
     }
 }
+
+

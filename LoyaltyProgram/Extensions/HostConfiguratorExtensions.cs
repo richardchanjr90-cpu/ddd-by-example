@@ -8,10 +8,10 @@ namespace LoyaltyProgram.Extensions
 {
     public static class HostConfiguratorExtensions
     {
-        public static IHost Setup<T>(this HostConfigurator di, ILogger log, ExecutionContext context)
+        public static IHost Setup<T>(this HostConfigurator di, ExecutionContext context)
             where T : class
         {
-            var builder = di.BuildHost(context, log);
+            var builder = di.BuildHost(context);
 
             var host = builder.ConfigureServices((hostContext, services) =>
                 {

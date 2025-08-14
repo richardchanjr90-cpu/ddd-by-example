@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MongoDB.Driver" Version="2.7.2" />
+    <ProjectReference Include="..\Loyalty.Data.Entities\Loyalty.Data.Entities.csproj" />
   </ItemGroup>
 
 </Project>
