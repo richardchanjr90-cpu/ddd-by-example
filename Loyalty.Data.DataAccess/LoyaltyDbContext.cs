@@ -14,9 +14,11 @@ namespace Loyalty.Data.DataAccess
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
-        public DbSet<Stamp> Stamps { get; set; }
+        public DbSet<Purchase> Purchases { get; set; }
 
         public DbSet<Venue> Venues { get; set; }
+
+        public DbSet<VenueDetails> VenueDetails { get; set; }
 
         public LoyaltyDbContext(DbContextOptions options)
             : base(options)

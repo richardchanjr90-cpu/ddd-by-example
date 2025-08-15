@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
+using Loyalty.Data.Entities.Base.Interface;
 using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
     [Table("LoyaltyProgram", Schema = SchemaName.Loyalty)]
-    public class LoyaltyProgram : AuditableEntity
+    public class LoyaltyProgram : AuditableEntity, IArchivableEntity, IRequireTwoStepSaveEntity
     {
         public string Name { get; set; }
 
@@ -15,13 +16,15 @@ namespace Loyalty.Data.Entities
 
         public bool IsActive { get; set; }
 
-        public DateTime StartedDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime EndedDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public bool IsArchived { get; set; }
 
-        public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
+        public bool IsPublished { get; set; }
+
+        public virtual ICollection<LoyaltyProduct> LoyaltyProducts { get; set; }
 
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }

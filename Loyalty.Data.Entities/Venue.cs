@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Shared.Enums;
 using Loyalty.Data.Entities.Base;
+using Loyalty.Data.Entities.Base.Interface;
 using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
     [Table("Venue", Schema = SchemaName.Loyalty)]
-    public class Venue : AuditableEntity
+    public class Venue : AuditableEntity, IRequireTwoStepSaveEntity
     {
         public string Name { get; set; }
 
@@ -18,12 +19,12 @@ namespace Loyalty.Data.Entities
 
         public GeoPosition Location { get; set; }
 
-        public Guid? ParentId { get; set; }
+        public bool IsPublished { get; set; }
 
         public VenueType Type { get; set; }
 
         public VenueCategory Category { get; set; }
 
-        public IEnumerable<Venue> Subsidiaries { get; set; }
+        public string LogoUrl { get; set; }
     }
 }
