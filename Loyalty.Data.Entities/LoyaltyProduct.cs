@@ -1,13 +1,17 @@
-﻿using Loyalty.Data.Entities.Base;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Loyalty.Data.Entities.Base;
+using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
+    [Table("LoyaltyProduct", Schema = SchemaName.Loyalty)]
     public class LoyaltyProduct : AuditableEntity
     {
+        [ForeignKey(nameof(LoyaltyProgram))]
+        public long LoyaltyProgramId { get; set; }
+
         public string Name { get; set; }
 
         public bool IsArchived { get; set; }
-
-        public int StampsToCollectCount { get; set; }
     }
 }

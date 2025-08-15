@@ -21,19 +21,16 @@ namespace LoyaltyProgram.Extensions
                 services.AddMediatR(typeof(BaseHandler).Assembly);
                 services.AddAutoMapper(typeof(AutoMapperProfile));
 
-                services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
+                services.AddScoped<ILoyaltyDbContext, LoyaltyDbContext>();
 
-                var config = builder.Build().Services.GetRequiredService<IConfiguration>();
-                var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.DatabaseName)}"];
+                var config = services.BuildServiceProvider().GetRequiredService<IConfiguration>();
+                var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
 
                 services.AddEntityFrameworkSqlServer()
                     .AddDbContext<LoyaltyDbContext>(
                         options => options.UseSqlServer(
                             connectionString
                         ));
-
-                services.Configure<DbSettings>(options =>
-                    hostContext.Configuration.GetSection(nameof(DbSettings)).Bind(options));
 
                 services.Configure<AuthSettings>(options =>
                     hostContext.Configuration.GetSection(nameof(AuthSettings)).Bind(options));
