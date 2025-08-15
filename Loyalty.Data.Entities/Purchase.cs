@@ -1,9 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
+using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
+    [Table("Purchase", Schema = SchemaName.Loyalty)]
     public class Purchase : AuditableEntity
     {
         [ForeignKey(nameof(Card))]

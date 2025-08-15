@@ -19,5 +19,7 @@ namespace Loyalty.Data.Entities
         public string Description { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public Card Card { get; set; }
     }
 }

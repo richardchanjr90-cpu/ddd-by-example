@@ -26,5 +26,9 @@ namespace Loyalty.Data.Entities
         public VenueCategory Category { get; set; }
 
         public string LogoUrl { get; set; }
+
+        public VenueDetails VenueDetails { get; set; }
+
+        public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
     }
 }
