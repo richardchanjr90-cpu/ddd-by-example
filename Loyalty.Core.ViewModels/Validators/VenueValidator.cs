@@ -8,7 +8,7 @@ namespace Loyalty.Core.ViewModels.Validators
     {
         public VenueValidator()
         {
-            RuleFor(x => x.Id).GreaterThan(0);
+            //RuleFor(x => x.Id).GreaterThan(0);
             RuleFor(x => x.Description).NotEmpty();
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.OwnerId).Must(this.BeValidGuid)

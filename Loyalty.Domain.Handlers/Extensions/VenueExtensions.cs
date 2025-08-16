@@ -48,7 +48,6 @@ namespace Loyalty.Domain.Handlers.Extensions
                     Longitude = command.Location.Longitude,
                     City = command.Location.City,
                 },
-                IsPublished = command.IsPublished,
                 LogoUrl = command.LogoUrl,
                 VenueDetails = command.Details?.ToSingle()
             };

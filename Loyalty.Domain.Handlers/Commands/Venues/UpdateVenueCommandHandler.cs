@@ -28,12 +28,13 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 
             venue.Category = request.Category;
             venue.Description = request.Description;
-            //venue.Location = request.Location;
+            venue.Name = request.Name;
+            venue.Type = venue.Type;
             venue.LogoUrl = request.LogoUrl;
 
             return new CommandResult
             {
-                Success = true
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0
             };
         }
     }

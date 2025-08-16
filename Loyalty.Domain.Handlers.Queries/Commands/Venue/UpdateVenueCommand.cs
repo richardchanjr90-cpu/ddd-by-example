@@ -25,8 +25,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public string LogoUrl { get; set; }
 
-        public bool IsPublished { get; set; }
-
         public UpdateVenueDetailsCommand Details { get; set; }
     }
 }

@@ -27,7 +27,7 @@ namespace LoyaltyProgram.Http.Venue
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                await req.AuthorizeAsync(host);
+                //await req.AuthorizeAsync(host);
                 var app = host.StartService<LoyaltyVenueAppService>();
                 return new OkObjectResult(await app.Archive(id));
             });

@@ -22,7 +22,9 @@ namespace Loyalty.Domain.Handlers.Queries.Venues
 
         public async Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            var venues = await Context.Venues.ToListAsync(cancellationToken);
+            var venues = await Context.Venues
+                .Include(x => x.Location)
+                .ToListAsync(cancellationToken);
 
             return new GetVenuesQueryResult
             {

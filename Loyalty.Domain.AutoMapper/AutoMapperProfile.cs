@@ -12,7 +12,8 @@ namespace Loyalty.Domain.AutoMapper
         {
             CreateMap<LocationViewModel, GetLocationQueryResult>();
 
-            CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
+            CreateMap<GetVenueByIdQueryResult, VenueViewModel>()
+                .ForMember(x=>x.Details, opt=> opt.Ignore());
 
             CreateMap<VenueViewModel, CreateVenueCommand>()
                 .ForMember(x => x.Details, opt => opt.MapFrom(src => src.Details));
