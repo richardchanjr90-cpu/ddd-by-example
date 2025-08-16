@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Loyalty.Domain.Handlers.Queries.QueryResults.GeoPosition
+namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
 {
-    public class GetGeoPositionQueryResult
+    public class GetLocationQueryResult
     {
         public Guid Id { get; set; }
 

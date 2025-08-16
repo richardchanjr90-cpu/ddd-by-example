@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
 using Loyalty.Data.Entities.Schema;
 
@@ -20,6 +21,6 @@ namespace Loyalty.Data.Entities
 
         public bool IsArchived { get; set; }
 
-        public Card Card { get; set; }
+        public virtual ICollection<Card> Cards { get; set; }
     }
 }

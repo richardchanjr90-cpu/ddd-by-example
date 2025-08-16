@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 
 namespace Loyalty.Core.ViewModels
 {
-    public class StampViewModel
+    public class PurchaseViewModel
     {
         [JsonProperty("id")]
-        public string ItemId { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("cardId")]
         public int CardId { get; set; }

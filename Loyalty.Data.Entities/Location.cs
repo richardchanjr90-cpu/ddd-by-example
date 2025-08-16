@@ -4,8 +4,8 @@ using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
-    [Table("GeoPosition", Schema = SchemaName.Loyalty)]
-    public class GeoPosition : AuditableEntity
+    [Table("Location", Schema = SchemaName.Loyalty)]
+    public class Location : AuditableEntity
     {
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }

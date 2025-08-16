@@ -1,0 +1,23 @@
+﻿using System.Collections.Generic;
+using Loyalty.Domain.Contracts.Interfaces;
+using MediatR;
+
+namespace Loyalty.Domain.Handlers.Queries.Commands.VenueDetails
+{
+    public class UpdateVenueDetailsCommand : IRequest<ICommandResult>
+    {
+        public long Id { get; set; }
+
+        public long VenueId { get; set; }
+
+        public string FullDescription { get; set; }
+
+        public List<string> Phones { get; set; }
+
+        public List<string> WebSites { get; set; }
+
+        public string WorkingHours { get; set; }
+
+        public List<string> PhotosUrl { get; set; }
+    }
+}

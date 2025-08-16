@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
@@ -6,6 +7,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Domain.Handlers.Commands.Venues
@@ -19,10 +21,15 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 
         public async Task<ICommandResult> Handle(ArchiveVenueCommand request, CancellationToken cancellationToken)
         {
+            var venue = await Context.Venues
+                .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            venue.IsArchived = true;
 
             return new CommandResult
             {
-                Success = true
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0
             };
         }
     }

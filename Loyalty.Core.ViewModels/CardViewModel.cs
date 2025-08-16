@@ -6,7 +6,7 @@ namespace Loyalty.Core.ViewModels
     public class CardViewModel
     {
         [JsonProperty("id")]
-        public Guid ItemId { get; set; }
+        public Guid Id { get; set; }
 
         [JsonProperty("loyaltyProgramId")]
         public int LoyaltyProgramId { get; set; }

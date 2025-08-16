@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Data.Contracts
 {
-    public interface ILoyaltyDbContext
+    public interface ILoyaltyDbContext : IDbContext
     {
         DbSet<Card> Cards { get; set; }
 
-        DbSet<GeoPosition> GeoPositions { get; set; }
+        DbSet<Location> Locations { get; set; }
 
         DbSet<LoyaltyProduct> LoyaltyProducts { get; set; }
 

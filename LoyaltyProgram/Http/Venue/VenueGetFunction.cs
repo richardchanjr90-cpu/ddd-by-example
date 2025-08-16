@@ -17,7 +17,7 @@ namespace LoyaltyProgram.Http.Venue
     {
         [FunctionName("VenueGetFunction")]
         public static async Task<IActionResult> Run(
-            string id,
+            long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue/{id}")]HttpRequest req,
             ILogger log,
             ExecutionContext context)
@@ -30,7 +30,7 @@ namespace LoyaltyProgram.Http.Venue
             {
                 await req.AuthorizeAsync(host);
                 var app = host.StartService<LoyaltyVenueAppService>();
-                return new OkObjectResult(await app.Get(Guid.Parse(id)));
+                return new OkObjectResult(await app.Get(id));
             });
         }
     }

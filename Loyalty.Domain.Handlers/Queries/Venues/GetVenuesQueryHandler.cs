@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared.Settings;
@@ -7,6 +8,7 @@ using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Extensions;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Domain.Handlers.Queries.Venues
@@ -20,7 +22,12 @@ namespace Loyalty.Domain.Handlers.Queries.Venues
 
         public async Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var venues = await Context.Venues.ToListAsync(cancellationToken);
+
+            return new GetVenuesQueryResult
+            {
+                Venues = venues.ToResults()
+            };
         }
     }
 }

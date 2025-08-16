@@ -13,7 +13,7 @@
     <Folder Include="Queries\Cards\" />
     <Folder Include="Queries\LoyaltyProducts\" />
     <Folder Include="Queries\LoyaltyPrograms\" />
-    <Folder Include="Queries\Stamps\" />
+    <Folder Include="Queries\Purchases\" />
     <Folder Include="Queries\VenueDetails\" />
   </ItemGroup>
 

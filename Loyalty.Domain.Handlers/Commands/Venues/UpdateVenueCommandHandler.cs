@@ -1,11 +1,14 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
+using Loyalty.Domain.Handlers.Extensions;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Domain.Handlers.Commands.Venues
@@ -19,6 +22,14 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 
         public async Task<ICommandResult> Handle(UpdateVenueCommand request, CancellationToken cancellationToken)
         {
+            var venue = await Context.Venues
+                .Where(x => x.Id == request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            venue.Category = request.Category;
+            venue.Description = request.Description;
+            //venue.Location = request.Location;
+            venue.LogoUrl = request.LogoUrl;
 
             return new CommandResult
             {

@@ -17,7 +17,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenueDeleteFunction")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venue/{id}")]HttpRequest req,
-            string id,
+            long id,
             ILogger log,
             ExecutionContext context)
         {
@@ -29,7 +29,7 @@ namespace LoyaltyProgram.Http.Venue
             {
                 await req.AuthorizeAsync(host);
                 var app = host.StartService<LoyaltyVenueAppService>();
-                return new OkObjectResult(await app.Delete(Guid.Parse(id)));
+                return new OkObjectResult(await app.Archive(id));
             });
         }
     }

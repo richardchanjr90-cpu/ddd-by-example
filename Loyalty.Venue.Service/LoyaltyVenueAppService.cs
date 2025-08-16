@@ -23,11 +23,11 @@ namespace Loyalty.Venue.Service
             this.mapper = mapper;
         }
 
-        public async Task<VenueViewModel> Get(Guid id)
+        public async Task<VenueViewModel> Get(long id)
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
-                ItemId = id
+                Id = id
             });
 
             return mapper.Map<VenueViewModel>(result);
@@ -67,7 +67,7 @@ namespace Loyalty.Venue.Service
             return commandResult;
         }
 
-        public async Task<ICommandResult> Delete(Guid id)
+        public async Task<ICommandResult> Archive(long id)
         {
             var command = new ArchiveVenueCommand
             {

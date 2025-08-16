@@ -9,7 +9,7 @@ using Loyalty.Data.Entities.Schema;
 namespace Loyalty.Data.Entities
 {
     [Table("Venue", Schema = SchemaName.Loyalty)]
-    public class Venue : AuditableEntity, IRequireTwoStepSaveEntity
+    public class Venue : AuditableEntity, IRequireTwoStepSaveEntity, IArchivableEntity
     {
         public string Name { get; set; }
 
@@ -17,7 +17,7 @@ namespace Loyalty.Data.Entities
 
         public string Description { get; set; }
 
-        public GeoPosition Location { get; set; }
+        public Location Location { get; set; }
 
         public bool IsPublished { get; set; }
 
@@ -30,5 +30,7 @@ namespace Loyalty.Data.Entities
         public VenueDetails VenueDetails { get; set; }
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
+
+        public bool IsArchived { get; set; }
     }
 }
