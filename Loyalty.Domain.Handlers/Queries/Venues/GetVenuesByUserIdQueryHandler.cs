@@ -29,7 +29,7 @@ namespace Loyalty.Domain.Handlers.Queries.Venues
                     join lprod in Context.LoyaltyProducts on lgroup.Id equals lprod.LoyaltyProductGroupId
                     where lgroup.Id == lprod.LoyaltyProductGroupId
                     from card in Context.Cards
-                    where card.LoyaltyProductId == lprod.Id && card.UserId == request.UserId
+                    where card.LoyaltyProductGroupId == lgroup.Id && card.UserId == request.UserId
                     select v).ToListAsync(cancellationToken);
 
             return new GetVenuesByUserIdQueryResult
