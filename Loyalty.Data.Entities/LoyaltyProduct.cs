@@ -20,7 +20,7 @@ namespace Loyalty.Data.Entities
         public string Description { get; set; }
 
         [Required]
-        public string Rule { get; set; }
+        public string BusinessRule { get; set; }
 
         public bool IsArchived { get; set; }
     }

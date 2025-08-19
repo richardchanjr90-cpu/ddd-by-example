@@ -10,8 +10,8 @@ namespace Loyalty.Data.Entities
     [Table("Card", Schema = SchemaName.Loyalty)]
     public class Card : AuditableEntity, IArchivableEntity
     {
-        [ForeignKey(nameof(LoyaltyProduct))]
-        public long LoyaltyProductId { get; set; }
+        [ForeignKey(nameof(LoyaltyProductGroup))]
+        public long LoyaltyProductGroupId { get; set; }
 
         public Guid UserId { get; set; }
 
