@@ -21,5 +21,7 @@ namespace Loyalty.Data.Contracts
         DbSet<VenueDetails> VenueDetails { get; set; }
 
         DbSet<Venue> Venues { get; set; }
+
+        DbSet<VenueCategory> VenueCategories { get; set; }
     }
 }

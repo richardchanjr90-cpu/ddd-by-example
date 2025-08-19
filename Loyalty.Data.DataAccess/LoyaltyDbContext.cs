@@ -25,6 +25,8 @@ namespace Loyalty.Data.DataAccess
 
         public DbSet<Venue> Venues { get; set; }
 
+        public DbSet<VenueCategory> VenueCategories { get; set; }
+
         public DbSet<VenueDetails> VenueDetails { get; set; }
 
         public LoyaltyDbContext(DbContextOptions options)

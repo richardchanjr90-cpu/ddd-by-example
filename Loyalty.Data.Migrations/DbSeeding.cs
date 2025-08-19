@@ -11,9 +11,12 @@ namespace Loyalty.Data.Migrations
 {
     public static class DbSeeding
     {
-        public static void Seed()
+        private static void Main(params string[] args)
         {
-            using (var context = new LoyaltyApiContextFactory().CreateDbContext())
+            var defaultPath =
+                $"{Environment.CurrentDirectory}\\..\\..\\..\\..\\..\\..\\LoyaltyProgram";
+
+            using (var context = new LoyaltyApiContextFactory().CreateDbContext(defaultPath))
             {
                 context.Database.EnsureCreated();
 
@@ -22,9 +25,11 @@ namespace Loyalty.Data.Migrations
                 {
                     context.Venues.Add(new Venue()
                     {
-                     //VenueCategoryType = VenueCategoryType.CoffeeShop,
+                        Categories = new List<VenueCategory> { new VenueCategory { CategoryType = VenueCategoryType.CoffeeShop } }, 
                         Created = DateTime.Now,
                         CreatedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
+                        Modified = DateTime.Now,
+                        ModifiedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
                         Location = new Location()
                         {
                             City = "Minsk",
@@ -32,14 +37,12 @@ namespace Loyalty.Data.Migrations
                             Longitude = 180
                         },
                         LogoUrl = "http://clipart-library.com/images/8cEb974Xi.jpg",
-                        Description = "Venue without details and programs.",
-                        Modified = DateTime.Now,
-                        ModifiedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
+                        Description = "Venue without details and programs.",              
                         IsArchived = false,
                         IsPublished = false,
                         Name = "Venue1",
                         Type = VenueType.Single,
-                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
+                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"), 
                     });
                 }
 

@@ -14,8 +14,16 @@ namespace Loyalty.Data.DataAccess
 
         public LoyaltyDbContext CreateDbContext(params string[] args)
         {
+            var defaultPath =
+                $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}LoyaltyProgram";
+
+            if (args.Length == 1)
+            {
+                defaultPath = args[0];
+            }
+
             var builder = new ConfigurationBuilder()
-                .SetBasePath($"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}LoyaltyProgram")
+                .SetBasePath(defaultPath)
                 .AddJsonFile("local.settings.json", true, true)
                 .AddEnvironmentVariables();
 
