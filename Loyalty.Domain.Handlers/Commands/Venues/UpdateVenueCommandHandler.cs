@@ -25,8 +25,7 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
             var venue = await Context.Venues
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
-
-            venue.Category = request.Category;
+            //todo: venue categories;
             venue.Description = request.Description;
             venue.Name = request.Name;
             venue.Type = venue.Type;

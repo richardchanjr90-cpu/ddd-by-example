@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Loyalty.Core.Shared.Enums;
 using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
@@ -16,7 +18,7 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Name = command.Name,
                 Type = command.Type,
                 OwnerId = command.OwnerId,
-                Category = command.Category,
+                Categories = command.Categories.ToResults(),
                 Description = command.Description,
                 Location = new Location
                 {
@@ -37,7 +39,7 @@ namespace Loyalty.Domain.Handlers.Extensions
             var result = new Venue
             {
                 Id = command.Id,
-                Category = command.Category,
+                Categories = command.Categories.ToResults(),
                 Description = command.Description,
                 Name = command.Name,
                 Type = command.Type,
@@ -60,7 +62,7 @@ namespace Loyalty.Domain.Handlers.Extensions
             var result = new GetVenueByIdQueryResult
             {
                 Id = item.Id,
-                Category = item.Category,
+                Categories = item.Categories.Select(x => x.CategoryType).ToList(),
                 Description = item.Description,
                 Name = item.Name,
                 Type = item.Type,

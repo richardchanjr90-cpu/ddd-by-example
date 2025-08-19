@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Loyalty.Core.Shared.Enums;
 using Newtonsoft.Json;
 
 namespace Loyalty.Core.ViewModels
@@ -24,7 +26,7 @@ namespace Loyalty.Core.ViewModels
         public int Type { get; set; }
 
         [JsonProperty("category")]
-        public int Category { get; set; }
+        public List<VenueCategoryViewModel> Categories { get; set; }
 
         [JsonProperty("logoUrl")]
         public string LogoUrl { get; set; }

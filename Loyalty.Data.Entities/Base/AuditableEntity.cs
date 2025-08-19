@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Build.Framework;
 
 namespace Loyalty.Data.Entities.Base
 {
@@ -8,8 +9,10 @@ namespace Loyalty.Data.Entities.Base
 
         public Guid? ModifiedBy { get; set; }
 
+        [Required]
         public DateTime Modified { get; set; }
 
+        [Required]
         public DateTime Created { get; set; }
     }
 }

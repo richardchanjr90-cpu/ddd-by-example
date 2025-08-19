@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Data.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    [Migration("20190110202853_Initial")]
-    partial class Initial
+    [Migration("20190120092037_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,24 +29,28 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<bool>("IsArchived");
+
+                    b.Property<long?>("LoyaltyProductGroupId");
 
                     b.Property<long>("LoyaltyProductId");
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LoyaltyProductGroupId");
+
                     b.ToTable("Card","loyalty");
                 });
 
-            modelBuilder.Entity("Loyalty.Data.Entities.GeoPosition", b =>
+            modelBuilder.Entity("Loyalty.Data.Entities.Location", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -56,7 +60,7 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<float>("Latitude");
 
@@ -64,7 +68,7 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
                     b.Property<long>("VenueId");
 
@@ -73,7 +77,7 @@ namespace Loyalty.Data.DataAccess.Migrations
                     b.HasIndex("VenueId")
                         .IsUnique();
 
-                    b.ToTable("GeoPosition","loyalty");
+                    b.ToTable("Location","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Data.Entities.LoyaltyProduct", b =>
@@ -84,19 +88,50 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<string>("Description");
 
-                    b.Property<int>("DisplayType");
+                    b.Property<bool>("IsArchived");
+
+                    b.Property<long>("LoyaltyProductGroupId");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<Guid?>("ModifiedBy");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Rule");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoyaltyProductGroupId");
+
+                    b.ToTable("LoyaltyProduct","loyalty");
+                });
+
+            modelBuilder.Entity("Loyalty.Data.Entities.LoyaltyProductGroup", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<Guid?>("CreatedBy");
+
+                    b.Property<string>("Description");
 
                     b.Property<bool>("IsArchived");
+
+                    b.Property<bool>("IsPublished");
 
                     b.Property<long>("LoyaltyProgramId");
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -106,7 +141,7 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.HasIndex("LoyaltyProgramId");
 
-                    b.ToTable("LoyaltyProduct","loyalty");
+                    b.ToTable("LoyaltyProductGroup","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Data.Entities.LoyaltyProgram", b =>
@@ -117,13 +152,11 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<string>("Description");
 
                     b.Property<DateTime>("EndDate");
-
-                    b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsArchived");
 
@@ -131,7 +164,7 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -140,6 +173,8 @@ namespace Loyalty.Data.DataAccess.Migrations
                     b.Property<long>("VenueId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("VenueId");
 
                     b.ToTable("LoyaltyProgram","loyalty");
                 });
@@ -156,19 +191,19 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
-                    b.Property<decimal?>("Price");
+                    b.Property<decimal?>("Value");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CardId");
 
-                    b.ToTable("Purchases");
+                    b.ToTable("Purchase","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Data.Entities.Venue", b =>
@@ -177,13 +212,15 @@ namespace Loyalty.Data.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Category");
-
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<string>("Description");
+
+                    b.Property<long?>("FranchiseId");
+
+                    b.Property<bool>("IsArchived");
 
                     b.Property<bool>("IsPublished");
 
@@ -191,7 +228,7 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -204,6 +241,31 @@ namespace Loyalty.Data.DataAccess.Migrations
                     b.ToTable("Venue","loyalty");
                 });
 
+            modelBuilder.Entity("Loyalty.Data.Entities.VenueCategory", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CategoryType");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<Guid?>("CreatedBy");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<Guid?>("ModifiedBy");
+
+                    b.Property<long>("VenueId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VenueId");
+
+                    b.ToTable("VenueCategory","loyalty");
+                });
+
             modelBuilder.Entity("Loyalty.Data.Entities.VenueDetails", b =>
                 {
                     b.Property<long>("Id")
@@ -212,13 +274,13 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid>("CreatedBy");
+                    b.Property<Guid?>("CreatedBy");
 
                     b.Property<string>("FullDescription");
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid>("ModifiedBy");
+                    b.Property<Guid?>("ModifiedBy");
 
                     b.Property<string>("Phones");
 
@@ -232,22 +294,48 @@ namespace Loyalty.Data.DataAccess.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("VenueId")
+                        .IsUnique();
+
                     b.ToTable("VenueDetails","loyalty");
                 });
 
-            modelBuilder.Entity("Loyalty.Data.Entities.GeoPosition", b =>
+            modelBuilder.Entity("Loyalty.Data.Entities.Card", b =>
+                {
+                    b.HasOne("Loyalty.Data.Entities.LoyaltyProductGroup")
+                        .WithMany("Cards")
+                        .HasForeignKey("LoyaltyProductGroupId");
+                });
+
+            modelBuilder.Entity("Loyalty.Data.Entities.Location", b =>
                 {
                     b.HasOne("Loyalty.Data.Entities.Venue")
                         .WithOne("Location")
-                        .HasForeignKey("Loyalty.Data.Entities.GeoPosition", "VenueId")
+                        .HasForeignKey("Loyalty.Data.Entities.Location", "VenueId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Loyalty.Data.Entities.LoyaltyProduct", b =>
                 {
-                    b.HasOne("Loyalty.Data.Entities.LoyaltyProgram")
+                    b.HasOne("Loyalty.Data.Entities.LoyaltyProductGroup")
                         .WithMany("LoyaltyProducts")
+                        .HasForeignKey("LoyaltyProductGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Loyalty.Data.Entities.LoyaltyProductGroup", b =>
+                {
+                    b.HasOne("Loyalty.Data.Entities.LoyaltyProgram")
+                        .WithMany("LoyaltyGroups")
                         .HasForeignKey("LoyaltyProgramId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Loyalty.Data.Entities.LoyaltyProgram", b =>
+                {
+                    b.HasOne("Loyalty.Data.Entities.Venue")
+                        .WithMany("LoyaltyPrograms")
+                        .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -256,6 +344,22 @@ namespace Loyalty.Data.DataAccess.Migrations
                     b.HasOne("Loyalty.Data.Entities.Card")
                         .WithMany("Purchases")
                         .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Loyalty.Data.Entities.VenueCategory", b =>
+                {
+                    b.HasOne("Loyalty.Data.Entities.Venue")
+                        .WithMany("Categories")
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Loyalty.Data.Entities.VenueDetails", b =>
+                {
+                    b.HasOne("Loyalty.Data.Entities.Venue")
+                        .WithOne("VenueDetails")
+                        .HasForeignKey("Loyalty.Data.Entities.VenueDetails", "VenueId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

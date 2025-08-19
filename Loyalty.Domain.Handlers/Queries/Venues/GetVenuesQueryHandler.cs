@@ -24,6 +24,7 @@ namespace Loyalty.Domain.Handlers.Queries.Venues
         {
             var venues = await Context.Venues
                 .Include(x => x.Location)
+                .Include(x => x.Categories)
                 .ToListAsync(cancellationToken);
 
             return new GetVenuesQueryResult

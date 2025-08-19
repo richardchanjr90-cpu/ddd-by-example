@@ -13,6 +13,6 @@ namespace Loyalty.Data.Entities
 
         public DateTime? BurnDate { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal? Value { get; set; }
     }
 }

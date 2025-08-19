@@ -1,6 +1,6 @@
 ﻿namespace Loyalty.Core.Shared.Enums
 {
-    public enum VenueCategory
+    public enum VenueCategoryType
     {
         CoffeeShop,
         ShawarmaCafe,

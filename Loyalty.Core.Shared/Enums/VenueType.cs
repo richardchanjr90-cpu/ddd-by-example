@@ -2,7 +2,7 @@
 {
     public enum VenueType
     {
-        Venue,
-        Franshise
+        Single,
+        Franchise,
     }
 }

@@ -12,7 +12,7 @@ namespace Loyalty.Data.DataAccess
     {
         private static IConfigurationRoot configuration;
 
-        public LoyaltyDbContext CreateDbContext(string[] args)
+        public LoyaltyDbContext CreateDbContext(params string[] args)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath($"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}LoyaltyProgram")

@@ -25,8 +25,9 @@ namespace Loyalty.Domain.Handlers.Queries.Venues
             var result = await
                 (from v in Context.Venues
                     join lprog in Context.LoyaltyPrograms on v.Id equals lprog.VenueId
-                    from lprod in Context.LoyaltyProducts
-                    where lprog.Id == lprod.LoyaltyProgramId
+                    join lgroup in Context.LoyaltyProductGroups on lprog.Id equals lgroup.LoyaltyProgramId
+                    join lprod in Context.LoyaltyProducts on lgroup.Id equals lprod.LoyaltyProductGroupId
+                    where lgroup.Id == lprod.LoyaltyProductGroupId
                     from card in Context.Cards
                     where card.LoyaltyProductId == lprod.Id && card.UserId == request.UserId
                     select v).ToListAsync(cancellationToken);

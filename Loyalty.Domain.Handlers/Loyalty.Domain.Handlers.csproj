@@ -8,11 +8,13 @@
     <Folder Include="Commands\Cards\" />
     <Folder Include="Commands\LoyaltyProducts\" />
     <Folder Include="Commands\LoyaltyPrograms\" />
+    <Folder Include="Commands\VenueCategories\" />
     <Folder Include="Commands\Stamps\" />
     <Folder Include="Commands\VenueDetails\" />
     <Folder Include="Queries\Cards\" />
     <Folder Include="Queries\LoyaltyProducts\" />
     <Folder Include="Queries\LoyaltyPrograms\" />
+    <Folder Include="Queries\VenueCategories\" />
     <Folder Include="Queries\Purchases\" />
     <Folder Include="Queries\VenueDetails\" />
   </ItemGroup>
