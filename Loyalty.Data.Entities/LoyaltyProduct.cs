@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
 using Loyalty.Data.Entities.Base.Interface;
 using Loyalty.Data.Entities.Schema;
-using Microsoft.Build.Framework;
 
 namespace Loyalty.Data.Entities
 {
@@ -14,9 +14,11 @@ namespace Loyalty.Data.Entities
         public long LoyaltyProductGroupId { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Name { get; set; }
 
         [Required]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         [Required]

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Loyalty.Data.Entities.Base.Interface
 {
-    public interface IRequireTwoStepSaveEntity
+    public interface IRequireApprovalEntity
     {
-        bool IsPublished { get; set; }
+        bool IsApproved { get; set; }
     }
 }

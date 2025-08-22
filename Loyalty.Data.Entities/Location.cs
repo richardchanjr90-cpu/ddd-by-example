@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
 using Loyalty.Data.Entities.Schema;
-using Microsoft.Build.Framework;
 
 namespace Loyalty.Data.Entities
 {
@@ -12,6 +12,7 @@ namespace Loyalty.Data.Entities
         public long VenueId { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string City { get; set; }
 
         [Required]

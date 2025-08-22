@@ -19,6 +19,9 @@ namespace Loyalty.Core.ViewModels
         [JsonProperty("description")]
         public string Description { get; set; }
 
+        [JsonProperty("parentId")]
+        public long? ParentId { get; set; }
+
         [JsonProperty("location")]
         public LocationViewModel Location { get; set; }
 
@@ -33,6 +36,15 @@ namespace Loyalty.Core.ViewModels
 
         [JsonProperty("details")]
         public VenueDetailsViewModel Details { get; set; }
+
+        [JsonProperty("isArchived")]
+        public bool IsArchived { get; set; }
+
+        [JsonProperty("isPublished")]
+        public bool IsPublished { get; set; }
+
+        [JsonProperty("isApproved")]
+        public bool IsApproved { get; set; }
     }
 }
 

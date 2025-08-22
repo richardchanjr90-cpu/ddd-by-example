@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
 using Loyalty.Data.Entities.Base.Interface;
 using Loyalty.Data.Entities.Schema;
-using Microsoft.Build.Framework;
 
 namespace Loyalty.Data.Entities
 {
@@ -14,6 +14,7 @@ namespace Loyalty.Data.Entities
         [Required]
         public string Name { get; set; }
 
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         [Required]

@@ -38,6 +38,7 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
                 venue.Name = request.Name;
                 venue.Type = request.Type;
                 venue.LogoUrl = request.LogoUrl;
+                venue.Location = request.Location?.ToSingle();
             }
 
             return new CommandResult

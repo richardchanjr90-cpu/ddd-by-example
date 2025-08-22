@@ -12,9 +12,11 @@ namespace Loyalty.Core.ViewModels.Validators
             RuleFor(x => x.Latitude)
                 .GreaterThanOrEqualTo(-MaxLatitudeAbs)
                 .LessThanOrEqualTo(MaxLatitudeAbs);
+
             RuleFor(x => x.Longitude)
                 .GreaterThanOrEqualTo(-MaxLongitudeAbs)
                 .LessThanOrEqualTo(MaxLongitudeAbs);
+
             RuleFor(x => x.City).NotEmpty();
         }
     }

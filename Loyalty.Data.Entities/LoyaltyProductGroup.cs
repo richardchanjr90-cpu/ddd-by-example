@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Shared.Enums;
 using Loyalty.Data.Entities.Base;
 using Loyalty.Data.Entities.Base.Interface;
 using Loyalty.Data.Entities.Schema;
-using Microsoft.Build.Framework;
 
 namespace Loyalty.Data.Entities
 {
@@ -16,12 +16,14 @@ namespace Loyalty.Data.Entities
         public long LoyaltyProgramId { get; set; }
 
         [Required]
+        [MaxLength(200)]
         public string Name { get; set; }
 
         [Required]
         public LoyaltyProductType Type { get; set; }
 
         [Required]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
         public bool IsArchived { get; set; }

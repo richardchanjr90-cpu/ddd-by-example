@@ -17,20 +17,16 @@ namespace Loyalty.Domain.Handlers.Extensions
             {
                 Name = command.Name,
                 Type = command.Type,
+                ParentId = command.ParentId,
                 OwnerId = command.OwnerId,
                 CategoryType = command.CategoryType,
                 Description = command.Description,
-                Location = new Location
-                {
-                    Latitude = command.Location.Latitude,
-                    VenueId = command.Location.VenueId,
-                    Longitude = command.Location.Longitude,
-                    City = command.Location.City,
-                    Id = command.Location.Id
-                },
+                Location = command.Location?.ToSingle(),
                 VenueDetails = command.Details?.ToSingle(),
-                IsPublished = false,
-                LogoUrl = command.LogoUrl
+                LogoUrl = command.LogoUrl,
+                IsArchived = command.IsArchived,
+                IsPublished = command.IsPublished,
+                IsApproved = command.IsApproved
             };
 
             return result;
@@ -43,19 +39,16 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Id = command.Id,
                 CategoryType = command.CategoryType,
                 Description = command.Description,
+                ParentId = command.ParentId,
                 Name = command.Name,
                 Type = command.Type,
                 OwnerId = command.OwnerId,
-                Location = new Location
-                {
-                    Latitude = command.Location.Latitude,
-                    VenueId = command.Location.VenueId,
-                    Longitude = command.Location.Longitude,
-                    City = command.Location.City,
-                    Id = command.Location.Id
-                },
+                Location = command.Location?.ToSingle(),
                 LogoUrl = command.LogoUrl,
-                VenueDetails = command.Details?.ToSingle()
+                VenueDetails = command.Details?.ToSingle(),
+                IsArchived = command.IsArchived,
+                IsPublished = command.IsPublished,
+                IsApproved = command.IsApproved,
             };
 
             return result;
@@ -71,18 +64,12 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
-               
-                Location = new GetLocationQueryResult
-                {
-                    Latitude = item.Location.Latitude,
-                    Longitude = item.Location.Longitude,
-                    City = item.Location.City,
-                    VenueId = item.Location.VenueId,
-                    Id = item.Location.Id
-                },
-
+                Location = item.Location?.ToResult(),
                 IsPublished = item.IsPublished,
-                LogoUrl = item.LogoUrl
+                LogoUrl = item.LogoUrl,
+                IsArchived = item.IsArchived,
+                IsApproved = item.IsApproved,
+                ParentId = item.ParentId,
             };
             return result;
         }

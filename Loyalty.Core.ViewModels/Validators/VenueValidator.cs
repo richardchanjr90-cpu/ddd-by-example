@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentValidation;
+using Loyalty.Core.Shared.Enums;
 using Loyalty.Core.ViewModels.Validators.Extensions;
 
 namespace Loyalty.Core.ViewModels.Validators
@@ -8,12 +9,27 @@ namespace Loyalty.Core.ViewModels.Validators
     {
         public VenueValidator()
         {
-            //RuleFor(x => x.Id).GreaterThan(0);
-            RuleFor(x => x.Description).NotEmpty();
-            RuleFor(x => x.Name).NotEmpty();
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .MaximumLength(200);
+
             RuleFor(x => x.OwnerId).Must(this.BeValidGuid)
-                .WithMessage("Should be a valid guid");
-            RuleFor(x => x.Location).NotNull().SetValidator(new LocationValidator());
+                .WithMessage("Should be a valid guid.");
+
+            RuleFor(x => x.Type)
+                .Must(x => ((VenueType)x) != VenueType.Single)
+                .When(x => x.ParentId.HasValue)
+                .WithMessage($"ParentId should be > 0, when VenueType.Single.");
+
+            RuleFor(x => x)
+                .SetValidator(new PublishedVenueValidator())
+                .When(x => x.IsPublished)
+                .WithMessage($"Venue can be published only when all fields are set.");
+
+            RuleFor(x => x)
+                .Must(x => x.IsPublished)
+                .When(x => x.IsApproved)
+                .WithMessage($"Venue can't be accepted if it's not published.");
         }
     }
 }
