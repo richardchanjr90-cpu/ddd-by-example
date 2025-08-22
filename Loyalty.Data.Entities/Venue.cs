@@ -34,6 +34,7 @@ namespace Loyalty.Data.Entities
 
         public VenueCategoryType CategoryType { get; set; }
 
+        [MaxLength(200)]
         public string LogoUrl { get; set; }
 
         public VenueDetails VenueDetails { get; set; }

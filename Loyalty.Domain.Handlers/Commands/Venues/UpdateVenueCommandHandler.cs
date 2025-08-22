@@ -23,6 +23,8 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
         public async Task<ICommandResult> Handle(UpdateVenueCommand request, CancellationToken cancellationToken)
         {
             var venue = await Context.Venues
+                .Include(x => x.Location)
+                .Include(x => x.VenueDetails)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
@@ -38,6 +40,7 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
                 venue.Name = request.Name;
                 venue.Type = request.Type;
                 venue.LogoUrl = request.LogoUrl;
+                //todo: multistep implementation needed;
                 venue.Location = request.Location?.ToSingle();
             }
 
