@@ -25,7 +25,7 @@ namespace Loyalty.Data.Migrations
                 {
                     context.Venues.Add(new Venue()
                     {
-                        Categories = new List<VenueCategory> { new VenueCategory { CategoryType = VenueCategoryType.CoffeeShop } }, 
+                        CategoryType = VenueCategoryType.CoffeeShop,
                         Created = DateTime.Now,
                         CreatedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
                         Modified = DateTime.Now,
