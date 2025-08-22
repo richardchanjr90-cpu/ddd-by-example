@@ -4,7 +4,9 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
 {
     public class GetLocationQueryResult
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
+
+        public long VenueId { get; set; }
 
         public string City { get; set; }
 

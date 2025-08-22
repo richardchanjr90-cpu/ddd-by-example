@@ -23,8 +23,10 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Location = new Location
                 {
                     Latitude = command.Location.Latitude,
+                    VenueId = command.Location.VenueId,
                     Longitude = command.Location.Longitude,
                     City = command.Location.City,
+                    Id = command.Location.Id
                 },
                 VenueDetails = command.Details?.ToSingle(),
                 IsPublished = false,
@@ -47,8 +49,10 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Location = new Location
                 {
                     Latitude = command.Location.Latitude,
+                    VenueId = command.Location.VenueId,
                     Longitude = command.Location.Longitude,
                     City = command.Location.City,
+                    Id = command.Location.Id
                 },
                 LogoUrl = command.LogoUrl,
                 VenueDetails = command.Details?.ToSingle()
@@ -73,6 +77,8 @@ namespace Loyalty.Domain.Handlers.Extensions
                     Latitude = item.Location.Latitude,
                     Longitude = item.Location.Longitude,
                     City = item.Location.City,
+                    VenueId = item.Location.VenueId,
+                    Id = item.Location.Id
                 },
 
                 IsPublished = item.IsPublished,
