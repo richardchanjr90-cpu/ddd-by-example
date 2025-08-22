@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Loyalty.Core.ViewModels;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Domain.Handlers.Queries.Commands.VenueCategories;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 
@@ -12,9 +11,6 @@ namespace Loyalty.Domain.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<LocationViewModel, GetLocationQueryResult>();
-
-            CreateMap<VenueCategoryViewModel, CreateVenueCategoryCommand>();
-            CreateMap<VenueCategoryViewModel, UpdateVenueCategoryCommand>();
 
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>()
                 .ForMember(x=>x.Details, opt=> opt.Ignore());

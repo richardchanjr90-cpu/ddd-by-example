@@ -24,11 +24,10 @@ namespace Loyalty.Domain.Handlers.Queries.Venues
         {
             var venue = await Context.Venues
                 .Include(x => x.Location)
-                .Include(x => x.Categories)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            return venue.ToResult();
+            return venue?.ToResult();
         }
     }
 }

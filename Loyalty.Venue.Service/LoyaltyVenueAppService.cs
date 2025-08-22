@@ -72,7 +72,7 @@ namespace Loyalty.Venue.Service
             var command = new ArchiveVenueCommand
             {
                 Id = id,
-                OwnerId = Guid.NewGuid()
+                OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
             };
 
             var commandResult = await Mediator.Send(command);

@@ -10,6 +10,6 @@ namespace Loyalty.Domain.Contracts.Interfaces
 
         string Message { get; set; }
 
-        int Result { get; set; }
+        object Result { get; set; }
     }
 }

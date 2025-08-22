@@ -25,15 +25,25 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
             var venue = await Context.Venues
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
-            //todo: venue categories;
-            venue.Description = request.Description;
-            venue.Name = request.Name;
-            venue.Type = venue.Type;
-            venue.LogoUrl = request.LogoUrl;
+
+            if (venue == null)
+            {
+                venue = request.ToSingle();
+                Context.Venues.Add(venue);
+            }
+            else
+            {
+                venue.CategoryType = request.CategoryType;
+                venue.Description = request.Description;
+                venue.Name = request.Name;
+                venue.Type = request.Type;
+                venue.LogoUrl = request.LogoUrl;
+            }
 
             return new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = venue.Id        
             };
         }
     }

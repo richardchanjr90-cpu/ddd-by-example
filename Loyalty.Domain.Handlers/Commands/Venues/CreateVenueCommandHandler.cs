@@ -25,7 +25,8 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 
             return new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = venue.Id
             };
         }
     }

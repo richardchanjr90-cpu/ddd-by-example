@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared;
 using Loyalty.Core.Shared.Exceptions;
+using Loyalty.Core.Shared.Extensions;
 using Loyalty.Core.ViewModels;
 using Loyalty.Venue.Service;
 using LoyaltyProgram.Extensions;
@@ -22,6 +23,7 @@ namespace LoyaltyProgram.Http.Venue
             ExecutionContext context)
         {
             log.LogInformation($"{nameof(VenuePutFunction)} was triggered.");
+
             var host = new HostConfigurator()
                 .Setup<LoyaltyVenueAppService>(context);
 

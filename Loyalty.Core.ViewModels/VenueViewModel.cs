@@ -25,8 +25,8 @@ namespace Loyalty.Core.ViewModels
         [JsonProperty("type")]
         public int Type { get; set; }
 
-        [JsonProperty("category")]
-        public List<VenueCategoryViewModel> Categories { get; set; }
+        [JsonProperty("categoryType")]
+        public int CategoryType { get; set; }
 
         [JsonProperty("logoUrl")]
         public string LogoUrl { get; set; }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Loyalty.Core.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Queries.Commands.VenueCategories;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using MediatR;
@@ -23,7 +22,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public VenueType Type { get; set; }
 
-        public List<UpdateVenueCategoryCommand> Categories { get; set; } = default;
+        public VenueCategoryType CategoryType { get; set; }
 
         public string LogoUrl { get; set; }
 

@@ -31,13 +31,14 @@ namespace Loyalty.Data.Entities
         [Required]
         public VenueType Type { get; set; }
 
+        [Required]
+        public VenueCategoryType CategoryType { get; set; }
+
         public string LogoUrl { get; set; }
 
         public VenueDetails VenueDetails { get; set; }
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
-
-        public virtual ICollection<VenueCategory> Categories { get; set; }
 
         public bool IsArchived { get; set; }
     }

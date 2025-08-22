@@ -25,11 +25,15 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
                 .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            venue.IsArchived = true;
+            if (venue != null)
+            {
+                venue.IsArchived = true;
+            }
 
             return new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = venue?.Id
             };
         }
     }

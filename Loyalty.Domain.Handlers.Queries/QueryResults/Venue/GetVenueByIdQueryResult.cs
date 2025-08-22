@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Loyalty.Core.Shared.Enums;
-using Loyalty.Domain.Handlers.Queries.Commands.VenueCategories;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
-using Loyalty.Domain.Handlers.Queries.QueryResults.VenueCategory;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 {
@@ -21,7 +19,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 
         public VenueType Type { get; set; }
 
-        public List<GetVenueCategoryQueryResult> Categories { get; set; }
+        public VenueCategoryType CategoryType { get; set; }
 
         public string LogoUrl { get; set; }
 

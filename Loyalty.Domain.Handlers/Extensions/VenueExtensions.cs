@@ -6,7 +6,6 @@ using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
-using Loyalty.Domain.Handlers.Queries.QueryResults.VenueCategory;
 
 namespace Loyalty.Domain.Handlers.Extensions
 {
@@ -19,7 +18,7 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Name = command.Name,
                 Type = command.Type,
                 OwnerId = command.OwnerId,
-                Categories = command.Categories.ToResults(),
+                CategoryType = command.CategoryType,
                 Description = command.Description,
                 Location = new Location
                 {
@@ -40,7 +39,7 @@ namespace Loyalty.Domain.Handlers.Extensions
             var result = new Venue
             {
                 Id = command.Id,
-                Categories = command.Categories.ToResults(),
+                CategoryType = command.CategoryType,
                 Description = command.Description,
                 Name = command.Name,
                 Type = command.Type,
@@ -63,11 +62,7 @@ namespace Loyalty.Domain.Handlers.Extensions
             var result = new GetVenueByIdQueryResult
             {
                 Id = item.Id,
-                Categories = item.Categories.Select(x => new GetVenueCategoryQueryResult
-                {
-                    CategoryType = x.CategoryType,
-                    Id = x.Id,
-                }).ToList(),
+                CategoryType = item.CategoryType,
                 Description = item.Description,
                 Name = item.Name,
                 Type = item.Type,

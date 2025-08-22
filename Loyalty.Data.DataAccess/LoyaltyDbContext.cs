@@ -25,8 +25,6 @@ namespace Loyalty.Data.DataAccess
 
         public DbSet<Venue> Venues { get; set; }
 
-        public DbSet<VenueCategory> VenueCategories { get; set; }
-
         public DbSet<VenueDetails> VenueDetails { get; set; }
 
         public LoyaltyDbContext(DbContextOptions options)
@@ -44,6 +42,15 @@ namespace Loyalty.Data.DataAccess
         {
             AddAuditInfo();
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Card>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<LoyaltyProduct>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()
