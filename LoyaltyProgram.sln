@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Que
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Core.Contracts", "Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj", "{CE9256F8-E952-4099-B4B3-7BF31E28BABA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Tests.Shared", "Loyalty.Tests.Shared\Loyalty.Tests.Shared.csproj", "{679676A0-6AA8-4517-9F75-6E16277080B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +123,10 @@ Global
 		{CE9256F8-E952-4099-B4B3-7BF31E28BABA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE9256F8-E952-4099-B4B3-7BF31E28BABA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE9256F8-E952-4099-B4B3-7BF31E28BABA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{679676A0-6AA8-4517-9F75-6E16277080B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{679676A0-6AA8-4517-9F75-6E16277080B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{679676A0-6AA8-4517-9F75-6E16277080B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{679676A0-6AA8-4517-9F75-6E16277080B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{03C01A8C-9210-43A0-880E-793CE1684868} = {D458F396-0D6C-480E-B9E7-0286C993DFF0}
 		{F1F94EBC-BA08-4D36-9323-43C129CFE893} = {03034A91-5CC9-498F-A0EE-7215790D4D20}
 		{CE9256F8-E952-4099-B4B3-7BF31E28BABA} = {42E3DD4E-0C35-4763-A561-CF9DA73C91DC}
+		{679676A0-6AA8-4517-9F75-6E16277080B4} = {03034A91-5CC9-498F-A0EE-7215790D4D20}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {666B230A-1B30-4B4D-B6E5-48D3BE37B5D4}

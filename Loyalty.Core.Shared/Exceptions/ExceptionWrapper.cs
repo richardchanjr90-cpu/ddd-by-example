@@ -7,8 +7,7 @@ namespace Loyalty.Core.Shared.Exceptions
 {
     public class ExceptionWrapper
     {
-
-
+        //This one does not work in AF2.0 right now. Currently, needs to be wrapped like so.
         public static async Task<IActionResult> Handle(Func<Task<IActionResult>> action)
         {
             try
