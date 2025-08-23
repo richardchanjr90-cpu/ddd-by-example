@@ -16,6 +16,8 @@ namespace Loyalty.Data.Contracts
 
         DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
+        DbSet<LoyaltyProgramRule> LoyaltyRules { get; set; }
+
         DbSet<Purchase> Purchases { get; set; }
 
         DbSet<VenueDetails> VenueDetails { get; set; }

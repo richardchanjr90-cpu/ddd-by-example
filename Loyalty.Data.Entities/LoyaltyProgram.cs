@@ -23,13 +23,16 @@ namespace Loyalty.Data.Entities
         [Required]
         public DateTime EndDate { get; set; }
 
-        public bool IsArchived { get; set; }
-
-        public bool IsPublished { get; set; }
+        [Required]
+        public LoyaltyProgramRule LoyaltyRule { get; set; }
 
         public virtual ICollection<LoyaltyProductGroup> LoyaltyGroups { get; set; }
 
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
+
+        public bool IsArchived { get; set; }
+
+        public bool IsPublished { get; set; }
     }
 }

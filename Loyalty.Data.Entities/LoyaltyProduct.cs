@@ -21,9 +21,6 @@ namespace Loyalty.Data.Entities
         [MaxLength(2000)]
         public string Description { get; set; }
 
-        [Required]
-        public string BusinessRule { get; set; }
-
         public bool IsArchived { get; set; }
     }
 }

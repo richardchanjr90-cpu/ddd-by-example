@@ -20,17 +20,14 @@ namespace Loyalty.Data.Entities
         public string Name { get; set; }
 
         [Required]
-        public LoyaltyProductType Type { get; set; }
-
-        [Required]
         [MaxLength(2000)]
         public string Description { get; set; }
-
-        public bool IsArchived { get; set; }
 
         public virtual ICollection<Card> Cards { get; set; }
 
         public virtual ICollection<LoyaltyProduct> LoyaltyProducts { get; set; }
+
+        public bool IsArchived { get; set; }
 
         public bool IsPublished { get; set; }
     }

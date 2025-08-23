@@ -21,6 +21,8 @@ namespace Loyalty.Data.DataAccess
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
+        public DbSet<LoyaltyProgramRule> LoyaltyRules { get; set; }
+
         public DbSet<Purchase> Purchases { get; set; }
 
         public DbSet<Venue> Venues { get; set; }
