@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Tests.Shared\Loyalty.Tests.Shared.csproj" />
+    <ProjectReference Include="..\LoyaltyProgram\LoyaltyProgram.csproj" />
   </ItemGroup>
 
 </Project>

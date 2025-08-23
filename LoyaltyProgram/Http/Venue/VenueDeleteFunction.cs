@@ -1,14 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-using Loyalty.Core.Shared;
+﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared.Exceptions;
 using Loyalty.Venue.Service;
-using LoyaltyProgram.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Venue
 {
@@ -19,17 +17,14 @@ namespace LoyaltyProgram.Http.Venue
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venue/{id}")]HttpRequest req,
             long id,
             ILogger log,
-            ExecutionContext context)
+            [Inject]LoyaltyVenueAppService service)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
-            var host = new HostConfigurator()
-                .Setup<LoyaltyVenueAppService>(context);
 
             return await ExceptionWrapper.Handle(async () =>
             {
                 //await req.AuthorizeAsync(host);
-                var app = host.StartService<LoyaltyVenueAppService>();
-                return new OkObjectResult(await app.Archive(id));
+                return new OkObjectResult(await service.Archive(id));
             });
         }
     }
