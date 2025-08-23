@@ -6,7 +6,11 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Loyalty.Tests.Shared.Factory
 {
@@ -19,7 +23,6 @@ namespace Loyalty.Tests.Shared.Factory
                 new object[] { "name", "Bill" },
                 new object[] { "name", "Paul" },
                 new object[] { "name", "Steve" }
-
             };
         }
 
@@ -39,6 +42,23 @@ namespace Loyalty.Tests.Shared.Factory
                 Query = new QueryCollection(CreateDictionary(queryStringKey, queryStringValue))
             };
             return request;
+        }
+
+        public static DefaultHttpRequest CreateHttpRequest<T>(T body)
+        {
+            var bodyString = JsonConvert.SerializeObject(body);
+            var buffer = Encoding.UTF8.GetBytes(bodyString);
+       
+            using (MemoryStream memory = new MemoryStream())
+            {
+                var request = new DefaultHttpRequest(new DefaultHttpContext())
+                {
+                    Body = memory,
+                    ContentType = "application/json"
+                };
+
+                return request;
+            }
         }
 
         public static ILogger CreateLogger(LoggerTypes type = LoggerTypes.Null)
