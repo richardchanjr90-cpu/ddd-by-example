@@ -6,7 +6,7 @@ using Loyalty.Data.DataAccess;
 using Loyalty.Domain.AutoMapper;
 using Loyalty.Domain.Handlers;
 using Loyalty.Venue.Service;
-using LoyaltyProgram;
+using LoyaltyProgram.DependencyInjection;
 using MediatR;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
@@ -16,8 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 [assembly: WebJobsStartup(typeof(Startup))]
-namespace LoyaltyProgram
-{
+namespace LoyaltyProgram.DependencyInjection
+{ 
     internal class Startup : IWebJobsStartup
     {
         public void Configure(IWebJobsBuilder builder) =>
