@@ -1,2 +1,19 @@
 {
+  "version": "2.0",
+
+  "logging": {
+    "logging": {
+      "fileLoggingMode": "debugOnly"
+    },
+    "applicationInsights": {
+      "sampling": {
+        "isEnabled": true,
+        "maxTelemetryItemsPerSecond": 5
+      }
+    }
+  },
+
+  "http": {
+    "routePrefix": "api"
+  }
 }
