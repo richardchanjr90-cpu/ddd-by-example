@@ -13,6 +13,7 @@ namespace Loyalty.Domain.Handlers.Extensions
             {
                 VenueId = command.VenueId,
                 City = command.City,
+                Address = command.Address,
                 Latitude = command.Latitude,
                 Longitude = command.Longitude,
             };
@@ -27,6 +28,7 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Id = command.Id,
                 VenueId = command.VenueId,
                 City = command.City,
+                Address = command.Address,
                 Latitude = command.Latitude,
                 Longitude = command.Longitude,
             };
@@ -41,6 +43,7 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Id = item.Id,
                 VenueId = item.VenueId,
                 City = item.City,
+                Address = item.Address,
                 Latitude = item.Latitude,
                 Longitude = item.Longitude,
             };

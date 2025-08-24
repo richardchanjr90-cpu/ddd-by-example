@@ -16,6 +16,10 @@ namespace Loyalty.Data.Entities
         public string City { get; set; }
 
         [Required]
+        [MaxLength(200)]
+        public string Address { get; set; }
+
+        [Required]
         public float Latitude { get; set; }
 
         [Required]

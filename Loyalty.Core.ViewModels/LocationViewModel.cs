@@ -14,6 +14,9 @@ namespace Loyalty.Core.ViewModels
         [JsonProperty("city")]
         public string City { get; set; }
 
+        [JsonProperty("address")]
+        public string Address { get; set; }
+
         [JsonProperty("latitude")]
         public float Latitude { get; set; }
 
