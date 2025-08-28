@@ -15,7 +15,7 @@ namespace LoyaltyProgram.Http.Venue
     {
         [FunctionName("VenuePutFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venue")]VenueViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues")]VenueViewModel model,
             HttpRequest req,
             ILogger log,
             [Inject]LoyaltyVenueAppService service)

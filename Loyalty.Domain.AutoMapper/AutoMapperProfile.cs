@@ -2,8 +2,9 @@
 using Loyalty.Core.ViewModels;
 using Loyalty.Domain.Handlers.Queries.Commands.Location;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
+using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 
 namespace Loyalty.Domain.AutoMapper
 {
@@ -16,19 +17,20 @@ namespace Loyalty.Domain.AutoMapper
             
             CreateMap<LocationViewModel, UpdateLocationCommand>();
 
-            CreateMap<GetVenueByIdQueryResult, VenueViewModel>()
-                .ForMember(x=>x.Details, opt=> opt.Ignore());
+            CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
 
             CreateMap<VenueViewModel, CreateVenueCommand>()
-                .ForMember(x => x.Details, opt => opt.MapFrom(src => src.Details))
                 .ForSourceMember(x => x.Id, opt => opt.Ignore())
                 .ForSourceMember(x => x.IsPublished, opt => opt.Ignore())
                 .ForSourceMember(x => x.IsApproved, opt => opt.Ignore());
 
             CreateMap<VenueViewModel, UpdateVenueCommand>()
-                .ForMember(x => x.Details, opt => opt.MapFrom(src => src.Details))
                 .ForSourceMember(x => x.IsPublished, opt => opt.Ignore())
                 .ForSourceMember(x => x.IsApproved, opt => opt.Ignore());
+
+            CreateMap<GetVenueDetailsByIdQueryResult, VenueDetailsViewModel>();
+            CreateMap<VenueDetailsViewModel, CreateVenueDetailsCommand>();
+            CreateMap<VenueDetailsViewModel, UpdateVenueDetailsCommand>();
         }
     }
 }

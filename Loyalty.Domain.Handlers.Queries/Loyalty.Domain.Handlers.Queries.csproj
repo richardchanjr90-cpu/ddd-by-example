@@ -18,12 +18,10 @@
     <Folder Include="Queries\LoyaltyProduct\" />
     <Folder Include="Queries\LoyaltyProgram\" />
     <Folder Include="Queries\Stamp\" />
-    <Folder Include="Queries\VenueDetails\" />
     <Folder Include="QueryResults\Card\" />
     <Folder Include="QueryResults\LoyaltyProduct\" />
     <Folder Include="QueryResults\LoyaltyProgram\" />
     <Folder Include="QueryResults\Stamp\" />
-    <Folder Include="QueryResults\VenueDetails\" />
   </ItemGroup>
 
   <ItemGroup>

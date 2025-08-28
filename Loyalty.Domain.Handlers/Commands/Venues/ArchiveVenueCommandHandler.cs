@@ -14,7 +14,7 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 {
     public class ArchiveVenueCommandHandler : BaseHandler, IArchiveVenueCommandHandler
     {
-        public ArchiveVenueCommandHandler(ILoyaltyDbContext context, IOptions<DbSettings> settings)
+        public ArchiveVenueCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }

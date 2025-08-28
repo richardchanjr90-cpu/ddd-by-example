@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Loyalty.Core.Shared.Enums;
 using Newtonsoft.Json;
 
 namespace Loyalty.Core.ViewModels
@@ -33,9 +31,6 @@ namespace Loyalty.Core.ViewModels
 
         [JsonProperty("logoUrl")]
         public string LogoUrl { get; set; }
-
-        [JsonProperty("details")]
-        public VenueDetailsViewModel Details { get; set; }
 
         [JsonProperty("isArchived")]
         public bool IsArchived { get; set; }

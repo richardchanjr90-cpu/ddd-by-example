@@ -16,9 +16,9 @@ namespace Loyalty.Core.ViewModels.Validators
                 .NotNull()
                 .SetValidator(new LocationValidator());
 
-            RuleFor(x => x.Details)
-                .NotNull()
-                .SetValidator(new VenueDetailsValidator());
+            //RuleFor(x => x.Details)
+            //    .NotNull()
+            //    .SetValidator(new VenueDetailsValidator());
 
             RuleFor(x => x.LogoUrl)
                 .NotEmpty().WithMessage("Enter url.")

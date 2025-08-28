@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 
 namespace Loyalty.Domain.Handlers.Extensions
 {
@@ -36,6 +38,14 @@ namespace Loyalty.Domain.Handlers.Extensions
                 Phones = command.Phones?.ToString()
             };
 
+            return result;
+        }
+
+        public static GetVenueDetailsByIdQueryResult ToResult(this VenueDetails item)
+        {
+            var result = new GetVenueDetailsByIdQueryResult
+            {
+            };
             return result;
         }
     }

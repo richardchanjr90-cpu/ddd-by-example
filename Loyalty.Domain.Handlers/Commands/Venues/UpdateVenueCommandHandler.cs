@@ -15,7 +15,7 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 {
     public class UpdateVenueCommandHandler : BaseHandler, IUpdateVenueCommandHandler
     {
-        public UpdateVenueCommandHandler(ILoyaltyDbContext context, IOptions<DbSettings> settings)
+        public UpdateVenueCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -24,7 +24,6 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
         {
             var venue = await Context.Venues
                 .Include(x => x.Location)
-                .Include(x => x.VenueDetails)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 

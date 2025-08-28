@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared.Exceptions;
 using Loyalty.Core.ViewModels;
 using Loyalty.Venue.Service;
@@ -9,23 +9,24 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-namespace LoyaltyProgram.Http.Venue
+namespace LoyaltyProgram.Http.VenueDetails
 {
-    public static class VenuePostFunction
+    public static class VenueDetailsPutFunction
     {
-        [FunctionName("VenuePostFunction")]
+        [FunctionName("VenueDetailsPutFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
+            long id,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details")]VenueDetailsViewModel model,
             HttpRequest req,
             ILogger log,
-            [Inject]LoyaltyVenueAppService service)
+            [Inject]LoyaltyVenueDetailsAppService service)
         {
-            log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenueDetailsPutFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
                 //await req.AuthorizeAsync(host);
-                return new OkObjectResult(await service.Create(model));
+                return new OkObjectResult(await service.Update(model));
             });
         }
     }

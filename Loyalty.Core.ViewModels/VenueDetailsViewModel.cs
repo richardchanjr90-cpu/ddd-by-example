@@ -10,7 +10,7 @@ namespace Loyalty.Core.ViewModels
         [JsonProperty("venueId")]
         public long VenueId { get; set; }
 
-        [JsonProperty("FullDescription")]
+        [JsonProperty("fullDescription")]
         public string FullDescription { get; set; }
 
         [JsonProperty("phones")]

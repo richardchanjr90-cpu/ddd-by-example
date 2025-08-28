@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
-using MediatR;
+﻿using System;
+using System.Collections.Generic;
 
-namespace Loyalty.Domain.Handlers.Queries.Commands.VenueDetails
+namespace Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails
 {
-    public class CreateVenueDetailsCommand : IRequest<ICommandResult>
+    public class GetVenueDetailsByIdQueryResult
     {
         public long Id { get; set; }
 

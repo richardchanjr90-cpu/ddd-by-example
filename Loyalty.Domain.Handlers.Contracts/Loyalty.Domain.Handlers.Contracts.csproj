@@ -9,12 +9,10 @@
     <Folder Include="Commands\LoyaltyProducts\" />
     <Folder Include="Commands\LoyaltyPrograms\" />
     <Folder Include="Commands\Stamps\" />
-    <Folder Include="Commands\VenueDetails\" />
     <Folder Include="Queries\Cards\" />
     <Folder Include="Queries\LoyaltyProducts\" />
     <Folder Include="Queries\LoyaltyPrograms\" />
     <Folder Include="Queries\Stamps\" />
-    <Folder Include="Queries\VenueDetails\" />
   </ItemGroup>
 
   <ItemGroup>

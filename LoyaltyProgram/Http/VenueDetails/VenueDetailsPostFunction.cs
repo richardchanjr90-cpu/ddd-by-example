@@ -9,19 +9,21 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-namespace LoyaltyProgram.Http.Venue
+namespace LoyaltyProgram.Http.VenueDetails
 {
-    public static class VenuePostFunction
+    public static class VenueDetailsPostFunction
     {
-        [FunctionName("VenuePostFunction")]
+        [FunctionName("VenueDetailsPostFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
+            long id,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/details")]
+            VenueDetailsViewModel model,
             HttpRequest req,
             ILogger log,
-            [Inject]LoyaltyVenueAppService service)
+            [Inject]LoyaltyVenueDetailsAppService service)
         {
-            log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
-
+            log.LogInformation($"{nameof(VenueDetailsPostFunction)} was triggered.");
+            
             return await ExceptionWrapper.Handle(async () =>
             {
                 //await req.AuthorizeAsync(host);

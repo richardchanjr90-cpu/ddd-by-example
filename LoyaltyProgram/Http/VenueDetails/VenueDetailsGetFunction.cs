@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Loyalty.Core.Shared.Exceptions;
-using Loyalty.Core.ViewModels;
 using Loyalty.Venue.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,23 +8,23 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-namespace LoyaltyProgram.Http.Venue
+namespace LoyaltyProgram.Http.VenueDetails
 {
-    public static class VenuePostFunction
+    public static class VenueDetailsGetFunction
     {
-        [FunctionName("VenuePostFunction")]
+        [FunctionName("VenueDetailsGetFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
-            HttpRequest req,
-            ILogger log,
-            [Inject]LoyaltyVenueAppService service)
+            long id,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details")]HttpRequest req,
+            [Inject]LoyaltyVenueDetailsAppService service,
+            ILogger log)
         {
-            log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenueDetailsGetFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
                 //await req.AuthorizeAsync(host);
-                return new OkObjectResult(await service.Create(model));
+                return new OkObjectResult(await service.Get(id));
             });
         }
     }
