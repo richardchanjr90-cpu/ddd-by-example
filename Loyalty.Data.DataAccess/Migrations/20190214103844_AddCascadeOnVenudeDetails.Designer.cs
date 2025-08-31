@@ -4,14 +4,16 @@ using Loyalty.Data.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Data.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190214103844_AddCascadeOnVenudeDetails")]
+    partial class AddCascadeOnVenudeDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,8 +65,6 @@ namespace Loyalty.Data.DataAccess.Migrations
                     b.Property<DateTime>("Created");
 
                     b.Property<Guid?>("CreatedBy");
-
-                    b.Property<bool>("IsArchived");
 
                     b.Property<float>("Latitude");
 
@@ -303,8 +303,6 @@ namespace Loyalty.Data.DataAccess.Migrations
                     b.Property<string>("FullDescription")
                         .IsRequired()
                         .HasMaxLength(4000);
-
-                    b.Property<bool>("IsArchived");
 
                     b.Property<DateTime>("Modified");
 

@@ -22,7 +22,7 @@ namespace Loyalty.Domain.Handlers.Commands.VenueDetails
         public async Task<ICommandResult> Handle(UpdateVenueDetailsCommand request, CancellationToken cancellationToken)
         {
             var details = await Context.VenueDetails
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.VenueId == request.VenueId)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (details == null)

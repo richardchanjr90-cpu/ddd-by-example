@@ -48,6 +48,12 @@ namespace Loyalty.Data.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<VenueDetails>()
+                .HasOne(p => p.Venue)
+                .WithOne(x => x.VenueDetails)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<Card>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);

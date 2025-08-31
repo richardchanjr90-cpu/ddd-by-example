@@ -29,8 +29,14 @@ namespace Loyalty.Domain.AutoMapper
                 .ForSourceMember(x => x.IsApproved, opt => opt.Ignore());
 
             CreateMap<GetVenueDetailsByIdQueryResult, VenueDetailsViewModel>();
-            CreateMap<VenueDetailsViewModel, CreateVenueDetailsCommand>();
-            CreateMap<VenueDetailsViewModel, UpdateVenueDetailsCommand>();
+
+            CreateMap<VenueDetailsViewModel, CreateVenueDetailsCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.VenueId, opt => opt.Ignore());
+
+            CreateMap<VenueDetailsViewModel, UpdateVenueDetailsCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
         }

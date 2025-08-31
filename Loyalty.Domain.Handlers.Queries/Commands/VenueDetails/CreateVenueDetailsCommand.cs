@@ -6,8 +6,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.VenueDetails
 {
     public class CreateVenueDetailsCommand : IRequest<ICommandResult>
     {
-        public long Id { get; set; }
-
         public long VenueId { get; set; }
 
         public string FullDescription { get; set; }

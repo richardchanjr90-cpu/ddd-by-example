@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
+using Loyalty.Data.Entities.Base.Interface;
 using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
     [Table("Location", Schema = SchemaName.Loyalty)]
-    public class Location : AuditableEntity
+    public class Location : AuditableEntity, IArchivableEntity
     {
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
@@ -24,5 +25,7 @@ namespace Loyalty.Data.Entities
 
         [Required]
         public float Longitude { get; set; }
+
+        public bool IsArchived { get; set; }
     }
 }

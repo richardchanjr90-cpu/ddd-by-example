@@ -21,6 +21,10 @@ namespace Loyalty.Core.ViewModels.Validators
                 .When(x => x.ParentId.HasValue)
                 .WithMessage($"ParentId should be > 0, when VenueType.Single.");
 
+            RuleFor(x => x.Location)
+                .SetValidator(new LocationValidator())
+                .When(x => x.Location != null);
+
             RuleFor(x => x)
                 .SetValidator(new PublishedVenueValidator())
                 .When(x => x.IsPublished)

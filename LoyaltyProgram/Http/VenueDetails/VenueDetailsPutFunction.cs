@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Loyalty.Core.Shared.Exceptions;
+using Loyalty.Core.Shared.Extensions;
 using Loyalty.Core.ViewModels;
 using Loyalty.Venue.Service;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,8 @@ namespace LoyaltyProgram.Http.VenueDetails
             return await ExceptionWrapper.Handle(async () =>
             {
                 //await req.AuthorizeAsync(host);
-                return new OkObjectResult(await service.Update(model));
+                model = await req.Cast<VenueDetailsViewModel>();
+                return new OkObjectResult(await service.Update(id, model));
             });
         }
     }

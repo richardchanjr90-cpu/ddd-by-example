@@ -17,15 +17,18 @@ namespace Loyalty.Core.ViewModels.Validators
 
             RuleForEach(x => x.WorkingHours)
                 .NotEmpty().WithMessage("Enter working hours.")
+                .Must(u => !u.Contains("\"")).WithMessage("Should not contain: \" ")
                 .Length(4, 100).WithMessage("Length between 4 and 100 chars.");
 
             RuleForEach(x => x.PhotosUrl)
                 .NotEmpty().WithMessage("Enter working hours.")
+                .Must(u => !u.Contains("\"")).WithMessage("Should not contain: \" ")
                 .Length(4, 100).WithMessage("Length between 4 and 100 chars.");
 
             RuleForEach(x => x.PhotosUrl)
                 .NotEmpty().WithMessage("Upload at least 1 photo.")
                 .Length(4, 200).WithMessage("Length between 4 and 200 chars.")
+                .Must(u => !u.Contains("\"")).WithMessage("Should not contain: \" ")
                 .Matches(@"[a-z\-\d]").WithMessage("Incorrect format.");
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Loyalty.Core.Shared.Extensions;
 using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
@@ -14,10 +15,10 @@ namespace Loyalty.Domain.Handlers.Extensions
             {
                 VenueId = command.VenueId,
                 FullDescription = command.FullDescription,
-                PhotosUrl = command.PhotosUrl?.ToString(),
-                WebSites = command.WebSites?.ToString(),
-                WorkingHours = command.WorkingHours?.ToString(),
-                Phones = command.Phones?.ToString()
+                PhotosUrl = command.PhotosUrl.ToCommaSeparatedStringOrNull(),
+                WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
+                WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
+                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
             };
 
             return result;
@@ -27,13 +28,12 @@ namespace Loyalty.Domain.Handlers.Extensions
         {
             var result = new VenueDetails
             {
-                Id = command.Id,
                 VenueId = command.VenueId,
                 FullDescription = command.FullDescription,
-                PhotosUrl = command.PhotosUrl?.ToString(),
-                WebSites = command.WebSites?.ToString(),
-                WorkingHours = command.WorkingHours?.ToString(),
-                Phones = command.Phones?.ToString()
+                PhotosUrl = command.PhotosUrl.ToCommaSeparatedStringOrNull(),
+                WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
+                WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
+                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
             };
 
             return result;
@@ -49,11 +49,11 @@ namespace Loyalty.Domain.Handlers.Extensions
                 {
                     Id = item.Id,
                     VenueId = item.VenueId,
-                    Phones = item.Phones?.Split(',').ToList(),
-                    PhotosUrl = item.PhotosUrl?.Split(',').ToList(),
+                    Phones = item.Phones.SplitByCommaAndUnwrap(),
+                    PhotosUrl = item.PhotosUrl.SplitByCommaAndUnwrap(),
                     FullDescription = item.FullDescription,
-                    WebSites = item.WebSites?.Split(',').ToList(),
-                    WorkingHours = item.WorkingHours?.Split(',').ToList(),
+                    WebSites = item.WebSites.SplitByCommaAndUnwrap(),
+                    WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
                 };
             }
 

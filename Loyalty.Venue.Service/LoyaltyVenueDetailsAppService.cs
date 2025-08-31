@@ -32,18 +32,21 @@ namespace Loyalty.Venue.Service
             return mapper.Map<VenueFullViewModel>(result);
         }
 
-        public async Task<ICommandResult> Create(VenueDetailsViewModel model)
+        public async Task<ICommandResult> Create(long venueId, VenueDetailsViewModel model)
         {
             new VenueDetailsValidator().ValidateAndThrow(model);
-
             var command = mapper.Map<CreateVenueDetailsCommand>(model);
+            command.VenueId = venueId;
+
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(VenueDetailsViewModel model)
+        public async Task<ICommandResult> Update(long venueId, VenueDetailsViewModel model)
         {
             new VenueDetailsValidator().ValidateAndThrow(model);
             var command = mapper.Map<UpdateVenueDetailsCommand>(model);
+            command.VenueId = venueId;
+
             return await Mediator.Send(command);
         }
     }

@@ -22,7 +22,8 @@ namespace Loyalty.Domain.Handlers.Queries.VenueDetails
         public async Task<GetVenueFullByIdQueryResult> Handle(GetVenueDetailsByIdQuery request, CancellationToken cancellationToken)
         {
             var result = await
-                (from venue in Context.Venues
+               (from venue in Context.Venues.Include(x => x.Location)
+                where venue.Id == request.Id
                 join details in Context.VenueDetails on venue.Id equals details.VenueId into venueDetails
                 from details in venueDetails.DefaultIfEmpty()
                 select new GetVenueFullByIdQueryResult
