@@ -20,7 +20,7 @@ namespace Loyalty.Core.ViewModels
         public List<string> WebSites { get; set; }
 
         [JsonProperty("workingHours")]
-        public string WorkingHours { get; set; }
+        public List<string> WorkingHours { get; set; }
 
         [JsonProperty("photosUrl")]
         public List<string> PhotosUrl { get; set; }

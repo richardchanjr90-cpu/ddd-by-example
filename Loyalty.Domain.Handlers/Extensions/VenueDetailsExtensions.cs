@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 
 namespace Loyalty.Domain.Handlers.Extensions
@@ -18,7 +16,7 @@ namespace Loyalty.Domain.Handlers.Extensions
                 FullDescription = command.FullDescription,
                 PhotosUrl = command.PhotosUrl?.ToString(),
                 WebSites = command.WebSites?.ToString(),
-                WorkingHours = command.WorkingHours,
+                WorkingHours = command.WorkingHours?.ToString(),
                 Phones = command.Phones?.ToString()
             };
 
@@ -34,7 +32,7 @@ namespace Loyalty.Domain.Handlers.Extensions
                 FullDescription = command.FullDescription,
                 PhotosUrl = command.PhotosUrl?.ToString(),
                 WebSites = command.WebSites?.ToString(),
-                WorkingHours = command.WorkingHours,
+                WorkingHours = command.WorkingHours?.ToString(),
                 Phones = command.Phones?.ToString()
             };
 
@@ -43,9 +41,22 @@ namespace Loyalty.Domain.Handlers.Extensions
 
         public static GetVenueDetailsByIdQueryResult ToResult(this VenueDetails item)
         {
-            var result = new GetVenueDetailsByIdQueryResult
+            GetVenueDetailsByIdQueryResult result = null;
+
+            if (item != null)
             {
-            };
+                result = new GetVenueDetailsByIdQueryResult
+                {
+                    Id = item.Id,
+                    VenueId = item.VenueId,
+                    Phones = item.Phones?.Split(',').ToList(),
+                    PhotosUrl = item.PhotosUrl?.Split(',').ToList(),
+                    FullDescription = item.FullDescription,
+                    WebSites = item.WebSites?.Split(',').ToList(),
+                    WorkingHours = item.WorkingHours?.Split(',').ToList(),
+                };
+            }
+
             return result;
         }
     }

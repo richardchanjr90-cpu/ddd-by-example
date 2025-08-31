@@ -15,7 +15,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails
 
         public List<string> WebSites { get; set; } = new List<string>();
 
-        public string WorkingHours { get; set; }
+        public List<string> WorkingHours { get; set; } = new List<string>();
 
         public List<string> PhotosUrl { get; set; } = new List<string>();
     }

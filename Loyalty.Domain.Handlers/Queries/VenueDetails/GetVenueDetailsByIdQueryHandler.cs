@@ -4,11 +4,8 @@ using System.Threading.Tasks;
 using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.VenueDetails;
-using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Extensions;
-using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.VenueDetails;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,13 +19,19 @@ namespace Loyalty.Domain.Handlers.Queries.VenueDetails
         {
         }
 
-        public async Task<GetVenueDetailsByIdQueryResult> Handle(GetVenueDetailsByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetVenueFullByIdQueryResult> Handle(GetVenueDetailsByIdQuery request, CancellationToken cancellationToken)
         {
-            var details = await Context.VenueDetails
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var result = await
+                (from venue in Context.Venues
+                join details in Context.VenueDetails on venue.Id equals details.VenueId into venueDetails
+                from details in venueDetails.DefaultIfEmpty()
+                select new GetVenueFullByIdQueryResult
+                {
+                    Details = details.ToResult(),
+                    Venue = venue.ToResult(),
+                }).SingleOrDefaultAsync(cancellationToken);
 
-            return details?.ToResult();
+            return result;
         }
     }
 }

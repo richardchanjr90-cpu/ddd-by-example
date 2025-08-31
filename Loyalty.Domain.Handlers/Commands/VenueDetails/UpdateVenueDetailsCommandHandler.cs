@@ -36,7 +36,7 @@ namespace Loyalty.Domain.Handlers.Commands.VenueDetails
                 details.Phones = String.Join(",", request.Phones); 
                 details.PhotosUrl = String.Join(",", request.PhotosUrl);
                 details.WebSites = String.Join(",", request.WebSites);
-                details.WorkingHours = request.WorkingHours;
+                details.WorkingHours = String.Join(",", request.WorkingHours);
             }
 
             return new CommandResult

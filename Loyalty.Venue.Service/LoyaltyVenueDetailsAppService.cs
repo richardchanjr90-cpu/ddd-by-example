@@ -2,14 +2,13 @@
 using Loyalty.Domain.Contracts;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentValidation;
 using Loyalty.Core.ViewModels;
 using Loyalty.Core.ViewModels.Validators;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
+using Loyalty.Domain.Handlers.Queries.Queries.VenueDetails;
 
 namespace Loyalty.Venue.Service
 {
@@ -25,7 +24,12 @@ namespace Loyalty.Venue.Service
 
         public async Task<VenueFullViewModel> Get(long id)
         {
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetVenueDetailsByIdQuery
+            {
+                Id = id
+            });
+
+            return mapper.Map<VenueFullViewModel>(result);
         }
 
         public async Task<ICommandResult> Create(VenueDetailsViewModel model)
@@ -38,6 +42,7 @@ namespace Loyalty.Venue.Service
 
         public async Task<ICommandResult> Update(VenueDetailsViewModel model)
         {
+            new VenueDetailsValidator().ValidateAndThrow(model);
             var command = mapper.Map<UpdateVenueDetailsCommand>(model);
             return await Mediator.Send(command);
         }

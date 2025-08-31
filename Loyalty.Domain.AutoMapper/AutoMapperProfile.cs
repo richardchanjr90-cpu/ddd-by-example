@@ -31,6 +31,8 @@ namespace Loyalty.Domain.AutoMapper
             CreateMap<GetVenueDetailsByIdQueryResult, VenueDetailsViewModel>();
             CreateMap<VenueDetailsViewModel, CreateVenueDetailsCommand>();
             CreateMap<VenueDetailsViewModel, UpdateVenueDetailsCommand>();
+
+            CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
         }
     }
 }

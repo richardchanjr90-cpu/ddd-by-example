@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Loyalty.Core.Shared.Enums;
 using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 
 namespace Loyalty.Domain.Handlers.Extensions
