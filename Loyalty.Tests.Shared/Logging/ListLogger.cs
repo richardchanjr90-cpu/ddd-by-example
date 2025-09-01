@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Abstractions.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions.Internal;
 
-namespace Loyalty.Tests.Shared
+namespace Loyalty.Tests.Shared.Logging
 {
     public class ListLogger : ILogger
     {

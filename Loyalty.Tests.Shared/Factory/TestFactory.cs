@@ -1,5 +1,4 @@
-﻿using Loyalty.Tests.Shared.Enums;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -11,6 +10,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Loyalty.Tests.Shared.Logging;
 
 namespace Loyalty.Tests.Shared.Factory
 {

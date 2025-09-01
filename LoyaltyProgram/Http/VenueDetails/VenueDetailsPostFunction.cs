@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
-using Loyalty.Core.Shared.Exceptions;
-using Loyalty.Core.Shared.Extensions;
-using Loyalty.Core.ViewModels;
-using Loyalty.Venue.Service;
+using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels;
+using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

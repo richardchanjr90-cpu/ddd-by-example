@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Core.Shared\Loyalty.Core.Shared.csproj" />
+    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
   </ItemGroup>
 

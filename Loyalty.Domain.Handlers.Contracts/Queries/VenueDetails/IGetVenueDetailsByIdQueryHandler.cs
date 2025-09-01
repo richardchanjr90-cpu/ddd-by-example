@@ -1,5 +1,4 @@
 ﻿using Loyalty.Domain.Handlers.Queries.Queries.VenueDetails;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 using MediatR;
 

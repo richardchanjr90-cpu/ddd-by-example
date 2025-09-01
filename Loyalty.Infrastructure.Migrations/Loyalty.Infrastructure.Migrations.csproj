@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <Platforms>x64</Platforms>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+</Project>

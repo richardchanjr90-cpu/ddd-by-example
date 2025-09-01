@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.3" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
     <PackageReference Include="MediatR" Version="5.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="5.1.0" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
     <PackageReference Include="Willezone.Azure.WebJobs.Extensions.DependencyInjection" Version="1.0.1" />
   </ItemGroup>
 
@@ -33,15 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Core.Shared\Loyalty.Core.Shared.csproj" />
-    <ProjectReference Include="..\Loyalty.Data.Contracts\Loyalty.Data.Contracts.csproj" />
-    <ProjectReference Include="..\Loyalty.Data.DataAccess\Loyalty.Data.DataAccess.csproj" />
-    <ProjectReference Include="..\Loyalty.Data.Migrations\Loyalty.Data.Migrations.csproj" />
-    <ProjectReference Include="..\Loyalty.Domain.AutoMapper\Loyalty.Domain.AutoMapper.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Dto\Loyalty.Storage.Dto.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.IoC\Loyalty.Infrastructure.IoC.csproj" />
+    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
-    <ProjectReference Include="..\Loyalty.Domain.Handlers\Loyalty.Domain.Handlers.csproj" />
-    <ProjectReference Include="..\Loyalty.Venue.Service\Loyalty.Venue.Service.csproj" />
-    <ProjectReference Include="..\LoyaltyProgram.DependencyInjection\LoyaltyProgram.DependencyInjection.csproj" />
+    <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

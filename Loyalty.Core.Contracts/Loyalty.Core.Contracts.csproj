@@ -11,6 +11,10 @@
     </PackageReference>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
+  </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

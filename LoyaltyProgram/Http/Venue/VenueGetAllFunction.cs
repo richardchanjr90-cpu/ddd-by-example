@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
-using Loyalty.Core.Shared.Exceptions;
-using Loyalty.Venue.Service;
+using Loyalty.Application.Venue;
+using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;

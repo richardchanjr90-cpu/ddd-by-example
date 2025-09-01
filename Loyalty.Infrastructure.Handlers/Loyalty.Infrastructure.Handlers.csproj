@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commands\Cards\**" />
+    <Compile Remove="Commands\Stamps\**" />
+    <Compile Remove="Queries\Cards\**" />
+    <Compile Remove="Queries\Purchases\**" />
+    <EmbeddedResource Remove="Commands\Cards\**" />
+    <EmbeddedResource Remove="Commands\Stamps\**" />
+    <EmbeddedResource Remove="Queries\Cards\**" />
+    <EmbeddedResource Remove="Queries\Purchases\**" />
+    <None Remove="Commands\Cards\**" />
+    <None Remove="Commands\Stamps\**" />
+    <None Remove="Queries\Cards\**" />
+    <None Remove="Queries\Purchases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\LoyaltyProducts\" />
+    <Folder Include="Commands\LoyaltyPrograms\" />
+    <Folder Include="Queries\LoyaltyProducts\" />
+    <Folder Include="Queries\LoyaltyPrograms\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.0-beta008">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+</Project>

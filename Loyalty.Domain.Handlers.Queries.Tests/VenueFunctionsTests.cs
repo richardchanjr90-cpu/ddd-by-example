@@ -1,6 +1,6 @@
-using Loyalty.Core.ViewModels;
+using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels;
 using Loyalty.Tests.Shared.Factory;
-using Loyalty.Venue.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
