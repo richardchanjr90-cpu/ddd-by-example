@@ -35,7 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Core.Dto\Loyalty.Storage.Dto.csproj" />
+    <ProjectReference Include="..\Loyalty.Application.Storage.Dto\Loyalty.Application.Storage.Dto.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Dto\Loyalty.Application.Storage.Dto.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.IoC\Loyalty.Infrastructure.IoC.csproj" />
     <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
