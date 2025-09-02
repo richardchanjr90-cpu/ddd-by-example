@@ -24,9 +24,6 @@ namespace Loyalty.Core.Entities
         [Required]
         public string WorkingHours { get; set; }
 
-        [Required]
-        public string PhotosUrl { get; set; }
-
         public Venue Venue { get; set; }
 
         public bool IsArchived { get; set; }

@@ -34,7 +34,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.VenueDetails
             {
                 details.FullDescription = request.FullDescription;
                 details.Phones = String.Join(",", request.Phones); 
-                details.PhotosUrl = String.Join(",", request.PhotosUrl);
                 details.WebSites = String.Join(",", request.WebSites);
                 details.WorkingHours = String.Join(",", request.WorkingHours);
             }

@@ -13,7 +13,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 VenueId = command.VenueId,
                 FullDescription = command.FullDescription,
-                PhotosUrl = command.PhotosUrl.ToCommaSeparatedStringOrNull(),
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
@@ -28,7 +27,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 VenueId = command.VenueId,
                 FullDescription = command.FullDescription,
-                PhotosUrl = command.PhotosUrl.ToCommaSeparatedStringOrNull(),
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
@@ -48,7 +46,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                     Id = item.Id,
                     VenueId = item.VenueId,
                     Phones = item.Phones.SplitByCommaAndUnwrap(),
-                    PhotosUrl = item.PhotosUrl.SplitByCommaAndUnwrap(),
                     FullDescription = item.FullDescription,
                     WebSites = item.WebSites.SplitByCommaAndUnwrap(),
                     WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),

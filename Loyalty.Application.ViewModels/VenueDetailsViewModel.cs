@@ -19,8 +19,5 @@ namespace Loyalty.Application.ViewModels
 
         [JsonProperty("workingHours")]
         public List<string> WorkingHours { get; set; }
-
-        [JsonProperty("photosUrl")]
-        public List<string> PhotosUrl { get; set; }
     }
 }
