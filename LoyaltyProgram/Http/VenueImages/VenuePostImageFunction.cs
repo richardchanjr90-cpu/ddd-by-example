@@ -1,17 +1,13 @@
-using System;
-using System.Diagnostics;
-using System.IO;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
+using Loyalty.Application.Storage.Dto;
+using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Storage.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using SixLabors.ImageSharp;
+using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
@@ -20,45 +16,25 @@ namespace LoyaltyProgram.Http.VenueImages
         [FunctionName("VenuePostImageFunction")]
         public static async Task<IActionResult> Run(
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/details/images")]
+            int index,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
+            [Inject]LoyaltyVenueImageAppService service,
             [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueImage> queueItems)
         {
             log.LogInformation($"{nameof(VenuePostImageFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                var content = await req.Content.ReadAsMultipartAsync();
-
-                foreach (HttpContent file in content.Contents)
+                var images = await service.GetImages(req, id, index);
+                foreach (var image in images)
                 {
-                    var imageStream = await file.ReadAsStreamAsync();
-                    var venueImage = new VenueImage
-                    {
-                        VenueId = id,
-                        Image = imageStream
-                    };
-                    queueItems.Add(venueImage);
+                    queueItems.Add(image);
                 }
 
-                return new OkObjectResult(new object());
+                return new NoContentResult();
             });
-        }
-
-        private static bool IsImageValid(Stream stream)
-        {
-            try
-            {
-                var result = Image.Identify(stream);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-            throw new NotImplementedException();
         }
     }
 }

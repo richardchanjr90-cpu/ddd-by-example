@@ -1,11 +1,13 @@
-﻿using System.IO;
+﻿using System;
 
-namespace Loyalty.Storage.Dto
+namespace Loyalty.Application.Storage.Dto
 {
     public class VenueImage
     {
-        public Stream Image { get; set; }
+        public Byte[] Image { get; set; }
 
         public long VenueId { get; set; }
+
+        public int Index { get; set; }
     }
 }
