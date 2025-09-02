@@ -17,9 +17,9 @@ namespace LoyaltyProgram.Storage
         [FunctionName("VenueSaveImageFunction")]
         public static void Run(
             [QueueTrigger("venue-images", Connection = "QueueConnectionString")]VenueQueueImageDto data,
-            [Blob("venue-images-{VenueId}/image-{Index}.jpg", FileAccess.Read)] Byte[] originalBlob,
-            [Blob("venue-images-{VenueId}/image-md-{Index}.jpg", FileAccess.Write)] Stream mediumBlob,
-            [Blob("venue-images-{VenueId}/image-sm-{Index}.jpg", FileAccess.Write)] Stream smallBlob,
+            [Blob("venue-images-{VenueId}/original-image-{Index}.jpg", FileAccess.Read)] Byte[] originalBlob,
+            [Blob("venue-images-{VenueId}/md-image-{Index}.jpg", FileAccess.Write)] Stream mediumBlob,
+            [Blob("venue-images-{VenueId}/sm-image-{Index}.jpg", FileAccess.Write)] Stream smallBlob,
             [Inject] IOptions<VenueGalleryImageSettings> imageSettings,
             ILogger log)
         {

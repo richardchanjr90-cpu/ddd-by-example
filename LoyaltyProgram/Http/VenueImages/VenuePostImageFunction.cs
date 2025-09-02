@@ -24,7 +24,7 @@ namespace LoyaltyProgram.Http.VenueImages
             HttpRequestMessage req,
             ILogger log,
             [Inject]LoyaltyVenueImageAppService service,
-            [Blob("venue-images-{id}/image-{index}.jpg", FileAccess.Write)] Stream blobStream,
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
             [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
         {
             log.LogInformation($"{nameof(VenuePostImageFunction)} was triggered.");

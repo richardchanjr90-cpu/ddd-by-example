@@ -18,8 +18,6 @@ namespace LoyaltyProgram.Http.VenueImages
     {
         [FunctionName("VenueProvideSasTokenFunction")]
         public static async Task<IActionResult> Run(
-            long id,
-            int index,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "security/sas")]
             HttpRequestMessage req,
             ILogger log)

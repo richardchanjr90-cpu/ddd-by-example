@@ -1,12 +1,17 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
@@ -16,17 +21,22 @@ namespace LoyaltyProgram.Http.VenueImages
         [FunctionName("VenueGetImagesFunction")]
         public static async Task<IActionResult> Run(
             long id,
-            int index,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details/images/{index}")]
-            HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details/images")]
+            HttpRequest req,
             ILogger log,
+            [Blob("venue-images-{id}", FileAccess.Read)] CloudBlobContainer container,
             [Inject]LoyaltyVenueImageAppService service)
         {
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
 
+            var operation =
+                await container.ListBlobsSegmentedAsync(req.Query["prefix"], true, BlobListingDetails.None, 50, null, null, null);
+
+            var results = operation.Results.Select(item => item.Uri.ToString()).ToList();
+
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new NoContentResult();
+                return new OkObjectResult(results);
             });
         }
     }
