@@ -2,32 +2,43 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Loyalty.Application.Storage.Dto;
+using Loyalty.Common.Shared.Settings;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Storage
 {
     public static class VenueSaveImageFunction
     {
         [FunctionName("VenueSaveImageFunction")]
-        public static async Task Run(
-            [QueueTrigger("venue-images", Connection = "QueueConnectionString")]VenueImage data,
-            [Blob("venue-images-{VenueId}/image-{Index}.Jpeg", FileAccess.Write)] Stream originalBlob,
-            [Blob("venue-images-{VenueId}/image-md-{Index}.Jpeg", FileAccess.Write)] Stream mediumBlob,
-            [Blob("venue-images-{VenueId}/image-sm-{Index}.Jpeg", FileAccess.Write)] Stream smallBlob,
+        public static void Run(
+            [QueueTrigger("venue-images", Connection = "QueueConnectionString")]VenueQueueImageDto data,
+            [Blob("venue-images-{VenueId}/image-{Index}.jpg", FileAccess.Read)] Byte[] originalBlob,
+            [Blob("venue-images-{VenueId}/image-md-{Index}.jpg", FileAccess.Write)] Stream mediumBlob,
+            [Blob("venue-images-{VenueId}/image-sm-{Index}.jpg", FileAccess.Write)] Stream smallBlob,
+            [Inject] IOptions<VenueGalleryImageSettings> imageSettings,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueSaveImageFunction)} was triggered.");
 
-            var image = Image.Load(data.Image);
-            image.SaveAsJpeg(originalBlob);
+            var image = Image.Load(originalBlob);
 
-            image.Mutate(ctx => ctx.Resize(image.Width / 2, image.Height / 2));
+            var mdWidthMultiplier = image.Width / (float)imageSettings.Value.MdImageWidth;
+            var smWidthMultiplier = image.Width / (float)imageSettings.Value.SmImageWidth;
+
+            image.Mutate(ctx => ctx.Resize(
+                (int)(image.Width / mdWidthMultiplier), 
+                (int)(image.Height / mdWidthMultiplier)));
             image.SaveAsJpeg(mediumBlob);
 
-            image.Mutate(ctx => ctx.Resize(image.Width / 2, image.Height / 2));
+            image.Mutate(ctx => ctx.Resize(
+                (int)(image.Width / smWidthMultiplier), 
+                (int)(image.Height / smWidthMultiplier)));
+
             image.SaveAsJpeg(smallBlob);
         }
     }

@@ -1,3 +1,5 @@
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Loyalty.Application.Storage.Dto;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
@@ -21,16 +24,24 @@ namespace LoyaltyProgram.Http.VenueImages
             HttpRequestMessage req,
             ILogger log,
             [Inject]LoyaltyVenueImageAppService service,
-            [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueImage> queueItems)
+            [Blob("venue-images-{id}/image-{index}.jpg", FileAccess.Write)] Stream blobStream,
+            [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
         {
             log.LogInformation($"{nameof(VenuePostImageFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
                 var images = await service.GetImages(req, id, index);
-                foreach (var image in images)
+
+                if (images != null && images.Count > 0)
                 {
-                    queueItems.Add(image);
+                    var imageStream = Image.Load(images.First().Image);
+                    imageStream.SaveAsJpeg(blobStream);
+                    queueItems.Add(new VenueQueueImageDto()
+                    {
+                        Index = index,
+                        VenueId = id
+                    });
                 }
 
                 return new NoContentResult();
