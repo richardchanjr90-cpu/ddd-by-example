@@ -27,6 +27,7 @@ namespace LoyaltyProgram.Http.VenueImages
             [Blob("venue-images-{id}", FileAccess.Read)] CloudBlobContainer container,
             [Inject]LoyaltyVenueImageAppService service)
         {
+
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
 
             var operation =

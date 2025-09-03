@@ -22,7 +22,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
                 .GreaterThan(0);
                 
             RuleFor(x => x.Index)
-                .LessThan(9)
+                .LessThan(10)
                 .GreaterThan(-1)
                 .WithMessage("You can upload up tp 10 images. From 0 to 9 indexes are used.");
 

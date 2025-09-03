@@ -14,23 +14,26 @@ using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public static class VenuePostImageFunction
+    public static class VenuePutImageFunction
     {
-        [FunctionName("VenuePostImageFunction")]
+        [FunctionName("VenuePutImageFunction")]
         public static async Task<IActionResult> Run(
             long id,
             int index,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/details/images/{index}")]
+            [HttpTrigger(AuthorizationLevel.Function, "post, put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
             [Inject]LoyaltyVenueImageAppService service,
             [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
             [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
         {
-            log.LogInformation($"{nameof(VenuePostImageFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
+                //if fails, empty blob is still created;
+                //todo: create an issue in github
+                // Azure Functions bug
                 var images = await service.GetImages(req, id, index);
 
                 if (images != null && images.Count > 0)
