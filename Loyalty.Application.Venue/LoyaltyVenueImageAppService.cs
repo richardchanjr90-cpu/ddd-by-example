@@ -50,25 +50,5 @@ namespace Loyalty.Application.Venue
             }
             return images;
         }
-
-        public async Task<VenueFullViewModel> GetOriginalForVenue(long venueId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<VenueFullViewModel> GetMediumForVenue(long venueId)
-        {
-           throw new NotImplementedException();
-        }
-
-        public async Task<VenueFullViewModel> SaveMediumForVenue(long venueId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<VenueFullViewModel> SaveOriginalForVenue(long venueId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

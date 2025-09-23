@@ -11,19 +11,19 @@ namespace Loyalty.Infrastructure.DataAccess
 {
     public class LoyaltyDbContext : DbContext, ILoyaltyDbContext
     {
-        public DbSet<Card> Cards { get; set; }
-
         public DbSet<Location> Locations { get; set; }
 
-        public DbSet<LoyaltyProduct> LoyaltyProducts { get; set; }
-
-        public DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
+        public DbSet<LoyaltyProductGroup> LoyaltyProducts { get; set; }
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
         public DbSet<LoyaltyProgramRule> LoyaltyRules { get; set; }
 
         public DbSet<Purchase> Purchases { get; set; }
+
+        public DbSet<ProductGroup> ProductGroups { get; set; }
+
+        public DbSet<Product> Products { get; set; }
 
         public DbSet<Venue> Venues { get; set; }
 
@@ -54,11 +54,9 @@ namespace Loyalty.Infrastructure.DataAccess
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Card>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<LoyaltyProduct>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()

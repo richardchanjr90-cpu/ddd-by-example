@@ -4,14 +4,16 @@ using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403065741_AddedProduct")]
+    partial class AddedProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,7 +59,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.ToTable("Location","loyalty");
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyProductGroup", b =>
+            modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyProduct", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +81,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<Guid?>("ModifiedBy");
 
-                    b.Property<long?>("ProductGroupId");
+                    b.Property<long?>("ProductId");
 
                     b.Property<long?>("RuleId");
 
@@ -87,11 +89,11 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.HasIndex("LoyaltyProgramId");
 
-                    b.HasIndex("ProductGroupId");
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("RuleId");
 
-                    b.ToTable("LoyaltyProductGroup","loyalty");
+                    b.ToTable("LoyaltyProduct","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyProgram", b =>
@@ -151,8 +153,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<string>("RuleValue");
 
-                    b.Property<long>("VenueId");
-
                     b.HasKey("Id");
 
                     b.ToTable("LoyaltyProgramRule","loyalty");
@@ -179,43 +179,9 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(200);
 
-                    b.Property<long?>("ProductGroupId");
-
-                    b.Property<long>("VenueId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductGroupId");
 
                     b.ToTable("Product","loyalty");
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.ProductGroup", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created");
-
-                    b.Property<Guid?>("CreatedBy");
-
-                    b.Property<string>("Icon")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Modified");
-
-                    b.Property<Guid?>("ModifiedBy");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200);
-
-                    b.Property<long>("VenueId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductGroup","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.Purchase", b =>
@@ -230,8 +196,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<Guid?>("CreatedBy");
 
-                    b.Property<long>("LoyaltyProgramId");
-
                     b.Property<DateTime>("Modified");
 
                     b.Property<Guid?>("ModifiedBy");
@@ -241,8 +205,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<decimal?>("Value");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LoyaltyProgramId");
 
                     b.ToTable("Purchase","loyalty");
                 });
@@ -336,16 +298,16 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyProductGroup", b =>
+            modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyProduct", b =>
                 {
                     b.HasOne("Loyalty.Core.Entities.LoyaltyProgram")
-                        .WithMany("LoyaltyProductGroups")
+                        .WithMany("LoyaltyProducts")
                         .HasForeignKey("LoyaltyProgramId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Loyalty.Core.Entities.ProductGroup", "ProductGroup")
+                    b.HasOne("Loyalty.Core.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductGroupId");
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("Loyalty.Core.Entities.LoyaltyProgramRule", "Rule")
                         .WithMany()
@@ -357,21 +319,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.Venue")
                         .WithMany("LoyaltyPrograms")
                         .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Product", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.ProductGroup")
-                        .WithMany("Products")
-                        .HasForeignKey("ProductGroupId");
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Purchase", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.LoyaltyProgram")
-                        .WithMany("Purchases")
-                        .HasForeignKey("LoyaltyProgramId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

@@ -5,17 +5,17 @@ namespace Loyalty.Core.Contracts
 {
     public interface ILoyaltyDbContext : IDbContext
     {
-        DbSet<Card> Cards { get; set; }
-
         DbSet<Location> Locations { get; set; }
 
-        DbSet<LoyaltyProduct> LoyaltyProducts { get; set; }
-
-        DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
+        DbSet<LoyaltyProductGroup> LoyaltyProducts { get; set; }
 
         DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
         DbSet<LoyaltyProgramRule> LoyaltyRules { get; set; }
+
+        DbSet<Product> Products { get; set; }
+
+        DbSet<ProductGroup> ProductGroups { get; set; }
 
         DbSet<Purchase> Purchases { get; set; }
 

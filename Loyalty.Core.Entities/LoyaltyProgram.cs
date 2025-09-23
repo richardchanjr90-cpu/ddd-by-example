@@ -23,10 +23,9 @@ namespace Loyalty.Core.Entities
         [Required]
         public DateTime EndDate { get; set; }
 
-        [Required]
-        public LoyaltyProgramRule LoyaltyRule { get; set; }
+        public virtual ICollection<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
-        public virtual ICollection<LoyaltyProductGroup> LoyaltyGroups { get; set; }
+        public virtual ICollection<Purchase> Purchases { get; set; }
 
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }

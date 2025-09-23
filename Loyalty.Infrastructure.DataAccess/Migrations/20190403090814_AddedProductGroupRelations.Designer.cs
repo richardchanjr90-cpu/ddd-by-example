@@ -4,14 +4,16 @@ using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190403090814_AddedProductGroupRelations")]
+    partial class AddedProductGroupRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,8 +232,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<Guid?>("CreatedBy");
 
-                    b.Property<long>("LoyaltyProgramId");
-
                     b.Property<DateTime>("Modified");
 
                     b.Property<Guid?>("ModifiedBy");
@@ -240,9 +240,9 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<decimal?>("Value");
 
-                    b.HasKey("Id");
+                    b.Property<long>("VenueId");
 
-                    b.HasIndex("LoyaltyProgramId");
+                    b.HasKey("Id");
 
                     b.ToTable("Purchase","loyalty");
                 });
@@ -365,14 +365,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.ProductGroup")
                         .WithMany("Products")
                         .HasForeignKey("ProductGroupId");
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Purchase", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.LoyaltyProgram")
-                        .WithMany("Purchases")
-                        .HasForeignKey("LoyaltyProgramId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.VenueDetails", b =>

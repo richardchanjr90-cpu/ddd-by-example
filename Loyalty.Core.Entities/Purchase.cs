@@ -8,11 +8,13 @@ namespace Loyalty.Core.Entities
     [Table("Purchase", Schema = SchemaName.Loyalty)]
     public class Purchase : AuditableEntity
     {
-        [ForeignKey(nameof(Card))]
-        public long CardId { get; set; }
+        [ForeignKey(nameof(LoyaltyProgram))]
+        public long LoyaltyProgramId { get; set; }
 
-        public DateTime? BurnDate { get; set; }
+        public Guid UserId { get; set; }
 
         public decimal? Value { get; set; }
+
+        public DateTime? BurnDate { get; set; }
     }
 }

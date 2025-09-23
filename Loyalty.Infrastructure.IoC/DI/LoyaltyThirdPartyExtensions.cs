@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Loyalty.Infrastructure.IoC.DI
 {
-    public static class LoyaltyThirdPartyExxtensions
+    public static class LoyaltyThirdPartyExtensions
     {
         public static void SetupThirdParty(this IServiceCollection services)
         {

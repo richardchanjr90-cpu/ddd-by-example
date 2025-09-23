@@ -10,6 +10,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             collection.AddScoped<LoyaltyVenueAppService>();
             collection.AddScoped<LoyaltyVenueDetailsAppService>();
             collection.AddScoped<LoyaltyVenueImageAppService>();
+            collection.AddScoped<PurchaseAppService>();
         }
     }
 }

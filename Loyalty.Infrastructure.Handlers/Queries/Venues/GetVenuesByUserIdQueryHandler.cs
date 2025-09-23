@@ -24,11 +24,10 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
             var result = await
                 (from v in Context.Venues
                     join lprog in Context.LoyaltyPrograms on v.Id equals lprog.VenueId
-                    join lgroup in Context.LoyaltyProductGroups on lprog.Id equals lgroup.LoyaltyProgramId
-                    join lprod in Context.LoyaltyProducts on lgroup.Id equals lprod.LoyaltyProductGroupId
-                    where lgroup.Id == lprod.LoyaltyProductGroupId
-                    from card in Context.Cards
-                    where card.LoyaltyProductGroupId == lgroup.Id && card.UserId == request.UserId
+                    join lprod in Context.LoyaltyProducts on lprog.Id equals lprod.LoyaltyProgramId
+                 where lprog.Id == lprod.LoyaltyProgramId
+                 from purchase in Context.Purchases
+                    where purchase.UserId == request.UserId
                     select v).ToListAsync(cancellationToken);
 
             return new GetVenuesByUserIdQueryResult

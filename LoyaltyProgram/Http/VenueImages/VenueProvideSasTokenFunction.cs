@@ -12,8 +12,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SixLabors.ImageSharp;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
@@ -29,11 +27,12 @@ namespace LoyaltyProgram.Http.VenueImages
         {
             log.LogInformation($"{nameof(VenueProvideSasTokenFunction)} was triggered.");
 
-            SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
-            policy.Permissions = SharedAccessBlobPermissions.Read;
-
-            policy.SharedAccessExpiryTime = DateTime.Now.AddDays(1);
-            policy.SharedAccessStartTime = DateTime.Now;
+            var policy = new SharedAccessBlobPolicy
+            {
+                Permissions = SharedAccessBlobPermissions.Read,
+                SharedAccessExpiryTime = DateTime.Now.AddDays(1),
+                SharedAccessStartTime = DateTime.Now
+            };
 
             var sas = container.GetSharedAccessSignature(policy);
 

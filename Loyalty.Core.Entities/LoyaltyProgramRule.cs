@@ -9,10 +9,10 @@ namespace Loyalty.Core.Entities
     [Table("LoyaltyProgramRule", Schema = SchemaName.Loyalty)]
     public class LoyaltyProgramRule : AuditableEntity, IArchivableEntity
     {
-        public LoyaltyRuleType RuleType { get; set; }
+        [ForeignKey(nameof(Venue))]
+        public long VenueId { get; set; }
 
-        [ForeignKey(nameof(LoyaltyProgram))]
-        public LoyaltyProgram LoaLoyaltyProgramId { get; set; }
+        public LoyaltyRuleType RuleType { get; set; }
 
         public string RuleValue { get; set; }
 
