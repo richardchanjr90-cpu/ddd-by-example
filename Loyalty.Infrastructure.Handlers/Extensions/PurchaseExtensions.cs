@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Client;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {

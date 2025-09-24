@@ -1,10 +1,10 @@
 ﻿using System;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Client;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Queries.Purchase
 {
-    public class GetClientActivePurchasesQuery : IRequest<GetClientActivePurchasesResult>
+    public class GetClientActivePurchasesQuery : IRequest<GetActivePurchasesResult>
     {
         public Guid WorkerId { get; set; }
 

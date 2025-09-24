@@ -1,5 +1,5 @@
 ﻿using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Queries.Commands.Location;
+using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions

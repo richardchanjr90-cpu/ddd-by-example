@@ -6,24 +6,20 @@
 
   <ItemGroup>
     <Compile Remove="Commands\Cards\**" />
+    <Compile Remove="Commands\NewFolder\**" />
     <Compile Remove="Commands\Stamps\**" />
     <Compile Remove="Queries\Cards\**" />
-    <Compile Remove="Queries\Purchases\**" />
+    <Compile Remove="Queries\NewFolder\**" />
     <EmbeddedResource Remove="Commands\Cards\**" />
+    <EmbeddedResource Remove="Commands\NewFolder\**" />
     <EmbeddedResource Remove="Commands\Stamps\**" />
     <EmbeddedResource Remove="Queries\Cards\**" />
-    <EmbeddedResource Remove="Queries\Purchases\**" />
+    <EmbeddedResource Remove="Queries\NewFolder\**" />
     <None Remove="Commands\Cards\**" />
+    <None Remove="Commands\NewFolder\**" />
     <None Remove="Commands\Stamps\**" />
     <None Remove="Queries\Cards\**" />
-    <None Remove="Queries\Purchases\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Commands\LoyaltyProducts\" />
-    <Folder Include="Commands\LoyaltyPrograms\" />
-    <Folder Include="Queries\LoyaltyProducts\" />
-    <Folder Include="Queries\LoyaltyPrograms\" />
+    <None Remove="Queries\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

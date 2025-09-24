@@ -1,5 +1,6 @@
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels;
+using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Tests.Shared.Factory;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

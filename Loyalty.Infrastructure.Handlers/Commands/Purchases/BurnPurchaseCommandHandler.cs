@@ -6,7 +6,7 @@ using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.VenueDetails;
+using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Microsoft.EntityFrameworkCore;
 

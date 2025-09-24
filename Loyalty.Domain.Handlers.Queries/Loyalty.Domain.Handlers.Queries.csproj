@@ -9,30 +9,25 @@
     <Compile Remove="Commands\Stamp\**" />
     <Compile Remove="Queries\Card\**" />
     <Compile Remove="Queries\Stamp\**" />
+    <Compile Remove="QueryResults\Card\**" />
+    <Compile Remove="QueryResults\Stamp\**" />
     <EmbeddedResource Remove="Commands\Card\**" />
     <EmbeddedResource Remove="Commands\Stamp\**" />
     <EmbeddedResource Remove="Queries\Card\**" />
     <EmbeddedResource Remove="Queries\Stamp\**" />
+    <EmbeddedResource Remove="QueryResults\Card\**" />
+    <EmbeddedResource Remove="QueryResults\Stamp\**" />
     <None Remove="Commands\Card\**" />
     <None Remove="Commands\Stamp\**" />
     <None Remove="Queries\Card\**" />
     <None Remove="Queries\Stamp\**" />
+    <None Remove="QueryResults\Card\**" />
+    <None Remove="QueryResults\Stamp\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Commands\LoyaltyProduct\" />
-    <Folder Include="Commands\LoyaltyProgram\" />
-    <Folder Include="Queries\LoyaltyProduct\" />
-    <Folder Include="Queries\LoyaltyProgram\" />
-    <Folder Include="QueryResults\Card\" />
-    <Folder Include="QueryResults\LoyaltyProduct\" />
-    <Folder Include="QueryResults\LoyaltyProgram\" />
-    <Folder Include="QueryResults\Stamp\" />
   </ItemGroup>
 
   <ItemGroup>

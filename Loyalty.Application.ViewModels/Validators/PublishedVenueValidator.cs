@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Loyalty.Application.ViewModels.Venue;
 
 namespace Loyalty.Application.ViewModels.Validators
 {

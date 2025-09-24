@@ -5,8 +5,10 @@ using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Validators;
+using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
@@ -69,10 +71,10 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Archive(long id)
         {
-            var command = new ArchiveVenueCommand
+            var command = new CreateLoyaltyProgramCommand
             {
-                Id = id,
-                OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                //Id = id,
+                //OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
             };
 
             var commandResult = await Mediator.Send(command);

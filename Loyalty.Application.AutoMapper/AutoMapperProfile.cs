@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Loyalty.Application.ViewModels;
-using Loyalty.Domain.Handlers.Queries.Commands.Location;
+using Loyalty.Application.ViewModels.Location;
+using Loyalty.Application.ViewModels.Purchase;
+using Loyalty.Application.ViewModels.Venue;
+using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Client;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 
@@ -46,7 +49,7 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<PurchaseViewModel, CreatePurchaseCommand>();
 
             CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
-            CreateMap<GetClientActivePurchaseResult, ClientActivePurchasesViewModel>();
+            CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
         }
     }
 }

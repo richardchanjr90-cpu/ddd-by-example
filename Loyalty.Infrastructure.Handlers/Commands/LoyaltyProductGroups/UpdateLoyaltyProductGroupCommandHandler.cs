@@ -1,0 +1,22 @@
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Loyalty.Core.Contracts;
+using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
+using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
+
+namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
+{
+    public class UpdateLoyaltyProductGroupCommandHandler
+        : BaseHandler, IUpdateLoyaltyProductGroupCommandHandler
+    {
+        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context) : base(context)
+        {
+        }
+
+        public Task<ICommandResult> Handle(UpdateLoyaltyProductGroupCommand request, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

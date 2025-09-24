@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Loyalty.Application.ViewModels;
+using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
@@ -21,7 +22,7 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<List<ClientActivePurchasesViewModel>> GetActivePurchases(Guid userId, long venueId)
+        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(Guid userId, long venueId)
         {
             //todo: convert code to guid
             //todo: validate worker belongs to venue
@@ -33,7 +34,7 @@ namespace Loyalty.Application.Venue
                 VenueId = venueId,    
             });
 
-            return mapper.Map<List<ClientActivePurchasesViewModel>>(result.Result);
+            return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
         }
 
         public async Task<ICommandResult> Purchase(PurchaseViewModel model, Guid userId, long venueId)

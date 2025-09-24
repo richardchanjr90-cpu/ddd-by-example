@@ -3,6 +3,7 @@ using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Validators;
+using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;

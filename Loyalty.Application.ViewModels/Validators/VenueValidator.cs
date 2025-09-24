@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Loyalty.Application.ViewModels.Validators.Extensions;
+using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators

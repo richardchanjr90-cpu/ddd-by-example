@@ -1,7 +1,7 @@
 ﻿using System;
 using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Queries.Commands.Location;
+using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
