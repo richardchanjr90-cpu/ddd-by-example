@@ -59,29 +59,35 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
- 
-            CreateMap<PurchaseViewModel, CreatePurchaseCommand>();
+
+            CreateMap<PurchaseViewModel, CreatePurchaseCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
 
             CreateMap<GetLoyaltyProgramByIdQueryResult, LoyaltyProgramViewModel>();
-            CreateMap<LoyaltyProgramViewModel, CreateLoyaltyProgramCommand>();
+            CreateMap<LoyaltyProgramViewModel, CreateLoyaltyProgramCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<LoyaltyProgramViewModel, UpdateLoyaltyProgramCommand>();
 
             CreateMap<GetProductByIdQueryResult, ProductViewModel>();
-            CreateMap<ProductViewModel, CreateProductCommand>();
+            CreateMap<ProductViewModel, CreateProductCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<ProductViewModel, UpdateProductCommand>();
 
             CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupViewModel>();
-            CreateMap<LoyaltyProductGroupViewModel, CreateLoyaltyProductGroupCommand>();
+            CreateMap<LoyaltyProductGroupViewModel, CreateLoyaltyProductGroupCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<LoyaltyProductGroupViewModel, UpdateLoyaltyProductGroupCommand>();
 
             CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
-            CreateMap<ProductGroupViewModel, CreateProductGroupCommand>();
+            CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
 
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
-            CreateMap<WorkerViewModel, CreateWorkerCommand>();
+            CreateMap<WorkerViewModel, CreateWorkerCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<WorkerViewModel, UpdateWorkerCommand>();
 
         }
