@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
@@ -15,6 +16,8 @@ namespace Loyalty.Core.Entities
         public LoyaltyProgramRule Rule { get; set; }
 
         public ProductGroup ProductGroup { get; set; }
+
+        public virtual ICollection<Purchase> Purchases { get; set; }
 
         [Required]
         [MaxLength(2000)]

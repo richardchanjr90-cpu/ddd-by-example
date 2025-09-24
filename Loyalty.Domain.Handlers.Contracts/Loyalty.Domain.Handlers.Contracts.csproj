@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Queries\Stamps\**" />
+    <EmbeddedResource Remove="Queries\Stamps\**" />
+    <None Remove="Queries\Stamps\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Commands\Cards\" />
     <Folder Include="Commands\LoyaltyProducts\" />
     <Folder Include="Commands\LoyaltyPrograms\" />
@@ -12,7 +18,6 @@
     <Folder Include="Queries\Cards\" />
     <Folder Include="Queries\LoyaltyProducts\" />
     <Folder Include="Queries\LoyaltyPrograms\" />
-    <Folder Include="Queries\Stamps\" />
   </ItemGroup>
 
   <ItemGroup>

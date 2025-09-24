@@ -8,7 +8,9 @@ using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Loyalty.Domain.Handlers.Queries.Queries.Client;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Client;
 using MediatR;
 
 namespace Loyalty.Application.Venue
@@ -23,13 +25,18 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-
-        public async Task<ICommandResult> Create(PurchaseViewModel model)
+        public async Task<List<ClientActivePurchasesViewModel>> GetActivePurchases(Guid userId, long venueId)
         {
             //todo: validation
+            //todo: convert code to guid
 
-            var command = mapper.Map<CreateVenueCommand>(model);
-            return await Mediator.Send(command);
+            var result = await Mediator.Send(new GetClientActivePurchasesQuery
+            {
+                UserId = userId,
+                VenueId = venueId,    
+            });
+
+            return mapper.Map<List<ClientActivePurchasesViewModel>>(result.Result);
         }
 
     }

@@ -13,7 +13,7 @@ namespace Loyalty.Infrastructure.DataAccess
     {
         public DbSet<Location> Locations { get; set; }
 
-        public DbSet<LoyaltyProductGroup> LoyaltyProducts { get; set; }
+        public DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 

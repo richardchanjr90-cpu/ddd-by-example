@@ -25,8 +25,6 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
-        public virtual ICollection<Purchase> Purchases { get; set; }
-
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 

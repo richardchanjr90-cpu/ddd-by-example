@@ -8,8 +8,8 @@ namespace Loyalty.Core.Entities
     [Table("Purchase", Schema = SchemaName.Loyalty)]
     public class Purchase : AuditableEntity
     {
-        [ForeignKey(nameof(LoyaltyProgram))]
-        public long LoyaltyProgramId { get; set; }
+        [ForeignKey(nameof(LoyaltyProductGroup))]
+        public long LoyaltyProductGroupId { get; set; }
 
         public Guid UserId { get; set; }
 

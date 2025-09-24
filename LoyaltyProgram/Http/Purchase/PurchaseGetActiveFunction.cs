@@ -8,18 +8,18 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-namespace LoyaltyProgram.Http.Client
+namespace LoyaltyProgram.Http.Purchase
 {
-    public static class ClientGetFunction
+    public static class PurchaseGetActiveFunction
     {
-        [FunctionName("ClientGetFunction")]
+        [FunctionName("PurchaseGetActiveFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "client")]string userCode,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "purchases")]string userCode,
             HttpRequest req,
             ILogger log,
-            [Inject]ClientAppService service)
+            [Inject]PurchaseAppService service)
         {
-            log.LogInformation($"{nameof(ClientGetFunction)} was triggered.");
+            log.LogInformation($"{nameof(PurchaseGetActiveFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {

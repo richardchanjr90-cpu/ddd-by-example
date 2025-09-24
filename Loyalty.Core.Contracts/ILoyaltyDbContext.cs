@@ -7,7 +7,7 @@ namespace Loyalty.Core.Contracts
     {
         DbSet<Location> Locations { get; set; }
 
-        DbSet<LoyaltyProductGroup> LoyaltyProducts { get; set; }
+        DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
         DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 

@@ -24,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
             var result = await
                 (from v in Context.Venues
                     join lprog in Context.LoyaltyPrograms on v.Id equals lprog.VenueId
-                    join lprod in Context.LoyaltyProducts on lprog.Id equals lprod.LoyaltyProgramId
+                    join lprod in Context.LoyaltyProductGroups on lprog.Id equals lprod.LoyaltyProgramId
                  where lprog.Id == lprod.LoyaltyProgramId
                  from purchase in Context.Purchases
                     where purchase.UserId == request.UserId

@@ -15,7 +15,7 @@ namespace LoyaltyProgram.Http.Purchase
     {
         [FunctionName("PurchasePostFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "purchase")]PurchaseViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "purchases")]PurchaseViewModel model,
             HttpRequest req,
             ILogger log,
             [Inject]PurchaseAppService service)

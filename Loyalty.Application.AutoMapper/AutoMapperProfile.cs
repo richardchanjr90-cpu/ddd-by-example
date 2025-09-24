@@ -40,8 +40,9 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
-
-            CreateMap<GetClientByUserCodeQueryResult, ClientViewModel>();
+ 
+            CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
+            CreateMap<GetClientActivePurchaseResult, ClientActivePurchasesViewModel>();
         }
     }
 }
