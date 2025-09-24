@@ -18,26 +18,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
-            var venue = await Context.Venues
-                .Include(x => x.Location)
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (venue == null)
-            {
-                venue = request.ToSingle();
-                Context.Venues.Add(venue);
-            }
-            else
-            {
-                venue.CategoryType = request.CategoryType;
-                venue.Description = request.Description;
-                venue.Name = request.Name;
-                venue.Type = request.Type;
-                venue.LogoUrl = request.LogoUrl;
-                //todo: multistep implementation needed;
-                venue.Location = request.Location?.ToSingle();
-            }
+            var venue = request.ToSingle();
+            Context.Venues.Add(venue);
 
             return new CommandResult
             {
