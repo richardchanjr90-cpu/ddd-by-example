@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.VenueDetails
 {
-    public interface IBurnPurchaseCommandHandler : IRequestHandler<BurnPurchaseCommand, ICommandResult>
+    public interface ICreatePurchaseCommandHandler : IRequestHandler<CreatePurchaseCommand, ICommandResult>
     {
     }
 }

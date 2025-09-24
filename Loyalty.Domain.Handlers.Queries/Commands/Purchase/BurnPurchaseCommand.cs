@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
 {
-    public class CreatePurchaseCommand : IRequest<ICommandResult>
-    {    
+    public class BurnPurchaseCommand : IRequest<ICommandResult>
+    {
         public long LoyaltyProductGroupId { get; set; }
 
         public Guid WorkerId { get; set; }
@@ -15,6 +16,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
 
         public long VenueId { get; set; }
 
-        public decimal Value { get; set; }
+        public int Amount { get; set; }
     }
 }
