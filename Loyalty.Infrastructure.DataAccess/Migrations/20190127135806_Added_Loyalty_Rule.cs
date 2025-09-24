@@ -9,17 +9,17 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Type",
+                "Type",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup");
 
             migrationBuilder.DropColumn(
-                name: "BusinessRule",
+                "BusinessRule",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.AlterColumn<string>(
-                name: "LogoUrl",
+                "LogoUrl",
                 schema: "loyalty",
                 table: "Venue",
                 maxLength: 200,
@@ -28,7 +28,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.CreateTable(
-                name: "LoyaltyProgramRule",
+                "LoyaltyProgramRule",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -47,8 +47,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_LoyaltyProgramRule", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoyaltyProgramRule_LoyaltyProgram_LoyaltyProgram",
-                        column: x => x.LoyaltyProgram,
+                        "FK_LoyaltyProgramRule_LoyaltyProgram_LoyaltyProgram",
+                        x => x.LoyaltyProgram,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProgram",
                         principalColumn: "Id",
@@ -56,7 +56,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProgramRule_LoyaltyProgram",
+                "IX_LoyaltyProgramRule_LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule",
                 column: "LoyaltyProgram",
@@ -67,11 +67,11 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LoyaltyProgramRule",
-                schema: "loyalty");
+                "LoyaltyProgramRule",
+                "loyalty");
 
             migrationBuilder.AlterColumn<string>(
-                name: "LogoUrl",
+                "LogoUrl",
                 schema: "loyalty",
                 table: "Venue",
                 nullable: true,
@@ -80,14 +80,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "Type",
+                "Type",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 nullable: false,
                 defaultValue: 0);
 
             migrationBuilder.AddColumn<string>(
-                name: "BusinessRule",
+                "BusinessRule",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: false,

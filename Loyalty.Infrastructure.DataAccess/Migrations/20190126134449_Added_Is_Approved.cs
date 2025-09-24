@@ -7,13 +7,13 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "FranchiseId",
+                "FranchiseId",
                 schema: "loyalty",
                 table: "Venue",
                 newName: "ParentId");
 
             migrationBuilder.AlterColumn<string>(
-                name: "WorkingHours",
+                "WorkingHours",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: false,
@@ -21,7 +21,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "PhotosUrl",
+                "PhotosUrl",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: false,
@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Phones",
+                "Phones",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: false,
@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "FullDescription",
+                "FullDescription",
                 schema: "loyalty",
                 table: "VenueDetails",
                 maxLength: 4000,
@@ -46,7 +46,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "Venue",
                 maxLength: 200,
@@ -55,7 +55,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "Venue",
                 maxLength: 2000,
@@ -64,14 +64,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "IsApproved",
+                "IsApproved",
                 schema: "loyalty",
                 table: "Venue",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProgram",
                 nullable: false,
@@ -79,7 +79,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "LoyaltyProgram",
                 maxLength: 2000,
@@ -88,7 +88,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 maxLength: 200,
@@ -97,7 +97,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 maxLength: 2000,
@@ -106,7 +106,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 maxLength: 200,
@@ -115,7 +115,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 maxLength: 2000,
@@ -124,7 +124,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "BusinessRule",
+                "BusinessRule",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: false,
@@ -132,7 +132,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "City",
+                "City",
                 schema: "loyalty",
                 table: "Location",
                 maxLength: 200,
@@ -144,39 +144,39 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsApproved",
+                "IsApproved",
                 schema: "loyalty",
                 table: "Venue");
 
             migrationBuilder.RenameColumn(
-                name: "ParentId",
+                "ParentId",
                 schema: "loyalty",
                 table: "Venue",
                 newName: "FranchiseId");
 
             migrationBuilder.AlterColumn<string>(
-                name: "WorkingHours",
+                "WorkingHours",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: true,
                 oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
-                name: "PhotosUrl",
+                "PhotosUrl",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: true,
                 oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
-                name: "Phones",
+                "Phones",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: true,
                 oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
-                name: "FullDescription",
+                "FullDescription",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: true,
@@ -184,7 +184,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldMaxLength: 4000);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "Venue",
                 nullable: true,
@@ -192,7 +192,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldMaxLength: 200);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "Venue",
                 nullable: true,
@@ -201,14 +201,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProgram",
                 nullable: true,
                 oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "LoyaltyProgram",
                 nullable: true,
@@ -217,7 +217,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 nullable: true,
@@ -225,7 +225,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldMaxLength: 200);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 nullable: true,
@@ -233,7 +233,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldMaxLength: 2000);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: true,
@@ -241,7 +241,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldMaxLength: 200);
 
             migrationBuilder.AlterColumn<string>(
-                name: "Description",
+                "Description",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: true,
@@ -249,14 +249,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldMaxLength: 2000);
 
             migrationBuilder.AlterColumn<string>(
-                name: "BusinessRule",
+                "BusinessRule",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: true,
                 oldClrType: typeof(string));
 
             migrationBuilder.AlterColumn<string>(
-                name: "City",
+                "City",
                 schema: "loyalty",
                 table: "Location",
                 nullable: true,

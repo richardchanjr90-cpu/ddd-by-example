@@ -7,24 +7,24 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
+                "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.RenameColumn(
-                name: "LoyaltyProgramId",
+                "LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase",
                 newName: "LoyaltyProductGroupId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Purchase_LoyaltyProgramId",
+                "IX_Purchase_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase",
                 newName: "IX_Purchase_LoyaltyProductGroupId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Purchase_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_Purchase_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "LoyaltyProductGroupId",
@@ -37,24 +37,24 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Purchase_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_Purchase_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.RenameColumn(
-                name: "LoyaltyProductGroupId",
+                "LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Purchase",
                 newName: "LoyaltyProgramId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_Purchase_LoyaltyProductGroupId",
+                "IX_Purchase_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Purchase",
                 newName: "IX_Purchase_LoyaltyProgramId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
+                "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "LoyaltyProgramId",

@@ -11,6 +11,11 @@ namespace Loyalty.Infrastructure.DataAccess
 {
     public class LoyaltyDbContext : DbContext, ILoyaltyDbContext
     {
+        public LoyaltyDbContext(DbContextOptions options)
+            : base(options)
+        {
+        }
+
         public DbSet<Location> Locations { get; set; }
 
         public DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
@@ -30,11 +35,6 @@ namespace Loyalty.Infrastructure.DataAccess
         public DbSet<VenueDetails> VenueDetails { get; set; }
 
         public DbSet<Worker> Workers { get; set; }
-
-        public LoyaltyDbContext(DbContextOptions options)
-            : base(options)
-        {
-        }
 
         public override int SaveChanges()
         {

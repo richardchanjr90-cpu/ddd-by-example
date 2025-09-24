@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -14,7 +13,7 @@ namespace Loyalty.Common.Shared.Extensions
         {
             List<string> result = null;
 
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
             {
                 var matchList = ParseQuotes.Matches(value);
                 result = matchList.Cast<Match>()

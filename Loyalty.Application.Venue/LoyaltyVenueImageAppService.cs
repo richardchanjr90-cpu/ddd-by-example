@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Storage.Dto.Validators;
-using Loyalty.Application.ViewModels;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using MediatR;
@@ -33,7 +30,7 @@ namespace Loyalty.Application.Venue
 
             var images = new List<VenueBlobImageDto>();
 
-            foreach (HttpContent file in content.Contents)
+            foreach (var file in content.Contents)
             {
                 var byteImage = await file.ReadAsByteArrayAsync();
                 var venueImage = new VenueBlobImageDto

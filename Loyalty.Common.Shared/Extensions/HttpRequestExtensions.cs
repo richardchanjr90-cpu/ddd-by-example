@@ -16,7 +16,7 @@ namespace Loyalty.Common.Shared.Extensions
             }
 
             var body = await request.ReadAsStringAsync();
-            T result = JsonConvert.DeserializeObject<T>(body);
+            var result = JsonConvert.DeserializeObject<T>(body);
             return result;
         }
     }

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Queries.ProductGroups;
 using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;

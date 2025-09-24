@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
+﻿namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
 {
     public class GetLocationQueryResult
     {

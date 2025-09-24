@@ -7,7 +7,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "Address",
+                "Address",
                 schema: "loyalty",
                 table: "Location",
                 maxLength: 200,
@@ -18,7 +18,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Address",
+                "Address",
                 schema: "loyalty",
                 table: "Location");
         }

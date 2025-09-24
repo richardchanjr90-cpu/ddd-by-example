@@ -1,5 +1,4 @@
 ﻿using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Queries.ProductGroup

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;

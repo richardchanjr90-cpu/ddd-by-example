@@ -1,12 +1,11 @@
 ﻿using System;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
 {
     public class CreatePurchaseCommand : IRequest<ICommandResult>
-    {    
+    {
         public long LoyaltyProductGroupId { get; set; }
 
         public Guid WorkerId { get; set; }

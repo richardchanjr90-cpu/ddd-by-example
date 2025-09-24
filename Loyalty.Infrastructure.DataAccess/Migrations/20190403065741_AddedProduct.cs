@@ -9,91 +9,91 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_LoyaltyProduct_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_LoyaltyProduct_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_LoyaltyProgramRule_LoyaltyProgram_LoyaltyProgram",
+                "FK_LoyaltyProgramRule_LoyaltyProgram_LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_Purchase_Card_CardId",
+                "FK_Purchase_Card_CardId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.DropTable(
-                name: "Card",
-                schema: "loyalty");
+                "Card",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "LoyaltyProductGroup",
-                schema: "loyalty");
+                "LoyaltyProductGroup",
+                "loyalty");
 
             migrationBuilder.DropIndex(
-                name: "IX_Purchase_CardId",
+                "IX_Purchase_CardId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.DropIndex(
-                name: "IX_LoyaltyProgramRule_LoyaltyProgram",
+                "IX_LoyaltyProgramRule_LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule");
 
             migrationBuilder.DropColumn(
-                name: "PhotosUrl",
+                "PhotosUrl",
                 schema: "loyalty",
                 table: "VenueDetails");
 
             migrationBuilder.DropColumn(
-                name: "CardId",
+                "CardId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.DropColumn(
-                name: "LoyaltyProgram",
+                "LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule");
 
             migrationBuilder.DropColumn(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.RenameColumn(
-                name: "LoyaltyProductGroupId",
+                "LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 newName: "LoyaltyProgramId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_LoyaltyProduct_LoyaltyProductGroupId",
+                "IX_LoyaltyProduct_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 newName: "IX_LoyaltyProduct_LoyaltyProgramId");
 
             migrationBuilder.AddColumn<Guid>(
-                name: "UserId",
+                "UserId",
                 schema: "loyalty",
                 table: "Purchase",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.AddColumn<long>(
-                name: "ProductId",
+                "ProductId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: true);
 
             migrationBuilder.AddColumn<long>(
-                name: "RuleId",
+                "RuleId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Product",
+                "Product",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -112,19 +112,19 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProduct_ProductId",
+                "IX_LoyaltyProduct_ProductId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProduct_RuleId",
+                "IX_LoyaltyProduct_RuleId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "RuleId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LoyaltyProduct_LoyaltyProgram_LoyaltyProgramId",
+                "FK_LoyaltyProduct_LoyaltyProgram_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "LoyaltyProgramId",
@@ -134,7 +134,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LoyaltyProduct_Product_ProductId",
+                "FK_LoyaltyProduct_Product_ProductId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "ProductId",
@@ -144,7 +144,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LoyaltyProduct_LoyaltyProgramRule_RuleId",
+                "FK_LoyaltyProduct_LoyaltyProgramRule_RuleId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "RuleId",
@@ -157,83 +157,83 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_LoyaltyProduct_LoyaltyProgram_LoyaltyProgramId",
+                "FK_LoyaltyProduct_LoyaltyProgram_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_LoyaltyProduct_Product_ProductId",
+                "FK_LoyaltyProduct_Product_ProductId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_LoyaltyProduct_LoyaltyProgramRule_RuleId",
+                "FK_LoyaltyProduct_LoyaltyProgramRule_RuleId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropTable(
-                name: "Product",
-                schema: "loyalty");
+                "Product",
+                "loyalty");
 
             migrationBuilder.DropIndex(
-                name: "IX_LoyaltyProduct_ProductId",
+                "IX_LoyaltyProduct_ProductId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropIndex(
-                name: "IX_LoyaltyProduct_RuleId",
+                "IX_LoyaltyProduct_RuleId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropColumn(
-                name: "UserId",
+                "UserId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.DropColumn(
-                name: "ProductId",
+                "ProductId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.DropColumn(
-                name: "RuleId",
+                "RuleId",
                 schema: "loyalty",
                 table: "LoyaltyProduct");
 
             migrationBuilder.RenameColumn(
-                name: "LoyaltyProgramId",
+                "LoyaltyProgramId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 newName: "LoyaltyProductGroupId");
 
             migrationBuilder.RenameIndex(
-                name: "IX_LoyaltyProduct_LoyaltyProgramId",
+                "IX_LoyaltyProduct_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 newName: "IX_LoyaltyProduct_LoyaltyProductGroupId");
 
             migrationBuilder.AddColumn<string>(
-                name: "PhotosUrl",
+                "PhotosUrl",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.AddColumn<long>(
-                name: "CardId",
+                "CardId",
                 schema: "loyalty",
                 table: "Purchase",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddColumn<long>(
-                name: "LoyaltyProgram",
+                "LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "Name",
+                "Name",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 maxLength: 200,
@@ -241,7 +241,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 defaultValue: "");
 
             migrationBuilder.CreateTable(
-                name: "LoyaltyProductGroup",
+                "LoyaltyProductGroup",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -261,8 +261,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_LoyaltyProductGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoyaltyProductGroup_LoyaltyProgram_LoyaltyProgramId",
-                        column: x => x.LoyaltyProgramId,
+                        "FK_LoyaltyProductGroup_LoyaltyProgram_LoyaltyProgramId",
+                        x => x.LoyaltyProgramId,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProgram",
                         principalColumn: "Id",
@@ -270,7 +270,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Card",
+                "Card",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -288,8 +288,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Card", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
-                        column: x => x.LoyaltyProductGroupId,
+                        "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
+                        x => x.LoyaltyProductGroupId,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProductGroup",
                         principalColumn: "Id",
@@ -297,13 +297,13 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_CardId",
+                "IX_Purchase_CardId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "CardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProgramRule_LoyaltyProgram",
+                "IX_LoyaltyProgramRule_LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule",
                 column: "LoyaltyProgram",
@@ -311,19 +311,19 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 filter: "[LoyaltyProgram] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Card_LoyaltyProductGroupId",
+                "IX_Card_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card",
                 column: "LoyaltyProductGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProductGroup_LoyaltyProgramId",
+                "IX_LoyaltyProductGroup_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 column: "LoyaltyProgramId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LoyaltyProduct_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_LoyaltyProduct_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "LoyaltyProductGroupId",
@@ -333,7 +333,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_LoyaltyProgramRule_LoyaltyProgram_LoyaltyProgram",
+                "FK_LoyaltyProgramRule_LoyaltyProgram_LoyaltyProgram",
                 schema: "loyalty",
                 table: "LoyaltyProgramRule",
                 column: "LoyaltyProgram",
@@ -343,7 +343,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Purchase_Card_CardId",
+                "FK_Purchase_Card_CardId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "CardId",

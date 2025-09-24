@@ -40,7 +40,7 @@ namespace LoyaltyProgram.Http.VenueImages
                 {
                     var imageStream = Image.Load(images.First().Image);
                     imageStream.SaveAsJpeg(blobStream);
-                    queueItems.Add(new VenueQueueImageDto()
+                    queueItems.Add(new VenueQueueImageDto
                     {
                         Index = index,
                         VenueId = id

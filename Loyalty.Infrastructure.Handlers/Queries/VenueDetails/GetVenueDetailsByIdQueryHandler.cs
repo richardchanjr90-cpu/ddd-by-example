@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.VenueDetails
                 select new GetVenueFullByIdQueryResult
                 {
                     Details = details.ToResult(),
-                    Venue = venue.ToResult(),
+                    Venue = venue.ToResult()
                 }).SingleOrDefaultAsync(cancellationToken);
 
             return result;

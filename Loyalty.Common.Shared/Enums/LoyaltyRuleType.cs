@@ -18,6 +18,6 @@
 
         ActionInASpecifiedDat=7,
 
-        BirthDayPresent=8,
+        BirthDayPresent=8
     }
 }

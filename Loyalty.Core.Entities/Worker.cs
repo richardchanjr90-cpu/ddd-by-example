@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using Loyalty.Common.Shared.Enums;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Schema;

@@ -9,25 +9,25 @@ namespace Loyalty.Common.Shared.Secrets
 {
     public sealed class ConcurrentStore
     {
-        private readonly string keyVaultUrl;
         private static readonly ConcurrentDictionary<string, string> CachedDictionary = new ConcurrentDictionary<string, string>();
 
         //This client is located in a shared lib and is static 
         //to share it between functions and between instances of those functions.
         private static readonly HttpClient SharedClient = new HttpClient();
 
+        private static readonly Lazy<KeyVaultClient> VaultClient = new Lazy<KeyVaultClient>(GetStore);
+        private readonly string keyVaultUrl;
+
         public ConcurrentStore(string keyVaultUrl)
         {
             this.keyVaultUrl = keyVaultUrl;
         }
 
-        private static readonly Lazy<KeyVaultClient> VaultClient = new Lazy<KeyVaultClient>(GetStore);
-
         public async Task<string> GetOrLoadSettingAsync(string secretId)
         {
             if (!CachedDictionary.TryGetValue(secretId, out var value))
             {
-                string tableString = (await VaultClient.Value.GetSecretAsync(keyVaultUrl, secretId)).Value;
+                var tableString = (await VaultClient.Value.GetSecretAsync(keyVaultUrl, secretId)).Value;
                 CachedDictionary.TryAdd(secretId, tableString);
                 value = tableString;
             }
@@ -46,4 +46,3 @@ namespace Loyalty.Common.Shared.Secrets
         }
     }
 }
-;

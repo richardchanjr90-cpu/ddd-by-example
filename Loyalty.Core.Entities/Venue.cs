@@ -28,7 +28,7 @@ namespace Loyalty.Core.Entities
         public long? ParentId { get; set; }
 
         public Location Location { get; set; }
-        
+
         [Required]
         public VenueType Type { get; set; }
 
@@ -45,8 +45,8 @@ namespace Loyalty.Core.Entities
 
         public bool IsArchived { get; set; }
 
-        public bool IsPublished { get; set; }
-
         public bool IsApproved { get; set; }
+
+        public bool IsPublished { get; set; }
     }
 }

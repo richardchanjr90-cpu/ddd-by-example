@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Loyalty.Application.Storage.Dto
+﻿namespace Loyalty.Application.Storage.Dto
 {
     public class VenueQueueImageDto
     {

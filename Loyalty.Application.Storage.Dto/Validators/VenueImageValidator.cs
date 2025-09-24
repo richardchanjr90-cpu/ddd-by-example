@@ -37,7 +37,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
                 .WithMessage("Image must be between 600x400 and 2560x1440px.");
         }
 
-        private bool IsImageValid(Byte[] arrayImage)
+        private bool IsImageValid(byte[] arrayImage)
         {
             var isValid = false;
 
@@ -55,7 +55,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
             return isValid;
         }
 
-        private bool ValidateWidthAndHeight(Byte[] arrayImage)
+        private bool ValidateWidthAndHeight(byte[] arrayImage)
         {
             var isValid = false;
 
@@ -76,7 +76,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
             return isValid;
         }
 
-        private bool SizeIsLessThan1MbPlusSmallOverhead(Byte[] array)
+        private bool SizeIsLessThan1MbPlusSmallOverhead(byte[] array)
         {
             var isValid = false;
 

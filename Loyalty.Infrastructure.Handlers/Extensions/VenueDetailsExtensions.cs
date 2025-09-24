@@ -15,7 +15,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
-                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
+                Phones = command.Phones.ToCommaSeparatedStringOrNull()
             };
 
             return result;
@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
-                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
+                Phones = command.Phones.ToCommaSeparatedStringOrNull()
             };
 
             return result;
@@ -48,7 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                     Phones = item.Phones.SplitByCommaAndUnwrap(),
                     FullDescription = item.FullDescription,
                     WebSites = item.WebSites.SplitByCommaAndUnwrap(),
-                    WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
+                    WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap()
                 };
             }
 

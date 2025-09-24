@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Location;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.LoyaltyProgram;

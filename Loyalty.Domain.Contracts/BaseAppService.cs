@@ -1,15 +1,14 @@
-﻿using System;
-using MediatR;
+﻿using MediatR;
 
 namespace Loyalty.Domain.Contracts
 {
     public abstract class BaseAppService
     {
-        public IMediator Mediator { get; }
-
         protected BaseAppService(IMediator mediator)
         {
             Mediator = mediator;
         }
+
+        public IMediator Mediator { get; }
     }
 }

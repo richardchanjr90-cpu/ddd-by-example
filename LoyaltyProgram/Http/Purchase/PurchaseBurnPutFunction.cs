@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;

@@ -1,5 +1,4 @@
-﻿using System;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+﻿using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails
 {

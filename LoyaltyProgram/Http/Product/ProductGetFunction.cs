@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Loyalty.Common.Shared.Extensions
@@ -12,7 +11,7 @@ namespace Loyalty.Common.Shared.Extensions
 
             if (array != null)
             {
-                result = String.Join(",", array.Select(x => $"\"{x}\""));
+                result = string.Join(",", array.Select(x => $"\"{x}\""));
             }
 
             return result;

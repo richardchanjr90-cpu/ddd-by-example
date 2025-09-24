@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
-using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
-using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
 
 namespace Loyalty.Application.Venue

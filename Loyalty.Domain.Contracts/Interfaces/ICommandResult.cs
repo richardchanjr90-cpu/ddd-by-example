@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Loyalty.Domain.Contracts.Interfaces
+﻿namespace Loyalty.Domain.Contracts.Interfaces
 {
     public interface ICommandResult
     {

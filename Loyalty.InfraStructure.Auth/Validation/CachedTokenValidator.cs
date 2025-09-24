@@ -28,4 +28,3 @@ namespace Loyalty.InfraStructure.Auth.Validation
         }
     }
 }
-;

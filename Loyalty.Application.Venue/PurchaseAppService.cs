@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -31,7 +30,7 @@ namespace Loyalty.Application.Venue
             {
                 WorkerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40"),
                 UserId = userId,
-                VenueId = venueId,    
+                VenueId = venueId    
             });
 
             return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);

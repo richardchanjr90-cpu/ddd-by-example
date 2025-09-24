@@ -26,7 +26,7 @@ namespace Loyalty.InfraStructure.Auth
         /// </summary>
         public static bool TryAuthenticate(this HttpRequest request, out AuthenticationModel model)
         {
-            bool isAuthenticated = false;
+            var isAuthenticated = false;
             model = null;
 
             try
@@ -38,7 +38,7 @@ namespace Loyalty.InfraStructure.Auth
                 };
 
                 AddTokenToAuthSession(client, request,
-                    !String.IsNullOrEmpty(request.Cookies["AppServiceAuthSession"])
+                    !string.IsNullOrEmpty(request.Cookies["AppServiceAuthSession"])
                         ? request.Cookies["AppServiceAuthSession"]
                         : Environment.GetEnvironmentVariable("AuthenticationToken"));
 

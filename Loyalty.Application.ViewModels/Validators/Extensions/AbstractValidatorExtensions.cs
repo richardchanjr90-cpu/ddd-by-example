@@ -7,7 +7,7 @@ namespace Loyalty.Application.ViewModels.Validators.Extensions
     {
         public static bool BeValidGuid<T>(this AbstractValidator<T> validator, string guidString)
         {
-            return Guid.TryParse(guidString, out Guid result) && Guid.Empty != result;
+            return Guid.TryParse(guidString, out var result) && Guid.Empty != result;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 City = command.City,
                 Address = command.Address,
                 Latitude = command.Latitude,
-                Longitude = command.Longitude,
+                Longitude = command.Longitude
             };
 
             return result;
@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 City = command.City,
                 Address = command.Address,
                 Latitude = command.Latitude,
-                Longitude = command.Longitude,
+                Longitude = command.Longitude
             };
 
             return result;
@@ -44,7 +44,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 City = item.City,
                 Address = item.Address,
                 Latitude = item.Latitude,
-                Longitude = item.Longitude,
+                Longitude = item.Longitude
             };
 
             return result;

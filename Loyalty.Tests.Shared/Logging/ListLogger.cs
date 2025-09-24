@@ -9,13 +9,19 @@ namespace Loyalty.Tests.Shared.Logging
     {
         public IList<string> Logs;
 
-        public IDisposable BeginScope<TState>(TState state) => NullScope.Instance;
-
-        public bool IsEnabled(LogLevel logLevel) => false;
-
         public ListLogger()
         {
-            this.Logs = new List<string>();
+            Logs = new List<string>();
+        }
+
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return NullScope.Instance;
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return false;
         }
 
         public void Log<TState>(LogLevel logLevel,
@@ -24,8 +30,8 @@ namespace Loyalty.Tests.Shared.Logging
             Exception exception,
             Func<TState, Exception, string> formatter)
         {
-            string message = formatter(state, exception);
-            this.Logs.Add(message);
+            var message = formatter(state, exception);
+            Logs.Add(message);
         }
     }
 }

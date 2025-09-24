@@ -7,14 +7,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "IsArchived",
+                "IsArchived",
                 schema: "loyalty",
                 table: "VenueDetails",
                 nullable: false,
                 defaultValue: false);
 
             migrationBuilder.AddColumn<bool>(
-                name: "IsArchived",
+                "IsArchived",
                 schema: "loyalty",
                 table: "Location",
                 nullable: false,
@@ -24,12 +24,12 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "IsArchived",
+                "IsArchived",
                 schema: "loyalty",
                 table: "VenueDetails");
 
             migrationBuilder.DropColumn(
-                name: "IsArchived",
+                "IsArchived",
                 schema: "loyalty",
                 table: "Location");
         }

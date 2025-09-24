@@ -17,9 +17,9 @@ namespace Loyalty.Application.ViewModels.Validators
                 .WithMessage("Should be a valid guid.");
 
             RuleFor(x => x.Type)
-                .Must(x => ((VenueType)x) != VenueType.Single)
+                .Must(x => (VenueType)x != VenueType.Single)
                 .When(x => x.ParentId.HasValue)
-                .WithMessage($"ParentId should be > 0, when VenueType.Single.");
+                .WithMessage("ParentId should be > 0, when VenueType.Single.");
 
             RuleFor(x => x.Location)
                 .SetValidator(new LocationValidator())
@@ -28,12 +28,12 @@ namespace Loyalty.Application.ViewModels.Validators
             RuleFor(x => x)
                 .SetValidator(new PublishedVenueValidator())
                 .When(x => x.IsPublished)
-                .WithMessage($"Venue can be published only when all fields are set.");
+                .WithMessage("Venue can be published only when all fields are set.");
 
             RuleFor(x => x)
                 .Must(x => x.IsPublished)
                 .When(x => x.IsApproved)
-                .WithMessage($"Venue can't be accepted if it's not published.");
+                .WithMessage("Venue can't be accepted if it's not published.");
         }
     }
 }

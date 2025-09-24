@@ -9,7 +9,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Worker",
+                "Worker",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -32,8 +32,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Worker", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Worker_Venue_VenueId",
-                        column: x => x.VenueId,
+                        "FK_Worker_Venue_VenueId",
+                        x => x.VenueId,
                         principalSchema: "loyalty",
                         principalTable: "Venue",
                         principalColumn: "Id",
@@ -41,7 +41,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Worker_VenueId",
+                "IX_Worker_VenueId",
                 schema: "loyalty",
                 table: "Worker",
                 column: "VenueId");
@@ -50,8 +50,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Worker",
-                schema: "loyalty");
+                "Worker",
+                "loyalty");
         }
     }
 }

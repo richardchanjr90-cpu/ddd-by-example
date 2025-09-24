@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -16,7 +17,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 
         public Task<ICommandResult> Handle(ArchiveProductGroupCommand request, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

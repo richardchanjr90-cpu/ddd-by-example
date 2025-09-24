@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
@@ -17,7 +18,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
         public async Task<ICommandResult> Handle(CreatePurchaseCommand request, CancellationToken cancellationToken)
         {
-            var purchase = new Core.Entities.Purchase
+            var purchase = new Purchase
             {
                 Value = request.Value,
                 UserId = request.UserId,

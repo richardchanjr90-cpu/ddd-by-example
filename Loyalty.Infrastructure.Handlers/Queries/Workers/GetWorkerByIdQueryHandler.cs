@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
@@ -15,7 +16,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 
         public async Task<GetWorkerByIdQueryResult> Handle(GetWorkerByIdQuery request, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -12,14 +12,16 @@ namespace Loyalty.Infrastructure.IoC
 { 
     internal class Startup : IWebJobsStartup
     {
-        public void Configure(IWebJobsBuilder builder) =>
+        public void Configure(IWebJobsBuilder builder)
+        {
             builder.AddDependencyInjection(ConfigureServices);
+        }
 
         private void ConfigureServices(IServiceCollection services)
         {
-            IConfigurationRoot config = new ConfigurationBuilder()
+            var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
-                .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("local.settings.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
 

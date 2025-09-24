@@ -7,23 +7,23 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card");
 
             migrationBuilder.DropColumn(
-                name: "LoyaltyProductId",
+                "LoyaltyProductId",
                 schema: "loyalty",
                 table: "Card");
 
             migrationBuilder.RenameColumn(
-                name: "Rule",
+                "Rule",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 newName: "BusinessRule");
 
             migrationBuilder.AlterColumn<long>(
-                name: "LoyaltyProductGroupId",
+                "LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card",
                 nullable: false,
@@ -31,7 +31,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card",
                 column: "LoyaltyProductGroupId",
@@ -44,32 +44,32 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card");
 
             migrationBuilder.RenameColumn(
-                name: "BusinessRule",
+                "BusinessRule",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 newName: "Rule");
 
             migrationBuilder.AlterColumn<long>(
-                name: "LoyaltyProductGroupId",
+                "LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card",
                 nullable: true,
                 oldClrType: typeof(long));
 
             migrationBuilder.AddColumn<long>(
-                name: "LoyaltyProductId",
+                "LoyaltyProductId",
                 schema: "loyalty",
                 table: "Card",
                 nullable: false,
                 defaultValue: 0L);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
+                "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card",
                 column: "LoyaltyProductGroupId",

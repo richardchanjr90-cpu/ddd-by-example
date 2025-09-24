@@ -1,8 +1,6 @@
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Tests.Shared.Factory;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Xunit;
 
@@ -18,7 +16,7 @@ namespace Loyalty.Domain.Handlers.Queries.Tests
             var model = new VenueViewModel();
             var service = new LoyaltyVenueAppService(null, null);
 
-            var request = TestFactory.CreateHttpRequest<VenueViewModel>(model);
+            var request = TestFactory.CreateHttpRequest(model);
             //var response = (OkObjectResult)await VenuePutFunction.Run(model, request, logger, service);
             //Assert.Equal("Hello, Bill", response.Value);
         }

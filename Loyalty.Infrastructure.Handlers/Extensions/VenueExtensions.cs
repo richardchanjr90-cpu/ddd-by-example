@@ -42,7 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 LogoUrl = command.LogoUrl,
                 IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
-                IsApproved = command.IsApproved,
+                IsApproved = command.IsApproved
             };
 
             return result;
@@ -63,7 +63,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 LogoUrl = item.LogoUrl,
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
-                ParentId = item.ParentId,
+                ParentId = item.ParentId
             };
             return result;
         }

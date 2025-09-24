@@ -1,6 +1,4 @@
-using System;
 using System.IO;
-using System.Threading.Tasks;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Common.Shared.Settings;
 using Microsoft.Azure.WebJobs;
@@ -17,7 +15,7 @@ namespace LoyaltyProgram.Storage
         [FunctionName("VenueSaveImageFunction")]
         public static void Run(
             [QueueTrigger("venue-images", Connection = "QueueConnectionString")]VenueQueueImageDto data,
-            [Blob("venue-images-{VenueId}/original-image-{Index}.jpg", FileAccess.Read)] Byte[] originalBlob,
+            [Blob("venue-images-{VenueId}/original-image-{Index}.jpg", FileAccess.Read)] byte[] originalBlob,
             [Blob("venue-images-{VenueId}/md-image-{Index}.jpg", FileAccess.Write)] Stream mediumBlob,
             [Blob("venue-images-{VenueId}/sm-image-{Index}.jpg", FileAccess.Write)] Stream smallBlob,
             [Inject] IOptions<VenueGalleryImageSettings> imageSettings,

@@ -20,14 +20,14 @@ namespace Loyalty.Infrastructure.Migrations
                 var venue = context.Venues.FirstOrDefault(v => v.Name == "Venue1");
                 if (venue == null)
                 {
-                    context.Venues.Add(new Venue()
+                    context.Venues.Add(new Venue
                     {
                         CategoryType = VenueCategoryType.CoffeeShop,
                         Created = DateTime.Now,
                         CreatedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
                         Modified = DateTime.Now,
                         ModifiedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
-                        Location = new Location()
+                        Location = new Location
                         {
                             City = "Minsk",
                             Latitude = 90,
@@ -39,7 +39,7 @@ namespace Loyalty.Infrastructure.Migrations
                         IsPublished = false,
                         Name = "Venue1",
                         Type = VenueType.Single,
-                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"), 
+                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40") 
                     });
                 }
 

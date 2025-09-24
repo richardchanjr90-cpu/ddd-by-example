@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 

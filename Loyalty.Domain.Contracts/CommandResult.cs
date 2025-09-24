@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Loyalty.Domain.Contracts.Interfaces;
+﻿using Loyalty.Domain.Contracts.Interfaces;
 
 namespace Loyalty.Domain.Contracts
 {

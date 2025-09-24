@@ -1,9 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels;
 using Loyalty.Application.ViewModels.ProductGroup;
-using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

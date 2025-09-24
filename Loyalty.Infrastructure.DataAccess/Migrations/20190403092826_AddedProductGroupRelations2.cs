@@ -7,19 +7,19 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "VenueId",
+                "VenueId",
                 schema: "loyalty",
                 table: "Purchase",
                 newName: "LoyaltyProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_LoyaltyProgramId",
+                "IX_Purchase_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "LoyaltyProgramId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
+                "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "LoyaltyProgramId",
@@ -32,17 +32,17 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
+                "FK_Purchase_LoyaltyProgram_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.DropIndex(
-                name: "IX_Purchase_LoyaltyProgramId",
+                "IX_Purchase_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase");
 
             migrationBuilder.RenameColumn(
-                name: "LoyaltyProgramId",
+                "LoyaltyProgramId",
                 schema: "loyalty",
                 table: "Purchase",
                 newName: "VenueId");

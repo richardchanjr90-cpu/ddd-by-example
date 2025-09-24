@@ -9,10 +9,10 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "loyalty");
+                "loyalty");
 
             migrationBuilder.CreateTable(
-                name: "Venue",
+                "Venue",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Location",
+                "Location",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -56,8 +56,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Location", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Location_Venue_VenueId",
-                        column: x => x.VenueId,
+                        "FK_Location_Venue_VenueId",
+                        x => x.VenueId,
                         principalSchema: "loyalty",
                         principalTable: "Venue",
                         principalColumn: "Id",
@@ -65,7 +65,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LoyaltyProgram",
+                "LoyaltyProgram",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -87,8 +87,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_LoyaltyProgram", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoyaltyProgram_Venue_VenueId",
-                        column: x => x.VenueId,
+                        "FK_LoyaltyProgram_Venue_VenueId",
+                        x => x.VenueId,
                         principalSchema: "loyalty",
                         principalTable: "Venue",
                         principalColumn: "Id",
@@ -96,7 +96,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VenueCategory",
+                "VenueCategory",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -113,8 +113,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_VenueCategory", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VenueCategory_Venue_VenueId",
-                        column: x => x.VenueId,
+                        "FK_VenueCategory_Venue_VenueId",
+                        x => x.VenueId,
                         principalSchema: "loyalty",
                         principalTable: "Venue",
                         principalColumn: "Id",
@@ -122,7 +122,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VenueDetails",
+                "VenueDetails",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -143,8 +143,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_VenueDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_VenueDetails_Venue_VenueId",
-                        column: x => x.VenueId,
+                        "FK_VenueDetails_Venue_VenueId",
+                        x => x.VenueId,
                         principalSchema: "loyalty",
                         principalTable: "Venue",
                         principalColumn: "Id",
@@ -152,7 +152,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LoyaltyProductGroup",
+                "LoyaltyProductGroup",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -173,8 +173,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_LoyaltyProductGroup", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoyaltyProductGroup_LoyaltyProgram_LoyaltyProgramId",
-                        column: x => x.LoyaltyProgramId,
+                        "FK_LoyaltyProductGroup_LoyaltyProgram_LoyaltyProgramId",
+                        x => x.LoyaltyProgramId,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProgram",
                         principalColumn: "Id",
@@ -182,7 +182,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Card",
+                "Card",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -201,8 +201,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Card", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
-                        column: x => x.LoyaltyProductGroupId,
+                        "FK_Card_LoyaltyProductGroup_LoyaltyProductGroupId",
+                        x => x.LoyaltyProductGroupId,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProductGroup",
                         principalColumn: "Id",
@@ -210,7 +210,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LoyaltyProduct",
+                "LoyaltyProduct",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -230,8 +230,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_LoyaltyProduct", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_LoyaltyProduct_LoyaltyProductGroup_LoyaltyProductGroupId",
-                        column: x => x.LoyaltyProductGroupId,
+                        "FK_LoyaltyProduct_LoyaltyProductGroup_LoyaltyProductGroupId",
+                        x => x.LoyaltyProductGroupId,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProductGroup",
                         principalColumn: "Id",
@@ -239,7 +239,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Purchase",
+                "Purchase",
                 schema: "loyalty",
                 columns: table => new
                 {
@@ -257,8 +257,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Purchase", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Purchase_Card_CardId",
-                        column: x => x.CardId,
+                        "FK_Purchase_Card_CardId",
+                        x => x.CardId,
                         principalSchema: "loyalty",
                         principalTable: "Card",
                         principalColumn: "Id",
@@ -266,50 +266,50 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Card_LoyaltyProductGroupId",
+                "IX_Card_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "Card",
                 column: "LoyaltyProductGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Location_VenueId",
+                "IX_Location_VenueId",
                 schema: "loyalty",
                 table: "Location",
                 column: "VenueId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProduct_LoyaltyProductGroupId",
+                "IX_LoyaltyProduct_LoyaltyProductGroupId",
                 schema: "loyalty",
                 table: "LoyaltyProduct",
                 column: "LoyaltyProductGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProductGroup_LoyaltyProgramId",
+                "IX_LoyaltyProductGroup_LoyaltyProgramId",
                 schema: "loyalty",
                 table: "LoyaltyProductGroup",
                 column: "LoyaltyProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProgram_VenueId",
+                "IX_LoyaltyProgram_VenueId",
                 schema: "loyalty",
                 table: "LoyaltyProgram",
                 column: "VenueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_CardId",
+                "IX_Purchase_CardId",
                 schema: "loyalty",
                 table: "Purchase",
                 column: "CardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VenueCategory_VenueId",
+                "IX_VenueCategory_VenueId",
                 schema: "loyalty",
                 table: "VenueCategory",
                 column: "VenueId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VenueDetails_VenueId",
+                "IX_VenueDetails_VenueId",
                 schema: "loyalty",
                 table: "VenueDetails",
                 column: "VenueId",
@@ -319,40 +319,40 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Location",
-                schema: "loyalty");
+                "Location",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "LoyaltyProduct",
-                schema: "loyalty");
+                "LoyaltyProduct",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "Purchase",
-                schema: "loyalty");
+                "Purchase",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "VenueCategory",
-                schema: "loyalty");
+                "VenueCategory",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "VenueDetails",
-                schema: "loyalty");
+                "VenueDetails",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "Card",
-                schema: "loyalty");
+                "Card",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "LoyaltyProductGroup",
-                schema: "loyalty");
+                "LoyaltyProductGroup",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "LoyaltyProgram",
-                schema: "loyalty");
+                "LoyaltyProgram",
+                "loyalty");
 
             migrationBuilder.DropTable(
-                name: "Venue",
-                schema: "loyalty");
+                "Venue",
+                "loyalty");
         }
     }
 }
