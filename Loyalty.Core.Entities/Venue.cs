@@ -41,6 +41,8 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
+        public virtual ICollection<Worker> Workers { get; set; }
+
         public bool IsArchived { get; set; }
 
         public bool IsPublished { get; set; }

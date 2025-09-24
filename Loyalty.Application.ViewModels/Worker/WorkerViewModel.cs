@@ -8,28 +8,28 @@ namespace Loyalty.Application.ViewModels.Worker
         [JsonProperty("id")]
         public string Id { get; set; }
 
+        [JsonProperty("id")]
+        public long VenueId { get; set; }
+
+        [JsonProperty("workerId")]
+        public Guid WorkerId { get; set; }
+
+        [JsonProperty("role")]
+        public int Role { get; set; }
+
+        [JsonProperty("phone")]
+        public string Phone { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("description")]
-        public string Description { get; set; }
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
 
-        [JsonProperty("isActive")]
-        public bool IsActive { get; set; }
+        [JsonProperty("email")]
+        public string Email { get; set; }
 
-        [JsonProperty("startedDate")]
-        public DateTime StartedDate { get; set; }
-
-        [JsonProperty("endedDate")]
-        public DateTime EndedDate { get; set; }
-
-        [JsonProperty("isArchived")]
-        public bool IsArchived { get; set; }
-
-        [JsonProperty("cardBecomesInactiveAfterEnd")]
-        public bool CardBecomesInactiveAfterEnd { get; set; }
-
-        [JsonProperty("venueId")]
-        public int VenueId { get; set; }
+        [JsonProperty("photoUri")]
+        public string PhotoUri { get; set; }
     }
 }

@@ -11,6 +11,7 @@ using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
+using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
@@ -58,8 +59,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
-
-            
+ 
             CreateMap<PurchaseViewModel, CreatePurchaseCommand>();
             CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
@@ -77,12 +77,12 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<LoyaltyProductGroupViewModel, UpdateLoyaltyProductGroupCommand>();
 
             CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
-            CreateMap<ProductGroupViewModel, ProductGroupViewModel>();
-            CreateMap<ProductGroupViewModel, ProductGroupViewModel>();
+            CreateMap<ProductGroupViewModel, CreateProductGroupCommand>();
+            CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
 
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
-            CreateMap<CreateWorkerCommand, WorkerViewModel>();
-            CreateMap<UpdateWorkerCommand, WorkerViewModel>();
+            CreateMap<WorkerViewModel, CreateWorkerCommand>();
+            CreateMap<WorkerViewModel, UpdateWorkerCommand>();
 
         }
     }

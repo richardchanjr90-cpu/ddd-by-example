@@ -71,10 +71,10 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Archive(long id)
         {
-            var command = new CreateLoyaltyProgramCommand
+            var command = new ArchiveVenueCommand
             {
-                //Id = id,
-                //OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                Id = id,
+                OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
             };
 
             var commandResult = await Mediator.Send(command);

@@ -8,8 +8,8 @@ using Loyalty.Core.Entities.Schema;
 
 namespace Loyalty.Core.Entities
 {
-    [Table("WorkerVenue", Schema = SchemaName.Loyalty)]
-    public class WorkerVenue : AuditableEntity
+    [Table("Worker", Schema = SchemaName.Loyalty)]
+    public class Worker : AuditableEntity
     {
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
@@ -17,5 +17,15 @@ namespace Loyalty.Core.Entities
         public Guid WorkerId { get; set; }
 
         public VenueUserRole Role { get; set; }
+
+        public string Phone { get; set; }
+
+        public string Name { get; set; }
+
+        public string LastName { get; set; }
+
+        public string Email { get; set; }
+
+        public string PhotoUri { get; set; }
     }
 }

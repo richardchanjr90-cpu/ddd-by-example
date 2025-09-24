@@ -26,9 +26,6 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
         [JsonProperty("isArchived")]
         public bool IsArchived { get; set; }
 
-        [JsonProperty("cardBecomesInactiveAfterEnd")]
-        public bool CardBecomesInactiveAfterEnd { get; set; }
-
         [JsonProperty("venueId")]
         public int VenueId { get; set; }
     }

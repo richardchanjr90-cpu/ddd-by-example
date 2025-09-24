@@ -10,6 +10,12 @@ namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("ruleType")]
+        public int RuleType { get; set; }
+
+        [JsonProperty("ruleValue")]
+        public string RuleValue { get; set; }
+
         [JsonProperty("isArchived")]
         public bool IsArchived { get; set; }
     }

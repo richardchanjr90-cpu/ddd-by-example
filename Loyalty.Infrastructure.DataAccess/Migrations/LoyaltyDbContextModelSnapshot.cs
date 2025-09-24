@@ -328,6 +328,43 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.ToTable("VenueDetails","loyalty");
                 });
 
+            modelBuilder.Entity("Loyalty.Core.Entities.Worker", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<Guid?>("CreatedBy");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<Guid?>("ModifiedBy");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Phone");
+
+                    b.Property<string>("PhotoUri");
+
+                    b.Property<int>("Role");
+
+                    b.Property<long>("VenueId");
+
+                    b.Property<Guid>("WorkerId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VenueId");
+
+                    b.ToTable("Worker","loyalty");
+                });
+
             modelBuilder.Entity("Loyalty.Core.Entities.Location", b =>
                 {
                     b.HasOne("Loyalty.Core.Entities.Venue")
@@ -380,6 +417,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.Venue", "Venue")
                         .WithOne("VenueDetails")
                         .HasForeignKey("Loyalty.Core.Entities.VenueDetails", "VenueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Loyalty.Core.Entities.Worker", b =>
+                {
+                    b.HasOne("Loyalty.Core.Entities.Venue")
+                        .WithMany("Workers")
+                        .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

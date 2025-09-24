@@ -29,6 +29,8 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<VenueDetails> VenueDetails { get; set; }
 
+        public DbSet<Worker> Workers { get; set; }
+
         public LoyaltyDbContext(DbContextOptions options)
             : base(options)
         {
