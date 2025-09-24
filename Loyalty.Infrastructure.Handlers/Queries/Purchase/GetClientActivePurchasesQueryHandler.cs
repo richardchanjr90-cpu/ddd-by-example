@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.Client;
-using Loyalty.Domain.Handlers.Queries.Queries.Client;
+using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Client;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels;
 using Loyalty.Common.Shared.Exceptions;
@@ -15,7 +16,9 @@ namespace LoyaltyProgram.Http.Purchase
     {
         [FunctionName("PurchasePostFunction")]
         public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "purchases")]PurchaseViewModel model,
+            long id,
+            string guid,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/purchases/users/{guid}")]PurchaseViewModel model,
             HttpRequest req,
             ILogger log,
             [Inject]PurchaseAppService service)
@@ -24,7 +27,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new NoContentResult();
+                return new OkObjectResult(await service.Purchase(model, Guid.Parse(guid), id));
             });
         }
     }

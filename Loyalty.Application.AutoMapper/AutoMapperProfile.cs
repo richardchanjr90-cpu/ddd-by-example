@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Loyalty.Application.ViewModels;
 using Loyalty.Domain.Handlers.Queries.Commands.Location;
+using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Client;
@@ -40,7 +41,10 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
- 
+
+            
+            CreateMap<PurchaseViewModel, CreatePurchaseCommand>();
+
             CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
             CreateMap<GetClientActivePurchaseResult, ClientActivePurchasesViewModel>();
         }

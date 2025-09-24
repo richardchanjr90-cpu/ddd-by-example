@@ -5,16 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\Cards\**" />
+    <Compile Remove="Commands\Stamps\**" />
     <Compile Remove="Queries\Stamps\**" />
+    <EmbeddedResource Remove="Commands\Cards\**" />
+    <EmbeddedResource Remove="Commands\Stamps\**" />
     <EmbeddedResource Remove="Queries\Stamps\**" />
+    <None Remove="Commands\Cards\**" />
+    <None Remove="Commands\Stamps\**" />
     <None Remove="Queries\Stamps\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Cards\" />
     <Folder Include="Commands\LoyaltyProducts\" />
     <Folder Include="Commands\LoyaltyPrograms\" />
-    <Folder Include="Commands\Stamps\" />
     <Folder Include="Queries\Cards\" />
     <Folder Include="Queries\LoyaltyProducts\" />
     <Folder Include="Queries\LoyaltyPrograms\" />
