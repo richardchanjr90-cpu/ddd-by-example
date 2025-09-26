@@ -6,18 +6,14 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.VenueDetails
 {
     public class CreateVenueDetailsCommand : IRequest<ICommandResult>
     {
-        public long Id { get; set; }
-
         public long VenueId { get; set; }
 
         public string FullDescription { get; set; }
 
-        public List<string> Phones { get; set; }
+        public List<string> Phones { get; set; } = new List<string>();
 
-        public List<string> WebSites { get; set; }
+        public List<string> WebSites { get; set; } = new List<string>();
 
-        public string WorkingHours { get; set; }
-
-        public List<string> PhotosUrl { get; set; }
+        public List<string> WorkingHours { get; set; } = new List<string>();
     }
 }

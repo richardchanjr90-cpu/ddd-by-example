@@ -1,0 +1,22 @@
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Loyalty.Core.Contracts;
+using Loyalty.Domain.Handlers.Contracts.Queries.LoyaltyProductGroups;
+using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
+using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
+
+namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
+{
+    public class GetLoyaltyProductGroupByIdQueryHandler : BaseHandler, IGetLoyaltyProductGroupByIdQueryHandler
+    {
+        public GetLoyaltyProductGroupByIdQueryHandler(ILoyaltyDbContext context) : base(context)
+        {
+        }
+
+        public Task<GetLoyaltyProductGroupByIdQueryResult> Handle(GetLoyaltyProductGroupByIdQuery request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

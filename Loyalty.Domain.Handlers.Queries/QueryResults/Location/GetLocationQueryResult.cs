@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
+﻿namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
 {
     public class GetLocationQueryResult
     {
@@ -9,6 +7,8 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Location
         public long VenueId { get; set; }
 
         public string City { get; set; }
+
+        public string Address { get; set; }
 
         public float Latitude { get; set; }
 

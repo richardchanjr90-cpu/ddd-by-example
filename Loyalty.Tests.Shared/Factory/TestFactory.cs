@@ -1,16 +1,13 @@
-﻿using Loyalty.Tests.Shared.Enums;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Loyalty.Tests.Shared.Logging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Http.Headers;
 
 namespace Loyalty.Tests.Shared.Factory
 {
@@ -49,7 +46,7 @@ namespace Loyalty.Tests.Shared.Factory
             var bodyString = JsonConvert.SerializeObject(body);
             var buffer = Encoding.UTF8.GetBytes(bodyString);
        
-            using (MemoryStream memory = new MemoryStream())
+            using (var memory = new MemoryStream())
             {
                 var request = new DefaultHttpRequest(new DefaultHttpContext())
                 {

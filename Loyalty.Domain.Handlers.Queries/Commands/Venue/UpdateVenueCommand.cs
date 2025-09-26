@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using Loyalty.Core.Shared.Enums;
+using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Queries.Commands.Location;
-using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
+using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
@@ -28,8 +25,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
         public VenueCategoryType CategoryType { get; set; }
 
         public string LogoUrl { get; set; }
-
-        public UpdateVenueDetailsCommand Details { get; set; }
 
         public bool IsArchived { get; set; }
 

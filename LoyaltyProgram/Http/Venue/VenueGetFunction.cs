@@ -1,7 +1,6 @@
-using System;
 using System.Threading.Tasks;
-using Loyalty.Core.Shared.Exceptions;
-using Loyalty.Venue.Service;
+using Loyalty.Application.Venue;
+using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -16,7 +15,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenueGetFunction")]
         public static async Task<IActionResult> Run(
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venue/{id}")]HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}")]HttpRequest req,
             [Inject]LoyaltyVenueAppService service,
             ILogger log)
         {

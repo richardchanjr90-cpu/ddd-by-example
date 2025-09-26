@@ -1,0 +1,10 @@
+﻿using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
+using MediatR;
+
+namespace Loyalty.Domain.Handlers.Queries.Queries.VenueDetails
+{
+    public class GetVenueDetailsByIdQuery : IRequest<GetVenueFullByIdQueryResult>
+    {
+        public long Id { get; set; }
+    }
+}
