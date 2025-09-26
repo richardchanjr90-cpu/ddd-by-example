@@ -12,7 +12,7 @@ namespace Loyalty.Application.ViewModels.Worker
         public long VenueId { get; set; }
 
         [JsonProperty("workerId")]
-        public Guid WorkerId { get; set; }
+        public string WorkerId { get; set; }
 
         [JsonProperty("role")]
         public int Role { get; set; }

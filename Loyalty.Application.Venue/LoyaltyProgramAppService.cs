@@ -21,19 +21,20 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<LoyaltyProgramViewModel> Get(long id)
+        public async Task<LoyaltyProgramViewModel> Get(long id, long venueId)
         {
             var result = await Mediator.Send(new GetLoyaltyProgramByIdQuery
             {
-                Id = id
+                Id = id,
+                VenueId = venueId
             });
 
             return mapper.Map<LoyaltyProgramViewModel>(result);
         }
 
-        public async Task<List<LoyaltyProgramViewModel>> Get()
+        public async Task<List<LoyaltyProgramViewModel>> Get(long venueId)
         {
-            var result = await Mediator.Send(new GetLoyaltyProgramsQuery());
+            var result = await Mediator.Send(new GetLoyaltyProgramsQuery { VenueId = venueId});
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
         }
 
@@ -42,6 +43,8 @@ namespace Loyalty.Application.Venue
             //new VenueValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateLoyaltyProgramCommand>(model);
+            command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
+
             return await Mediator.Send(command);
         }
 
@@ -50,6 +53,8 @@ namespace Loyalty.Application.Venue
             //new VenueValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateLoyaltyProgramCommand>(model);
+            command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
+
             var commandResult = await Mediator.Send(command);
             return commandResult;
         }

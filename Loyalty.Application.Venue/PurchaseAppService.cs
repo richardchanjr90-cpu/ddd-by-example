@@ -47,7 +47,7 @@ namespace Loyalty.Application.Venue
                 UserId = userId,
                 VenueId = venueId,
                 Value = model.Value,
-                LoyaltyProductGroupId = model.LoyaltyGroupId
+                LoyaltyProductGroupId = model.LoyaltyProductGroupId 
             });
 
             return result;
@@ -58,13 +58,13 @@ namespace Loyalty.Application.Venue
             //todo: validation
             //todo: validate worker belongs to venue
 
-            var result = await Mediator.Send(new CreatePurchaseCommand
+            var result = await Mediator.Send(new BurnPurchaseCommand
             {
                 WorkerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40"),
                 UserId = parse,
                 VenueId = id,
-                Value = model.Value,
-                LoyaltyProductGroupId = model.LoyaltyGroupId
+                Amount = model.Value,
+                LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
             return result;

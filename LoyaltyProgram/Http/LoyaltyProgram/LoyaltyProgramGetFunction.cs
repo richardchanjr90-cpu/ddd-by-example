@@ -25,7 +25,7 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Get(id));
+                return new OkObjectResult(await service.Get(id, venueId));
             });
         }
     }

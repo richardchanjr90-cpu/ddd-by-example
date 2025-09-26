@@ -7,10 +7,13 @@ namespace Loyalty.Application.ViewModels.Purchase
         [JsonProperty("id")]
         public long Id { get; set; }
 
-        [JsonProperty("loyaltyGroupId")]
-        public long LoyaltyGroupId { get; set; }
+        [JsonProperty("loyaltyProductGroupId")]
+        public long LoyaltyProductGroupId { get; set; }
 
         [JsonProperty("value")]
-        public decimal Value { get; set; }
+        public int Value { get; set; }
+
+        [JsonProperty("userId")]
+        public string UserId { get; set; }
     }
 }

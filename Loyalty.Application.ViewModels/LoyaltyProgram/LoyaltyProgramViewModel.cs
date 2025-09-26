@@ -14,8 +14,8 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("isActive")]
-        public bool IsActive { get; set; }
+        [JsonProperty("isPublished")]
+        public bool IsPublished { get; set; }
 
         [JsonProperty("startedDate")]
         public DateTime StartedDate { get; set; }
@@ -27,6 +27,6 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
         public bool IsArchived { get; set; }
 
         [JsonProperty("venueId")]
-        public int VenueId { get; set; }
+        public long VenueId { get; set; }
     }
 }

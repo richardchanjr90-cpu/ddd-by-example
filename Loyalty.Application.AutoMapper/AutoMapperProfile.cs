@@ -59,15 +59,15 @@ namespace Loyalty.Application.AutoMapper
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
 
-            CreateMap<PurchaseViewModel, CreatePurchaseCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
 
             CreateMap<GetLoyaltyProgramByIdQueryResult, LoyaltyProgramViewModel>();
             CreateMap<LoyaltyProgramViewModel, CreateLoyaltyProgramCommand>()
+                .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            CreateMap<LoyaltyProgramViewModel, UpdateLoyaltyProgramCommand>();
+            CreateMap<LoyaltyProgramViewModel, UpdateLoyaltyProgramCommand>()
+                .ForMember(x => x.UserId, opt => opt.Ignore());
 
             CreateMap<GetProductByIdQueryResult, ProductViewModel>();
             CreateMap<ProductViewModel, CreateProductCommand>()
