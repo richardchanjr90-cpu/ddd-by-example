@@ -5,6 +5,7 @@ using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Purchase;
+using Loyalty.Application.ViewModels.Rule;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
@@ -13,6 +14,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
+using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
@@ -21,6 +23,7 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
@@ -89,6 +92,10 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<WorkerViewModel, UpdateWorkerCommand>();
 
+            CreateMap<RuleViewModel, UpdateRuleCommand>();
+            CreateMap<RuleViewModel, CreateRuleCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
         }
     }
 }

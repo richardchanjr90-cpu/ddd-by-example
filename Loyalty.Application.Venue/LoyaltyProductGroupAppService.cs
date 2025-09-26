@@ -31,9 +31,12 @@ namespace Loyalty.Application.Venue
             return mapper.Map<LoyaltyProductGroupViewModel>(result);
         }
 
-        public async Task<List<LoyaltyProductGroupViewModel>> Get()
+        public async Task<List<LoyaltyProductGroupViewModel>> GetAll(long loyaltyProgramId)
         {
-            var result = await Mediator.Send(new GetLoyaltyProductGroupQuery());
+            var result = await Mediator.Send(new GetLoyaltyProductGroupQuery()
+            {
+                LoyaltyProgramId = loyaltyProgramId
+            });
             return mapper.Map<List<LoyaltyProductGroupViewModel>>(result.Result);
         }
 

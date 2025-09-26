@@ -25,15 +25,20 @@ namespace Loyalty.Application.Venue
         {
             var result = await Mediator.Send(new GetProductByIdQuery
             {
-                Id = id
+                Id = id,
+            
             });
 
             return mapper.Map<ProductViewModel>(result);
         }
 
-        public async Task<List<ProductViewModel>> Get()
+        public async Task<List<ProductViewModel>> GetAll(long venueId)
         {
-            var result = await Mediator.Send(new GetProductsQuery());
+            var result = await Mediator.Send(new GetProductsQuery
+            {
+                VenueId = venueId
+            });
+
             return mapper.Map<List<ProductViewModel>>(result.Result);
         }
 

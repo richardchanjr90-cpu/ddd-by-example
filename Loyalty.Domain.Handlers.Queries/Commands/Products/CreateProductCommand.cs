@@ -5,7 +5,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Products
 {
     public class CreateProductCommand : IRequest<ICommandResult>
     {
-        public string Id { get; set; }
+        public long VenueId { get; set; }
 
         public string Name { get; set; }
 

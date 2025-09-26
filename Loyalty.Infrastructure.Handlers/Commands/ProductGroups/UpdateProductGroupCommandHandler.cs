@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
+using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 {
@@ -15,9 +19,35 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
         {
         }
 
-        public Task<ICommandResult> Handle(UpdateProductGroupCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(UpdateProductGroupCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var group = await Context.ProductGroups
+                .Where(x => x.Id == request.Id)
+                .FirstOrDefaultAsync(cancellationToken);
+
+            if (group == null)
+            {
+                group = new ProductGroup
+                {
+                    VenueId = request.VenueId,
+                    Icon = request.Icon,
+                    Name = request.Name,
+                };
+
+                Context.ProductGroups.Add(group);
+            }
+            else
+            {
+                group.VenueId = request.VenueId;
+                group.Icon = request.Icon;
+                group.Name = request.Name;
+            }
+
+            return new CommandResult
+            {
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = group.Id
+            };
         }
     }
 }

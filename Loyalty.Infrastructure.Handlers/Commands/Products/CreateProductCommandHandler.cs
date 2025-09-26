@@ -2,6 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
+using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
@@ -11,13 +13,27 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
     public class CreateProductCommandHandler
         : BaseHandler, ICreateProductCommandHandler
     {
-        public CreateProductCommandHandler(ILoyaltyDbContext context) : base(context)
+        public CreateProductCommandHandler(ILoyaltyDbContext context) 
+            : base(context)
         {
         }
 
-        public Task<ICommandResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var product = new Product
+            {
+                VenueId = request.VenueId,
+                Icon = request.Icon,
+                Name = request.Name,
+            };
+
+            Context.Products.Add(product);
+
+            return new CommandResult
+            {
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = product.Id
+            };
         }
     }
 }

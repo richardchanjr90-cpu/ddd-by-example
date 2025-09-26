@@ -22,7 +22,7 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
-        public DbSet<LoyaltyProgramRule> LoyaltyRules { get; set; }
+        public DbSet<LoyaltyGroupRule> LoyaltyRules { get; set; }
 
         public DbSet<Purchase> Purchases { get; set; }
 

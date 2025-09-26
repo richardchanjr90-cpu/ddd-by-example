@@ -17,7 +17,7 @@ namespace LoyaltyProgram.Http.Product
         public static async Task<IActionResult> Run(
             long venueId,
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/products/{id}")]ProductViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/products/{id}")]
             HttpRequest req,
             ILogger log,
             [Inject]ProductAppService service)

@@ -1,4 +1,5 @@
-﻿using Loyalty.Core.Entities;
+﻿using System;
+using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 
@@ -8,6 +9,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static Location ToSingle(this CreateLocationCommand command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var result = new Location
             {
                 VenueId = command.VenueId,
@@ -22,6 +28,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static Location ToSingle(this UpdateLocationCommand command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var result = new Location
             {
                 Id = command.Id,
@@ -37,6 +48,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static GetLocationQueryResult ToResult(this Location item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var result = new GetLocationQueryResult
             {
                 Id = item.Id,

@@ -5,7 +5,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.ProductGroups
 {
     public class UpdateProductGroupCommand : IRequest<ICommandResult>
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         public long VenueId { get; set; }
 

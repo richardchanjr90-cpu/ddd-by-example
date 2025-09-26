@@ -1,4 +1,5 @@
-﻿using Loyalty.Common.Shared.Extensions;
+﻿using System;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
@@ -9,6 +10,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static VenueDetails ToSingle(this CreateVenueDetailsCommand command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var result = new VenueDetails
             {
                 VenueId = command.VenueId,
@@ -23,6 +29,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static VenueDetails ToSingle(this UpdateVenueDetailsCommand command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var result = new VenueDetails
             {
                 VenueId = command.VenueId,
