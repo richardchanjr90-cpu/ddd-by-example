@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
@@ -9,6 +10,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static Venue ToSingle(this CreateVenueCommand command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var result = new Venue
             {
                 Name = command.Name,
@@ -29,6 +35,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static Venue ToSingle(this UpdateVenueCommand command)
         {
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var result = new Venue
             {
                 Id = command.Id,
@@ -50,6 +61,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static GetVenueByIdQueryResult ToResult(this Venue item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var result = new GetVenueByIdQueryResult
             {
                 Id = item.Id,
@@ -70,6 +86,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<GetVenueByIdQueryResult> ToResults(this List<Venue> items)
         {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
             var results = new List<GetVenueByIdQueryResult>();
             items.ForEach(x => results.Add(x.ToResult()));
             return results;

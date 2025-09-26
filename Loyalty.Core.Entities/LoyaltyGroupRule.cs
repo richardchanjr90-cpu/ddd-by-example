@@ -6,15 +6,17 @@ using Loyalty.Core.Entities.Schema;
 
 namespace Loyalty.Core.Entities
 {
-    [Table("LoyaltyProgramRule", Schema = SchemaName.Loyalty)]
-    public class LoyaltyProgramRule : AuditableEntity, IArchivableEntity
+    [Table("LoyaltyGroupRule", Schema = SchemaName.Loyalty)]
+    public class LoyaltyGroupRule : AuditableEntity, IArchivableEntity
     {
-        [ForeignKey(nameof(Venue))]
-        public long VenueId { get; set; }
+        [ForeignKey(nameof(LoyaltyProductGroup))]
+        public long LoyaltyProductGroupId { get; set; }
 
         public LoyaltyRuleType RuleType { get; set; }
 
-        public string RuleValue { get; set; }
+        public string Rule { get; set; }
+
+        public string RuleVersion { get; set; }
 
         public bool IsArchived { get; set; }
     }

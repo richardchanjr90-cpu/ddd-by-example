@@ -1,4 +1,6 @@
-﻿using Loyalty.Domain.Contracts.Interfaces;
+﻿using System;
+using Loyalty.Common.Shared.Enums;
+using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
@@ -7,9 +9,9 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public long VenueId { get; set; }
 
-        public string WorkerId { get; set; }
+        public Guid WorkerId { get; set; }
 
-        public int Role { get; set; }
+        public VenueUserRole Role { get; set; }
 
         public string Phone { get; set; }
 

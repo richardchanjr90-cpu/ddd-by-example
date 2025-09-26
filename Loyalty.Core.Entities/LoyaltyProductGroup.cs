@@ -13,7 +13,9 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(LoyaltyProgram))]
         public long LoyaltyProgramId { get; set; }
 
-        public LoyaltyProgramRule Rule { get; set; }
+        public string Name { get; set; }
+
+        public LoyaltyGroupRule Rule { get; set; }
 
         public ProductGroup ProductGroup { get; set; }
 

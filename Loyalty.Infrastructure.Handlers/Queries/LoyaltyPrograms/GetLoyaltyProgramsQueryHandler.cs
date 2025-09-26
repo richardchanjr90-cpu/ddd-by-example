@@ -12,7 +12,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
 {
     public class GetLoyaltyProgramsQueryHandler : BaseHandler, IGetLoyaltyProgramsQueryHandler
     {
-        public GetLoyaltyProgramsQueryHandler(ILoyaltyDbContext context) : base(context)
+        public GetLoyaltyProgramsQueryHandler(ILoyaltyDbContext context) 
+            : base(context)
         {
         }
 

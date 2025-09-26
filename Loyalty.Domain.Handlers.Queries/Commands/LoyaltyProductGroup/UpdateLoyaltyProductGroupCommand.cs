@@ -1,16 +1,25 @@
-﻿using Loyalty.Domain.Contracts.Interfaces;
+﻿using Loyalty.Common.Shared.Enums;
+using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Queries.Commands.Rules;
+using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
 {
     public class UpdateLoyaltyProductGroupCommand : IRequest<ICommandResult>
     {
+        public long Id { get; set; }
+
+        public long LoyaltyProgramId { get; set; }
+
         public string Name { get; set; }
 
-        public int RuleType { get; set; }
-
-        public string RuleValue { get; set; }
+        public UpdateRuleCommand Rule { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public string Description { get; set; }
+
+        public GetProductGroupByIdQueryResult ProductGroup { get; set; }
     }
 }

@@ -37,6 +37,10 @@
     </PackageReference>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Queries\Rules\" />
+  </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7.1</LangVersion>
