@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                     Products = request.Products.ToEntities()
                 };
 
-                Context.ProductGroups.Add(group);
+                Context.ProductGroups.Update(group);
             }
             else
             {
