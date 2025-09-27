@@ -20,5 +20,8 @@ namespace Loyalty.Core.Entities
         public string Icon { get; set; }
 
         public bool IsArchived { get; set; }
+
+        [ForeignKey(nameof(ProductGroup))]
+        public long? ProductGroupId { get; set; }
     }
 }

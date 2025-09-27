@@ -16,7 +16,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
     public class UpdateProductGroupCommandHandler
         : BaseHandler, IUpdateProductGroupCommandHandler
     {
-        public UpdateProductGroupCommandHandler(ILoyaltyDbContext context) 
+        public UpdateProductGroupCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -24,10 +24,58 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
         public async Task<ICommandResult> Handle(UpdateProductGroupCommand request, CancellationToken cancellationToken)
         {
             var group = await Context.ProductGroups
+                .Include(x => x.Products)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (group == null)
+            var entities = request.Products?.ToEntities();
+
+            if (group != null)
+            {
+                // Update parent
+                group.VenueId = request.VenueId;
+                group.Icon = request.Icon;
+                group.Name = request.Name;
+
+                if (entities != null)
+                {
+                    //Remove some ids
+                    foreach (var existingChild in group.Products.ToList())
+                    {
+                        if (entities.All(c => c.Id != existingChild.Id))
+                        {
+                            existingChild.ProductGroupId = null;
+                            Context.Products.Update(existingChild);
+                        }
+                    }
+
+                    // Update and Insert children
+                    foreach (var childModel in entities)
+                    {
+                        var existingChild = group.Products.SingleOrDefault(c => c.Id == childModel.Id);
+
+                        if (existingChild != null)
+                        {
+                            Context.Entry(existingChild).CurrentValues.SetValues(childModel);
+                        }
+                        else
+                        {
+                            childModel.ProductGroupId = group.Id;
+                            Context.Products.Update(childModel);
+                        }
+                    }
+                }
+                else
+                {
+                    //Remove all
+                    foreach (var existingChild in group.Products.ToList())
+                    {
+                        existingChild.ProductGroupId = null;
+                        Context.Products.Update(existingChild);
+                    }
+                }
+            }
+            else
             {
                 group = new ProductGroup
                 {
@@ -36,21 +84,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                     Name = request.Name,
                     Products = request.Products.ToEntities()
                 };
-
                 Context.ProductGroups.Update(group);
-            }
-            else
-            {
-                group.VenueId = request.VenueId;
-                group.Icon = request.Icon;
-                group.Name = request.Name;
-                group.Products = request.Products.ToEntities();
             }
 
             return new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = group.Id
+                Result = group?.Id
             };
         }
     }
