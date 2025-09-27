@@ -31,9 +31,12 @@ namespace Loyalty.Application.Venue
             return mapper.Map<WorkerViewModel>(result);
         }
 
-        public async Task<List<WorkerViewModel>> Get()
+        public async Task<List<WorkerViewModel>> GetAll(long venueId)
         {
-            var result = await Mediator.Send(new GetWorkersQuery());
+            var result = await Mediator.Send(new GetWorkersQuery
+            {
+                VenueId = venueId
+            });
             return mapper.Map<List<WorkerViewModel>>(result.Result);
         }
 

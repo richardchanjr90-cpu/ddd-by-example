@@ -21,7 +21,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 
         public async Task<GetWorkersQueryResult> Handle(GetWorkersQuery request, CancellationToken cancellationToken)
         {
-            var workers = await (Context.Workers where).ToListAsync(cancellationToken);
+            var workers = await (from lp in Context.Workers
+                where lp.VenueId == request.VenueId
+                select lp).ToListAsync(cancellationToken);
 
             return new GetWorkersQueryResult
             {

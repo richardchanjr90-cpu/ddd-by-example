@@ -43,6 +43,5 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
             return results;
         }
-
     }
 }
