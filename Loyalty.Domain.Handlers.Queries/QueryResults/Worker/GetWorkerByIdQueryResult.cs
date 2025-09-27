@@ -1,16 +1,15 @@
 ﻿using System;
+using Loyalty.Common.Shared.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Worker
 {
     public class GetWorkerByIdQueryResult
     {
-        public string Id { get; set; }
-
-        public long VenueId { get; set; }
+        public long Id { get; set; }
 
         public Guid WorkerId { get; set; }
 
-        public int Role { get; set; }
+        public VenueUserRole Role { get; set; }
 
         public string Phone { get; set; }
 

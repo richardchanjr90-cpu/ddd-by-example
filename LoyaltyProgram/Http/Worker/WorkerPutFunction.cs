@@ -15,8 +15,8 @@ namespace LoyaltyProgram.Http.Worker
     {
         [FunctionName("WorkerPutFunction")]
         public static async Task<IActionResult> Run(
-            long id,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/workers")]WorkerViewModel model,
+            long venueId,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/workers")]WorkerViewModel model,
             HttpRequest req,
             ILogger log,
             [Inject]WorkerAppService service)
@@ -25,7 +25,7 @@ namespace LoyaltyProgram.Http.Worker
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Update(model));
+                return new OkObjectResult(await service.Update(model, venueId));
             });
         }
     }

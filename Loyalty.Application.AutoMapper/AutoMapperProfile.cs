@@ -90,8 +90,10 @@ namespace Loyalty.Application.AutoMapper
 
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
             CreateMap<WorkerViewModel, CreateWorkerCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            CreateMap<WorkerViewModel, UpdateWorkerCommand>();
+                .ForSourceMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.VenueId, opt => opt.Ignore());
+            CreateMap<WorkerViewModel, UpdateWorkerCommand>()
+                .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             //CreateMap<SingleRuleViewModel, CreateSingleRuleCommand>();
 
