@@ -22,14 +22,14 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchase
             //todo: add venue filtration
             var result = await (
                 from lp in Context.LoyaltyPrograms.Where(lp => lp.VenueId == request.VenueId && lp.IsPublished)
-                from lg in Context.LoyaltyProductGroups.Include(x => x.Rule)
+                from lg in Context.LoyaltyProductGroups.Include(x => x.Rules)
                 where lg.LoyaltyProgramId == lp.Id
             join purchase in Context.Purchases on lg.Id equals purchase.LoyaltyProductGroupId
                 select new GetActivePurchaseResult
                 {
                     LoyaltyProgramId = lg.LoyaltyProgramId,
                     LoyaltyGroupId = lg.Id,
-                    RuleType = lg.Rule.RuleType,
+                    // RuleType = lg.Rule.RuleType,
                     UserId = request.UserId,
                     Purchases = lg.Purchases.Where(x => x.LoyaltyProductGroupId == lg.Id 
                                                                                   && x.UserId == request.UserId

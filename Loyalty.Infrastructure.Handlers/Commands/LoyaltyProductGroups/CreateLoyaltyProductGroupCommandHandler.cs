@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -30,11 +31,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 //RuleType = request.Rule.RuleType,
                 //ProductGroup = request.ProductGroup?.ToResult()
             };
-            
+
             if (request.Rules == null)
             {
                 throw new ArgumentNullException(nameof(request.Rules));
             }
+
+            group.Rules = new List<LoyaltyGroupRule>();
 
             foreach (var commandRule in request.Rules)
             {
@@ -43,7 +46,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 rule.RuleVersion = commandRule.RuleVersion;
                 rule.RuleType = commandRule.RuleType;
 
-                group.Rule = rule;
+                group.Rules.Add(rule);
                 //rule.ParseRule(commandRule.Rule, commandRule.RuleType);
             }
             Context.LoyaltyProductGroups.Add(group);
