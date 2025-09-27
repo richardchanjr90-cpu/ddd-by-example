@@ -14,7 +14,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
     public class ArchiveProductGroupCommandHandler
         : BaseHandler, IArchiveProductGroupCommandHandler
     {
-        public ArchiveProductGroupCommandHandler(ILoyaltyDbContext context) : base(context)
+        public ArchiveProductGroupCommandHandler(ILoyaltyDbContext context) 
+            : base(context)
         {
         }
 

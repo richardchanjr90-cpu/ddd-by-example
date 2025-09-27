@@ -8,6 +8,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
+using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
@@ -15,7 +16,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
     public class UpdateProductGroupCommandHandler
         : BaseHandler, IUpdateProductGroupCommandHandler
     {
-        public UpdateProductGroupCommandHandler(ILoyaltyDbContext context) : base(context)
+        public UpdateProductGroupCommandHandler(ILoyaltyDbContext context) 
+            : base(context)
         {
         }
 
@@ -32,6 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                     VenueId = request.VenueId,
                     Icon = request.Icon,
                     Name = request.Name,
+                    Products = request.Products.ToEntities()
                 };
 
                 Context.ProductGroups.Add(group);
@@ -41,6 +44,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                 group.VenueId = request.VenueId;
                 group.Icon = request.Icon;
                 group.Name = request.Name;
+                group.Products = request.Products.ToEntities();
             }
 
             return new CommandResult

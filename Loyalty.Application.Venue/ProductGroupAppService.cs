@@ -44,7 +44,6 @@ namespace Loyalty.Application.Venue
         public async Task<ICommandResult> Create(ProductGroupViewModel model)
         {
             //new VenueValidator().ValidateAndThrow(model);
-
             var command = mapper.Map<CreateProductGroupCommand>(model);
             return await Mediator.Send(command);
         }

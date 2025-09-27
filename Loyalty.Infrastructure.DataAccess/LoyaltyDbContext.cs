@@ -59,6 +59,13 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Worker>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
+
+            modelBuilder.Entity<Location>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<VenueDetails>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()
@@ -70,11 +77,11 @@ namespace Loyalty.Infrastructure.DataAccess
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((AuditableEntity) entry.Entity).CreatedBy = Guid.Empty;
+                    ((AuditableEntity)entry.Entity).CreatedBy = Guid.Empty;
                     ((AuditableEntity)entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((AuditableEntity) entry.Entity).ModifiedBy = Guid.Empty;
+                ((AuditableEntity)entry.Entity).ModifiedBy = Guid.Empty;
                 ((AuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
             }
         }

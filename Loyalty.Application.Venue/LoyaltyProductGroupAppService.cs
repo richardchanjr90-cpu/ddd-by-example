@@ -46,14 +46,14 @@ namespace Loyalty.Application.Venue
         public async Task<ICommandResult> Create(LoyaltyProductGroupViewModel model)
         {
             //new VenueValidator().ValidateAndThrow(model);
+            var command = new CreateLoyaltyProductGroupCommand
+            {
+                Description = model.Description,
+                LoyaltyProgramId = model.LoyaltyProgramId,
+                Name = model.Name
+            };
 
-
-            var command = new CreateLoyaltyProductGroupCommand();
-            command.Description = model.Description;
-            command.LoyaltyProgramId = model.LoyaltyProgramId;
-            command.Name = model.Name;
             //command.ProductGroup = model.ProductGroup;
-
             foreach (var rule in model.Rules.Rules)
             {
                 string nameSpace = "Loyalty.Core.Entities.Rules";

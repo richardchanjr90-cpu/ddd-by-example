@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using Loyalty.Application.ViewModels.Product;
+using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.ProductGroup
 {
@@ -15,5 +17,8 @@ namespace Loyalty.Application.ViewModels.ProductGroup
 
         [JsonProperty("icon")]
         public string Icon { get; set; }
+
+        [JsonProperty("products")]
+        public List<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();
     }
 }

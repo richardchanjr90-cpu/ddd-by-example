@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -21,6 +22,7 @@ namespace LoyaltyProgram.Http.ProductGroup
             ILogger log,
             [Inject]ProductGroupAppService service)
         {
+            model = await req.Cast<ProductGroupViewModel>();
             log.LogInformation($"{nameof(ProductGroupPutFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
