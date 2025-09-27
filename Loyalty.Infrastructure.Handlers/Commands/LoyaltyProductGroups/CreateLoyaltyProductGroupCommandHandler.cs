@@ -7,13 +7,14 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
+using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 {
     public class CreateLoyaltyProductGroupCommandHandler
         : BaseHandler, ICreateLoyaltyProductGroupCommandHandler
     {
-        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context) 
+        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -27,9 +28,24 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 Description = request.Description,
                 Name = request.Name,
                 //RuleType = request.Rule.RuleType,
-                //ProductGroup = request.ProductGroup.ToResult()
+                //ProductGroup = request.ProductGroup?.ToResult()
             };
+            
+            if (request.Rules == null)
+            {
+                throw new ArgumentNullException(nameof(request.Rules));
+            }
 
+            foreach (var commandRule in request.Rules)
+            {
+                var rule = new LoyaltyGroupRule();
+                rule.Rule = JsonConvert.SerializeObject(commandRule.Rule);
+                rule.RuleVersion = commandRule.RuleVersion;
+                rule.RuleType = commandRule.RuleType;
+
+                group.Rule = rule;
+                //rule.ParseRule(commandRule.Rule, commandRule.RuleType);
+            }
             Context.LoyaltyProductGroups.Add(group);
 
             return new CommandResult

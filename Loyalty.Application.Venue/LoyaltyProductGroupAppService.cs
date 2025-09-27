@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
+using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace Loyalty.Application.Venue
 {
@@ -33,7 +36,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<List<LoyaltyProductGroupViewModel>> GetAll(long loyaltyProgramId)
         {
-            var result = await Mediator.Send(new GetLoyaltyProductGroupQuery()
+            var result = await Mediator.Send(new GetLoyaltyProductGroupQuery
             {
                 LoyaltyProgramId = loyaltyProgramId
             });
@@ -44,7 +47,31 @@ namespace Loyalty.Application.Venue
         {
             //new VenueValidator().ValidateAndThrow(model);
 
-            var command = mapper.Map<CreateLoyaltyProductGroupCommand>(model);
+
+            var command = new CreateLoyaltyProductGroupCommand();
+            command.Description = model.Description;
+            command.LoyaltyProgramId = model.LoyaltyProgramId;
+            command.Name = model.Name;
+            //command.ProductGroup = model.ProductGroup;
+
+            foreach (var rule in model.Rules.Rules)
+            {
+                string nameSpace = "Loyalty.Core.Entities.Rules";
+                string assemblyName = "Loyalty.Core.Entities";
+                string version = rule.RuleVersion.ToUpper();
+
+                var name = Enum.GetName(typeof(LoyaltyRuleType), rule.RuleType);
+
+                Type type = Type.GetType($"{nameSpace}.{name}Rule{version}, {assemblyName}");
+                var result  = JsonConvert.DeserializeObject(rule.Rule, type);
+                command.Rules.Add(new CreateSingleRuleCommand
+                {
+                    Rule = result,
+                    RuleType = rule.RuleType,
+                    RuleVersion = rule.RuleVersion
+                });
+            }
+
             return await Mediator.Send(command);
         }
 

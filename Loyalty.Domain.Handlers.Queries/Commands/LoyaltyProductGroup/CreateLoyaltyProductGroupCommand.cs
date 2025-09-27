@@ -1,4 +1,5 @@
-﻿using Loyalty.Common.Shared.Enums;
+﻿using System.Collections.Generic;
+using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
@@ -14,7 +15,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
 
         public bool IsArchived { get; set; }
 
-        public CreateRuleCommand Rule { get; set; }
+        public List<CreateSingleRuleCommand> Rules { get; set; } = new List<CreateSingleRuleCommand>();
 
         public string Description { get; set; }
 

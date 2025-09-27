@@ -11,10 +11,8 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
     {
         public long Id { get; set; }
 
-        public string Rule { get; set; }
+        public LoyaltyRuleType CombinedRuleType { get; set; }
 
-        public LoyaltyRuleType RuleType { get; set; }
-
-        public string RuleVersion { get; set; }
+        public List<CreateSingleRuleCommand> Rules { get; set; } = new List<CreateSingleRuleCommand>();
     }
 }

@@ -15,7 +15,7 @@ namespace Loyalty.Core.Entities
 
         public string Name { get; set; }
 
-        public LoyaltyGroupRule Rule { get; set; }
+        public virtual ICollection<LoyaltyGroupRule> Rules { get; set; }
 
         public ProductGroup ProductGroup { get; set; }
 

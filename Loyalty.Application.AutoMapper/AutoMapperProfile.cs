@@ -77,10 +77,11 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<ProductViewModel, UpdateProductCommand>();
 
-            CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupViewModel>();
-            CreateMap<LoyaltyProductGroupViewModel, CreateLoyaltyProductGroupCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            CreateMap<LoyaltyProductGroupViewModel, UpdateLoyaltyProductGroupCommand>();
+            //CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupViewModel>();
+
+            //CreateMap<LoyaltyProductGroupViewModel, CreateLoyaltyProductGroupCommand>()
+            //    .ForSourceMember(x => x.Id, opt => opt.Ignore());
+            //CreateMap<LoyaltyProductGroupViewModel, UpdateLoyaltyProductGroupCommand>();
 
             CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
             CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()
@@ -92,10 +93,13 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<WorkerViewModel, UpdateWorkerCommand>();
 
-            CreateMap<RuleViewModel, UpdateRuleCommand>();
-            CreateMap<RuleViewModel, CreateRuleCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
+            //CreateMap<SingleRuleViewModel, CreateSingleRuleCommand>();
+
+            //CreateMap<RuleViewModel, UpdateRuleCommand>();
+            //CreateMap<RuleViewModel, CreateRuleCommand>()
+            //    .ForSourceMember(x => x.Id, opt => opt.Ignore());
+
+            //CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
         }
     }
 }
