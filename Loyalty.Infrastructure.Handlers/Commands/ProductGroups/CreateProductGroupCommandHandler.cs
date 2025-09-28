@@ -26,7 +26,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                 VenueId = request.VenueId,
                 Icon = request.Icon,
                 Name = request.Name,
-                Products = request.Products?.ToEntities()
             };
 
             Context.ProductGroups.Update(group);

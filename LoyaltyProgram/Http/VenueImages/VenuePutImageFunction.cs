@@ -20,7 +20,7 @@ namespace LoyaltyProgram.Http.VenueImages
         public static async Task<IActionResult> Run(
             long id,
             int index,
-            [HttpTrigger(AuthorizationLevel.Function, "post, put", Route = "venues/{id}/details/images/{index}")]
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
             [Inject]LoyaltyVenueImageAppService service,

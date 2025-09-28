@@ -66,11 +66,6 @@ namespace Loyalty.Infrastructure.DataAccess
                 .WithOne(x => x.OwnerVenue)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Venue>()
-                .HasMany(b => b.Products)
-                .WithOne(x => x.OwnerVenue)
-               .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<LoyaltyProductGroup>()
                 .HasOne(b => b.Group)
                 .WithMany(x => x.LoyaltyProductGroups)
@@ -83,22 +78,24 @@ namespace Loyalty.Infrastructure.DataAccess
 
             modelBuilder.Entity<Worker>()
                 .HasIndex(u => u.Email)
-                .IsUnique();
+                .IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<Worker>()
                 .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+                .HasIndex(p => new {p.ProductGroupId, p.Name}).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
+            //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
-                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<LoyaltyProductGroup>()
-                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique();
-
-            modelBuilder.Entity<Location>()
-                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<Location>()
                 .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();

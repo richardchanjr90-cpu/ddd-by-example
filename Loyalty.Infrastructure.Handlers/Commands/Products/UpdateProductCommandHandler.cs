@@ -30,7 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
             {
                 product = new Product
                 {
-                    VenueId = request.VenueId,
+                    ProductGroupId = request.ProductGroupId,
                     Icon = request.Icon,
                     Name = request.Name,
                 };
@@ -39,7 +39,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
             }
             else
             {
-                product.VenueId = request.VenueId;
+                product.ProductGroupId = request.ProductGroupId;
                 product.Icon = request.Icon;
                 product.Name = request.Name;
             }

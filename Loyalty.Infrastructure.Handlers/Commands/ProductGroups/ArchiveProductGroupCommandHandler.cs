@@ -22,12 +22,21 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
         public async Task<ICommandResult> Handle(ArchiveProductGroupCommand request, CancellationToken cancellationToken)
         {
             var group = await Context.ProductGroups
+                .Include(x => x.Products)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (group != null)
             {
                 group.IsArchived = true;
+
+                if(group.Products != null)
+                {
+                    foreach (var product in group.Products)
+                    {
+                        product.IsArchived = true;
+                    }
+                }
             }
 
             return new CommandResult

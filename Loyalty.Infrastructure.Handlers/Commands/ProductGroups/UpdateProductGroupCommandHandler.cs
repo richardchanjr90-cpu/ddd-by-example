@@ -24,56 +24,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
         public async Task<ICommandResult> Handle(UpdateProductGroupCommand request, CancellationToken cancellationToken)
         {
             var group = await Context.ProductGroups
-                .Include(x => x.Products)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            var entities = request.Products?.ToEntities();
-
             if (group != null)
             {
-                // Update parent
                 group.VenueId = request.VenueId;
                 group.Icon = request.Icon;
                 group.Name = request.Name;
-
-                if (entities != null)
-                {
-                    //Remove some ids
-                    foreach (var existingChild in group.Products.ToList())
-                    {
-                        if (entities.All(c => c.Id != existingChild.Id))
-                        {
-                            existingChild.ProductGroupId = null;
-                            Context.Products.Update(existingChild);
-                        }
-                    }
-
-                    // Update and Insert children
-                    foreach (var childModel in entities)
-                    {
-                        var existingChild = group.Products.SingleOrDefault(c => c.Id == childModel.Id);
-
-                        if (existingChild != null)
-                        {
-                            Context.Entry(existingChild).CurrentValues.SetValues(childModel);
-                        }
-                        else
-                        {
-                            childModel.ProductGroupId = group.Id;
-                            Context.Products.Update(childModel);
-                        }
-                    }
-                }
-                else
-                {
-                    //Remove all
-                    foreach (var existingChild in group.Products.ToList())
-                    {
-                        existingChild.ProductGroupId = null;
-                        Context.Products.Remove(existingChild);
-                    }
-                }
             }
             else
             {
@@ -81,8 +39,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                 {
                     VenueId = request.VenueId,
                     Icon = request.Icon,
-                    Name = request.Name,
-                    Products = request.Products.ToEntities()
+                    Name = request.Name
                 };
                 Context.ProductGroups.Update(group);
             }

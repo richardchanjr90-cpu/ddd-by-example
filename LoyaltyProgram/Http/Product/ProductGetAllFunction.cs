@@ -14,8 +14,8 @@ namespace LoyaltyProgram.Http.Product
     {
         [FunctionName("ProductGetAllFunction")]
         public static async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/products")]
+            long groupId,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productGroups/{groupId}/products")]
             HttpRequest req,
             ILogger log,
             [Inject]ProductAppService service)
@@ -24,7 +24,7 @@ namespace LoyaltyProgram.Http.Product
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.GetAll(venueId));
+                return new OkObjectResult(await service.GetAll(groupId));
             });
         }
     }

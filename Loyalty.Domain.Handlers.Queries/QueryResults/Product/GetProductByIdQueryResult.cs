@@ -8,6 +8,6 @@
 
         public string Icon { get; set; }
 
-        public long VenueId { get; set; }
+        public long ProductGroupId { get; set; }
     }
 }

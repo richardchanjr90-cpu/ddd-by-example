@@ -4,14 +4,16 @@ using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190414104652_UpdatedProductGroups")]
+    partial class UpdatedProductGroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,8 +124,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasIndex("ProductGroupId");
 
                     b.HasIndex("LoyaltyProgramId", "ProductGroupId")
-                        .IsUnique()
-                        .HasFilter("[IsArchived] = 0");
+                        .IsUnique();
 
                     b.ToTable("LoyaltyProductGroup","loyalty");
                 });
@@ -189,13 +190,16 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(200);
 
+                    b.Property<long?>("OwnerVenueId");
+
                     b.Property<long>("ProductGroupId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OwnerVenueId");
+
                     b.HasIndex("ProductGroupId", "Name")
-                        .IsUnique()
-                        .HasFilter("[IsArchived] = 0");
+                        .IsUnique();
 
                     b.ToTable("Product","loyalty");
                 });
@@ -228,8 +232,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("VenueId", "Name")
-                        .IsUnique()
-                        .HasFilter("[IsArchived] = 0");
+                        .IsUnique();
 
                     b.ToTable("ProductGroup","loyalty");
                 });
@@ -382,7 +385,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique()
-                        .HasFilter("[IsArchived] = 0");
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("VenueId");
 
@@ -431,6 +434,10 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
             modelBuilder.Entity("Loyalty.Core.Entities.Product", b =>
                 {
+                    b.HasOne("Loyalty.Core.Entities.Venue", "OwnerVenue")
+                        .WithMany()
+                        .HasForeignKey("OwnerVenueId");
+
                     b.HasOne("Loyalty.Core.Entities.ProductGroup", "ProductGroup")
                         .WithMany("Products")
                         .HasForeignKey("ProductGroupId")
