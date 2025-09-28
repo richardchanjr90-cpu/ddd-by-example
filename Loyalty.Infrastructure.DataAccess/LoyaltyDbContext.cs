@@ -78,22 +78,24 @@ namespace Loyalty.Infrastructure.DataAccess
 
             modelBuilder.Entity<Worker>()
                 .HasIndex(u => u.Email)
-                .IsUnique();
+                .IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<Worker>()
                 .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique();
+                .HasIndex(p => new {p.ProductGroupId, p.Name}).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
+            //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
-                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<LoyaltyProductGroup>()
-                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique();
-
-            modelBuilder.Entity<Location>()
-                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<Location>()
                 .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
