@@ -66,8 +66,7 @@ namespace Loyalty.Infrastructure.DataAccess
                 .IsUnique();
 
             modelBuilder.Entity<Worker>()
-                .HasIndex(u => u.WorkerId)
-                .IsUnique();
+                .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 
             modelBuilder.Entity<Product>()
                 .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();

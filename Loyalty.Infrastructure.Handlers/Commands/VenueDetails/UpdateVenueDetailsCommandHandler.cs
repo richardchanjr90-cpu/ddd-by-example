@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -32,9 +33,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.VenueDetails
             else
             {
                 details.FullDescription = request.FullDescription;
-                details.Phones = string.Join(",", request.Phones); 
-                details.WebSites = string.Join(",", request.WebSites);
-                details.WorkingHours = string.Join(",", request.WorkingHours);
+                details.Phones = request.Phones.ToCommaSeparatedStringOrNull(); 
+                details.WebSites = request.WebSites.ToCommaSeparatedStringOrNull();
+                details.WorkingHours = request.WorkingHours.ToCommaSeparatedStringOrNull();
             }
 
             return new CommandResult
