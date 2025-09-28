@@ -56,6 +56,11 @@ namespace Loyalty.Infrastructure.DataAccess
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<ProductGroup>()
+                .HasMany(b => b.Products)
+                .WithOne(x => x.ProductGroup)
+                .OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);

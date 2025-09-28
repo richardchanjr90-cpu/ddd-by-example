@@ -60,7 +60,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                         }
                         else
                         {
-                            childModel.ProductGroupId = group.Id;
+                            childModel.ProductGroup = group.Id;
                             Context.Products.Update(childModel);
                         }
                     }
@@ -71,7 +71,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                     foreach (var existingChild in group.Products.ToList())
                     {
                         existingChild.ProductGroupId = null;
-                        Context.Products.Update(existingChild);
+                        Context.Products.Remove(existexistingChild.);
                     }
                 }
             }

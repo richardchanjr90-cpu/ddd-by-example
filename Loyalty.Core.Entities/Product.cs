@@ -23,5 +23,7 @@ namespace Loyalty.Core.Entities
 
         [ForeignKey(nameof(ProductGroup))]
         public long? ProductGroupId { get; set; }
+
+        public ProductGroup ProductGroup { get; set; }
     }
 }

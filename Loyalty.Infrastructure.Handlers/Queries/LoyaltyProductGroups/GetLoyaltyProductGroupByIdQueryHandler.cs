@@ -6,6 +6,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
             var item = await (from lp in Context.LoyaltyProductGroups
                     .Include(x => x.Rules)
                     .Include(x => x.Group)
-                    .ThenInclude(x => x.Products)
+                        .ThenInclude(x => x.Products)
                               where lp.Id == request.Id
                               select new GetLoyaltyProductGroupByIdQueryResult
                               {
@@ -32,7 +33,10 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                                   LoyaltyProgramId = lp.LoyaltyProgramId,
                                   Description = lp.Description,
                                   Name = lp.Name,
-                                  //Rule = lp.Rules,
+                                  Rules = new GetRuleByIdQueryResult
+                                  {
+                                      Rules = lp.Rules.ToList().ToResults()
+                                  },
                                   ProductGroup = lp.Group.ToResult()
                               }).SingleOrDefaultAsync(cancellationToken);
 

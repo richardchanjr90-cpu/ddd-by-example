@@ -6,6 +6,9 @@ namespace Loyalty.Application.ViewModels.Rule
 {
     public class SingleRuleViewModel
     {
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
         [JsonProperty("rule")]
         public string Rule { get; set; }
 
