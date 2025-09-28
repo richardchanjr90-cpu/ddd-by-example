@@ -29,6 +29,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
+            var productGroup = await Context.ProductGroups
+                .Where(x => x.Id == request.ProductGroupId)
+                .SingleAsync(cancellationToken);
+
             if (group == null)
             {
                 group = new LoyaltyProductGroup
@@ -38,6 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                     Description = request.Description,
                     Name = request.Name,
                     ProductGroupId = request.ProductGroupId,
+                    Group = productGroup,
                     Rules = new List<LoyaltyGroupRule>()
                 };
 
@@ -50,7 +55,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 group.Description = request.Description;
                 group.Name = request.Name;
                 group.ProductGroupId = request.ProductGroupId;
-
+                group.Group = productGroup;
                 foreach (var existingChild in group.Rules.ToList())
                 {
                     Context.LoyaltyRules.Remove(existingChild);

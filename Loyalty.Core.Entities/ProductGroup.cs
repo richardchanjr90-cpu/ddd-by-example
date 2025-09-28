@@ -17,9 +17,6 @@ namespace Loyalty.Core.Entities
         [MaxLength(200)]
         public string Name { get; set; }
 
-        [ForeignKey(nameof(LoyaltyProductGroup))]
-        public long? LoyaltyProductGroupId { get; set; }
-
         [Required]
         public string Icon { get; set; }
 

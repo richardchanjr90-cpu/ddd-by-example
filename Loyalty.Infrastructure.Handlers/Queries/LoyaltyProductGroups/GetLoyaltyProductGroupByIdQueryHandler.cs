@@ -32,6 +32,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                                   LoyaltyProgramId = lp.LoyaltyProgramId,
                                   Description = lp.Description,
                                   Name = lp.Name,
+                                  //Rule = lp.Rules,
                                   ProductGroup = lp.Group.ToResult()
                               }).SingleAsync(cancellationToken);
 

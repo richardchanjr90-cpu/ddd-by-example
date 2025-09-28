@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -8,6 +9,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
@@ -22,12 +24,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
         public async Task<ICommandResult> Handle(CreateLoyaltyProductGroupCommand request, CancellationToken cancellationToken)
         {
+            var productGroup = await Context.ProductGroups
+                .Where(x => x.Id == request.ProductGroupId)
+                .SingleAsync(cancellationToken);
+
             var group = new LoyaltyProductGroup
             {
                 IsArchived = request.IsArchived,
                 LoyaltyProgramId = request.LoyaltyProgramId,
                 Description = request.Description,
                 Name = request.Name,
+                Group = productGroup,
                 ProductGroupId = request.ProductGroupId
             };
 
@@ -47,7 +54,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                     RuleType = commandRule.RuleType
                 };
                 group.Rules.Add(rule);
-                //rule.ParseRule(commandRule.Rule, commandRule.RuleType);
             }
 
             Context.LoyaltyProductGroups.Add(group);
