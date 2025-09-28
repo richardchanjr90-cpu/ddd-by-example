@@ -22,8 +22,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
         public async Task<GetProductGroupByIdQueryResult> Handle(GetProductGroupByIdQuery request, CancellationToken cancellationToken)
         {
             var item = await (from lp in Context.ProductGroups
+                    .Include(x => x.Products)
                 where lp.Id == request.Id
-                select lp).SingleAsync(cancellationToken);
+                select lp).SingleOrDefault(cancellationToken);
 
             return item.ToResult();
         }
