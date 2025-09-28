@@ -28,27 +28,28 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 LoyaltyProgramId = request.LoyaltyProgramId,
                 Description = request.Description,
                 Name = request.Name,
-                //RuleType = request.Rule.RuleType,
-                //ProductGroup = request.ProductGroup?.ToResult()
+                ProductGroupId = request.ProductGroupId
             };
 
-            if (request.Rules == null)
+            if (request.Rule == null)
             {
-                throw new ArgumentNullException(nameof(request.Rules));
+                throw new ArgumentNullException(nameof(request.Rule));
             }
 
             group.Rules = new List<LoyaltyGroupRule>();
 
-            foreach (var commandRule in request.Rules)
+            foreach (var commandRule in request.Rule.Rules)
             {
-                var rule = new LoyaltyGroupRule();
-                rule.Rule = JsonConvert.SerializeObject(commandRule.Rule);
-                rule.RuleVersion = commandRule.RuleVersion;
-                rule.RuleType = commandRule.RuleType;
-
+                var rule = new LoyaltyGroupRule
+                {
+                    Rule = JsonConvert.SerializeObject(commandRule.Rule),
+                    RuleVersion = commandRule.RuleVersion,
+                    RuleType = commandRule.RuleType
+                };
                 group.Rules.Add(rule);
                 //rule.ParseRule(commandRule.Rule, commandRule.RuleType);
             }
+
             Context.LoyaltyProductGroups.Add(group);
 
             return new CommandResult

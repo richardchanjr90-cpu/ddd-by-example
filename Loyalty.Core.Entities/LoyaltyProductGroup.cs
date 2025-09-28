@@ -17,7 +17,10 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<LoyaltyGroupRule> Rules { get; set; }
 
-        public ProductGroup ProductGroup { get; set; }
+        public ProductGroup Group { get; set; }
+
+        [ForeignKey(nameof(ProductGroup))]
+        public long ProductGroupId { get; set; }
 
         public virtual ICollection<Purchase> Purchases { get; set; }
 

@@ -22,7 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
         {
             var items = await (from lp in Context.LoyaltyProductGroups
                     .Include(x => x.Rules)
-                    .Include(x => x.ProductGroup)
+                    .Include(x => x.Group)
                     .ThenInclude(x => x.Products)
                                where lp.Id == request.LoyaltyProgramId
                                select new GetLoyaltyProductGroupByIdQueryResult
@@ -32,8 +32,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                                    LoyaltyProgramId = lp.LoyaltyProgramId,
                                    Description = lp.Description,
                                    Name = lp.Name,
-                                //   RuleType = lp.Rule.RuleType,
-                                   ProductGroup = lp.ProductGroup.ToResult()
+                                   //Rule = lp.Rules,
+                                   ProductGroup = lp.Group.ToResult()
                                }).ToListAsync(cancellationToken);
 
             return new GetLoyaltyProductGroupsQueryResult

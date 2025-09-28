@@ -1,11 +1,13 @@
-﻿using Loyalty.Application.ViewModels.ProductGroup;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Rule;
-using Loyalty.Common.Shared.Enums;
 using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
 {
-    public class LoyaltyProductGroupViewModel
+    public class LoyaltyProductGroupGetViewModel
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -25,7 +27,7 @@ namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
         [JsonProperty("isArchived")]
         public bool IsArchived { get; set; }
 
-        [JsonProperty("productGroupId")]
-        public long ProductGroupId { get; set; }
+        [JsonProperty("productGroup")]
+        public ProductGroupViewModel ProductGroup { get; set; }
     }
 }
