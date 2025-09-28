@@ -25,8 +25,5 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
 
         [JsonProperty("isArchived")]
         public bool IsArchived { get; set; }
-
-        [JsonProperty("venueId")]
-        public long VenueId { get; set; }
     }
 }

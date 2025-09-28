@@ -17,7 +17,5 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram
         public DateTime? EndedDate { get; set; }
 
         public bool IsArchived { get; set; }
-
-        public long VenueId { get; set; }
     }
 }

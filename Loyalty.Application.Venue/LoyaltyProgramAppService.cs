@@ -40,21 +40,23 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(LoyaltyProgramViewModel model)
+        public async Task<ICommandResult> Create(LoyaltyProgramViewModel model, long venueId)
         {
             new LoyaltyProgramValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateLoyaltyProgramCommand>(model);
+            command.VenueId = venueId;
             command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(LoyaltyProgramViewModel model)
+        public async Task<ICommandResult> Update(LoyaltyProgramViewModel model, long venueId)
         {
             new LoyaltyProgramValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateLoyaltyProgramCommand>(model);
+            command.VenueId = venueId;
             command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
 
             var commandResult = await Mediator.Send(command);
