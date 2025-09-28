@@ -24,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
             var item = await (from lp in Context.ProductGroups
                     .Include(x => x.Products)
                 where lp.Id == request.Id
-                select lp).SingleOrDefault(cancellationToken);
+                select lp).SingleOrDefaultAsync(cancellationToken);
 
             return item.ToResult();
         }
