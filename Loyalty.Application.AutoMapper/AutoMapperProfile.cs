@@ -77,11 +77,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<ProductViewModel, UpdateProductCommand>();
 
-            //CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupViewModel>();
-
-            //CreateMap<LoyaltyProductGroupViewModel, CreateLoyaltyProductGroupCommand>()
-            //    .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            //CreateMap<LoyaltyProductGroupViewModel, UpdateLoyaltyProductGroupCommand>();
+            CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupGetViewModel>();
 
             CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
             CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()

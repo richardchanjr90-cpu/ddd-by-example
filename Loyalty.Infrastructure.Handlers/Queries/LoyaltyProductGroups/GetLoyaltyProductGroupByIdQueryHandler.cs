@@ -34,7 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                                   Name = lp.Name,
                                   //Rule = lp.Rules,
                                   ProductGroup = lp.Group.ToResult()
-                              }).SingleAsync(cancellationToken);
+                              }).SingleOrDefaultAsync(cancellationToken);
 
             return item;
         }

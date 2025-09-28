@@ -16,7 +16,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup
 
         public LoyaltyRuleType RuleType { get; set; }
 
-        public GetRuleByIdQueryResult Rule { get; set; }
+        public GetRuleByIdQueryResult Rules { get; set; }
 
         public GetProductGroupByIdQueryResult ProductGroup { get; set; }
 
