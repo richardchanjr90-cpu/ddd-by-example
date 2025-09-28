@@ -60,7 +60,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                         }
                         else
                         {
-                            childModel.ProductGroup = group.Id;
+                            childModel.ProductGroupId = group.Id;
                             Context.Products.Update(childModel);
                         }
                     }
