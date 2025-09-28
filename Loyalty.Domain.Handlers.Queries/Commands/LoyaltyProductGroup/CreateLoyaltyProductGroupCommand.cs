@@ -1,5 +1,7 @@
-﻿using Loyalty.Common.Shared.Enums;
+﻿using System.Collections.Generic;
+using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using MediatR;
@@ -18,6 +20,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
 
         public string Description { get; set; }
 
-        public GetProductGroupByIdQueryResult ProductGroup { get; set; }
+        public long ProductGroupId { get; set; }
     }
 }

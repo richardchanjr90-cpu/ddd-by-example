@@ -8,9 +8,6 @@ namespace Loyalty.Application.ViewModels.Worker
         [JsonProperty("id")]
         public string Id { get; set; }
 
-        [JsonProperty("id")]
-        public long VenueId { get; set; }
-
         [JsonProperty("workerId")]
         public string WorkerId { get; set; }
 
@@ -31,5 +28,9 @@ namespace Loyalty.Application.ViewModels.Worker
 
         [JsonProperty("photoUri")]
         public string PhotoUri { get; set; }
+
+        [JsonProperty("positionName")]
+        public string PositionName { get; set; }
+        
     }
 }

@@ -6,6 +6,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,21 +21,25 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
 
         public async Task<GetLoyaltyProductGroupsQueryResult> Handle(GetLoyaltyProductGroupQuery request, CancellationToken cancellationToken)
         {
-            var items = await (from lp in Context.LoyaltyProductGroups
-                    .Include(x => x.Rule)
-                    .Include(x => x.ProductGroup)
+            var items = Context.LoyaltyProductGroups
+                    .Include(x => x.Rules)
+                    .Include(x => x.Group)
                     .ThenInclude(x => x.Products)
-                               where lp.Id == request.LoyaltyProgramId
-                               select new GetLoyaltyProductGroupByIdQueryResult
-                               {
-                                   Id = lp.Id,
-                                   IsArchived = lp.IsArchived,
-                                   LoyaltyProgramId = lp.LoyaltyProgramId,
-                                   Description = lp.Description,
-                                   Name = lp.Name,
-                                   RuleType = lp.Rule.RuleType,
-                                   ProductGroup = lp.ProductGroup.ToResult()
-                               }).ToListAsync(cancellationToken);
+                    .Where(x => x.Id == request.LoyaltyProgramId)
+                    .ToList()
+                    .Select(lp => new GetLoyaltyProductGroupByIdQueryResult
+                    {
+                        Id = lp.Id,
+                        IsArchived = lp.IsArchived,
+                        LoyaltyProgramId = lp.LoyaltyProgramId,
+                        Description = lp.Description,
+                        Name = lp.Name,
+                        Rules = new GetRuleByIdQueryResult
+                        {
+                            Rules = lp.Rules.ToList().ToResults()
+                        },
+                        ProductGroup = lp.Group.ToResult()
+                    }).ToList();
 
             return new GetLoyaltyProductGroupsQueryResult
             {

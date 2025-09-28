@@ -28,6 +28,8 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 
+        public Venue OwnerVenue { get; set; }
+
         public bool IsPublished { get; set; }
 
         public bool IsArchived { get; set; }

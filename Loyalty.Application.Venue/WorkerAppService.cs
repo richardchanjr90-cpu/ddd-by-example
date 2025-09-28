@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
+using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -31,25 +33,33 @@ namespace Loyalty.Application.Venue
             return mapper.Map<WorkerViewModel>(result);
         }
 
-        public async Task<List<WorkerViewModel>> Get()
+        public async Task<List<WorkerViewModel>> GetAll(long venueId)
         {
-            var result = await Mediator.Send(new GetWorkersQuery());
+            var result = await Mediator.Send(new GetWorkersQuery
+            {
+                VenueId = venueId
+            });
+
             return mapper.Map<List<WorkerViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(WorkerViewModel model)
+        public async Task<ICommandResult> Create(WorkerViewModel model, long venueId)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new WorkerValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateWorkerCommand>(model);
+            command.VenueId = venueId;
+
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(WorkerViewModel model)
+        public async Task<ICommandResult> Update(WorkerViewModel model, long venueId)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new WorkerValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateWorkerCommand>(model);
+            command.VenueId = venueId;
+
             var commandResult = await Mediator.Send(command);
             return commandResult;
         }

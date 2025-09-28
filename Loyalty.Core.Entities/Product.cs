@@ -12,6 +12,8 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 
+        public Venue OwnerVenue { get; set; }
+
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
@@ -20,5 +22,9 @@ namespace Loyalty.Core.Entities
         public string Icon { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public long? ProductGroupId { get; set; }
+
+        public ProductGroup ProductGroup { get; set; }
     }
 }

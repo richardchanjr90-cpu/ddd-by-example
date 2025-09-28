@@ -27,6 +27,8 @@ namespace Loyalty.Core.Entities
 
         public string PhotoUri { get; set; }
 
+        public string PositionName { get; set; }
+
         public bool IsArchived { get; set; }
     }
 }

@@ -8,16 +8,16 @@ namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
     public class LoyaltyProductGroupViewModel
     {
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("loyaltyProgramId")]
-        public string LoyaltyProgramId { get; set; }
+        public long LoyaltyProgramId { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("rule")]
-        public RuleViewModel Rule { get; set; }
+        [JsonProperty("rules")]
+        public RuleViewModel Rules { get; set; }
 
         [JsonProperty("description")]
         public string Description { get; set; }
@@ -25,7 +25,7 @@ namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
         [JsonProperty("isArchived")]
         public bool IsArchived { get; set; }
 
-        [JsonProperty("productGroup")]
-        public ProductGroupViewModel ProductGroup { get; set; }
+        [JsonProperty("productGroupId")]
+        public long ProductGroupId { get; set; }
     }
 }

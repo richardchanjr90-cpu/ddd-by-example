@@ -23,9 +23,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Products
         {
             var item = await (from lp in Context.Products
                 where lp.Id == request.Id
-                select lp).SingleAsync(cancellationToken);
+                select lp).SingleOrDefaultAsync(cancellationToken);
 
-            return item.ToResult();
+            return item?.ToResult();
         }
     }
 }

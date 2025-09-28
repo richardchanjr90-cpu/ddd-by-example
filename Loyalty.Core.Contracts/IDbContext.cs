@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Loyalty.Core.Contracts
 {
@@ -8,5 +9,8 @@ namespace Loyalty.Core.Contracts
         int SaveChanges();
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+        EntityEntry<TEntity> Entry<TEntity>(TEntity entity) 
+            where TEntity : class;
     }
 }

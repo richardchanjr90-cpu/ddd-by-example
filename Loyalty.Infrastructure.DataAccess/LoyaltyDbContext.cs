@@ -56,9 +56,63 @@ namespace Loyalty.Infrastructure.DataAccess
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<ProductGroup>()
+                .HasMany(b => b.Products)
+                .WithOne(x => x.ProductGroup)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Venue>()
+                .HasMany(b => b.LoyaltyPrograms)
+                .WithOne(x => x.OwnerVenue)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Venue>()
+                .HasMany(b => b.Products)
+                .WithOne(x => x.OwnerVenue)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LoyaltyProductGroup>()
+                .HasOne(b => b.Group)
+                .WithMany(x => x.LoyaltyProductGroups)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Venue>()
+                .HasMany(b => b.ProductGroups)
+                .WithOne(x => x.OwnerVenue)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Worker>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Worker>()
+                .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+
+            modelBuilder.Entity<ProductGroup>()
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+
+            modelBuilder.Entity<LoyaltyProductGroup>()
+                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique();
+
+            modelBuilder.Entity<Location>()
+                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+
+            modelBuilder.Entity<Location>()
+                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Worker>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
+
+            modelBuilder.Entity<Location>().HasQueryFilter(p => !p.IsArchived);
+            modelBuilder.Entity<VenueDetails>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()
@@ -70,11 +124,11 @@ namespace Loyalty.Infrastructure.DataAccess
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((AuditableEntity) entry.Entity).CreatedBy = Guid.Empty;
+                    ((AuditableEntity)entry.Entity).CreatedBy = Guid.Empty;
                     ((AuditableEntity)entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((AuditableEntity) entry.Entity).ModifiedBy = Guid.Empty;
+                ((AuditableEntity)entry.Entity).ModifiedBy = Guid.Empty;
                 ((AuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
             }
         }

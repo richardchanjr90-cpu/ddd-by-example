@@ -35,29 +35,29 @@ namespace Loyalty.Application.AutoMapper
         public AutoMapperProfile()
         {
             CreateMap<LocationViewModel, CreateLocationCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             
             CreateMap<LocationViewModel, UpdateLocationCommand>();
 
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
 
             CreateMap<VenueViewModel, CreateVenueCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore())
-                .ForSourceMember(x => x.IsPublished, opt => opt.Ignore())
-                .ForSourceMember(x => x.IsApproved, opt => opt.Ignore());
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
             CreateMap<VenueViewModel, UpdateVenueCommand>()
-                .ForSourceMember(x => x.IsPublished, opt => opt.Ignore())
-                .ForSourceMember(x => x.IsApproved, opt => opt.Ignore());
+                .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
             CreateMap<GetVenueDetailsByIdQueryResult, VenueDetailsViewModel>();
 
             CreateMap<VenueDetailsViewModel, CreateVenueDetailsCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore())
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<VenueDetailsViewModel, UpdateVenueDetailsCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore())
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
             CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
@@ -68,34 +68,31 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetLoyaltyProgramByIdQueryResult, LoyaltyProgramViewModel>();
             CreateMap<LoyaltyProgramViewModel, CreateLoyaltyProgramCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             CreateMap<LoyaltyProgramViewModel, UpdateLoyaltyProgramCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore());
 
             CreateMap<GetProductByIdQueryResult, ProductViewModel>();
             CreateMap<ProductViewModel, CreateProductCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             CreateMap<ProductViewModel, UpdateProductCommand>();
 
-            CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupViewModel>();
-            CreateMap<LoyaltyProductGroupViewModel, CreateLoyaltyProductGroupCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            CreateMap<LoyaltyProductGroupViewModel, UpdateLoyaltyProductGroupCommand>();
+            CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupGetViewModel>();
 
             CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
             CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
 
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
             CreateMap<WorkerViewModel, CreateWorkerCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
-            CreateMap<WorkerViewModel, UpdateWorkerCommand>();
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
+                .ForMember(x => x.VenueId, opt => opt.Ignore());
+            CreateMap<WorkerViewModel, UpdateWorkerCommand>()
+                .ForMember(x => x.VenueId, opt => opt.Ignore());
 
-            CreateMap<RuleViewModel, UpdateRuleCommand>();
-            CreateMap<RuleViewModel, CreateRuleCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.Ignore());
             CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
+            CreateMap<GetSingleRuleByIdQueryResult, SingleRuleViewModel>();
         }
     }
 }

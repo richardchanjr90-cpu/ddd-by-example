@@ -5,5 +5,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.Worker
 {
     public class GetWorkersQuery : IRequest<GetWorkersQueryResult>
     {
+        public long VenueId { get; set; }
     }
 }

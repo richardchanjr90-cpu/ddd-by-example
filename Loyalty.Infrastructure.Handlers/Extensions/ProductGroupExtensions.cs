@@ -22,7 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Icon = item.Icon,
                 Name = item.Name,
                 VenueId = item.VenueId,
-                Products = item.Products.ToList().ToResults()
+                Products = item.Products?.ToList().ToResults()
             };
 
             return result;
