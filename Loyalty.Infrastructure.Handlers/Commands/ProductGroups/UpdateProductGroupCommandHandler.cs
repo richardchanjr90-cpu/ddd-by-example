@@ -71,7 +71,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                     foreach (var existingChild in group.Products.ToList())
                     {
                         existingChild.ProductGroupId = null;
-                        Context.Products.Remove(existexistingChild.);
+                        Context.Products.Remove(existingChild);
                     }
                 }
             }
