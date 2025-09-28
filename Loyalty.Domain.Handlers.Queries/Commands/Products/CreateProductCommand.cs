@@ -5,10 +5,10 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Products
 {
     public class CreateProductCommand : IRequest<ICommandResult>
     {
-        public long VenueId { get; set; }
-
         public string Name { get; set; }
 
         public string Icon { get; set; }
+
+        public long ProductGroupId { get; set; }
     }
 }

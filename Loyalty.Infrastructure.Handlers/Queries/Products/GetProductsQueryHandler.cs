@@ -21,7 +21,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Products
         public async Task<GetProductsQueryResult> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
             var items = await (from lp in Context.Products
-                where lp.VenueId == request.VenueId
+                where lp.ProductGroupId == request.ProductGroupId
                                select lp).ToListAsync(cancellationToken);
 
             return new GetProductsQueryResult

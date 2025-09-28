@@ -45,8 +45,6 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<ProductGroup> ProductGroups { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
-
         public bool IsArchived { get; set; }
 
         public bool IsApproved { get; set; }

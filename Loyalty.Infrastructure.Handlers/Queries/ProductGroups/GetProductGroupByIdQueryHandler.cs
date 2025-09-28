@@ -26,7 +26,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
                 where lp.Id == request.Id
                 select lp).SingleOrDefaultAsync(cancellationToken);
 
-            return item.ToResult();
+            return item?.ToResult();
         }
     }
 }

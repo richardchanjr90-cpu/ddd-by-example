@@ -27,7 +27,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
 
             return new GetProductGroupsQueryResult
             {
-                Result = items.ToResults()
+                Result = items?.ToResults()
             };
         }
     }

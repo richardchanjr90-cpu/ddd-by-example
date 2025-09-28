@@ -5,6 +5,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.Product
 {
     public class GetProductsQuery : IRequest<GetProductsQueryResult>
     {
-        public long VenueId { get; set; }
+        public long ProductGroupId { get; set; }
     }
 }

@@ -66,11 +66,6 @@ namespace Loyalty.Infrastructure.DataAccess
                 .WithOne(x => x.OwnerVenue)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Venue>()
-                .HasMany(b => b.Products)
-                .WithOne(x => x.OwnerVenue)
-               .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<LoyaltyProductGroup>()
                 .HasOne(b => b.Group)
                 .WithMany(x => x.LoyaltyProductGroups)
@@ -89,7 +84,7 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+                .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique();
 
             modelBuilder.Entity<ProductGroup>()
                 .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();

@@ -20,7 +20,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Id = item.Id,
                 Name = item.Name,
                 Icon = item.Icon,
-                VenueId = item.VenueId
+                ProductGroupId = item.ProductGroupId
             };
             return result;
         }
@@ -50,7 +50,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Id = item.Id,
                 Name = item.Name,
                 Icon = item.Icon,
-                VenueId = item.VenueId
+                ProductGroupId = item.ProductGroupId
             };
 
             return result;
@@ -67,7 +67,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 Name = item.Name,
                 Icon = item.Icon,
-                VenueId = item.VenueId
+                ProductGroupId = item.ProductGroupId
             };
 
             return result;

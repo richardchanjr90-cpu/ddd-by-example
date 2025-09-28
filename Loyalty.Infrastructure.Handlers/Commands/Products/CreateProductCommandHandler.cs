@@ -22,9 +22,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
         {
             var product = new Product
             {
-                VenueId = request.VenueId,
                 Icon = request.Icon,
                 Name = request.Name,
+                ProductGroupId = request.ProductGroupId
             };
 
             Context.Products.Add(product);

@@ -9,11 +9,6 @@ namespace Loyalty.Core.Entities
     [Table("Product", Schema = SchemaName.Loyalty)]
     public class Product : AuditableEntity, IArchivableEntity
     {
-        [ForeignKey(nameof(Venue))]
-        public long VenueId { get; set; }
-
-        public Venue OwnerVenue { get; set; }
-
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
@@ -23,7 +18,7 @@ namespace Loyalty.Core.Entities
 
         public bool IsArchived { get; set; }
 
-        public long? ProductGroupId { get; set; }
+        public long ProductGroupId { get; set; }
 
         public ProductGroup ProductGroup { get; set; }
     }
