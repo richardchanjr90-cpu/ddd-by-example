@@ -36,7 +36,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     LastName = request.LastName,
                     Phone = request.Phone,
                     PhotoUri = request.PhotoUri,
-                    Role = request.Role
+                    Role = request.Role,
+                    PositionName = request.PositionName
                 };
 
                 Context.Workers.Add(worker);
@@ -51,6 +52,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 worker.Phone = request.Phone;
                 worker.PhotoUri = request.PhotoUri;
                 worker.Role = request.Role;
+                worker.PositionName = request.PositionName;
             }
 
             return new CommandResult

@@ -61,6 +61,26 @@ namespace Loyalty.Infrastructure.DataAccess
                 .WithOne(x => x.ProductGroup)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Venue>()
+                .HasMany(b => b.LoyaltyPrograms)
+                .WithOne(x => x.OwnerVenue)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Venue>()
+                .HasMany(b => b.Products)
+                .WithOne(x => x.OwnerVenue)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LoyaltyProductGroup>()
+                .HasOne(b => b.Group)
+                .WithMany(x => x.LoyaltyProductGroups)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Venue>()
+                .HasMany(b => b.ProductGroups)
+                .WithOne(x => x.OwnerVenue)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Worker>()
                 .HasIndex(u => u.Email)
                 .IsUnique();

@@ -13,6 +13,10 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 
+        public Venue OwnerVenue { get; set; }
+
+        public virtual ICollection<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
+
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
