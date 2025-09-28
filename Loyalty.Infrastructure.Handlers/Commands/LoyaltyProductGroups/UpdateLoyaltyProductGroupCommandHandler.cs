@@ -46,6 +46,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                     Rules = new List<LoyaltyGroupRule>()
                 };
 
+                ProcessRule(request, group);
+
                 Context.LoyaltyProductGroups.Add(group);
             }
             else
@@ -56,6 +58,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 group.Name = request.Name;
                 group.ProductGroupId = request.ProductGroupId;
                 group.Group = productGroup;
+
                 foreach (var existingChild in group.Rules.ToList())
                 {
                     Context.LoyaltyRules.Remove(existingChild);
