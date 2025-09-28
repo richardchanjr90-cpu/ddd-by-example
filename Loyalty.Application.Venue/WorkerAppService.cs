@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
+using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -37,12 +39,13 @@ namespace Loyalty.Application.Venue
             {
                 VenueId = venueId
             });
+
             return mapper.Map<List<WorkerViewModel>>(result.Result);
         }
 
         public async Task<ICommandResult> Create(WorkerViewModel model, long venueId)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new WorkerValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateWorkerCommand>(model);
             command.VenueId = venueId;
@@ -52,7 +55,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(WorkerViewModel model, long venueId)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new WorkerValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateWorkerCommand>(model);
             command.VenueId = venueId;

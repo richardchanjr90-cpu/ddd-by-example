@@ -61,6 +61,29 @@ namespace Loyalty.Infrastructure.DataAccess
                 .WithOne(x => x.ProductGroup)
                 .OnDelete(DeleteBehavior.SetNull);
 
+            modelBuilder.Entity<Worker>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Worker>()
+                .HasIndex(u => u.WorkerId)
+                .IsUnique();
+
+            modelBuilder.Entity<Product>()
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+
+            modelBuilder.Entity<ProductGroup>()
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique();
+
+            modelBuilder.Entity<LoyaltyProductGroup>()
+                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique();
+
+            modelBuilder.Entity<Location>()
+                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+
+            modelBuilder.Entity<Location>()
+                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);

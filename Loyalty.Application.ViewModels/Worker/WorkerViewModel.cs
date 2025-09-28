@@ -28,5 +28,9 @@ namespace Loyalty.Application.ViewModels.Worker
 
         [JsonProperty("photoUri")]
         public string PhotoUri { get; set; }
+
+        [JsonProperty("positionName")]
+        public string PositionName { get; set; }
+        
     }
 }

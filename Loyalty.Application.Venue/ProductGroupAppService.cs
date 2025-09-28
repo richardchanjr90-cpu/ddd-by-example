@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Loyalty.Application.ViewModels.ProductGroup;
+using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
@@ -43,7 +45,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(ProductGroupViewModel model, long venueId)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new ProductGroupValidator().ValidateAndThrow(model);
+
             var command = mapper.Map<CreateProductGroupCommand>(model);
             command.VenueId = venueId;
 
@@ -52,7 +55,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(ProductGroupViewModel model, long venueId)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new ProductGroupValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateProductGroupCommand>(model);
             command.VenueId = venueId;

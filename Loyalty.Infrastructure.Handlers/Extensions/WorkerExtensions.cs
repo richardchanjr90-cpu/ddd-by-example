@@ -26,7 +26,8 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Phone = item.Phone,
                 PhotoUri = item.PhotoUri,
                 Role = item.Role,
-                WorkerId = item.WorkerId 
+                WorkerId = item.WorkerId,
+                PositionName = item.PositionName
             };
             return result;
         }

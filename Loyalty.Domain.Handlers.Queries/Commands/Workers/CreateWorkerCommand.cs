@@ -22,5 +22,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
         public string Email { get; set; }
 
         public string PhotoUri { get; set; }
+
+        public string PositionName { get; set; }
     }
 }

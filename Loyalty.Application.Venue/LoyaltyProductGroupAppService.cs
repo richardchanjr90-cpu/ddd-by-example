@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Rule;
+using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -49,7 +51,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(LoyaltyProductGroupViewModel model)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new LoyaltyProductGroupValidator().ValidateAndThrow(model);
+
             var command = new CreateLoyaltyProductGroupCommand
             {
                 Description = model.Description,
@@ -79,7 +82,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(LoyaltyProductGroupViewModel model)
         {
-            //new VenueValidator().ValidateAndThrow(model);  
+            new LoyaltyProductGroupValidator().ValidateAndThrow(model);
+
             var command = new UpdateLoyaltyProductGroupCommand
             {
                 Description = model.Description,

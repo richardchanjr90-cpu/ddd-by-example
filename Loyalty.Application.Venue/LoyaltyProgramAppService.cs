@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using FluentValidation;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
+using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
@@ -40,7 +42,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(LoyaltyProgramViewModel model)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new LoyaltyProgramValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateLoyaltyProgramCommand>(model);
             command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
@@ -50,7 +52,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(LoyaltyProgramViewModel model)
         {
-            //new VenueValidator().ValidateAndThrow(model);
+            new LoyaltyProgramValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateLoyaltyProgramCommand>(model);
             command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");

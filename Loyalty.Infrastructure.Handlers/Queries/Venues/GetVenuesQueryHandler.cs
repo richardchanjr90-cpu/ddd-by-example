@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
@@ -22,6 +23,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
         {
             var venues = await Context.Venues
                 .Include(x => x.Location)
+                .Include(x => x.Workers)
+                .Where(x => x.Workers.Select(y => y.WorkerId).Contains(request.UserId))
                 .ToListAsync(cancellationToken);
 
             return new GetVenuesQueryResult
