@@ -34,7 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                     LoyaltyProgramId = lp.LoyaltyProgramId,
                     Description = lp.Description,
                     Name = lp.Name,
-                    Rules = new GetRuleByIdQueryResult {Rules = lp.Rules.ToList().ToResults()},
+                    Rules = new GetRuleByIdQueryResult { Rules = lp.Rules.ToList().ToResults() },
                     ProductGroup = lp.Group.ToResult()
                 }).SingleOrDefault();
 
