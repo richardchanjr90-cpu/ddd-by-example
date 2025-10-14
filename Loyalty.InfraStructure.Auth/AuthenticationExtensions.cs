@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Refit;
 
 namespace Loyalty.InfraStructure.Auth
 {
@@ -42,8 +41,8 @@ namespace Loyalty.InfraStructure.Auth
                         ? request.Cookies["AppServiceAuthSession"]
                         : Environment.GetEnvironmentVariable("AuthenticationToken"));
 
-                var service = RestService.For<IAuthentication>(client);
-                model = service.GetCurrentAuthentication().Result.SingleOrDefault();
+                //var service = RestService.For<IAuthentication>(client);
+                //model = service.GetCurrentAuthentication().Result.SingleOrDefault();
                 isAuthenticated = true;
             }
             catch (Exception ex)

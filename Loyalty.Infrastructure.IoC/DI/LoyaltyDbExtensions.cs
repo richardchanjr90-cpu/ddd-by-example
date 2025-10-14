@@ -12,9 +12,7 @@ namespace Loyalty.Infrastructure.IoC.DI
     public static class LoyaltyDbExtensions
     {
         public static readonly LoggerFactory MyLoggerFactory
-            = new LoggerFactory(new[] {
-                new ConsoleLoggerProvider((_, __) => true, true)
-            });
+            = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
