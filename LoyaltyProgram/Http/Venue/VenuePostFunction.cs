@@ -7,18 +7,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Venue
 {
-    public static class VenuePostFunction
+    public class VenuePostFunction
     {
+        private readonly LoyaltyVenueAppService service;
+
+        public VenuePostFunction(LoyaltyVenueAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("VenuePostFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
-            HttpRequest req,
-            ILogger log,
-            [Inject]LoyaltyVenueAppService service)
+            ILogger log)
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
 

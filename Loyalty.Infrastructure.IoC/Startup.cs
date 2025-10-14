@@ -1,23 +1,15 @@
 ﻿using System;
-using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Hosting;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
-[assembly: WebJobsStartup(typeof(Startup))]
+[assembly: FunctionsStartup(typeof(Loyalty.Infrastructure.IoC.Startup))]
+
 namespace Loyalty.Infrastructure.IoC
-{ 
-    internal class Startup : IWebJobsStartup
+{
+    internal class Startup : FunctionsStartup
     {
-        public void Configure(IWebJobsBuilder builder)
-        {
-            builder.AddDependencyInjection(ConfigureServices);
-        }
-
-        private void ConfigureServices(IServiceCollection services)
+        public override void Configure(IFunctionsHostBuilder builder)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
@@ -25,10 +17,10 @@ namespace Loyalty.Infrastructure.IoC
                 .AddEnvironmentVariables()
                 .Build();
 
-            services.SetupAppServices();
-            services.SetupDb(config);
-            services.SetupThirdParty();
-            services.SetupSettings(config);
+            builder.Services.SetupAppServices();
+            builder.Services.SetupDb(config);
+            builder.Services.SetupThirdParty();
+            builder.Services.SetupSettings(config);
         }
     }
 }

@@ -7,20 +7,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Worker
 {
-    public static class WorkerDeleteFunction
+    public class WorkerDeleteFunction
     {
+        private readonly WorkerAppService service;
+
+        public WorkerDeleteFunction(WorkerAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("WorkerDeleteFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long venueId,
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/workers/{id}")]
             HttpRequest req,
-            ILogger log,
-            [Inject]WorkerAppService service)
+            ILogger log)
         {
             log.LogInformation($"{nameof(WorkerDeleteFunction)} was triggered.");
 

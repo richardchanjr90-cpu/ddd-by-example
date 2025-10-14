@@ -11,10 +11,10 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public static class VenueProvideSasTokenFunction
+    public class VenueProvideSasTokenFunction
     {
         [FunctionName("VenueProvideSasTokenFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "security/sas/venues/{id}")]
             HttpRequest req,

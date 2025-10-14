@@ -12,7 +12,9 @@ namespace Loyalty.Infrastructure.IoC.DI
     public static class LoyaltyDbExtensions
     {
         public static readonly LoggerFactory MyLoggerFactory
-            = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
+            = new LoggerFactory(new[] {
+                new ConsoleLoggerProvider((_, __) => true, true)
+            });
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
@@ -20,7 +22,9 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
 
-            services.AddEntityFrameworkSqlServer().AddLogging()
+            //todo: remove for staging and prod;
+            services.AddEntityFrameworkSqlServer()
+                .AddLogging()
                 .AddDbContext<LoyaltyDbContext>(
                     options => options.UseSqlServer(
                         connectionString).UseLoggerFactory(MyLoggerFactory));

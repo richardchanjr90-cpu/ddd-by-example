@@ -7,19 +7,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.LoyaltyProductGroup
 {
-    public static class LoyaltyProductGroupPutFunction
+    public class LoyaltyProductGroupPutFunction
     {
+        private readonly LoyaltyProductGroupAppService service;
+
+        public LoyaltyProductGroupPutFunction(LoyaltyProductGroupAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("LoyaltyProductGroupPutFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long loyaltyProgramId,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "programs/{loyaltyProgramId}/loyaltygroups")]LoyaltyProductGroupViewModel model,
-            HttpRequest req,
-            ILogger log,
-            [Inject]LoyaltyProductGroupAppService service)
+            ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupPutFunction)} was triggered.");
 

@@ -8,20 +8,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Purchase
 {
-    public static class PurchasePostFunction
+    public class PurchasePostFunction
     {
+        private readonly PurchaseAppService service;
+
+        public PurchasePostFunction(PurchaseAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("PurchasePostFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long id,
             string guid,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/purchases/users/{guid}")]PurchaseViewModel model,
-            HttpRequest req,
-            ILogger log,
-            [Inject]PurchaseAppService service)
+            ILogger log)
         {
             log.LogInformation($"{nameof(PurchasePostFunction)} was triggered.");
 

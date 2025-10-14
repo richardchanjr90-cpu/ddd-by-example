@@ -7,20 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Product
 {
-    public static class ProductDeleteFunction
+    public class ProductDeleteFunction
     {
+        private readonly ProductAppService service;
+
+        public ProductDeleteFunction(ProductAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("ProductDeleteFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long groupId,
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "productGroups/{groupId}/products/{id}")]
-            HttpRequest req,
-            ILogger log,
-            [Inject]ProductAppService service)
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "productGroups/{groupId}/products/{id}")] HttpRequest req,
+            ILogger log)
         {
             log.LogInformation($"{nameof(ProductDeleteFunction)} was triggered.");
 

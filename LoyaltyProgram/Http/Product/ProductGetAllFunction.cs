@@ -6,19 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Product
 {
-    public static class ProductGetAllFunction
+    public class ProductGetAllFunction
     {
+        private readonly ProductAppService service;
+
+        public ProductGetAllFunction(ProductAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("ProductGetAllFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long groupId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productGroups/{groupId}/products")]
-            HttpRequest req,
-            ILogger log,
-            [Inject]ProductAppService service)
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productGroups/{groupId}/products")] HttpRequest req,
+            ILogger log)
         {
             log.LogInformation($"{nameof(ProductGetAllFunction)} was triggered.");
 

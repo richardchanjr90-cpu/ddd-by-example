@@ -10,20 +10,25 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public static class VenuePutImageFunction
+    public class VenuePutImageFunction
     {
+        private readonly LoyaltyVenueImageAppService service;
+
+        public VenuePutImageFunction(LoyaltyVenueImageAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("VenuePutImageFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long id,
             int index,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
-            [Inject]LoyaltyVenueImageAppService service,
             [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
             [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
         {

@@ -9,20 +9,18 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public static class VenueGetImagesFunction
+    public class VenueGetImagesFunction
     {
         [FunctionName("VenueGetImagesFunction")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details/images")]
             HttpRequest req,
             ILogger log,
-            [Blob("venue-images-{id}", FileAccess.Read)] CloudBlobContainer container,
-            [Inject]LoyaltyVenueImageAppService service)
+            [Blob("venue-images-{id}", FileAccess.Read)] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
 
