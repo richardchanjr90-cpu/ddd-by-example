@@ -34,6 +34,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="TinyORM" Version="1.1.6326.31656" />
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
   <PropertyGroup>
