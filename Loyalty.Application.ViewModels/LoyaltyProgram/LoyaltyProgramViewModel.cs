@@ -6,7 +6,7 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
     public class LoyaltyProgramViewModel
     {
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }

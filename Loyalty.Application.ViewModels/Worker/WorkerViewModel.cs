@@ -6,7 +6,7 @@ namespace Loyalty.Application.ViewModels.Worker
     public class WorkerViewModel
     {
         [JsonProperty("id")]
-        public string Id { get; set; }
+        public long Id { get; set; }
 
         [JsonProperty("workerId")]
         public string WorkerId { get; set; }
