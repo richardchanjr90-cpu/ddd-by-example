@@ -77,7 +77,7 @@ namespace Loyalty.Infrastructure.DataAccess
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Worker>()
-                .HasIndex(u => u.Email)
+                .HasIndex(u => u.Phone)
                 .IsUnique()
                 .HasFilter("[IsArchived] = 0");
 

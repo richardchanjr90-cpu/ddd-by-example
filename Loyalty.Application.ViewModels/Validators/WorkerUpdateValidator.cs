@@ -1,11 +1,15 @@
-﻿using FluentValidation;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using FluentValidation;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Common.Shared.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
-    public class WorkerValidator : AbstractValidator<WorkerViewModel>
+    public class WorkerUpdateValidator : AbstractValidator<WorkerViewModel>
     {
-        public WorkerValidator()
+        public WorkerUpdateValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
@@ -31,6 +35,9 @@ namespace Loyalty.Application.ViewModels.Validators
 
             RuleFor(x => x.PositionName)
                 .NotEmpty();
+
+            RuleFor(x => x.Role).LessThanOrEqualTo((int)VenueUserRole.Owner)
+                .WithMessage("Must be in range of Enum values");
 
             RuleFor(x => x.PhotoUri)
                 .NotEmpty().WithMessage("Enter photo.")

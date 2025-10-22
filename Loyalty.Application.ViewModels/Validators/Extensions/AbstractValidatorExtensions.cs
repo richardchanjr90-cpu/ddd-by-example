@@ -9,5 +9,6 @@ namespace Loyalty.Application.ViewModels.Validators.Extensions
         {
             return Guid.TryParse(guidString, out var result) && Guid.Empty != result;
         }
+
     }
 }

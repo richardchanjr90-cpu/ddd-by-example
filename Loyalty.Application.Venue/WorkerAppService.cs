@@ -45,7 +45,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(WorkerViewModel model, long venueId)
         {
-            new WorkerValidator().ValidateAndThrow(model);
+            new WorkerCreateValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateWorkerCommand>(model);
             command.VenueId = venueId;
@@ -55,7 +55,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(WorkerViewModel model, long venueId)
         {
-            new WorkerValidator().ValidateAndThrow(model);
+            new WorkerUpdateValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateWorkerCommand>(model);
             command.VenueId = venueId;
