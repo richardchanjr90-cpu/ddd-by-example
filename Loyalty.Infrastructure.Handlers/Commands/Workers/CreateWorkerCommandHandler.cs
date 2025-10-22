@@ -28,6 +28,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 Email = request.Email,
                 LastName = request.LastName,
                 Phone = request.Phone,
+                PositionName = request.PositionName,
                 PhotoUri = request.PhotoUri,
                 Role = request.Role              
             };
