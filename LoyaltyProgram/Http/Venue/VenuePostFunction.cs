@@ -1,24 +1,28 @@
 using System.Threading.Tasks;
-using Loyalty.Core.Shared.Exceptions;
-using Loyalty.Core.ViewModels;
-using Loyalty.Venue.Service;
+using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.Venue;
+using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Willezone.Azure.WebJobs.Extensions.DependencyInjection;
 
 namespace LoyaltyProgram.Http.Venue
 {
-    public static class VenuePostFunction
+    public class VenuePostFunction
     {
+        private readonly LoyaltyVenueAppService service;
+
+        public VenuePostFunction(LoyaltyVenueAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("VenuePostFunction")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venue")]VenueViewModel model,
-            HttpRequest req,
-            ILogger log,
-            [Inject]LoyaltyVenueAppService service)
+        public async Task<IActionResult> Run(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
+            ILogger log)
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
 
