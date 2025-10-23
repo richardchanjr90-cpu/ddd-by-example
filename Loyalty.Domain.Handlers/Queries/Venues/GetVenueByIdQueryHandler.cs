@@ -1,31 +1,34 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
-using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Extensions;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 
 namespace Loyalty.Domain.Handlers.Queries.Venues
 {
     public class GetVenueByIdQueryHandler : BaseHandler, IGetVenueByIdQueryHandler
     {
-        public GetVenueByIdQueryHandler(IMongoDataClient dbClient, IOptions<DbSettings> settings)
-            : base(dbClient, settings)
+        public GetVenueByIdQueryHandler(ILoyaltyDbContext context, IOptions<DbSettings> settings)
+            : base(context)
         {
         }
 
         public async Task<GetVenueByIdQueryResult> Handle(GetVenueByIdQuery request, CancellationToken cancellationToken)
         {
-            var filter = Builders<Venue>.Filter.Eq(nameof(request.ItemId), request.ItemId);
-            var collection = Database.GetCollection<Venue>(nameof(Venue));
-            var item = await collection.Find(filter).SingleAsync(cancellationToken);
-            return item.ToResult();
+            var venue = await Context.Venues
+                .Include(x => x.Location)
+                .Include(x => x.VenueDetails)
+                .Where(x => x.Id == request.Id)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            return venue?.ToResult();
         }
     }
 }

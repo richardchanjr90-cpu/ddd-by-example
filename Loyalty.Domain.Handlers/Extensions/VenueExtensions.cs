@@ -1,31 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Loyalty.Core.Shared.Enums;
 using Loyalty.Data.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Domain.Handlers.Queries.QueryResults.GeoPosition;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 
 namespace Loyalty.Domain.Handlers.Extensions
 {
-    public static class VenueQueryExtensions
+    public static class VenueExtensions
     {
         public static Venue ToSingle(this CreateVenueCommand command)
         {
             var result = new Venue
             {
-                Category = command.Category,
-                Description = command.Description,
-                ItemId = command.Id,
-                ParentId = command.ParentId,
                 Name = command.Name,
                 Type = command.Type,
+                ParentId = command.ParentId,
                 OwnerId = command.OwnerId,
-                Location = new GeoPosition
-                {
-                    Latitude = command.Location.Latitude,
-                    Longitude = command.Location.Longitude,
-                    City = command.Location.City,
-                }
+                CategoryType = command.CategoryType,
+                Description = command.Description,
+                Location = command.Location?.ToSingle(),
+                VenueDetails = command.Details?.ToSingle(),
+                LogoUrl = command.LogoUrl,
+                IsArchived = command.IsArchived,
+                IsPublished = command.IsPublished,
+                IsApproved = command.IsApproved
             };
 
             return result;
@@ -35,19 +36,19 @@ namespace Loyalty.Domain.Handlers.Extensions
         {
             var result = new Venue
             {
-                Category = command.Category,
+                Id = command.Id,
+                CategoryType = command.CategoryType,
                 Description = command.Description,
-                ItemId = command.Id,
                 ParentId = command.ParentId,
                 Name = command.Name,
                 Type = command.Type,
                 OwnerId = command.OwnerId,
-                Location = new GeoPosition
-                {
-                    Latitude = command.Location.Latitude,
-                    Longitude = command.Location.Longitude,
-                    City = command.Location.City,
-                }
+                Location = command.Location?.ToSingle(),
+                LogoUrl = command.LogoUrl,
+                VenueDetails = command.Details?.ToSingle(),
+                IsArchived = command.IsArchived,
+                IsPublished = command.IsPublished,
+                IsApproved = command.IsApproved,
             };
 
             return result;
@@ -57,19 +58,18 @@ namespace Loyalty.Domain.Handlers.Extensions
         {
             var result = new GetVenueByIdQueryResult
             {
-                Category = item.Category,
+                Id = item.Id,
+                CategoryType = item.CategoryType,
                 Description = item.Description,
-                Id = item.ItemId,
-                ParentId = item.ParentId,
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
-                Location = new GetGeoPositionQueryResult
-                {
-                    Latitude = item.Location.Latitude,
-                    Longitude = item.Location.Longitude,
-                    City = item.Location.City,
-                }
+                Location = item.Location?.ToResult(),
+                IsPublished = item.IsPublished,
+                LogoUrl = item.LogoUrl,
+                IsArchived = item.IsArchived,
+                IsApproved = item.IsApproved,
+                ParentId = item.ParentId,
             };
             return result;
         }

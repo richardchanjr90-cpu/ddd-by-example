@@ -14,7 +14,6 @@
     <Folder Include="Commands\LoyaltyProduct\" />
     <Folder Include="Commands\LoyaltyProgram\" />
     <Folder Include="Commands\Stamp\" />
-    <Folder Include="Commands\VenueDetails\" />
     <Folder Include="Queries\Card\" />
     <Folder Include="Queries\LoyaltyProduct\" />
     <Folder Include="Queries\LoyaltyProgram\" />
@@ -36,6 +35,7 @@
   </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
 </Project>

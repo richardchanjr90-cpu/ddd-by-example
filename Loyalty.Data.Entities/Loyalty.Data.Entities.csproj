@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.22" />
-    <PackageReference Include="MongoDB.Bson" Version="2.7.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Core.Shared\Loyalty.Core.Shared.csproj" />
-    <ProjectReference Include="..\Loyalty.Data.Contracts\Loyalty.Data.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

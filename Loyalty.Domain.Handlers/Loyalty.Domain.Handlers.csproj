@@ -13,13 +13,8 @@
     <Folder Include="Queries\Cards\" />
     <Folder Include="Queries\LoyaltyProducts\" />
     <Folder Include="Queries\LoyaltyPrograms\" />
-    <Folder Include="Queries\Stamps\" />
+    <Folder Include="Queries\Purchases\" />
     <Folder Include="Queries\VenueDetails\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Bson" Version="2.7.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.7.0" />
   </ItemGroup>
 
   <ItemGroup>

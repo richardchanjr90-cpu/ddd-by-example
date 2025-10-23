@@ -1,21 +1,18 @@
 ﻿using System;
-using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
+using Microsoft.Build.Framework;
 
 namespace Loyalty.Data.Entities.Base
 {
     public abstract class AuditableEntity : Entity
     {
-        [BsonElement("createdBy")]
-        public Guid CreatedBy { get; set; }
+        public Guid? CreatedBy { get; set; }
 
-        [BsonElement("modifiedBy")]
-        public Guid ModifiedBy { get; set; }
+        public Guid? ModifiedBy { get; set; }
 
-        [BsonElement("modified")]
+        [Required]
         public DateTime Modified { get; set; }
 
-        [BsonElement("created")]
+        [Required]
         public DateTime Created { get; set; }
     }
 }

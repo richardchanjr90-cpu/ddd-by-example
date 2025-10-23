@@ -1,35 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Shared.Enums;
 using Loyalty.Data.Entities.Base;
-using MongoDB.Bson.Serialization.Attributes;
+using Loyalty.Data.Entities.Base.Interface;
+using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
-    public class Venue : AuditableEntity
+    [Table("Venue", Schema = SchemaName.Loyalty)]
+    public class Venue : AuditableEntity, 
+        IRequireTwoStepSaveEntity, 
+        IArchivableEntity, 
+        IRequireApprovalEntity
     {
-        [BsonElement("name")]
+        [Required]
+        [MaxLength(200)]
         public string Name { get; set; }
 
-        [BsonElement("ownerId")]
+        [Required]
         public Guid OwnerId { get; set; }
 
-        [BsonElement("description")]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
-        [BsonElement("location")]
-        public GeoPosition Location { get; set; }
+        public long? ParentId { get; set; }
 
-        [BsonElement("parentId")]
-        public Guid? ParentId { get; set; }
-
-        [BsonElement("type")]
+        public Location Location { get; set; }
+        
+        [Required]
         public VenueType Type { get; set; }
 
-        [BsonElement("category")]
-        public VenueCategory Category { get; set; }
+        public VenueCategoryType CategoryType { get; set; }
 
-        [BsonElement("subsidiaries")]
-        public IEnumerable<Venue> Subsidiaries { get; set; }
+        [MaxLength(200)]
+        public string LogoUrl { get; set; }
+
+        public VenueDetails VenueDetails { get; set; }
+
+        public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
+
+        public bool IsArchived { get; set; }
+
+        public bool IsPublished { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

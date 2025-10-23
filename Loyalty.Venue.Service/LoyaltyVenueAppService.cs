@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using FluentValidation.Results;
-using Loyalty.Core.Auth.Validation;
-using Loyalty.Core.Shared.Settings;
 using Loyalty.Core.ViewModels;
 using Loyalty.Core.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
@@ -26,11 +23,11 @@ namespace Loyalty.Venue.Service
             this.mapper = mapper;
         }
 
-        public async Task<VenueViewModel> Get(Guid id)
+        public async Task<VenueViewModel> Get(long id)
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
-                ItemId = id
+                Id = id
             });
 
             return mapper.Map<VenueViewModel>(result);
@@ -70,12 +67,12 @@ namespace Loyalty.Venue.Service
             return commandResult;
         }
 
-        public async Task<ICommandResult> Delete(Guid id)
+        public async Task<ICommandResult> Archive(long id)
         {
             var command = new ArchiveVenueCommand
             {
                 Id = id,
-                OwnerId = Guid.NewGuid()
+                OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
             };
 
             var commandResult = await Mediator.Send(command);

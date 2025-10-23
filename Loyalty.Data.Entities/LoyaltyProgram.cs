@@ -1,34 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Data.Entities.Base;
-using MongoDB.Bson.Serialization.Attributes;
-using Newtonsoft.Json;
+using Loyalty.Data.Entities.Base.Interface;
+using Loyalty.Data.Entities.Schema;
 
 namespace Loyalty.Data.Entities
 {
-    public class LoyaltyProgram : AuditableEntity
+    [Table("LoyaltyProgram", Schema = SchemaName.Loyalty)]
+    public class LoyaltyProgram : AuditableEntity, IArchivableEntity
     {
-        [BsonElement("name")]
+        [Required]
         public string Name { get; set; }
 
-        [BsonElement("description")]
+        [MaxLength(2000)]
         public string Description { get; set; }
 
-        [BsonElement("isActive")]
-        public bool IsActive { get; set; }
+        [Required]
+        public DateTime StartDate { get; set; }
 
-        [BsonElement("startedDate")]
-        public DateTime StartedDate { get; set; }
+        [Required]
+        public DateTime EndDate { get; set; }
 
-        [BsonElement("endedDate")]
-        public DateTime EndedDate { get; set; }
+        [Required]
+        public LoyaltyProgramRule LoyaltyRule { get; set; }
 
-        [BsonElement("isArchived")]
+        public virtual ICollection<LoyaltyProductGroup> LoyaltyGroups { get; set; }
+
+        [ForeignKey(nameof(Venue))]
+        public long VenueId { get; set; }
+
         public bool IsArchived { get; set; }
 
-        [BsonElement("cardBecomesInactiveAfterEnd")]
-        public bool CardBecomesInactiveAfterEnd { get; set; }
-
-        [BsonElement("venueId")]
-        public int VenueId { get; set; }
+        public bool IsPublished { get; set; }
     }
 }

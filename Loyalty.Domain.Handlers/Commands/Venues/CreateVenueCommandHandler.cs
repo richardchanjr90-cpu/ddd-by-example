@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Loyalty.Core.Shared.Settings;
 using Loyalty.Data.Contracts;
-using Loyalty.Data.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
@@ -14,20 +13,20 @@ namespace Loyalty.Domain.Handlers.Commands.Venues
 {
     public class CreateVenueCommandHandler : BaseHandler, ICreateVenueCommandHandler
     {
-        public CreateVenueCommandHandler(IMongoDataClient dbClient, IOptions<DbSettings> settings)
-            : base(dbClient, settings)
+        public CreateVenueCommandHandler(ILoyaltyDbContext context, IOptions<DbSettings> settings)
+            : base(context)
         {
         }
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
             var venue = request.ToSingle();
-            var collection = Database.GetCollection<Venue>(nameof(Venue));
-            await collection.InsertOneAsync(venue, null, cancellationToken);
+            Context.Venues.Add(venue);
 
             return new CommandResult
             {
-                Success = true
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = venue.Id
             };
         }
     }
