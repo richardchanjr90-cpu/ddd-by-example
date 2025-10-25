@@ -16,7 +16,7 @@ namespace Loyalty.Infrastructure.IoC.DI
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
-            services.AddScoped<ILoyaltyDbContext, LoyaltyDbContext>();
+            services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
 
