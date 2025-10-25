@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -37,7 +38,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.Name = request.Name;
                 venue.Type = request.Type;
                 venue.LogoUrl = request.LogoUrl;
-                //todo: multistep implementation needed;
+                venue.FullDescription = request.FullDescription;
+                venue.WebSites = request.WebSites.ToCommaSeparatedStringOrNull();
+                venue.WorkingHours = request.WorkingHours.ToCommaSeparatedStringOrNull();
+                venue.Phones = request.Phones.ToCommaSeparatedStringOrNull();
                 venue.Location = request.Location?.ToSingle();
             }
 

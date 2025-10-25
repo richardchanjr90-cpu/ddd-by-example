@@ -20,8 +20,6 @@ namespace Loyalty.Core.Contracts
 
         DbSet<Purchase> Purchases { get; set; }
 
-        DbSet<VenueDetails> VenueDetails { get; set; }
-
         DbSet<Venue> Venues { get; set; }
 
         DbSet<Worker> Workers { get; set; }

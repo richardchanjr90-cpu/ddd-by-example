@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Enums;
@@ -30,6 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 WorkerId = request.OwnerId,
                 Role = VenueUserRole.Owner,
                 PositionName = "Owner",
+                Phone = "+37529" + new Random().Next(1000000, 9999999).ToString(),
                 Name = "NameStub",
                 LastName = "LastNameStub"
             };

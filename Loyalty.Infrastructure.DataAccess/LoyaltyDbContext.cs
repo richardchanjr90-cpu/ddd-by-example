@@ -32,8 +32,6 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<Venue> Venues { get; set; }
 
-        public DbSet<VenueDetails> VenueDetails { get; set; }
-
         public DbSet<Worker> Workers { get; set; }
 
         public override int SaveChanges()
@@ -50,12 +48,6 @@ namespace Loyalty.Infrastructure.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VenueDetails>()
-                .HasOne(p => p.Venue)
-                .WithOne(x => x.VenueDetails)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<ProductGroup>()
                 .HasMany(b => b.Products)
                 .WithOne(x => x.ProductGroup)
@@ -109,7 +101,6 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
 
             modelBuilder.Entity<Location>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<VenueDetails>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()

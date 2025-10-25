@@ -4,14 +4,16 @@ using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190609102653_deleted_venues")]
+    partial class deleted_venues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,6 +281,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .HasMaxLength(2000);
 
                     b.Property<string>("FullDescription")
+                        .IsRequired()
                         .HasMaxLength(4000);
 
                     b.Property<bool>("IsApproved");
@@ -302,13 +305,15 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<long?>("ParentId");
 
-                    b.Property<string>("Phones");
+                    b.Property<string>("Phones")
+                        .IsRequired();
 
                     b.Property<int>("Type");
 
                     b.Property<string>("WebSites");
 
-                    b.Property<string>("WorkingHours");
+                    b.Property<string>("WorkingHours")
+                        .IsRequired();
 
                     b.HasKey("Id");
 

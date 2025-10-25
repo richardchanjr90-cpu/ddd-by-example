@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Loyalty.Common.Shared.Enums;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
@@ -17,6 +18,14 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
         public string Description { get; set; }
 
         public UpdateLocationCommand Location { get; set; }
+
+        public string FullDescription { get; set; }
+
+        public List<string> Phones { get; set; } = new List<string>();
+
+        public List<string> WebSites { get; set; } = new List<string>();
+
+        public List<string> WorkingHours { get; set; } = new List<string>();
 
         public long? ParentId { get; set; }
 

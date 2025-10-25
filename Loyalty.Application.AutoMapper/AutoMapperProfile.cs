@@ -9,14 +9,10 @@ using Loyalty.Application.ViewModels.Rule;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
-using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
-using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
-using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Domain.Handlers.Queries.Commands.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
@@ -49,18 +45,6 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<VenueViewModel, UpdateVenueCommand>()
                 .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
-
-            CreateMap<GetVenueDetailsByIdQueryResult, VenueDetailsViewModel>();
-
-            CreateMap<VenueDetailsViewModel, CreateVenueDetailsCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
-                .ForMember(x => x.VenueId, opt => opt.Ignore());
-
-            CreateMap<VenueDetailsViewModel, UpdateVenueDetailsCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
-                .ForMember(x => x.VenueId, opt => opt.Ignore());
-
-            CreateMap<GetVenueFullByIdQueryResult, VenueFullViewModel>();
 
             CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();

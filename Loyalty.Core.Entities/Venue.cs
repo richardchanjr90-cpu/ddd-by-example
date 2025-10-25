@@ -37,7 +37,14 @@ namespace Loyalty.Core.Entities
         [MaxLength(200)]
         public string LogoUrl { get; set; }
 
-        public VenueDetails VenueDetails { get; set; }
+        [MaxLength(4000)]
+        public string FullDescription { get; set; }
+
+        public string Phones { get; set; }
+
+        public string WebSites { get; set; }
+
+        public string WorkingHours { get; set; }
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
 

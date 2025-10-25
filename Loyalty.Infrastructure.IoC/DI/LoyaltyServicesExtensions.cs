@@ -8,7 +8,6 @@ namespace Loyalty.Infrastructure.IoC.DI
         public static void SetupAppServices(this IServiceCollection collection)
         {
             collection.AddScoped<LoyaltyVenueAppService>();
-            collection.AddScoped<LoyaltyVenueDetailsAppService>();
             collection.AddScoped<LoyaltyVenueImageAppService>();
             collection.AddScoped<PurchaseAppService>();
             collection.AddScoped<LoyaltyProductGroupAppService>();

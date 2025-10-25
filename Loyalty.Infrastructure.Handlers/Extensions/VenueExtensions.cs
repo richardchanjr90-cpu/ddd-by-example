@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
@@ -25,6 +26,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Description = command.Description,
                 Location = command.Location?.ToSingle(),
                 LogoUrl = command.LogoUrl,
+                FullDescription = command.FullDescription,
+                WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
+                WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
+                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
                 IsApproved = command.IsApproved
@@ -50,6 +55,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Type = command.Type,
                 OwnerId = command.OwnerId,
                 Location = command.Location?.ToSingle(),
+                FullDescription = command.FullDescription,
+                WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
+                WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
+                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 LogoUrl = command.LogoUrl,
                 IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
@@ -77,6 +86,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Location = item.Location?.ToResult(),
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
+                Phones = item.Phones.SplitByCommaAndUnwrap(),
+                FullDescription = item.FullDescription,
+                WebSites = item.WebSites.SplitByCommaAndUnwrap(),
+                WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
                 ParentId = item.ParentId

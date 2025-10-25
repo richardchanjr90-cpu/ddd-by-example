@@ -20,18 +20,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         public async Task<ICommandResult> Handle(ArchiveVenueCommand request, CancellationToken cancellationToken)
         {
             var venue = await Context.Venues
-                .Include(x => x.VenueDetails)
                 .Include(x => x.Location)
                 .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (venue != null)
             {
-                if (venue.VenueDetails != null)
-                {
-                    venue.VenueDetails.IsArchived = true;
-                }
-
                 if (venue.Location != null)
                 {
                     venue.Location.IsArchived = true;
