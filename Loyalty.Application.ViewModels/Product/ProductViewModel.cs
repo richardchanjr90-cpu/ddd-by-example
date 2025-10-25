@@ -7,9 +7,6 @@ namespace Loyalty.Application.ViewModels.Product
         [JsonProperty("id")]
         public long Id { get; set; }
 
-        [JsonProperty("productGroupId")]
-        public long ProductGroupId { get; set; }
-
         [JsonProperty("name")]
         public string Name { get; set; }
 

@@ -25,15 +25,19 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             var venue = request.ToSingle();
 
             //todo: fill owner with real details;
-            var worker = new Worker();
-            worker.WorkerId = request.OwnerId;
-            worker.Role = VenueUserRole.Owner;
-            worker.PositionName = "Owner";
-            worker.Name = "NameStub";
-            worker.LastName = "LastNameStub";
+            var worker = new Worker
+            {
+                WorkerId = request.OwnerId,
+                Role = VenueUserRole.Owner,
+                PositionName = "Owner",
+                Name = "NameStub",
+                LastName = "LastNameStub"
+            };
 
-            venue.Workers = new List<Worker>();
-            venue.Workers.Add(worker);
+            venue.Workers = new List<Worker>
+            {
+                worker
+            };
 
             Context.Venues.Add(venue);
 

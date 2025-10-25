@@ -29,7 +29,7 @@ namespace LoyaltyProgram.Http.Product
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Update(model));
+                return new OkObjectResult(await service.Update(model, groupId));
             });
         }
     }

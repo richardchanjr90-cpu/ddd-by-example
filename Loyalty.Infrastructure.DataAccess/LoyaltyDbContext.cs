@@ -85,7 +85,7 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => new {p.ProductGroupId, p.Name}).IsUnique()
+                .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
             //todo: check on backend;

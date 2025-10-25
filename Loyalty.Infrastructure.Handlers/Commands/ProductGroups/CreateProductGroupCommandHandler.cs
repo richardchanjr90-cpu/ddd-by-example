@@ -28,7 +28,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                 Name = request.Name,
             };
 
-            Context.ProductGroups.Update(group);
+            Context.ProductGroups.Add(group);
 
             return new CommandResult
             {

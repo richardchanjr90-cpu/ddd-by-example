@@ -36,6 +36,7 @@
     </PackageReference>
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
