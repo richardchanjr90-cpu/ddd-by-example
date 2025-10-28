@@ -22,7 +22,6 @@ namespace LoyaltyProgram.Http.ProductGroup
 
         [FunctionName("ProductGroupPutFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "productgroups")]ProductGroupViewModel model,
             HttpRequest req,
             ILogger log)
