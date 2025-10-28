@@ -23,7 +23,7 @@ namespace LoyaltyProgram.Http.ProductGroup
         [FunctionName("ProductGroupPutFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/productgroups")]ProductGroupViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "productgroups")]ProductGroupViewModel model,
             HttpRequest req,
             ILogger log)
         {
@@ -32,7 +32,7 @@ namespace LoyaltyProgram.Http.ProductGroup
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Update(model, venueId));
+                return new OkObjectResult(await service.Update(model));
             });
         }
     }

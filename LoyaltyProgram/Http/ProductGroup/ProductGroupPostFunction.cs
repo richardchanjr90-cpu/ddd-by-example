@@ -22,8 +22,7 @@ namespace LoyaltyProgram.Http.ProductGroup
 
         [FunctionName("ProductGroupPostFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/productgroups")]ProductGroupViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productgroups")]ProductGroupViewModel model,
             HttpRequest req,
             ILogger log)
         {
@@ -32,7 +31,7 @@ namespace LoyaltyProgram.Http.ProductGroup
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Create(model, venueId));
+                return new OkObjectResult(await service.Create(model));
             });
         }
     }

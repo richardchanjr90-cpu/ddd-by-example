@@ -21,7 +21,6 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
-using Loyalty.Domain.Handlers.Queries.QueryResults.VenueDetails;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 
 namespace Loyalty.Application.AutoMapper

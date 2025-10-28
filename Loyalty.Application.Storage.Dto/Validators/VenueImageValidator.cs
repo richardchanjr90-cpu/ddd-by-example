@@ -24,7 +24,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
             RuleFor(x => x.Index)
                 .LessThan(10)
                 .GreaterThan(-1)
-                .WithMessage("You can upload up tp 10 images. From 0 to 9 indexes are used.");
+                .WithMessage("You can upload up to 10 images. From 0 to 9 indexes are used.");
 
             RuleFor(x => x.Image)
                 .Must(SizeIsLessThan1MbPlusSmallOverhead)
@@ -34,7 +34,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.Image)
                 .Must(ValidateWidthAndHeight)
-                .WithMessage("Image must be between 600x400 and 2560x1440px.");
+                .WithMessage("Image must be between 800x600 and 2560x1440px.");
         }
 
         private bool IsImageValid(byte[] arrayImage)

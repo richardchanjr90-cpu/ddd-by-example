@@ -29,7 +29,7 @@ namespace LoyaltyProgram.Http.Worker
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.GetAll(venueId));
+                return new OkObjectResult(await service.Get());
             });
         }
     }
