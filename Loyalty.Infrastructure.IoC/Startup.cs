@@ -20,6 +20,7 @@ namespace Loyalty.Infrastructure.IoC
             builder.Services.SetupAppServices();
             builder.Services.SetupDb(config);
             builder.Services.SetupThirdParty();
+            builder.Services.SetupServiceBus(config);
             builder.Services.SetupSettings(config);
         }
     }

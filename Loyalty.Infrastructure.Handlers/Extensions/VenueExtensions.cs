@@ -4,6 +4,7 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Domain.ServiceBus.Handlers.Queries.Venue;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {
@@ -33,6 +34,36 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
                 IsApproved = command.IsApproved
+            };
+
+            return result;
+        }
+
+        public static CreateVenueNotification ToNotification(this Venue item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var result = new CreateVenueNotification
+            {
+                Id = item.Id,
+                CategoryType = item.CategoryType,
+                Description = item.Description,
+                Name = item.Name,
+                Type = item.Type,
+                OwnerId = item.OwnerId,
+                //Location = item.Location?.ToResult(),
+                IsPublished = item.IsPublished,
+                LogoUrl = item.LogoUrl,
+                Phones = item.Phones.SplitByCommaAndUnwrap(),
+                FullDescription = item.FullDescription,
+                WebSites = item.WebSites.SplitByCommaAndUnwrap(),
+                WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
+                IsArchived = item.IsArchived,
+                IsApproved = item.IsApproved,
+                ParentId = item.ParentId
             };
 
             return result;

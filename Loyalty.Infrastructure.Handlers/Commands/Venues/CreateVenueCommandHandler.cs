@@ -16,9 +16,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class CreateVenueCommandHandler : BaseHandler, ICreateVenueCommandHandler
     {
-        public CreateVenueCommandHandler(ILoyaltyDbContext context)
+        private readonly IMediator mediator;
+
+        public CreateVenueCommandHandler(ILoyaltyDbContext context, IMediator mediator)
             : base(context)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
@@ -43,11 +46,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             Context.Venues.Add(venue);
 
-            return new CommandResult
+            var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = venue.Id
             };
+
+            if (result.Success)
+            {
+                await mediator.Publish(venue.ToNotification(), cancellationToken);
+            }
+
+            return result;
         }
     }
 }

@@ -1,0 +1,16 @@
+﻿using System.Text;
+using MediatR;
+using Microsoft.Azure.ServiceBus;
+using Newtonsoft.Json;
+
+namespace Loyalty.Common.Shared.Extensions
+{
+    public static class ServiceBusMessageExtensions
+    {
+        public static Message ToMessage(this INotification item)
+        {
+            string messageBody = JsonConvert.SerializeObject(item);
+            return new Message(Encoding.UTF8.GetBytes(messageBody));
+        }
+    }
+}

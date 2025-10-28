@@ -28,6 +28,7 @@
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\Loyalty.Application.AutoMapper\Loyalty.Application.AutoMapper.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Handlers.Notifications\Loyalty.Infrastructure.Handlers.Notifications.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Handlers\Loyalty.Infrastructure.Handlers.csproj" />
     <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
   </ItemGroup>

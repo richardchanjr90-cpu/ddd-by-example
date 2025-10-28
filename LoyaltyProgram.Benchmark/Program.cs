@@ -29,6 +29,7 @@ namespace LoyaltyProgram.Benchmark
                     services.SetupDb(root);
                     services.SetupThirdParty();
                     services.SetupSettings(root);
+                    services.SetupServiceBus(root);
                 });
 
             var host = builder.Build();
