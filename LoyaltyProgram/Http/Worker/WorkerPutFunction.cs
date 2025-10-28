@@ -21,15 +21,14 @@ namespace LoyaltyProgram.Http.Worker
 
         [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/workers")]WorkerViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]WorkerViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerPutFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Update(model, venueId));
+                return new OkObjectResult(await service.Update(model));
             });
         }
     }

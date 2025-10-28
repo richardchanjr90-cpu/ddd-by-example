@@ -55,22 +55,18 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<WorkerViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(WorkerViewModel model, long venueId)
+        public async Task<ICommandResult> Create(WorkerViewModel model)
         {
             new WorkerCreateValidator().ValidateAndThrow(model);
-
             var command = mapper.Map<CreateWorkerCommand>(model);
-            command.VenueId = venueId;
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(WorkerViewModel model, long venueId)
+        public async Task<ICommandResult> Update(WorkerViewModel model)
         {
             new WorkerUpdateValidator().ValidateAndThrow(model);
-
             var command = mapper.Map<UpdateWorkerCommand>(model);
-            command.VenueId = venueId;
 
             var commandResult = await Mediator.Send(command);
             return commandResult;

@@ -7,6 +7,8 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Worker
     {
         public long Id { get; set; }
 
+        public long VenueId { get; set; }
+
         public Guid WorkerId { get; set; }
 
         public VenueUserRole Role { get; set; }

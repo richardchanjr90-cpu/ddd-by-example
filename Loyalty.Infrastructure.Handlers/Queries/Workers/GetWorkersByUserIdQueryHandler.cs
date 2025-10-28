@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Enums;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
@@ -25,10 +26,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
             //todo: filter by role >= current user role, depends on auth
             var result = await (from workers in Context.Workers
                 where workers.WorkerId == request.UserId
-                from venue in Context.Venues
-                where workers.VenueId == venue.Id
-                from allWorkers in Context.Workers
-                where allWorkers.VenueId == venue.Id
+                from allWorkers in Context.Workers.Where(x => x.VenueId == workers.VenueId)
                 select allWorkers).ToListAsync(cancellationToken);
 
             return new GetWorkersByUserIdQueryResult

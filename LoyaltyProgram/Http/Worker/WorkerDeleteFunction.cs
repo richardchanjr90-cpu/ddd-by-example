@@ -21,9 +21,8 @@ namespace LoyaltyProgram.Http.Worker
 
         [FunctionName("WorkerDeleteFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/workers/{id}")]
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/{id}")]
             HttpRequest req,
             ILogger log)
         {

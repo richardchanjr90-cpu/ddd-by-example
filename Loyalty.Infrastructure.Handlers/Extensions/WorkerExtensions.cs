@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Queries.Queries.Worker;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
@@ -20,6 +17,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             var result = new GetWorkerByIdQueryResult
             {
                 Id = item.Id,
+                VenueId = item.VenueId,
                 Name = item.Name,
                 Email = item.Email,
                 LastName = item.LastName,

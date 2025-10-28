@@ -3,8 +3,8 @@
     "https://raw.githubusercontent.com/DotNetAnalyzers/StyleCopAnalyzers/master/StyleCop.Analyzers/StyleCop.Analyzers/Settings/stylecop.schema.json",
   "settings": {
     "documentationRules": {
-      "companyName": "Trumethods",
-      "copyrightText": "Copyright (c) {Trumethods}. All Rights Reserved.\r\n.",
+      "companyName": "Zalik",
+      "copyrightText": "Copyright (c) {Zalik}. All Rights Reserved.\r\n.",
       "xmlHeader": false,
       "fileNamingConvention": "metadata"
     },

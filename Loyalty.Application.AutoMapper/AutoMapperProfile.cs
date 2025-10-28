@@ -74,10 +74,9 @@ namespace Loyalty.Application.AutoMapper
 
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
             CreateMap<WorkerViewModel, CreateWorkerCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
-                .ForMember(x => x.VenueId, opt => opt.Ignore());
-            CreateMap<WorkerViewModel, UpdateWorkerCommand>()
-                .ForMember(x => x.VenueId, opt => opt.Ignore());
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
+
+            CreateMap<WorkerViewModel, UpdateWorkerCommand>();
 
             CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
             CreateMap<GetSingleRuleByIdQueryResult, SingleRuleViewModel>();
