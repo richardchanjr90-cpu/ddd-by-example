@@ -23,7 +23,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             //todo: remove for staging and prod;
             services.AddEntityFrameworkSqlServer()
                 .AddLogging()
-                .AddDbContext<LoyaltyDbContext>(
+                .AddDbContextPool<LoyaltyDbContext>(
                     options => options.UseSqlServer(
                         connectionString).UseLoggerFactory(MyLoggerFactory));
         }
