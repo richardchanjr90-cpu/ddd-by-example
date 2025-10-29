@@ -59,7 +59,7 @@ namespace Loyalty.InfraStructure.Auth
             {
                 var config = host.Services.GetService<IConfiguration>();
                 var settings = new AuthSettings();
-                //config.GetSection(nameof(AuthSettings)).Bind(settings);
+                ////config.GetSection(nameof(AuthSettings)).Bind(settings);
 
                 var jwt = request.GetJwtTokenOrNull();
                 var tokenValidator = new CachedTokenValidator(settings);
