@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Common.Shared.Enums.Contracts;
 
 namespace Loyalty.Core.Entities.Rules
 {

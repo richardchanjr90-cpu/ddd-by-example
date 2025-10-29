@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;

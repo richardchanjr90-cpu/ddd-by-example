@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Notifications.Contracts\Loyalty.Domain.Handlers.Notifications.Contracts.csproj" />
   </ItemGroup>
 

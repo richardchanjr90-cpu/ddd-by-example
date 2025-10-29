@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Loyalty.Common.Shared.Enums;
-using Newtonsoft.Json;
+using Loyalty.Common.Shared.Enums.Contracts;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {

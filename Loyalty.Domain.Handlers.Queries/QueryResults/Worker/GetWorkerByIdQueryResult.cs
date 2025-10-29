@@ -1,5 +1,5 @@
 ﻿using System;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Common.Shared.Enums.Contracts;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Worker
 {

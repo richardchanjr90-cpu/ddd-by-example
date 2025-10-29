@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Common.Shared.Enums.Contracts;
 using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.Purchase
