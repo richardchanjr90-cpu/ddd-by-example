@@ -57,8 +57,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
         private bool ValidateWidthAndHeight(byte[] arrayImage)
         {
-            var isValid = false;
-
+            bool isValid;
             try
             {
                 var image = Image.Load(arrayImage);
