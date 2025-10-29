@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Common.Shared.Enums.Contracts;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Purchase
 {

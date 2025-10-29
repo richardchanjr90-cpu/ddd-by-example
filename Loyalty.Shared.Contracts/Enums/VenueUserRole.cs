@@ -1,4 +1,4 @@
-﻿namespace Loyalty.Common.Shared.Enums
+﻿namespace Loyalty.Common.Shared.Enums.Contracts
 {
     public enum VenueUserRole
     {

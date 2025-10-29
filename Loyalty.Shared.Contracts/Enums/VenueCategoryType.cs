@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Loyalty.Common.Shared.Enums
+namespace Loyalty.Common.Shared.Enums.Contracts
 {
     [Flags]
     public enum VenueCategoryType
