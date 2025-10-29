@@ -46,6 +46,8 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 throw new ArgumentNullException(nameof(item));
             }
 
+            var location = item.Location?.ToResult();
+
             var result = new CreateVenueNotification
             {
                 Id = item.Id,
@@ -54,13 +56,16 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
-                //Location = item.Location?.ToResult(),
+                Latitude = location?.Latitude,
+                Longitude = location?.Longitude,
+                City = location?.City,
+                Address = location?.Address,
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
-                Phones = item.Phones.SplitByCommaAndUnwrap(),
+                Phones = item.Phones,
                 FullDescription = item.FullDescription,
-                WebSites = item.WebSites.SplitByCommaAndUnwrap(),
-                WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
+                WebSites = item.WebSites,
+                WorkingHours = item.WorkingHours,
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
                 ParentId = item.ParentId

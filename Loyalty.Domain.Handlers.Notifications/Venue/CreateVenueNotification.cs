@@ -15,15 +15,21 @@ namespace Loyalty.Domain.ServiceBus.Handlers.Queries.Venue
 
         public string Description { get; set; }
 
-        //public CreateLocationCommand Location { get; set; }
+        public string City { get; set; }
+
+        public string Address { get; set; }
+
+        public float? Latitude { get; set; }
+
+        public float? Longitude { get; set; }
 
         public string FullDescription { get; set; }
 
-        public List<string> Phones { get; set; } = new List<string>();
+        public string Phones { get; set; }
 
-        public List<string> WebSites { get; set; } = new List<string>();
+        public string WebSites { get; set; }
 
-        public List<string> WorkingHours { get; set; } = new List<string>();
+        public string WorkingHours { get; set; }
 
         public long? ParentId { get; set; }
 
