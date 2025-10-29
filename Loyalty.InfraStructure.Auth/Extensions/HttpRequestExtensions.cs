@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using System.Web.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
@@ -12,7 +11,7 @@ namespace Loyalty.InfraStructure.Auth.Extensions
         {
             if (!await request.TryAuthenticate(host))
             {
-                throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                //throw new HttpResponseException(HttpStatusCode.Unauthorized);
             }
         }
     }
