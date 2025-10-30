@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Notifications.Contracts.Notifications.Venues;
 using Loyalty.Domain.ServiceBus.Handlers.Queries.Venue;
 using Microsoft.Azure.ServiceBus;
@@ -17,7 +18,8 @@ namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Venues
 
         public async Task Handle(UpdateVenueNotification notification, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            var message = notification.ToMessage();
+            await client.SendAsync(message);
         }
     }
 }
