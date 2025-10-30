@@ -13,7 +13,8 @@ namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Venues
     {
         private readonly IQueueClient client;
 
-        public CreateVenueNotificationHandler(IQueueClient client) : base(client)
+        public CreateVenueNotificationHandler(IQueueClient client) 
+            : base(client)
         {
             this.client = client;
         }

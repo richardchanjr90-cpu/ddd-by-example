@@ -17,8 +17,8 @@ namespace Loyalty.Infrastructure.IoC.DI
             var connectionString = config[$"{nameof(ServiceBusSettings)}:{nameof(ServiceBusSettings.ConnectionString)}"];
             var queueName = config[$"{nameof(ServiceBusSettings)}:{nameof(ServiceBusSettings.BusinessActivitiesQueueName)}"];
 
-            IQueueClient client = new QueueClient(connectionString, queueName);
-            services.AddSingleton<IQueueClient>((IQueueClient)client);
+            var client = new QueueClient(connectionString, queueName);
+            services.AddSingleton<IQueueClient>(client);
         }
     }
 }

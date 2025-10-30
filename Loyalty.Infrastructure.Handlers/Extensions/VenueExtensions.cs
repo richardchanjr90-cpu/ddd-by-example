@@ -39,12 +39,14 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             return result;
         }
 
-        public static CreateVenueNotification ToNotification(this Venue item)
+        public static CreateVenueNotification ToVenueNotification(this Venue item)
         {
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
+
+            var location = item.Location?.ToResult();
 
             var result = new CreateVenueNotification
             {
@@ -54,16 +56,72 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
-                //Location = item.Location?.ToResult(),
+                Latitude = location?.Latitude,
+                Longitude = location?.Longitude,
+                City = location?.City,
+                Address = location?.Address,
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
-                Phones = item.Phones.SplitByCommaAndUnwrap(),
+                Phones = item.Phones,
                 FullDescription = item.FullDescription,
-                WebSites = item.WebSites.SplitByCommaAndUnwrap(),
-                WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
+                WebSites = item.WebSites,
+                WorkingHours = item.WorkingHours,
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
                 ParentId = item.ParentId
+            };
+
+            return result;
+        }
+
+        public static UpdateVenueNotification ToUpdateNotification(this Venue item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var location = item.Location?.ToResult();
+
+            var result = new UpdateVenueNotification
+            {
+                Id = item.Id,
+                CategoryType = item.CategoryType,
+                Description = item.Description,
+                Name = item.Name,
+                Type = item.Type,
+                OwnerId = item.OwnerId,
+                Latitude = location?.Latitude,
+                Longitude = location?.Longitude,
+                City = location?.City,
+                Address = location?.Address,
+                IsPublished = item.IsPublished,
+                LogoUrl = item.LogoUrl,
+                Phones = item.Phones,
+                FullDescription = item.FullDescription,
+                WebSites = item.WebSites,
+                WorkingHours = item.WorkingHours,
+                IsArchived = item.IsArchived,
+                IsApproved = item.IsApproved,
+                ParentId = item.ParentId
+            };
+
+            return result;
+        }
+
+        public static ArchiveVenueNotification ToArchiveNotification(this Venue item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var location = item.Location?.ToResult();
+
+            var result = new ArchiveVenueNotification
+            {
+                Id = item.Id,
+                OwnerId = item.OwnerId,
             };
 
             return result;

@@ -54,7 +54,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (result.Success)
             {
-                await mediator.Publish(venue.ToNotification(), cancellationToken);
+                await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
             }
 
             return result;
