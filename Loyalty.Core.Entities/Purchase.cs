@@ -11,7 +11,11 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(LoyaltyProductGroup))]
         public long LoyaltyProductGroupId { get; set; }
 
+        public long? ProductId { get; set; }
+
         public Guid UserId { get; set; }
+
+        public bool InternalPurchaseMadeBySystem { get; set; }
 
         public decimal? Value { get; set; }
 

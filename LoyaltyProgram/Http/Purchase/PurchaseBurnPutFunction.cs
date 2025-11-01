@@ -22,16 +22,15 @@ namespace LoyaltyProgram.Http.Purchase
 
         [FunctionName("PurchaseBurnPutFunction")]
         public async Task<IActionResult> Run(
-            long id,
-            string guid,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/purchases/users/{guid}")]PurchaseViewModel model,
+            long venueId,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases")]PurchaseViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Burn(model, Guid.Parse(guid), id));
+                return new OkObjectResult(await service.Burn(model, venueId));
             });
         }
     }

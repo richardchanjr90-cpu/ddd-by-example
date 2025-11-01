@@ -8,6 +8,8 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
     {
         public long LoyaltyProductGroupId { get; set; }
 
+        public long? ProductId { get; set; }
+
         public Guid WorkerId { get; set; }
 
         public Guid UserId { get; set; }

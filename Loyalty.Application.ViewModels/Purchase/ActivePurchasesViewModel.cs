@@ -10,16 +10,16 @@ namespace Loyalty.Application.ViewModels.Purchase
         [JsonProperty("loyaltyProgramId")]
         public long LoyaltyProgramId { get; set; }
 
-        [JsonProperty("loyaltyGroupId")]
-        public long LoyaltyGroupId { get; set; }
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
-        [JsonProperty("ruleType")]
-        public LoyaltyRuleType RuleType { get; set; }
+        [JsonProperty("startDate")]
+        public DateTime StartDate { get; set; }
 
-        [JsonProperty("purchases")]
-        public List<ActivePurchaseViewModel> Purchases { get; set; } = new List<ActivePurchaseViewModel>();
+        [JsonProperty("endDate")]
+        public DateTime EndDate { get; set; }
 
-        [JsonProperty("userId")]
-        public Guid UserId { get; set; }
+        [JsonProperty("groups")]
+        public List<GroupPurchaseViewModel> Groups { get; set; } = new List<GroupPurchaseViewModel>();
     }
 }

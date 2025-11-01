@@ -1,4 +1,5 @@
-﻿using Loyalty.Common.Shared.Settings;
+﻿using System.Data.SqlClient;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,8 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
+            var dapperConnection = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
+            services.AddScoped<SqlConnection>(x => new SqlConnection(dapperConnection));
 
             //todo: remove for staging and prod;
             services.AddEntityFrameworkSqlServer()

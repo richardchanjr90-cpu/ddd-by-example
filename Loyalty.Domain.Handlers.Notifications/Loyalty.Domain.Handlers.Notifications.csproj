@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.1" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.2" />
     <PackageReference Include="MediatR" Version="7.0.0" />
   </ItemGroup>
 

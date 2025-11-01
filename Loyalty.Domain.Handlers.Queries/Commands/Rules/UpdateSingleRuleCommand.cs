@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
@@ -15,6 +16,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 
         public LoyaltyRuleType RuleType { get; set; }
 
-        public string RuleVersion { get; set; }
+        public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

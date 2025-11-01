@@ -14,6 +14,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
@@ -33,6 +34,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             
             CreateMap<LocationViewModel, UpdateLocationCommand>();
+            CreateMap<GetLocationQueryResult, LocationViewModel> ();
 
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
 
@@ -45,7 +47,8 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
-            CreateMap<ActivePurchaseResult, ActivePurchaseViewModel>();
+            CreateMap<ProductPurchaseResult, ProductPurchaseViewModel>();
+            CreateMap<GroupPurchaseResult, GroupPurchaseViewModel>();
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
 
             CreateMap<GetLoyaltyProgramByIdQueryResult, LoyaltyProgramViewModel>();

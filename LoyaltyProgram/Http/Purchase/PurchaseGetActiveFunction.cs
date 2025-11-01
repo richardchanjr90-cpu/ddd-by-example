@@ -21,9 +21,9 @@ namespace LoyaltyProgram.Http.Purchase
 
         [FunctionName("PurchaseGetActiveFunction")]
         public async Task<IActionResult> Run(
-            long id,
+            long venueId,
             string guid,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/purchases/users/{guid}")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{guid}")]
             HttpRequest req,
             ILogger log)
         {
@@ -31,7 +31,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.GetActivePurchases(Guid.Parse(guid), id));
+                return new OkObjectResult(await service.GetActivePurchases(Guid.Parse(guid), venueId));
             });
         }
     }

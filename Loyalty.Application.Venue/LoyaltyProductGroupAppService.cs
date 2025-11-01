@@ -129,14 +129,11 @@ namespace Loyalty.Application.Venue
             string nameSpace = "Loyalty.Core.Entities.Rules";
             string assemblyName = "Loyalty.Core.Entities";
 
-
-            //command.ProductGroup = model.ProductGroup;
             foreach (var rule in model.Rules.Rules)
             {
-                string version = rule.RuleVersion.ToUpper();
                 var name = Enum.GetName(typeof(LoyaltyRuleType), rule.RuleType);
 
-                var type = Type.GetType($"{nameSpace}.{name}Rule{version}, {assemblyName}");
+                var type = Type.GetType($"{nameSpace}.{name}RuleV{rule.RuleVersion}, {assemblyName}");
                 var result = JsonConvert.DeserializeObject(rule.Rule, type);
 
                 action?.Invoke(result, rule);

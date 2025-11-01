@@ -1,5 +1,6 @@
 ﻿using System;
 using Loyalty.Common.Shared.Enums.Contracts;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {
@@ -9,6 +10,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 
         public LoyaltyRuleType RuleType { get; set; }
 
-        public string RuleVersion { get; set; }
+        public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

@@ -17,11 +17,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
         }
 
         public async Task<ICommandResult> Handle(CreatePurchaseCommand request, CancellationToken cancellationToken)
-        {
+        {   
             var purchase = new Purchase
             {
                 Value = request.Value,
                 UserId = request.UserId,
+                ProductId = request.ProductId,
                 LoyaltyProductGroupId = request.LoyaltyProductGroupId
             };
 

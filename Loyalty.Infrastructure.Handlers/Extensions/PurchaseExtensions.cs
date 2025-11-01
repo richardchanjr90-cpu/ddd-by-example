@@ -8,7 +8,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 {
     public static class PurchaseExtensions
     {
-        public static List<ActivePurchaseResult> ToResult(this IEnumerable<Purchase> items)
+        public static List<GroupPurchaseResult> ToResult(this IEnumerable<Purchase> items)
         {
             if (items == null)
             {
@@ -16,12 +16,30 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             }
 
             var results = items
-                .Select(item => new ActivePurchaseResult
+                .Select(item => new GroupPurchaseResult
                 {
-                    Id = item.Id,
-                    Value = item.Value
+                   // Id = item.Id,
+                    LoyaltyProductGroupId = item.LoyaltyProductGroupId,
+                   // Value = item.Value
                 }).ToList();
-            
+
+            return results;
+        }
+
+        public static GroupPurchaseResult ToResult(this Purchase item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var results = new GroupPurchaseResult
+            {
+                //Id = item.Id,
+                LoyaltyProductGroupId = item.LoyaltyProductGroupId,
+                //Value = item.Value
+            };
+
             return results;
         }
     }
