@@ -18,7 +18,7 @@ namespace Loyalty.Application.ViewModels.Purchase
         public int RuleType { get; set; }
 
         [JsonProperty("ruleVersion")]
-        public string RuleVersion { get; set; }
+        public int RuleVersion { get; set; }
 
         [JsonProperty("total")]
         public decimal? Total { get; set; }
