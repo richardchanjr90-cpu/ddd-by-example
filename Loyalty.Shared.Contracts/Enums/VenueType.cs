@@ -1,4 +1,4 @@
-﻿namespace Loyalty.Common.Shared.Enums.Contracts
+﻿namespace Loyalty.Shared.Contracts.Enums
 {
     public enum VenueType
     {

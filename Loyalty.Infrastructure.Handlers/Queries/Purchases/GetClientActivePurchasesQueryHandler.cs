@@ -7,7 +7,7 @@ using Loyalty.Domain.Handlers.Contracts.Queries.Purchases;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 
-namespace Loyalty.Infrastructure.Handlers.Queries.Purchase
+namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 {
     public class GetClientActivePurchasesQueryHandler : BaseDapperHandler, IGetClientActivePurchasesQueryHandler
     {

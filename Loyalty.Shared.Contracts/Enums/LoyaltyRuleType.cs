@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Loyalty.Common.Shared.Enums.Contracts
+namespace Loyalty.Shared.Contracts.Enums
 {
     [Flags]
     public enum LoyaltyRuleType

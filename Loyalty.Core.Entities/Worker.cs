@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Common.Shared.Enums.Contracts;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
@@ -14,7 +13,7 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 
-        public Guid WorkerId { get; set; }
+        public Guid? WorkerId { get; set; }
 
         public VenueUserRole Role { get; set; }
 

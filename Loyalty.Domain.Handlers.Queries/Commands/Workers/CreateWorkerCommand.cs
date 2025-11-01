@@ -10,7 +10,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public long VenueId { get; set; }
 
-        public Guid WorkerId { get; set; }
+        public Guid? WorkerId { get; set; }
 
         public VenueUserRole Role { get; set; }
 

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Loyalty.Common.Shared.Enums.Contracts;
 using MediatR;
 
-namespace Loyalty.Domain.ServiceBus.Handlers.Queries.Venue
+namespace Loyalty.Domain.Handlers.Notifications.Venue
 {
     public class CreateVenueNotification : INotification
     {

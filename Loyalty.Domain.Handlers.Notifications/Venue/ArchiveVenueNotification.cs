@@ -1,7 +1,7 @@
 ﻿using System;
 using MediatR;
 
-namespace Loyalty.Domain.ServiceBus.Handlers.Queries.Venue
+namespace Loyalty.Domain.Handlers.Notifications.Venue
 {
     public class ArchiveVenueNotification : INotification
     {

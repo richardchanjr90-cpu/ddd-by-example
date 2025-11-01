@@ -8,6 +8,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
+using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.EntityFrameworkCore;

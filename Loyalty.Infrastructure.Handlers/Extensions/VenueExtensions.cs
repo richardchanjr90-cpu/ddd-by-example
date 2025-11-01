@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
+using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
-using Loyalty.Domain.ServiceBus.Handlers.Queries.Venue;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {

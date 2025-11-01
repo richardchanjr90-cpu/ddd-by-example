@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Notifications.Contracts.Notifications.Venues;
-using Loyalty.Domain.ServiceBus.Handlers.Queries.Venue;
+using Loyalty.Domain.Handlers.Notifications.Venue;
 using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Venues
