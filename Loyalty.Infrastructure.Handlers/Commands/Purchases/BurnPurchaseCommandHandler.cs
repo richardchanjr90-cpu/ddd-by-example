@@ -8,6 +8,7 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
+using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             }
 
             var amountToBurn = request.Amount;
-            var date = DateTime.Now;
+            decimal? resultAmount = 0;
             foreach (var purchase in purchases)
             {
                 var purchaseValue = purchase.Value;
@@ -74,10 +75,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 Result = purchases.Select(x => x.Id).ToList()
             };
 
-            //if (result.Success)
-            //{
-            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            //}
+            if (result.Success)
+            {
+                await mediator.Publish(
+                    new BurnPurchaseNotification
+                    {
+                        VenueId = request.VenueId,
+                        UserId = request.UserId,
+                        LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+                        Total = request.Amount
+                    },
+                    cancellationToken);
+            }
             return result;
         }
     }

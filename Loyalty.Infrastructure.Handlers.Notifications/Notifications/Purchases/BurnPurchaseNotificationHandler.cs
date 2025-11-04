@@ -7,12 +7,12 @@ using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Purchases
 {
-    public class UpdatePurchaseNotificationHandler
-        : BaseNotificationHandler, IUpdatePurchaseNotificationHandler
+    public class BurnPurchaseNotificationHandler
+        : BaseNotificationHandler, IBurnPurchaseNotificationHandler
     {
         private readonly IQueueClient client;
 
-        public UpdatePurchaseNotificationHandler(IQueueClient client) : base(client)
+        public BurnPurchaseNotificationHandler(IQueueClient client) : base(client)
         {
             this.client = client;
         }

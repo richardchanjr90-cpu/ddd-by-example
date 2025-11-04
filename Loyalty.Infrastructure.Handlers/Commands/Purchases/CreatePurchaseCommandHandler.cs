@@ -5,6 +5,7 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
+using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using MediatR;
 
@@ -21,7 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
         }
 
         public async Task<ICommandResult> Handle(CreatePurchaseCommand request, CancellationToken cancellationToken)
-        {   
+        {
             var purchase = new Purchase
             {
                 Value = request.Value,
@@ -38,10 +39,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 Result = purchase.Id
             };
 
-            //if (result.Success)
-            //{
-            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            //}
+            if (result.Success)
+            {
+                await mediator.Publish(
+                    new CreatePurchaseNotification
+                    {
+                        VenueId = request.VenueId,
+                        UserId = purchase.UserId,
+                        LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
+                        Total = purchase.Value
+                    },
+                    cancellationToken);
+            }
             return result;
         }
     }
