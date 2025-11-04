@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Notifications.Contracts.Notifications.LoyaltyProductGroups
 {
-    public interface ICreateLoyaltyProductGroupNotificationHandler 
+    public interface ICreateLoyaltyProductNotificationHandler
         : INotificationHandler<CreateLoyaltyProductGroupNotification>
     {
     }

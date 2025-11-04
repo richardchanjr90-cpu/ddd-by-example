@@ -8,7 +8,9 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
+using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -17,8 +19,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
     public class UpdateLoyaltyProductGroupCommandHandler
         : BaseHandler, IUpdateLoyaltyProductGroupCommandHandler
     {
-        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context) : base(context)
+        private readonly IMediator mediator;
+
+        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context, IMediator mediator) 
+            : base(context)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(UpdateLoyaltyProductGroupCommand request, CancellationToken cancellationToken)
@@ -73,10 +79,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 Result = group.Id
             };
 
-            //if (result.Success)
-            //{
-            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            //}
+            if (result.Success)
+            {
+                await mediator.Publish(
+                    new UpdateLoyaltyProductGroupNotification
+                    {
+                        Id = group.Id,
+                        GroupName = group.Name,
+                        Rule = JsonConvert.SerializeObject(group.Rules)
+                    },
+                    cancellationToken);
+            }
             return result;
         }
 

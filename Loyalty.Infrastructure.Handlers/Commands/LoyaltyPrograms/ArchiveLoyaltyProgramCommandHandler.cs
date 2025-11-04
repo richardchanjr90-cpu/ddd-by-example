@@ -6,7 +6,9 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
+using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
@@ -14,8 +16,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
     public class ArchiveLoyaltyProgramCommandHandler
         : BaseHandler, IArchiveLoyaltyProgramCommandHandler
     {
-        public ArchiveLoyaltyProgramCommandHandler(ILoyaltyDbContext context) : base(context)
+        private readonly IMediator mediator;
+
+        public ArchiveLoyaltyProgramCommandHandler(ILoyaltyDbContext context, IMediator mediator)
+            : base(context)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(ArchiveLoyaltyProgramCommand request, CancellationToken cancellationToken)
@@ -44,10 +50,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 Result = program?.Id
             };
 
-            //if (result.Success)
-            //{
-            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            //}
+            if (result.Success && program != null)
+            {
+                await mediator.Publish(
+                    new ArchiveLoyaltyProgramNotification
+                    {
+                        Id = program.Id
+                    },
+                    cancellationToken);
+            }
             return result;
         }
     }

@@ -6,17 +6,21 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
+using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
+using MediatR;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 {
-
     public class CreateLoyaltyProgramCommandHandler
         : BaseHandler, ICreateLoyaltyProgramCommandHandler
     {
-        public CreateLoyaltyProgramCommandHandler(ILoyaltyDbContext context) 
+        private readonly IMediator mediator;
+
+        public CreateLoyaltyProgramCommandHandler(ILoyaltyDbContext context, IMediator mediator)
             : base(context)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(CreateLoyaltyProgramCommand request, CancellationToken cancellationToken)
@@ -40,10 +44,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 Result = program.Id
             };
 
-            //if (result.Success)
-            //{
-            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            //}
+            if (result.Success)
+            {
+                await mediator.Publish(
+                    new CreateLoyaltyProgramNotification
+                    {
+                        Id = program.Id,
+                        Name = program.Name,
+                        EndDate = program.EndDate,
+                        StartDate = program.StartDate
+                    },
+                    cancellationToken);
+            }
             return result;
         }
     }

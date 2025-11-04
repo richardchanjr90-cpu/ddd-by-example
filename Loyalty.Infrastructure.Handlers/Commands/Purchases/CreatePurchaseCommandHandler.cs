@@ -6,14 +6,18 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
+using MediatR;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
     public class CreatePurchaseCommandHandler : BaseHandler, ICreatePurchaseCommandHandler
     {
-        public CreatePurchaseCommandHandler(ILoyaltyDbContext context)
+        private readonly IMediator mediator;
+
+        public CreatePurchaseCommandHandler(ILoyaltyDbContext context, IMediator mediator)
             : base(context)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(CreatePurchaseCommand request, CancellationToken cancellationToken)

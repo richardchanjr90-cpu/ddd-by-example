@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MediatR;
+﻿using MediatR;
 
 namespace Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups
 {
     public class ArchiveLoyaltyProductGroupNotification : INotification
     {
+        public long Id { get; set; }
     }
 }
