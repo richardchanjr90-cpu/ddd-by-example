@@ -5,6 +5,7 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {
@@ -29,7 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 LogoUrl = command.LogoUrl,
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
-                WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
+                WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
@@ -146,7 +147,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Location = command.Location?.ToSingle(),
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
-                WorkingHours = command.WorkingHours.ToCommaSeparatedStringOrNull(),
+                WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 LogoUrl = command.LogoUrl,
                 IsArchived = command.IsArchived,
@@ -178,7 +179,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Phones = item.Phones.SplitByCommaAndUnwrap(),
                 FullDescription = item.FullDescription,
                 WebSites = item.WebSites.SplitByCommaAndUnwrap(),
-                WorkingHours = item.WorkingHours.SplitByCommaAndUnwrap(),
+                WorkingHours = JsonConvert.DeserializeObject<List<GetVenueWorkingHoursQueryResult>>(item.WorkingHours),
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
                 ParentId = item.ParentId

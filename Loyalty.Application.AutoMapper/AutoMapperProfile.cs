@@ -43,6 +43,9 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
+            CreateMap<WorkingHoursViewModel, GetVenueWorkingHoursQueryResult>();
+            CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
+
             CreateMap<VenueViewModel, UpdateVenueCommand>()
                 .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
@@ -56,6 +59,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.VenueId, opt => opt.Ignore())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
+
             CreateMap<LoyaltyProgramViewModel, UpdateLoyaltyProgramCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.VenueId, opt => opt.Ignore());

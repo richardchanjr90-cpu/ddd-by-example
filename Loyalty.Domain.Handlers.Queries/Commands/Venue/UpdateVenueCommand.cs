@@ -5,6 +5,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using MediatR;
 using Loyalty.Common.Shared.Enums.Contracts;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 {
@@ -26,7 +27,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public List<string> WebSites { get; set; } = new List<string>();
 
-        public List<string> WorkingHours { get; set; } = new List<string>();
+        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; } = new List<GetVenueWorkingHoursQueryResult>();
 
         public long? ParentId { get; set; }
 

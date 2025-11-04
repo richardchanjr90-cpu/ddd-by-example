@@ -28,7 +28,7 @@ namespace Loyalty.Application.ViewModels.Venue
         public List<string> WebSites { get; set; }
 
         [JsonProperty("workingHours")]
-        public List<string> WorkingHours { get; set; }
+        public List<WorkingHoursViewModel> WorkingHours { get; set; }
 
         [JsonProperty("parentId")]
         public long? ParentId { get; set; }

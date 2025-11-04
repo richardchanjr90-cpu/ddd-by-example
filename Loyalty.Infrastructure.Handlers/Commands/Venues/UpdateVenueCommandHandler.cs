@@ -10,6 +10,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
@@ -44,7 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.LogoUrl = request.LogoUrl;
                 venue.FullDescription = request.FullDescription;
                 venue.WebSites = request.WebSites.ToCommaSeparatedStringOrNull();
-                venue.WorkingHours = request.WorkingHours.ToCommaSeparatedStringOrNull();
+                venue.WorkingHours = JsonConvert.SerializeObject(request.WorkingHours);
                 venue.Phones = request.Phones.ToCommaSeparatedStringOrNull();
                 venue.Location = request.Location?.ToSingle();
             }
