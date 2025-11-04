@@ -7,6 +7,8 @@ namespace Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms
     {
         public long Id { get; set; }
 
+        public long VenueId { get; set; }
+
         public string Name { get; set; }
 
         public DateTime StartDate { get; set; }
