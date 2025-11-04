@@ -75,6 +75,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                     new CreateLoyaltyProductGroupNotification
                     {
                         Id = group.Id,
+                        LoyaltyProgramId = group.LoyaltyProgramId,
                         GroupName = group.Name,
                         Rule = JsonConvert.SerializeObject(group.Rules)
                     },

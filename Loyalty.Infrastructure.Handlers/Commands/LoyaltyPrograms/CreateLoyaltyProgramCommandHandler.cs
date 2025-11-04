@@ -50,6 +50,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     new CreateLoyaltyProgramNotification
                     {
                         Id = program.Id,
+                        VenueId = program.VenueId,
                         Name = program.Name,
                         EndDate = program.EndDate,
                         StartDate = program.StartDate

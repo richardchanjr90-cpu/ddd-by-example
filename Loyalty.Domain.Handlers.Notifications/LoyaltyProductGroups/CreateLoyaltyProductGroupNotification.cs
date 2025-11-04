@@ -6,6 +6,8 @@ namespace Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups
     {
         public long Id { get; set; }
 
+        public long LoyaltyProgramId { get; set; }
+
         public string GroupName { get; set; }
 
         public string Rule { get; set; }
