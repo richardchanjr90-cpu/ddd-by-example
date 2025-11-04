@@ -9,9 +9,9 @@ namespace Loyalty.Application.ViewModels.Venue
         public string Day { get; set; }
 
         [JsonProperty("from")]
-        public int From { get; set; }
+        public int? From { get; set; }
 
         [JsonProperty("to")]
-        public int To { get; set; }
+        public int? To { get; set; }
     }
 }

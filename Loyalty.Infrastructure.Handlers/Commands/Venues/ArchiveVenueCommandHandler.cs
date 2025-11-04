@@ -5,6 +5,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
+using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
@@ -35,16 +36,16 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 {
                     venue.Location.IsArchived = true;
                 }
-
                 venue.IsArchived = true;
             }
+
             var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = venue?.Id
             };
 
-            if (result.Success)
+            if (result.Success && venue != null)
             {
                 await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
             }

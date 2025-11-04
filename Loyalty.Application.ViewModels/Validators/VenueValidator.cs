@@ -25,6 +25,11 @@ namespace Loyalty.Application.ViewModels.Validators
                 .SetValidator(new LocationValidator())
                 .When(x => x.Location != null);
 
+
+            RuleForEach(x => x.WorkingHours)
+                .Must(x=> !string.IsNullOrWhiteSpace(x.Day))
+                .When(x => x.WorkingHours != null);
+
             RuleFor(x => x)
                 .SetValidator(new PublishedVenueValidator())
                 .When(x => x.IsPublished)
