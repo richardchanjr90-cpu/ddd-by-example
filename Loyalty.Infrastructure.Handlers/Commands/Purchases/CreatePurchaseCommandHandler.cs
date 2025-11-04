@@ -28,11 +28,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             Context.Purchases.Add(purchase);
 
-            return new CommandResult
+            var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = purchase.Id
             };
+
+            //if (result.Success)
+            //{
+            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
+            //}
+            return result;
         }
     }
 }

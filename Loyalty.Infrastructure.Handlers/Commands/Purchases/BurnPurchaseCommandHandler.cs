@@ -9,15 +9,19 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
     public class BurnPurchaseCommandHandler : BaseHandler, IBurnPurchaseCommandHandler
     {
-        public BurnPurchaseCommandHandler(ILoyaltyDbContext context)
+        private readonly IMediator mediator;
+
+        public BurnPurchaseCommandHandler(ILoyaltyDbContext context, IMediator mediator)
             : base(context)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
@@ -64,11 +68,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 }
             }
 
-            return new CommandResult
+            var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = purchases.Select(x => x.Id).ToList()
             };
+
+            //if (result.Success)
+            //{
+            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
+            //}
+            return result;
         }
     }
 }

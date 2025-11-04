@@ -37,12 +37,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     }
                 }
             }
-         
-            return new CommandResult
+
+            var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = program?.Id
             };
+
+            //if (result.Success)
+            //{
+            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
+            //}
+            return result;
         }
     }
 }

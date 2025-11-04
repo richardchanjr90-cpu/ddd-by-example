@@ -58,11 +58,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
             Context.LoyaltyProductGroups.Add(group);
 
-            return new CommandResult
+            var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = group.Id
             };
+
+            //if (result.Success)
+            //{
+            //    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
+            //}
+            return result;
         }
     }
 }
