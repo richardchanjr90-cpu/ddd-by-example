@@ -37,9 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             var amount = purchases.Sum(x => x.Value);
 
             if (amount < request.Amount)
-            {
                 throw new LoyaltyValidationException("Amount of points is lower than requested");
-            }
 
             var amountToBurn = request.Amount;
             decimal? resultAmount = 0;
@@ -58,15 +56,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                         Value = amountToReSave,
                         InternalPurchaseMadeBySystem = true,
                         LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-                        ProductId = purchase.ProductId,
+                        ProductId = purchase.ProductId
                     };
                     Context.Purchases.Add(leftOverPurchase);
                     break;
                 }
-                else
-                {
-                    amountToBurn -= purchaseValue ?? 0;
-                }
+
+                amountToBurn -= purchaseValue ?? 0;
             }
 
             var result = new CommandResult
@@ -76,7 +72,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             };
 
             if (result.Success)
-            {
                 await mediator.Publish(
                     new BurnPurchaseNotification
                     {
@@ -86,7 +81,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                         Total = request.Amount
                     },
                     cancellationToken);
-            }
             return result;
         }
     }

@@ -32,9 +32,9 @@ namespace Loyalty.Application.AutoMapper
         {
             CreateMap<LocationViewModel, CreateLocationCommand>()
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
-            
+
             CreateMap<LocationViewModel, UpdateLocationCommand>();
-            CreateMap<GetLocationQueryResult, LocationViewModel> ();
+            CreateMap<GetLocationQueryResult, LocationViewModel>();
 
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
 

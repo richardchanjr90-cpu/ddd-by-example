@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Loyalty.Common.Shared.Enums.Contracts;
+﻿using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
@@ -11,16 +8,12 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {
     public class UpdateSingleRuleCommand : IRequest<ICommandResult>
     {
-        [JsonProperty("id")]
-        public long Id { get; set; }
+        [JsonProperty("id")] public long Id { get; set; }
 
-        [JsonProperty("rule")]
-        public object Rule { get; set; }
+        [JsonProperty("rule")] public object Rule { get; set; }
 
-        [JsonProperty("ruleType")]
-        public LoyaltyRuleType RuleType { get; set; }
+        [JsonProperty("ruleType")] public LoyaltyRuleType RuleType { get; set; }
 
-        [JsonProperty("ruleVersion")]
-        public LoyaltyRuleVersion RuleVersion { get; set; }
+        [JsonProperty("ruleVersion")] public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

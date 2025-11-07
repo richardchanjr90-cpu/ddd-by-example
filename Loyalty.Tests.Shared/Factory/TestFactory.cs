@@ -17,9 +17,9 @@ namespace Loyalty.Tests.Shared.Factory
         {
             return new List<object[]>
             {
-                new object[] { "name", "Bill" },
-                new object[] { "name", "Paul" },
-                new object[] { "name", "Steve" }
+                new object[] {"name", "Bill"},
+                new object[] {"name", "Paul"},
+                new object[] {"name", "Steve"}
             };
         }
 
@@ -27,7 +27,7 @@ namespace Loyalty.Tests.Shared.Factory
         {
             var qs = new Dictionary<string, StringValues>
             {
-                { key, value }
+                {key, value}
             };
             return qs;
         }
@@ -45,7 +45,7 @@ namespace Loyalty.Tests.Shared.Factory
         {
             var bodyString = JsonConvert.SerializeObject(body);
             var buffer = Encoding.UTF8.GetBytes(bodyString);
-       
+
             using (var memory = new MemoryStream())
             {
                 var request = new DefaultHttpRequest(new DefaultHttpContext())
@@ -63,13 +63,9 @@ namespace Loyalty.Tests.Shared.Factory
             ILogger logger;
 
             if (type == LoggerTypes.List)
-            {
                 logger = new ListLogger();
-            }
             else
-            {
                 logger = NullLoggerFactory.Instance.CreateLogger("Null Logger");
-            }
 
             return logger;
         }

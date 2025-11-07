@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Queries.Purchases
 {
-    public interface IGetClientActivePurchasesQueryHandler : IRequestHandler<GetClientActivePurchasesQuery, GetActivePurchasesResult>
+    public interface
+        IGetClientActivePurchasesQueryHandler : IRequestHandler<GetClientActivePurchasesQuery, GetActivePurchasesResult>
     {
     }
 }

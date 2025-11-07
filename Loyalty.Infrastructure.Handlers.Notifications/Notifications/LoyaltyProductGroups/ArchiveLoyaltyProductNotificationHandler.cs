@@ -17,7 +17,8 @@ namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.LoyaltyPro
             this.client = client;
         }
 
-        public async Task Handle(ArchiveLoyaltyProductGroupNotification notification, CancellationToken cancellationToken)
+        public async Task Handle(ArchiveLoyaltyProductGroupNotification notification,
+            CancellationToken cancellationToken)
         {
             var message = notification.ToMessage();
             await client.SendAsync(message);

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Loyalty.Common.Shared.Settings
+﻿namespace Loyalty.Common.Shared.Settings
 {
     public class ServiceBusSettings
     {

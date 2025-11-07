@@ -16,10 +16,7 @@ namespace Loyalty.Infrastructure.DataAccess
             var defaultPath =
                 $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}LoyaltyProgram";
 
-            if (args.Length == 1)
-            {
-                defaultPath = args[0];
-            }
+            if (args.Length == 1) defaultPath = args[0];
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(defaultPath)

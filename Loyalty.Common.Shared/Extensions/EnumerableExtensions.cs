@@ -9,10 +9,7 @@ namespace Loyalty.Common.Shared.Extensions
         {
             string result = null;
 
-            if (array != null)
-            {
-                result = string.Join(",", array.Select(x => $"\"{x}\""));
-            }
+            if (array != null) result = string.Join(",", array.Select(x => $"\"{x}\""));
 
             return result;
         }

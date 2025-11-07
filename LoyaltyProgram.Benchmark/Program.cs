@@ -4,13 +4,12 @@ using Loyalty.Infrastructure.IoC.DI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Benchmark
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             IConfigurationRoot root = null;
 

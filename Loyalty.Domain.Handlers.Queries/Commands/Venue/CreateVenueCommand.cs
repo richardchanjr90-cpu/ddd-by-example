@@ -24,7 +24,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public List<string> WebSites { get; set; } = new List<string>();
 
-        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; } 
+        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; }
             = new List<GetVenueWorkingHoursQueryResult>();
 
         public long? ParentId { get; set; }

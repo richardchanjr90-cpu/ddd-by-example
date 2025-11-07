@@ -9,7 +9,6 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
-using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
 
 namespace Loyalty.Application.Venue
@@ -37,7 +36,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<List<LoyaltyProgramViewModel>> Get(long venueId)
         {
-            var result = await Mediator.Send(new GetLoyaltyProgramsQuery { VenueId = venueId});
+            var result = await Mediator.Send(new GetLoyaltyProgramsQuery {VenueId = venueId});
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
         }
 

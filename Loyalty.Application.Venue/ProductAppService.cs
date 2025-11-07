@@ -13,7 +13,7 @@ using MediatR;
 
 namespace Loyalty.Application.Venue
 {
-    public class ProductAppService: BaseAppService
+    public class ProductAppService : BaseAppService
     {
         private readonly IMapper mapper;
 
@@ -27,7 +27,7 @@ namespace Loyalty.Application.Venue
         {
             var result = await Mediator.Send(new GetProductByIdQuery
             {
-                Id = id,    
+                Id = id
             });
 
             return mapper.Map<ProductViewModel>(result);

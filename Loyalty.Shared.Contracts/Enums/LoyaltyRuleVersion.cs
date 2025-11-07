@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Loyalty.Shared.Contracts.Enums
+﻿namespace Loyalty.Shared.Contracts.Enums
 {
     public enum LoyaltyRuleVersion
     {
-        V1 = 1,
+        V1 = 1
     }
 }

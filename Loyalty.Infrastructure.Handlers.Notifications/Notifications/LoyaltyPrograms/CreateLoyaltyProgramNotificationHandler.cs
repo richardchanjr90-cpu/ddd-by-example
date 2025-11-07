@@ -7,8 +7,8 @@ using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.LoyaltyPrograms
 {
-    public class CreateLoyaltyProgramNotificationHandler 
-        : BaseNotificationHandler,ICreateLoyaltyProgramNotificationHandler
+    public class CreateLoyaltyProgramNotificationHandler
+        : BaseNotificationHandler, ICreateLoyaltyProgramNotificationHandler
     {
         private readonly IQueueClient client;
 

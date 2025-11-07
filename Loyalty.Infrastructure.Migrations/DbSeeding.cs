@@ -19,7 +19,6 @@ namespace Loyalty.Infrastructure.Migrations
 
                 var venue = context.Venues.FirstOrDefault(v => v.Name == "Venue1");
                 if (venue == null)
-                {
                     context.Venues.Add(new Venue
                     {
                         CategoryType = VenueCategoryType.CoffeeShop,
@@ -34,14 +33,13 @@ namespace Loyalty.Infrastructure.Migrations
                             Longitude = 180
                         },
                         LogoUrl = "http://clipart-library.com/images/8cEb974Xi.jpg",
-                        Description = "Venue without details and programs.",              
+                        Description = "Venue without details and programs.",
                         IsArchived = false,
                         IsPublished = false,
                         Name = "Venue1",
                         Type = VenueType.Single,
-                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40") 
+                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40")
                     });
-                }
 
                 context.SaveChanges();
             }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
-using MediatR;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 {
@@ -27,7 +26,8 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public List<string> WebSites { get; set; } = new List<string>();
 
-        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; } = new List<GetVenueWorkingHoursQueryResult>();
+        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; } =
+            new List<GetVenueWorkingHoursQueryResult>();
 
         public long? ParentId { get; set; }
 

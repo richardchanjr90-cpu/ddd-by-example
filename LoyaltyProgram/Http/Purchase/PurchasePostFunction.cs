@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
@@ -22,7 +21,8 @@ namespace LoyaltyProgram.Http.Purchase
         [FunctionName("PurchasePostFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/purchases")]PurchaseViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/purchases")]
+            PurchaseViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(PurchasePostFunction)} was triggered.");

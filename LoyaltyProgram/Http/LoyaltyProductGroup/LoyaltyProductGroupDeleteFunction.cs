@@ -22,15 +22,14 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
         public async Task<IActionResult> Run(
             long loyaltyProgramId,
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "programs/{loyaltyProgramId}/loyaltygroups/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route =
+                "programs/{loyaltyProgramId}/loyaltygroups/{id}")]
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Archive(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
         }
     }
 }

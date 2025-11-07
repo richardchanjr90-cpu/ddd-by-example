@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Notifications.Contracts.Notifications.Venues;
@@ -13,7 +11,7 @@ namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Venues
     {
         private readonly IQueueClient client;
 
-        public CreateVenueNotificationHandler(IQueueClient client) 
+        public CreateVenueNotificationHandler(IQueueClient client)
             : base(client)
         {
             this.client = client;

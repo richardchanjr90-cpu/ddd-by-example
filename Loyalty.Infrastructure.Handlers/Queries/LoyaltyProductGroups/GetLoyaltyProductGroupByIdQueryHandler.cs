@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
@@ -15,12 +13,13 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
 {
     public class GetLoyaltyProductGroupByIdQueryHandler : BaseHandler, IGetLoyaltyProductGroupByIdQueryHandler
     {
-        public GetLoyaltyProductGroupByIdQueryHandler(ILoyaltyDbContext context) 
+        public GetLoyaltyProductGroupByIdQueryHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
 
-        public async Task<GetLoyaltyProductGroupByIdQueryResult> Handle(GetLoyaltyProductGroupByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetLoyaltyProductGroupByIdQueryResult> Handle(GetLoyaltyProductGroupByIdQuery request,
+            CancellationToken cancellationToken)
         {
             var item = Context.LoyaltyProductGroups.Include(x => x.Group)
                 .ThenInclude(x => x.Products)
@@ -34,7 +33,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                     LoyaltyProgramId = lp.LoyaltyProgramId,
                     Description = lp.Description,
                     Name = lp.Name,
-                    Rules = new GetRuleByIdQueryResult { Rules = lp.Rules.ToList().ToResults() },
+                    Rules = new GetRuleByIdQueryResult {Rules = lp.Rules.ToList().ToResults()},
                     ProductGroup = lp.Group.ToResult()
                 }).SingleOrDefault();
 

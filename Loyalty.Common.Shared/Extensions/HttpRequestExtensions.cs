@@ -8,12 +8,9 @@ namespace Loyalty.Common.Shared.Extensions
 {
     public static class HttpRequestExtensions
     {
-        public  static async Task<T> Cast<T>(this HttpRequest request)
+        public static async Task<T> Cast<T>(this HttpRequest request)
         {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
+            if (request == null) throw new ArgumentNullException(nameof(request));
 
             var body = await request.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<T>(body);

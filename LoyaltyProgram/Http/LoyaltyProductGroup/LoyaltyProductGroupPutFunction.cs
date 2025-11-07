@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Common.Shared.Exceptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -22,7 +21,8 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
         [FunctionName("LoyaltyProductGroupPutFunction")]
         public async Task<IActionResult> Run(
             long loyaltyProgramId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "programs/{loyaltyProgramId}/loyaltygroups")]LoyaltyProductGroupViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "programs/{loyaltyProgramId}/loyaltygroups")]
+            LoyaltyProductGroupViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupPutFunction)} was triggered.");

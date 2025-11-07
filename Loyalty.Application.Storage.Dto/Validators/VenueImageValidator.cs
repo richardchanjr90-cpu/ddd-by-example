@@ -15,12 +15,12 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.Image)
                 .NotNull()
-                .Must(x=>x.Length > 1024)
+                .Must(x => x.Length > 1024)
                 .WithMessage("Image should be loaded.");
 
             RuleFor(x => x.VenueId)
                 .GreaterThan(0);
-                
+
             RuleFor(x => x.Index)
                 .LessThan(10)
                 .GreaterThan(-1)
@@ -79,10 +79,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
         {
             var isValid = false;
 
-            if (array != null)
-            {
-                isValid = array.Length <= settings.MaxImageSizeInBytes;
-            }
+            if (array != null) isValid = array.Length <= settings.MaxImageSizeInBytes;
 
             return isValid;
         }

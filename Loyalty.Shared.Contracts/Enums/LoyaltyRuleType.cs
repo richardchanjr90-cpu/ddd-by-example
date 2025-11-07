@@ -5,22 +5,22 @@ namespace Loyalty.Shared.Contracts.Enums
     [Flags]
     public enum LoyaltyRuleType
     {
-        Stamps=1,
+        Stamps = 1,
 
-        PercentFixed=2,
+        PercentFixed = 2,
 
-        PercentToDate=4,
+        PercentToDate = 4,
 
-        PercentThatDependsOnPeriod=8,
+        PercentThatDependsOnPeriod = 8,
 
-        PercentForActionsDone=16,
+        PercentForActionsDone = 16,
 
-        PercentThatDependsOnTotalSum=32,
+        PercentThatDependsOnTotalSum = 32,
 
-        BringAFriend=64,
+        BringAFriend = 64,
 
-        ActionInASpecifiedDat=128,
+        ActionInASpecifiedDat = 128,
 
-        BirthDayPresent=256
+        BirthDayPresent = 256
     }
 }

@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,10 +27,7 @@ namespace LoyaltyProgram.Http.Worker
         {
             log.LogInformation($"{nameof(WorkerDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Archive(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
         }
     }
 }

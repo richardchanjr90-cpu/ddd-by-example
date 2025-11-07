@@ -21,15 +21,13 @@ namespace LoyaltyProgram.Http.ProductGroup
         [FunctionName("ProductGroupGetFunction")]
         public async Task<IActionResult> Run(
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productgroups/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productgroups/{id}")]
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(ProductGroupGetFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Get(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Get(id)); });
         }
     }
 }

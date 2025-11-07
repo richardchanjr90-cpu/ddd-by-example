@@ -1,6 +1,5 @@
 ﻿using System;
 using Loyalty.Common.Shared.Enums.Contracts;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 

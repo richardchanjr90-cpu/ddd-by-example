@@ -9,7 +9,7 @@ namespace Loyalty.Common.Shared.Extensions
     {
         public static Message ToMessage(this INotification item)
         {
-            string messageBody = JsonConvert.SerializeObject(item);
+            var messageBody = JsonConvert.SerializeObject(item);
             var message = new Message(Encoding.UTF8.GetBytes(messageBody))
             {
                 ContentType = item.GetType().Name

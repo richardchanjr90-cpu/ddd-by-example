@@ -34,7 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 WorkerId = request.OwnerId,
                 Role = VenueUserRole.Owner,
                 PositionName = "Owner",
-                Phone = "+37529" + new Random().Next(1000000, 9999999).ToString(),
+                Phone = "+37529" + new Random().Next(1000000, 9999999),
                 Name = "NameStub",
                 LastName = "LastNameStub"
             };
@@ -52,10 +52,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 Result = venue.Id
             };
 
-            if (result.Success)
-            {
-                await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            }
+            if (result.Success) await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
 
             return result;
         }

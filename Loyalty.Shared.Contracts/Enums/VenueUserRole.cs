@@ -5,6 +5,6 @@
         Worker,
         Manager,
         Director,
-        Owner    
+        Owner
     }
 }

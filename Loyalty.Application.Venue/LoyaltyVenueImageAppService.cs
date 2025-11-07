@@ -17,7 +17,8 @@ namespace Loyalty.Application.Venue
         private readonly IMapper mapper;
         private readonly IOptions<VenueGalleryImageSettings> settings;
 
-        public LoyaltyVenueImageAppService(IMediator mediator, IMapper mapper, IOptions<VenueGalleryImageSettings> settings)
+        public LoyaltyVenueImageAppService(IMediator mediator, IMapper mapper,
+            IOptions<VenueGalleryImageSettings> settings)
             : base(mediator)
         {
             this.mapper = mapper;
@@ -43,8 +44,9 @@ namespace Loyalty.Application.Venue
                 new VenueImageValidator(settings.Value)
                     .ValidateAndThrow(venueImage);
 
-                images.Add(venueImage);            
+                images.Add(venueImage);
             }
+
             return images;
         }
     }

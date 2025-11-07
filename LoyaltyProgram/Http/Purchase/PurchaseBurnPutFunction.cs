@@ -1,9 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -23,7 +21,8 @@ namespace LoyaltyProgram.Http.Purchase
         [FunctionName("PurchaseBurnPutFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases")]PurchaseViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases")]
+            PurchaseViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");

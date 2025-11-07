@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -13,7 +12,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Products
 {
     public class GetProductsQueryHandler : BaseHandler, IGetProductsQueryHandler
     {
-        public GetProductsQueryHandler(ILoyaltyDbContext context) 
+        public GetProductsQueryHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -22,7 +21,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Products
         {
             var items = await (from lp in Context.Products
                 where lp.ProductGroupId == request.ProductGroupId
-                               select lp).ToListAsync(cancellationToken);
+                select lp).ToListAsync(cancellationToken);
 
             return new GetProductsQueryResult
             {

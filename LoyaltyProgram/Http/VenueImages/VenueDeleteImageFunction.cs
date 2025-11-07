@@ -1,8 +1,6 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +8,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SixLabors.ImageSharp;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
@@ -30,7 +27,8 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
-            [Blob("venue-images-{id}", FileAccess.ReadWrite)] CloudBlobContainer container)
+            [Blob("venue-images-{id}", FileAccess.ReadWrite)]
+            CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 

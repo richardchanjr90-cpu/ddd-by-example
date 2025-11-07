@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,15 +22,13 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
         public async Task<IActionResult> Run(
             long venueId,
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/programs/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/programs/{id}")]
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProgramDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Archive(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
         }
     }
 }

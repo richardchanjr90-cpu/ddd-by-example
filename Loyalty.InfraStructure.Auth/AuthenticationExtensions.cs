@@ -19,9 +19,9 @@ namespace Loyalty.InfraStructure.Auth
         public static readonly HttpClientHandler CachedHandler = new HttpClientHandler();
 
         /// <summary>
-        /// ClaimsPrincipal.Current is currently always null in Functions v2 on dotnet core. 
-        /// using this to solve the problem as a temp solution, should be fixed by the end of 2018
-        /// https://github.com/Azure/azure-functions-host/issues/33
+        ///     ClaimsPrincipal.Current is currently always null in Functions v2 on dotnet core.
+        ///     using this to solve the problem as a temp solution, should be fixed by the end of 2018
+        ///     https://github.com/Azure/azure-functions-host/issues/33
         /// </summary>
         public static bool TryAuthenticate(this HttpRequest request, out AuthenticationModel model)
         {

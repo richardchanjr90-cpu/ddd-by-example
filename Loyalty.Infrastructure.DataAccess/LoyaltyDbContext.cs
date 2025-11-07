@@ -74,23 +74,23 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<Worker>()
-                .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
+                .HasIndex(p => new {p.WorkerId, p.VenueId}).IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique()
+                .HasIndex(p => new {p.ProductGroupId, p.Name}).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
             //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
-                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
+                .HasIndex(p => new {p.VenueId, p.Name}).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<LoyaltyProductGroup>()
-                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique()
+                .HasIndex(p => new {p.LoyaltyProgramId, p.ProductGroupId}).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<Location>()
-                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+                .HasIndex(p => new {p.Longitude, p.Latitude}).IsUnique();
 
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
@@ -112,12 +112,12 @@ namespace Loyalty.Infrastructure.DataAccess
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((AuditableEntity)entry.Entity).CreatedBy = Guid.Empty;
-                    ((AuditableEntity)entry.Entity).Created = DateTime.UtcNow;
+                    ((AuditableEntity) entry.Entity).CreatedBy = Guid.Empty;
+                    ((AuditableEntity) entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((AuditableEntity)entry.Entity).ModifiedBy = Guid.Empty;
-                ((AuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
+                ((AuditableEntity) entry.Entity).ModifiedBy = Guid.Empty;
+                ((AuditableEntity) entry.Entity).Modified = DateTime.UtcNow;
             }
         }
     }

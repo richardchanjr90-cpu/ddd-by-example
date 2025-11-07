@@ -1,9 +1,10 @@
 ﻿using System;
+using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 
-[assembly: FunctionsStartup(typeof(Loyalty.Infrastructure.IoC.Startup))]
+[assembly: FunctionsStartup(typeof(Startup))]
 
 namespace Loyalty.Infrastructure.IoC
 {

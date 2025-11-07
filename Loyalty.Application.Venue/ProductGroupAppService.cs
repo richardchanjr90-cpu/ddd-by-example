@@ -5,17 +5,15 @@ using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Validators;
-using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
-using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
 
 namespace Loyalty.Application.Venue
 {
-    public class ProductGroupAppService: BaseAppService
+    public class ProductGroupAppService : BaseAppService
     {
         private readonly IMapper mapper;
 

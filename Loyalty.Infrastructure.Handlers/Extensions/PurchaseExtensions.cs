@@ -10,17 +10,14 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static List<GroupPurchaseResult> ToResult(this IEnumerable<Purchase> items)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             var results = items
                 .Select(item => new GroupPurchaseResult
                 {
-                   // Id = item.Id,
-                    LoyaltyProductGroupId = item.LoyaltyProductGroupId,
-                   // Value = item.Value
+                    // Id = item.Id,
+                    LoyaltyProductGroupId = item.LoyaltyProductGroupId
+                    // Value = item.Value
                 }).ToList();
 
             return results;
@@ -28,15 +25,12 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static GroupPurchaseResult ToResult(this Purchase item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             var results = new GroupPurchaseResult
             {
                 //Id = item.Id,
-                LoyaltyProductGroupId = item.LoyaltyProductGroupId,
+                LoyaltyProductGroupId = item.LoyaltyProductGroupId
                 //Value = item.Value
             };
 

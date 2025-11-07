@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Text;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
@@ -12,10 +9,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static GetSingleRuleByIdQueryResult ToResult(this LoyaltyGroupRule item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             var result = new GetSingleRuleByIdQueryResult
             {
@@ -29,10 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<GetSingleRuleByIdQueryResult> ToResults(this List<LoyaltyGroupRule> items)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             var results = new List<GetSingleRuleByIdQueryResult>();
             items.ForEach(x => results.Add(x.ToResult()));

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -15,7 +14,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
     public class UpdateProductCommandHandler
         : BaseHandler, IUpdateProductCommandHandler
     {
-        public UpdateProductCommandHandler(ILoyaltyDbContext context) 
+        public UpdateProductCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -32,7 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 {
                     ProductGroupId = request.ProductGroupId,
                     Icon = request.Icon,
-                    Name = request.Name,
+                    Name = request.Name
                 };
 
                 Context.Products.Add(product);

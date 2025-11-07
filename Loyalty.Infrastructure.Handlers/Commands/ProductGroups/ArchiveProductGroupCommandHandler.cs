@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -14,12 +13,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
     public class ArchiveProductGroupCommandHandler
         : BaseHandler, IArchiveProductGroupCommandHandler
     {
-        public ArchiveProductGroupCommandHandler(ILoyaltyDbContext context) 
+        public ArchiveProductGroupCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
 
-        public async Task<ICommandResult> Handle(ArchiveProductGroupCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(ArchiveProductGroupCommand request,
+            CancellationToken cancellationToken)
         {
             var group = await Context.ProductGroups
                 .Include(x => x.Products)
@@ -30,13 +30,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
             {
                 group.IsArchived = true;
 
-                if(group.Products != null)
-                {
+                if (group.Products != null)
                     foreach (var product in group.Products)
-                    {
                         product.IsArchived = true;
-                    }
-                }
             }
 
             return new CommandResult

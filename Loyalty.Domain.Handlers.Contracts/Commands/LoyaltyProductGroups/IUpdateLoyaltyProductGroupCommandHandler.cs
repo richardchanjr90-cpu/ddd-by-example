@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups
 {
-    public interface IUpdateLoyaltyProductGroupCommandHandler 
+    public interface IUpdateLoyaltyProductGroupCommandHandler
         : IRequestHandler<UpdateLoyaltyProductGroupCommand, ICommandResult>
     {
     }

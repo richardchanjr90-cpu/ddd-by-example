@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -24,7 +23,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(ArchiveLoyaltyProgramCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(ArchiveLoyaltyProgramCommand request,
+            CancellationToken cancellationToken)
         {
             var program = await Context.LoyaltyPrograms
                 .Include(x => x.LoyaltyProductGroups)
@@ -36,12 +36,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 program.IsArchived = true;
 
                 if (program.LoyaltyProductGroups != null)
-                {
                     foreach (var group in program.LoyaltyProductGroups)
-                    {
                         group.IsArchived = true;
-                    }
-                }
             }
 
             var result = new CommandResult
@@ -51,14 +47,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             };
 
             if (result.Success && program != null)
-            {
                 await mediator.Publish(
                     new ArchiveLoyaltyProgramNotification
                     {
                         Id = program.Id
                     },
                     cancellationToken);
-            }
             return result;
         }
     }

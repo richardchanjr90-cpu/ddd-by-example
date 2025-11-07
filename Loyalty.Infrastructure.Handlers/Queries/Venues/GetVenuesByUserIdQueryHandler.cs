@@ -19,14 +19,15 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
         {
         }
 
-        public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesByUserIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesByUserIdQuery request,
+            CancellationToken cancellationToken)
         {
             var result = await
                 (from v in Context.Venues
                     join lprog in Context.LoyaltyPrograms on v.Id equals lprog.VenueId
                     join lprod in Context.LoyaltyProductGroups on lprog.Id equals lprod.LoyaltyProgramId
-                 where lprog.Id == lprod.LoyaltyProgramId
-                 from purchase in Context.Purchases
+                    where lprog.Id == lprod.LoyaltyProgramId
+                    from purchase in Context.Purchases
                     where purchase.UserId == request.UserId
                     select v).ToListAsync(cancellationToken);
 

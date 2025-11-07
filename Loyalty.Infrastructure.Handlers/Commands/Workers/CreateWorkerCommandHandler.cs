@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
@@ -13,7 +12,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
     public class CreateWorkerCommandHandler
         : BaseHandler, ICreateWorkerCommandHandler
     {
-        public CreateWorkerCommandHandler(ILoyaltyDbContext context) 
+        public CreateWorkerCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -30,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 Phone = request.Phone,
                 PositionName = request.PositionName,
                 PhotoUri = request.PhotoUri,
-                Role = request.Role              
+                Role = request.Role
             };
 
             Context.Workers.Add(worker);

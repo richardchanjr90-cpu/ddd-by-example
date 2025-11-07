@@ -4,17 +4,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
-using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Rule;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
-using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
-using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -71,7 +68,7 @@ namespace Loyalty.Application.Venue
                     RuleType = rule.RuleType,
                     RuleVersion = rule.RuleVersion
                 };
-              
+
                 ruleCommand.Rules.Add(singleCommand);
             });
 
@@ -126,8 +123,8 @@ namespace Loyalty.Application.Venue
 
         private void TransformRules(LoyaltyProductGroupViewModel model, Action<object, SingleRuleViewModel> action)
         {
-            string nameSpace = "Loyalty.Core.Entities.Rules";
-            string assemblyName = "Loyalty.Core.Entities";
+            var nameSpace = "Loyalty.Core.Entities.Rules";
+            var assemblyName = "Loyalty.Core.Entities";
 
             foreach (var rule in model.Rules.Rules)
             {
@@ -137,7 +134,6 @@ namespace Loyalty.Application.Venue
                 var result = JsonConvert.DeserializeObject(rule.Rule, type);
 
                 action?.Invoke(result, rule);
-
             }
         }
     }

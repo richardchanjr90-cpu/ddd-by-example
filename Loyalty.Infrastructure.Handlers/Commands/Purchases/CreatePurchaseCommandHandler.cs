@@ -40,7 +40,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             };
 
             if (result.Success)
-            {
                 await mediator.Publish(
                     new CreatePurchaseNotification
                     {
@@ -50,7 +49,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                         Total = purchase.Value
                     },
                     cancellationToken);
-            }
             return result;
         }
     }

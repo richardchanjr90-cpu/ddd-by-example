@@ -19,10 +19,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
             this.connection = connection;
         }
 
-        public async Task<GetActivePurchasesResult> Handle(GetClientActivePurchasesQuery request, CancellationToken cancellationToken)
+        public async Task<GetActivePurchasesResult> Handle(GetClientActivePurchasesQuery request,
+            CancellationToken cancellationToken)
         {
-            string getPrograms =
-                    @"SELECT 
+            var getPrograms =
+                @"SELECT 
                     lp.Id as ProgramId,
                     lp.[Name] as ProgramName,
                     lp.StartDate,
@@ -49,41 +50,40 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 
             var programs = connection.Query(getPrograms, new
             {
-                VenueId = request.VenueId,
-                UserId = request.UserId
+                request.VenueId, request.UserId
             }).ToList();
 
             var programsDistinct = programs
-                 .GroupBy(p => p.ProgramId)
-                 .Select(g => g.First())
-                 .Select(x => new GetActivePurchaseResult
-                 {
-                     LoyaltyProgramId = x.ProgramId,
-                     Name = x.ProgramName,
-                     StartDate = x.StartDate,
-                     EndDate = x.EndDate,
-                     Groups = programs
-                         .Where(y => y.ProgramId == x.ProgramId)
-                         .GroupBy(p => p.LgroupId)
-                         .Select(g => g.First())
-                         .Select(z => new GroupPurchaseResult
-                         {
-                             RuleVersion = z.RuleVersion,
-                             Rule = z.Rule,
-                             Total = z.Total,
-                             RuleType = z.RuleType,
-                             GroupName = z.LgroupName,
-                             LoyaltyProductGroupId = z.LgroupId,
-                             Products = programs
-                                 .Where(q => q.LgroupId == z.LgroupId)
-                                 .Select(d => new ProductPurchaseResult
-                                 {
-                                     Name = d.ProductName,
-                                     Id = d.ProductId,
-                                 }).ToList()
-                         }).ToList()
-                 })
-                 .ToList();
+                .GroupBy(p => p.ProgramId)
+                .Select(g => g.First())
+                .Select(x => new GetActivePurchaseResult
+                {
+                    LoyaltyProgramId = x.ProgramId,
+                    Name = x.ProgramName,
+                    StartDate = x.StartDate,
+                    EndDate = x.EndDate,
+                    Groups = programs
+                        .Where(y => y.ProgramId == x.ProgramId)
+                        .GroupBy(p => p.LgroupId)
+                        .Select(g => g.First())
+                        .Select(z => new GroupPurchaseResult
+                        {
+                            RuleVersion = z.RuleVersion,
+                            Rule = z.Rule,
+                            Total = z.Total,
+                            RuleType = z.RuleType,
+                            GroupName = z.LgroupName,
+                            LoyaltyProductGroupId = z.LgroupId,
+                            Products = programs
+                                .Where(q => q.LgroupId == z.LgroupId)
+                                .Select(d => new ProductPurchaseResult
+                                {
+                                    Name = d.ProductName,
+                                    Id = d.ProductId
+                                }).ToList()
+                        }).ToList()
+                })
+                .ToList();
 
             return new GetActivePurchasesResult
             {

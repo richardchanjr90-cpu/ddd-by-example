@@ -28,7 +28,7 @@ namespace Loyalty.Application.Venue
             var result = await Mediator.Send(new GetClientActivePurchasesQuery
             {
                 UserId = userId,
-                VenueId = venueId    
+                VenueId = venueId
             });
 
             return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
@@ -46,7 +46,7 @@ namespace Loyalty.Application.Venue
                 ProductId = model.ProductId,
                 VenueId = venueId,
                 Value = model.Value,
-                LoyaltyProductGroupId = model.LoyaltyProductGroupId 
+                LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
             return result;

@@ -9,10 +9,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static GetWorkerByIdQueryResult ToResult(this Worker item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             var result = new GetWorkerByIdQueryResult
             {
@@ -32,10 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<GetWorkerByIdQueryResult> ToResults(this List<Worker> items)
         {
-            if (items == null)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
+            if (items == null) throw new ArgumentNullException(nameof(items));
 
             var results = new List<GetWorkerByIdQueryResult>();
             items.ForEach(x => results.Add(x.ToResult()));

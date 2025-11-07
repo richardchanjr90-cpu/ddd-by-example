@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Common.Shared.Exceptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -22,7 +21,8 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
         [FunctionName("LoyaltyProgramPutFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/programs")]LoyaltyProgramViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/programs")]
+            LoyaltyProgramViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProgramPutFunction)} was triggered.");

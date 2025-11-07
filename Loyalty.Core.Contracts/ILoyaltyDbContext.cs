@@ -1,6 +1,5 @@
 ﻿using Loyalty.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Loyalty.Core.Contracts
 {

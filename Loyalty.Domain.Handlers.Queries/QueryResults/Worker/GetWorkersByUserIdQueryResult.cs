@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums.Contracts;
+﻿using System.Collections.Generic;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Worker
 {

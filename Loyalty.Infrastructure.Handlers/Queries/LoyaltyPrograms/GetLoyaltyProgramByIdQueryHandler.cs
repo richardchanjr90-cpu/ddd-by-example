@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -12,12 +11,13 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
 {
     public class GetLoyaltyProgramByIdQueryHandler : BaseHandler, IGetLoyaltyProgramByIdQueryHandler
     {
-        public GetLoyaltyProgramByIdQueryHandler(ILoyaltyDbContext context) 
+        public GetLoyaltyProgramByIdQueryHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
 
-        public async Task<GetLoyaltyProgramByIdQueryResult> Handle(GetLoyaltyProgramByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetLoyaltyProgramByIdQueryResult> Handle(GetLoyaltyProgramByIdQuery request,
+            CancellationToken cancellationToken)
         {
             var item = await (from lp in Context.LoyaltyPrograms
                 where lp.VenueId == request.VenueId && lp.Id == request.Id

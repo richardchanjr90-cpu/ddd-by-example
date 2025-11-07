@@ -9,10 +9,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static Location ToSingle(this CreateLocationCommand command)
         {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
+            if (command == null) throw new ArgumentNullException(nameof(command));
 
             var result = new Location
             {
@@ -28,10 +25,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static Location ToSingle(this UpdateLocationCommand command)
         {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
+            if (command == null) throw new ArgumentNullException(nameof(command));
 
             var result = new Location
             {
@@ -48,10 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static GetLocationQueryResult ToResult(this Location item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
+            if (item == null) throw new ArgumentNullException(nameof(item));
 
             var result = new GetLocationQueryResult
             {

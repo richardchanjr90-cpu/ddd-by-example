@@ -21,7 +21,8 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
         [FunctionName("LoyaltyProgramGetAllFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/programs")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/programs")]
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProgramGetAllFunction)} was triggered.");

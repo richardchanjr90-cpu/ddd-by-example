@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Queries.LoyaltyPrograms
 {
-    public interface IGetLoyaltyProgramByIdQueryHandler 
+    public interface IGetLoyaltyProgramByIdQueryHandler
         : IRequestHandler<GetLoyaltyProgramByIdQuery, GetLoyaltyProgramByIdQueryResult>
     {
     }

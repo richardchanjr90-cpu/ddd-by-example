@@ -8,9 +8,7 @@ using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
-using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using MediatR;
 
 namespace Loyalty.Application.Venue
@@ -47,7 +45,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<List<WorkerViewModel>> Get()
         {
-            var result = await Mediator.Send(new GetWorkersByUserIdQuery()
+            var result = await Mediator.Send(new GetWorkersByUserIdQuery
             {
                 UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
             });

@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +21,13 @@ namespace LoyaltyProgram.Http.ProductGroup
         [FunctionName("ProductGroupDeleteFunction")]
         public async Task<IActionResult> Run(
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "productgroups/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "productgroups/{id}")]
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(ProductGroupDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Archive(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Loyalty.Domain.Handlers.Queries.QueryResults.Purchase
+﻿namespace Loyalty.Domain.Handlers.Queries.QueryResults.Purchase
 {
     public class ProductPurchaseResult
     {
