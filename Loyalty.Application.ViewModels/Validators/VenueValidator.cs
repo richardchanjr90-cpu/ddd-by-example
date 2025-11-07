@@ -17,7 +17,7 @@ namespace Loyalty.Application.ViewModels.Validators
                 .WithMessage("Should be a valid guid.");
 
             RuleFor(x => x.Type)
-                .Must(x => (VenueType)x != VenueType.Single)
+                .Must(x => (VenueType) x != VenueType.Single)
                 .When(x => x.ParentId.HasValue)
                 .WithMessage("ParentId should be > 0, when VenueType.Single.");
 
@@ -27,7 +27,7 @@ namespace Loyalty.Application.ViewModels.Validators
 
 
             RuleForEach(x => x.WorkingHours)
-                .Must(x=> !string.IsNullOrWhiteSpace(x.Day))
+                .Must(x => !string.IsNullOrWhiteSpace(x.Day))
                 .When(x => x.WorkingHours != null);
 
             RuleFor(x => x)

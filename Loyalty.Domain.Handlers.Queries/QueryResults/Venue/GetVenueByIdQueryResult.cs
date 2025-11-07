@@ -27,7 +27,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 
         public List<string> WebSites { get; set; } = new List<string>();
 
-        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; } 
+        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; }
             = new List<GetVenueWorkingHoursQueryResult>();
 
         public string LogoUrl { get; set; }

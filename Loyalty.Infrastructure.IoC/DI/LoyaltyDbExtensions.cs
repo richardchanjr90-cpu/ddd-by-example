@@ -13,7 +13,7 @@ namespace Loyalty.Infrastructure.IoC.DI
     public static class LoyaltyDbExtensions
     {
         public static readonly LoggerFactory MyLoggerFactory
-            = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
+            = new LoggerFactory(new[] {new ConsoleLoggerProvider((_, __) => true, true)});
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
@@ -21,7 +21,7 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
             var dapperConnection = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
-            services.AddScoped<SqlConnection>(x => new SqlConnection(dapperConnection));
+            services.AddScoped(x => new SqlConnection(dapperConnection));
 
             //todo: remove for staging and prod;
             services.AddEntityFrameworkSqlServer()

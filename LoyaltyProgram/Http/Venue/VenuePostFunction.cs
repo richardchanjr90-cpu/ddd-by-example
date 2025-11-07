@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
@@ -23,7 +22,8 @@ namespace LoyaltyProgram.Http.Venue
 
         [FunctionName("VenuePostFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
+            VenueViewModel model,
             HttpRequest req,
             ILogger log)
         {

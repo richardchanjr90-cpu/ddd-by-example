@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,13 +20,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
     {
         private readonly IMediator mediator;
 
-        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context, IMediator mediator) 
+        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context, IMediator mediator)
             : base(context)
         {
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(UpdateLoyaltyProductGroupCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(UpdateLoyaltyProductGroupCommand request,
+            CancellationToken cancellationToken)
         {
             var group = await Context.LoyaltyProductGroups
                 .Include(x => x.Group)
@@ -65,10 +65,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 group.ProductGroupId = request.ProductGroupId;
                 group.Group = productGroup;
 
-                foreach (var existingChild in group.Rules.ToList())
-                {
-                    Context.LoyaltyRules.Remove(existingChild);
-                }
+                foreach (var existingChild in group.Rules.ToList()) Context.LoyaltyRules.Remove(existingChild);
 
                 ProcessRule(request, group);
             }
@@ -80,7 +77,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             };
 
             if (result.Success)
-            {
                 await mediator.Publish(
                     new UpdateLoyaltyProductGroupNotification
                     {
@@ -89,7 +85,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                         Rule = JsonConvert.SerializeObject(group.Rules)
                     },
                     cancellationToken);
-            }
             return result;
         }
 

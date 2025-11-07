@@ -27,10 +27,7 @@ namespace LoyaltyProgram.Http.Worker
         {
             log.LogInformation($"{nameof(WorkerGetFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Get(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Get(id)); });
         }
     }
 }

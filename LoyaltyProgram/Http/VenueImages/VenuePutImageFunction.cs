@@ -29,8 +29,10 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
-            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
-            [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
+            Stream blobStream,
+            [Queue("venue-images", Connection = "QueueConnectionString")]
+            ICollector<VenueQueueImageDto> queueItems)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 

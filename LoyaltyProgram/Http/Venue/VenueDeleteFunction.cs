@@ -20,16 +20,14 @@ namespace LoyaltyProgram.Http.Venue
 
         [FunctionName("VenueDeleteFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{id}")]
+            HttpRequest req,
             long id,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Archive(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
         }
     }
 }

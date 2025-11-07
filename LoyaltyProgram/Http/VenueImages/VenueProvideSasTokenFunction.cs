@@ -18,7 +18,8 @@ namespace LoyaltyProgram.Http.VenueImages
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "security/sas/venues/{id}")]
             HttpRequest req,
-            [Blob("venue-images-{id}", FileAccess.Read)] CloudBlobContainer container,
+            [Blob("venue-images-{id}", FileAccess.Read)]
+            CloudBlobContainer container,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueProvideSasTokenFunction)} was triggered.");
@@ -32,10 +33,7 @@ namespace LoyaltyProgram.Http.VenueImages
 
             var sas = container.GetSharedAccessSignature(policy);
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(sas);
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(sas); });
         }
     }
 }

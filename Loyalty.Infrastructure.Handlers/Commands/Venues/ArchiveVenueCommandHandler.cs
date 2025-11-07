@@ -5,7 +5,6 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
-using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
@@ -32,10 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (venue != null)
             {
-                if (venue.Location != null)
-                {
-                    venue.Location.IsArchived = true;
-                }
+                if (venue.Location != null) venue.Location.IsArchived = true;
                 venue.IsArchived = true;
             }
 
@@ -46,9 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             };
 
             if (result.Success && venue != null)
-            {
                 await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
-            }
 
             return result;
         }
