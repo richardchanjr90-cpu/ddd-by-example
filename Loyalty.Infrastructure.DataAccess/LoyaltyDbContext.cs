@@ -99,7 +99,6 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
-
             modelBuilder.Entity<Location>().HasQueryFilter(p => !p.IsArchived);
         }
 
