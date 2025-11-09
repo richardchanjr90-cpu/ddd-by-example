@@ -46,6 +46,8 @@ namespace Loyalty.Core.Entities
 
         public string WorkingHours { get; set; }
 
+        public string Images { get; set; }
+
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
         public virtual ICollection<Worker> Workers { get; set; }

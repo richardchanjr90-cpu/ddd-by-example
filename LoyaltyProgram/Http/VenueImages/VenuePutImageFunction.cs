@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -25,31 +26,28 @@ namespace LoyaltyProgram.Http.VenueImages
         [FunctionName("VenuePutImageFunction")]
         public async Task<IActionResult> Run(
             long id,
-            int index,
+            string index,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
             [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
             Stream blobStream,
             [Queue("venue-images", Connection = "QueueConnectionString")]
-            ICollector<VenueQueueImageDto> queueItems)
+            ICollector<VenueNewBlobImageDto> queueItems)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                //if fails, empty blob is still created;
-                //todo: create an issue in github
-                // Azure Functions bug
-                var images = await service.GetImages(req, id, index);
+                var images = await service.ConvertImages(req, id, Guid.Parse(index));
 
                 if (images != null && images.Count > 0)
                 {
                     var imageStream = Image.Load(images.First().Image);
                     imageStream.SaveAsJpeg(blobStream);
-                    queueItems.Add(new VenueQueueImageDto
+                    queueItems.Add(new VenueNewBlobImageDto
                     {
-                        Index = index,
+                        Index = Guid.Parse(index),
                         VenueId = id
                     });
                 }

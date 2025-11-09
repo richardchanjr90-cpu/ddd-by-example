@@ -13,17 +13,19 @@ namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenueDeleteImageFunction
     {
-        private readonly LoyaltyVenueImageAppService service;
+        private readonly LoyaltyVenueAppService service;
+        private readonly LoyaltyVenueImageAppService imageService;
 
-        public VenueDeleteImageFunction(LoyaltyVenueImageAppService service)
+        public VenueDeleteImageFunction(LoyaltyVenueImageAppService imageService, LoyaltyVenueAppService service)
         {
+            this.imageService = imageService;
             this.service = service;
         }
 
         [FunctionName("VenueDeleteImageFunction")]
         public async Task<IActionResult> Run(
             long id,
-            int index,
+            string index,
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
@@ -43,6 +45,10 @@ namespace LoyaltyProgram.Http.VenueImages
                 Task smBlobDelete = smBlob.DeleteIfExistsAsync();
 
                 await Task.WhenAll(originalBLobDelete, mdBLobDelete, smBlobDelete);
+
+                await service.Patch(
+                    id,
+                    await imageService.GetImages(container, null));
 
                 return new NoContentResult();
             });

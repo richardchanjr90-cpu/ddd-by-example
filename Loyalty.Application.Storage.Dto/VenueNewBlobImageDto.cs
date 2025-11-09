@@ -2,8 +2,10 @@
 
 namespace Loyalty.Application.Storage.Dto
 {
-    public class VenueQueueImageDto
+    public class VenueNewBlobImageDto
     {
+        public byte[] Image { get; set; }
+
         public long VenueId { get; set; }
 
         public Guid Index { get; set; }

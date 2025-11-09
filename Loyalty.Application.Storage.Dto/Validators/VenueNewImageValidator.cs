@@ -5,11 +5,11 @@ using SixLabors.ImageSharp;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
-    public class VenueImageValidator : AbstractValidator<VenueBlobImageDto>
+    public class VenueNewImageValidator : AbstractValidator<VenueNewBlobImageDto>
     {
         private readonly VenueGalleryImageSettings settings;
 
-        public VenueImageValidator(VenueGalleryImageSettings settings)
+        public VenueNewImageValidator(VenueGalleryImageSettings settings)
         {
             this.settings = settings;
 
@@ -20,10 +20,6 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.VenueId)
                 .GreaterThan(0);
-
-            RuleFor(x => x.Index)
-                .LessThan(10)
-                .WithMessage("You can upload up to 10 images. From 0 to 9 indexes are used.");
 
             RuleFor(x => x.Image)
                 .Must(SizeIsLessThan1MbPlusSmallOverhead)

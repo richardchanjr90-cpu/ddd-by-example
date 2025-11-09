@@ -71,6 +71,17 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
+        public async Task<ICommandResult> Patch(long venueId, List<string> imageUrls)
+        {
+            var commandResult = await Mediator.Send(new PatchVenueImagesCommand
+            {
+                Id = venueId,
+                Images = imageUrls
+            });
+
+            return commandResult;
+        }
+
         public async Task<ICommandResult> Archive(long id)
         {
             var command = new ArchiveVenueCommand

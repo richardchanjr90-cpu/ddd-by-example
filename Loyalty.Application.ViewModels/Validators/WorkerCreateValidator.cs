@@ -21,7 +21,8 @@ namespace Loyalty.Application.ViewModels.Validators
                 .MinimumLength(7)
                 .MaximumLength(20);
 
-            RuleFor(x => x.Role).LessThanOrEqualTo((int)VenueUserRole.Owner)
+            RuleFor(x => x.Role)
+                .LessThanOrEqualTo((int)VenueUserRole.Owner)
                 .WithMessage("Must be in range of Enum values");
 
             RuleFor(x => x.PositionName)

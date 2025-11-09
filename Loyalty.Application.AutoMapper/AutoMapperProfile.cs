@@ -39,6 +39,7 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
 
             CreateMap<VenueViewModel, CreateVenueCommand>()
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
@@ -47,6 +48,7 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
 
             CreateMap<VenueViewModel, UpdateVenueCommand>()
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 

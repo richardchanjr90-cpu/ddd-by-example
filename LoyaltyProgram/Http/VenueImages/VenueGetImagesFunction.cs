@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,13 @@ namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenueGetImagesFunction
     {
+        private readonly LoyaltyVenueImageAppService service;
+
+        public VenueGetImagesFunction(LoyaltyVenueImageAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("VenueGetImagesFunction")]
         public async Task<IActionResult> Run(
             long id,
@@ -24,18 +32,12 @@ namespace LoyaltyProgram.Http.VenueImages
             CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
-            var results = new List<string>();
-            var exists = await container.ExistsAsync();
+            var results = await service.GetImages(container, req.Query["prefix"]);
 
-            if (exists)
+            return await ExceptionWrapper.Handle(async () =>
             {
-                var operation =
-                    await container.ListBlobsSegmentedAsync(req.Query["prefix"], true, BlobListingDetails.None, 50,
-                        null, null, null);
-                results = operation.Results.Select(item => item.Uri.ToString()).ToList();
-            }
-
-            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(results); });
+                return new OkObjectResult(results);
+            });
         }
     }
 }

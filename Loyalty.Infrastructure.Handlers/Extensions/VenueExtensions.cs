@@ -13,7 +13,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static Venue ToSingle(this CreateVenueCommand command)
         {
-            if (command == null) throw new ArgumentNullException(nameof(command));
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
 
             var result = new Venue
             {
@@ -39,7 +42,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static CreateVenueNotification ToVenueNotification(this Venue item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var location = item.Location?.ToResult();
 
@@ -71,7 +77,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static UpdateVenueNotification ToUpdateNotification(this Venue item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var location = item.Location?.ToResult();
 
@@ -103,7 +112,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static ArchiveVenueNotification ToArchiveNotification(this Venue item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var location = item.Location?.ToResult();
 
@@ -118,7 +130,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static Venue ToSingle(this UpdateVenueCommand command)
         {
-            if (command == null) throw new ArgumentNullException(nameof(command));
+            if (command == null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
 
             var result = new Venue
             {
@@ -145,7 +160,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static GetVenueByIdQueryResult ToResult(this Venue item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var result = new GetVenueByIdQueryResult
             {
@@ -155,6 +173,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
+                Images = item.Images.SplitByCommaAndUnwrap(),
                 Location = item.Location?.ToResult(),
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
@@ -171,7 +190,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<GetVenueByIdQueryResult> ToResults(this List<Venue> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             var results = new List<GetVenueByIdQueryResult>();
             items.ForEach(x => results.Add(x.ToResult()));
