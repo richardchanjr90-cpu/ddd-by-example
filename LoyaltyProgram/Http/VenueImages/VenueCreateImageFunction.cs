@@ -42,7 +42,7 @@ namespace LoyaltyProgram.Http.VenueImages
                 var items = await service.GetCount(container);
                 var images = await service.ConvertImages(req, id);
 
-                if (items + images.Count >= 10)
+                if (items + images.Count > 10)
                 {
                     return new BadRequestErrorMessageResult("Cannot create more than 10 images"); 
                 }
