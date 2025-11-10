@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -7,33 +6,42 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage;
 
-namespace LoyaltyProgram.Http.VenueImages
+namespace LoyaltyProgram.Http.VenueSas
 {
     public class VenueProvideSasTokenFunction
     {
         [FunctionName("VenueProvideSasTokenFunction")]
         public async Task<IActionResult> Run(
-            long id,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "security/sas/venues/{id}")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "security/sas/")]
             HttpRequest req,
-            [Blob("venue-images-{id}", FileAccess.Read)]
-            CloudBlobContainer container,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueProvideSasTokenFunction)} was triggered.");
 
-            var policy = new SharedAccessBlobPolicy
+            var connectionString = Environment.GetEnvironmentVariable("QueueConnectionString");
+
+            var policy = new SharedAccessAccountPolicy
             {
-                Permissions = SharedAccessBlobPermissions.Read,
+                Services = SharedAccessAccountServices.Blob,
+                ResourceTypes = SharedAccessAccountResourceTypes.Container |
+                                SharedAccessAccountResourceTypes.Object |
+                                SharedAccessAccountResourceTypes.Service,
+                Permissions = SharedAccessAccountPermissions.Read |
+                              SharedAccessAccountPermissions.List |
+                              SharedAccessAccountPermissions.ProcessMessages,
                 SharedAccessExpiryTime = DateTime.Now.AddDays(1),
-                SharedAccessStartTime = DateTime.Now
+                SharedAccessStartTime = DateTime.Now,
+                Protocols = SharedAccessProtocol.HttpsOnly
             };
 
-            var sas = container.GetSharedAccessSignature(policy);
-
-            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(sas); });
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
+            var sas = storageAccount.GetSharedAccessSignature(policy);
+            return await ExceptionWrapper.Handle(async () =>
+            {
+                return new OkObjectResult(sas);
+            });
         }
     }
 }
