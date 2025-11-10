@@ -10,17 +10,17 @@ using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Venues
 {
-    public class PatchVenueLogoNotificationHandler: BaseNotificationHandler, IPatchVenueLogoNotificationHandler 
+    public class PatchVenueNotificationHandler: BaseNotificationHandler, IPatchVenueNotificationHandler 
     {
         private readonly IQueueClient client;
 
-        public PatchVenueLogoNotificationHandler(IQueueClient client) 
+        public PatchVenueNotificationHandler(IQueueClient client) 
             : base(client)
         {
             this.client = client;
         }
 
-        public async Task Handle(PatchVenueLogoNotification notification, CancellationToken cancellationToken)
+        public async Task Handle(PatchVenueImagesNotification notification, CancellationToken cancellationToken)
         {
             var message = notification.ToMessage();
             await client.SendAsync(message);

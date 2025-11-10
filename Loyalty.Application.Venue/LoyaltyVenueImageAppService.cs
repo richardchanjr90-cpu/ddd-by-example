@@ -30,17 +30,14 @@ namespace Loyalty.Application.Venue
 
         public async Task<List<VenueNewBlobImageDto>> ConvertImages(HttpRequestMessage request, long venueId, Guid index)
         {
-            var content = await request.Content.ReadAsMultipartAsync();
-
             var images = new List<VenueNewBlobImageDto>();
 
-            foreach (var file in content.Contents)
+            foreach (var image in GetImages(request))
             {
-                var byteImage = await file.ReadAsByteArrayAsync();
                 var venueImage = new VenueNewBlobImageDto
                 {
                     VenueId = venueId,
-                    Image = byteImage,
+                    Image = image,
                     Index = index
                 };
 
@@ -51,6 +48,16 @@ namespace Loyalty.Application.Venue
             }
 
             return images;
+        }
+
+        public IEnumerable<byte []> GetImages(HttpRequestMessage request)
+        {
+            var content = request.Content.ReadAsMultipartAsync().GetAwaiter().GetResult();
+
+            foreach (var file in content.Contents)
+            {
+               yield return file.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            }
         }
 
         public async Task<List<VenueNewBlobImageDto>> ConvertImages(HttpRequestMessage request, long venueId)
