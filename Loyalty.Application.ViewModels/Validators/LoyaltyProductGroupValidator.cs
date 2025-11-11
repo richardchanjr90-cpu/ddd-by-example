@@ -25,6 +25,9 @@ namespace Loyalty.Application.ViewModels.Validators
             RuleFor(x => x.ProductGroupId)
                 .GreaterThanOrEqualTo(1);
 
+            RuleFor(x => x.Rules)
+                .NotNull();
+
             RuleForEach(x => x.Rules.Rules)
                 .NotEmpty()
                 .WithMessage("Rule must not be empty");

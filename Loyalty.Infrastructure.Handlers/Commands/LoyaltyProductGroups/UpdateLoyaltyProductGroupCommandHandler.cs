@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +27,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(UpdateLoyaltyProductGroupCommand request,
+        public async Task<ICommandResult> Handle(
+            UpdateLoyaltyProductGroupCommand request,
             CancellationToken cancellationToken)
         {
             var group = await Context.LoyaltyProductGroups
@@ -38,6 +40,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             var productGroup = await Context.ProductGroups
                 .Where(x => x.Id == request.ProductGroupId)
                 .SingleAsync(cancellationToken);
+
+            var program = await Context.LoyaltyPrograms
+                .SingleAsync(x => x.Id == request.LoyaltyProgramId, cancellationToken);
+
+            if (program.IsPublished)
+            {
+                throw new ValidationException("Impossible to change after program was published.");
+            }
 
             if (group == null)
             {
@@ -63,7 +73,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 group.ProductGroupId = request.ProductGroupId;
                 group.Group = productGroup;
 
-                foreach (var existingChild in group.Rules.ToList()) Context.LoyaltyRules.Remove(existingChild);
+                foreach (var existingChild in group.Rules.ToList())
+                {
+                    Context.LoyaltyRules.Remove(existingChild);
+                }
 
                 ProcessRule(request, group);
             }
@@ -75,14 +88,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             };
 
             if (result.Success)
+            {
                 await mediator.Publish(
                     new UpdateLoyaltyProductGroupNotification
                     {
                         Id = group.Id,
                         GroupName = group.Name,
-                        Rule = JsonConvert.SerializeObject(group.Rules)
+                        Rule = JsonConvert.SerializeObject(request.Rule.Rules)
                     },
                     cancellationToken);
+            }
+
             return result;
         }
 
@@ -96,6 +112,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                     RuleVersion = commandRule.RuleVersion,
                     RuleType = commandRule.RuleType
                 };
+
                 group.Rules.Add(rule);
             }
         }

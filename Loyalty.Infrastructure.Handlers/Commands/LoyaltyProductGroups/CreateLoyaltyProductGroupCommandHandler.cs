@@ -57,6 +57,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                     RuleVersion = commandRule.RuleVersion,
                     RuleType = commandRule.RuleType
                 };
+
                 group.Rules.Add(rule);
             }
 
@@ -76,7 +77,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                         Id = group.Id,
                         LoyaltyProgramId = group.LoyaltyProgramId,
                         GroupName = group.Name,
-                        Rule = JsonConvert.SerializeObject(group.Rules)
+                        Rule = JsonConvert.SerializeObject(request.Rule.Rules)
                     },
                     cancellationToken);
             }

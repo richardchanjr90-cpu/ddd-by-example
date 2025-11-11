@@ -8,7 +8,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {
     public class UpdateSingleRuleCommand : IRequest<ICommandResult>
     {
-        [JsonProperty("id")]
+        [JsonIgnore]
         public long Id { get; set; }
 
         [JsonProperty("rule")]
