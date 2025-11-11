@@ -22,7 +22,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(CreateLoyaltyProgramCommand request,
+        public async Task<ICommandResult> Handle(
+            CreateLoyaltyProgramCommand request,
             CancellationToken cancellationToken)
         {
             var program = new LoyaltyProgram
@@ -43,6 +44,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             };
 
             if (result.Success)
+            {
                 await mediator.Publish(
                     new CreateLoyaltyProgramNotification
                     {
@@ -53,6 +55,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         StartDate = program.StartDate
                     },
                     cancellationToken);
+            }
+                
             return result;
         }
     }

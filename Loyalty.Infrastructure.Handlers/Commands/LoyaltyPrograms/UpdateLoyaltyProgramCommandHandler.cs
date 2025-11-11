@@ -50,6 +50,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             }
             else
             {
+                if (program.IsPublished)
+                {
+                    throw new ValidationException("You can't change already published program.");
+                }
+
                 program.Name = request.Name;
                 program.StartDate = request.StartedDate;
                 program.EndDate = request.EndedDate;
@@ -69,14 +74,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             };
 
             if (result.Success)
+            {
                 await mediator.Publish(
                     new UpdateLoyaltyProgramNotification
                     {
                         Id = program.Id,
                         Name = program.Name,
                         EndDate = program.EndDate,
-                        StartDate = program.StartDate
+                        StartDate = program.StartDate,
+                        IsPublished = program.IsPublished
                     }, cancellationToken);
+            }
 
             return result;
         }
