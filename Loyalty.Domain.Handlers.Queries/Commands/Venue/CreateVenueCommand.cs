@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
@@ -32,10 +32,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
         public VenueType Type { get; set; }
 
         public VenueCategoryType CategoryType { get; set; }
-
-        public string LogoUrl { get; set; }
-
-        public bool IsArchived { get; set; }
 
         public bool IsPublished { get; set; }
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums.Contracts;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Rules
 {

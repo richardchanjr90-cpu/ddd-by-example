@@ -23,7 +23,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
             CancellationToken cancellationToken)
         {
             var venue = await Context.Venues
-                .Include(x => x.Location)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 

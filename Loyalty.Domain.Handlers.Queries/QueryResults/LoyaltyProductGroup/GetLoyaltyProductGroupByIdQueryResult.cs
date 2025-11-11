@@ -1,6 +1,7 @@
-﻿using Loyalty.Common.Shared.Enums.Contracts;
+﻿
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup
 {

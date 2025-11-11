@@ -1,6 +1,5 @@
 ﻿using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Rule;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.LoyaltyProductGroup

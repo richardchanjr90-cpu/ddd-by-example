@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Infrastructure.Migrations
 {
@@ -25,13 +25,6 @@ namespace Loyalty.Infrastructure.Migrations
                         Created = DateTime.Now,
                         CreatedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
                         Modified = DateTime.Now,
-                        ModifiedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
-                        Location = new Location
-                        {
-                            City = "Minsk",
-                            Latitude = 90,
-                            Longitude = 180
-                        },
                         LogoUrl = "http://clipart-library.com/images/8cEb974Xi.jpg",
                         Description = "Venue without details and programs.",
                         IsArchived = false,

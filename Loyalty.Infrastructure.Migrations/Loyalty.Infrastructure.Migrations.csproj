@@ -14,7 +14,7 @@
     <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.2" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.3" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

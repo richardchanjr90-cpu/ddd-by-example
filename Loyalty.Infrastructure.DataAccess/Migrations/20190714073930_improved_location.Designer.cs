@@ -4,14 +4,16 @@ using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190714073930_improved_location")]
+    partial class improved_location
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -231,11 +233,13 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(200);
 
                     b.Property<int>("CategoryType");
 
                     b.Property<string>("City")
+                        .IsRequired()
                         .HasMaxLength(200);
 
                     b.Property<DateTime>("Created");
@@ -256,12 +260,12 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<bool>("IsPublished");
 
-                    b.Property<float?>("Latitude");
+                    b.Property<float>("Latitude");
 
                     b.Property<string>("LogoUrl")
                         .HasMaxLength(200);
 
-                    b.Property<float?>("Longitude");
+                    b.Property<float>("Longitude");
 
                     b.Property<DateTime>("Modified");
 

@@ -5,6 +5,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
+using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using MediatR;
@@ -23,7 +24,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(ArchiveLoyaltyProgramCommand request,
+        public async Task<ICommandResult> Handle(
+            ArchiveLoyaltyProgramCommand request,
             CancellationToken cancellationToken)
         {
             var program = await Context.LoyaltyPrograms
@@ -36,8 +38,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 program.IsArchived = true;
 
                 if (program.LoyaltyProductGroups != null)
+                {
                     foreach (var group in program.LoyaltyProductGroups)
+                    {
                         group.IsArchived = true;
+                    }
+                }
             }
 
             var result = new CommandResult
@@ -47,12 +53,28 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             };
 
             if (result.Success && program != null)
+            {
                 await mediator.Publish(
                     new ArchiveLoyaltyProgramNotification
                     {
                         Id = program.Id
                     },
                     cancellationToken);
+
+                if (program.LoyaltyProductGroups != null)
+                {
+                    foreach (var lpg in program.LoyaltyProductGroups)
+                    {
+                        await mediator.Publish(
+                            new ArchiveLoyaltyProductGroupNotification
+                            {
+                                Id = lpg.Id
+                            },
+                            cancellationToken);
+                    }
+                }
+            }
+     
             return result;
         }
     }

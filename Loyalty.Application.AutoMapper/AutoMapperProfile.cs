@@ -30,27 +30,26 @@ namespace Loyalty.Application.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<LocationViewModel, CreateLocationCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
-
+            CreateMap<LocationViewModel, CreateLocationCommand>();
             CreateMap<LocationViewModel, UpdateLocationCommand>();
+
             CreateMap<GetLocationQueryResult, LocationViewModel>();
 
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
 
             CreateMap<VenueViewModel, CreateVenueCommand>()
+                .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
+
+            CreateMap<VenueViewModel, UpdateVenueCommand>()
+                .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
             CreateMap<WorkingHoursViewModel, GetVenueWorkingHoursQueryResult>();
             CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
-
-            CreateMap<VenueViewModel, UpdateVenueCommand>()
-                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
             CreateMap<ProductPurchaseResult, ProductPurchaseViewModel>();
             CreateMap<GroupPurchaseResult, GroupPurchaseViewModel>();

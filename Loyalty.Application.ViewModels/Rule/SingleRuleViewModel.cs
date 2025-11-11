@@ -1,5 +1,4 @@
 ﻿using System;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Shared.Contracts.Enums;
 using Newtonsoft.Json;
 

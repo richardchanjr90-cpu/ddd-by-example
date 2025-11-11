@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.Venues
 {
-    public interface IApproveVenueCommandHandler : IRequestHandler<ApproveVenuePatchCommand, ICommandResult>
+    public interface IArchiveVenueCommandHandler : IRequestHandler<ArchiveVenueCommand, ICommandResult>
     {
     }
 }

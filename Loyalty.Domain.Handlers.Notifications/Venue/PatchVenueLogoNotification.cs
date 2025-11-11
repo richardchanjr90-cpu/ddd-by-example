@@ -3,10 +3,10 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Notifications.Venue
 {
-    public class PatchVenueImagesNotification : INotification
+    public class PatchVenueLogoNotification : INotification
     {
         public long Id { get; set; }
 
-        public string Images { get; set; }
+        public string Logo { get; set; }
     }
 }

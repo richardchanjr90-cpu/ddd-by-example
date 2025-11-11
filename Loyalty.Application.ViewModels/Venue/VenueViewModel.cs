@@ -48,9 +48,6 @@ namespace Loyalty.Application.ViewModels.Venue
         [JsonProperty("logoUrl")]
         public string LogoUrl { get; set; }
 
-        [JsonProperty("isArchived")]
-        public bool IsArchived { get; set; }
-
         [JsonProperty("isPublished")]
         public bool IsPublished { get; set; }
 

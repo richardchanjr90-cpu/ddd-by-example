@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.2" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.3" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

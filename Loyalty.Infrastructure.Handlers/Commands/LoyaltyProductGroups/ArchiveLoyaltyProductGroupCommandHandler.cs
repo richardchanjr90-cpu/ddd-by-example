@@ -30,7 +30,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (group != null) group.IsArchived = true;
+            if (group != null)
+            {
+                group.IsArchived = true;
+            }
 
             var result = new CommandResult
             {
@@ -39,12 +42,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             };
 
             if (result.Success && group != null)
+            {
                 await mediator.Publish(
                     new ArchiveLoyaltyProductGroupNotification
                     {
                         Id = group.Id
                     },
                     cancellationToken);
+            }
+
             return result;
         }
     }

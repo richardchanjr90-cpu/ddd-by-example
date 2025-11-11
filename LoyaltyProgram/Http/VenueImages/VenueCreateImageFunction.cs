@@ -6,8 +6,6 @@ using System.Web.Http;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Domain.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;

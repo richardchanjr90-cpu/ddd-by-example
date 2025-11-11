@@ -5,8 +5,6 @@ namespace Loyalty.Core.Contracts
 {
     public interface ILoyaltyDbContext : IDbContext
     {
-        DbSet<Location> Locations { get; set; }
-
         DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
         DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }

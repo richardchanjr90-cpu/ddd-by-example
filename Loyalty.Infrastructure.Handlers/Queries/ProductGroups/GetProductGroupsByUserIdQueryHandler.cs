@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Enums.Contracts;
+
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Enums.Contracts;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {

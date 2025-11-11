@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -10,6 +9,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues

@@ -22,7 +22,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
         public async Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
             var venues = await Context.Venues
-                .Include(x => x.Location)
                 .Include(x => x.Workers)
                 .Where(x => x.Workers.Select(y => y.WorkerId).Contains(request.UserId))
                 .ToListAsync(cancellationToken);

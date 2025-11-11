@@ -1,5 +1,5 @@
 ﻿using System;
-using Loyalty.Common.Shared.Enums.Contracts;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Notifications.Venue

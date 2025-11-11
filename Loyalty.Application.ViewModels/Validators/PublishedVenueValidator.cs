@@ -14,11 +14,6 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotNull()
                 .SetValidator(new LocationValidator());
 
-            RuleFor(x => x.LogoUrl)
-                .NotEmpty().WithMessage("Enter url.")
-                .Length(4, 200).WithMessage("Length between 4 and 200 chars.")
-                .Matches(@"[a-z\-\d]").WithMessage("Incorrect format.");
-
             RuleFor(x => x.Description)
                 .NotEmpty()
                 .MaximumLength(2000);

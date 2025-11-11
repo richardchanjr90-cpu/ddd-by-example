@@ -16,8 +16,6 @@ namespace Loyalty.Infrastructure.DataAccess
         {
         }
 
-        public DbSet<Location> Locations { get; set; }
-
         public DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
@@ -88,9 +86,6 @@ namespace Loyalty.Infrastructure.DataAccess
             //modelBuilder.Entity<LoyaltyProductGroup>()
             //    .HasIndex(p => new {p.LoyaltyProgramId, p.ProductGroupId}).IsUnique()
             //    .HasFilter("[IsArchived] = 0");
-            modelBuilder.Entity<Location>()
-                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
-
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
@@ -98,7 +93,6 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
-            modelBuilder.Entity<Location>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()

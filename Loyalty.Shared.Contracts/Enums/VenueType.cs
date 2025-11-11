@@ -2,8 +2,8 @@
 {
     public enum VenueType
     {
-        Single,
-        Franchise,
-        Union
+        Single = 1,
+        Franchise = 2,
+        Union = 3
     }
 }

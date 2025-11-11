@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Loyalty.Common.Shared.Enums.Contracts;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities
 {
@@ -27,7 +27,15 @@ namespace Loyalty.Core.Entities
 
         public long? ParentId { get; set; }
 
-        public Location Location { get; set; }
+        [MaxLength(200)]
+        public string City { get; set; }
+
+        [MaxLength(200)]
+        public string Address { get; set; }
+
+        public float? Latitude { get; set; }
+
+        public float? Longitude { get; set; }
 
         [Required]
         public VenueType Type { get; set; }

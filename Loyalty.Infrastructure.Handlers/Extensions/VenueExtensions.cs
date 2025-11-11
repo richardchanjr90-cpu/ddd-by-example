@@ -4,6 +4,7 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Newtonsoft.Json;
 
@@ -26,15 +27,15 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 OwnerId = command.OwnerId,
                 CategoryType = command.CategoryType,
                 Description = command.Description,
-                Location = command.Location?.ToSingle(),
-                LogoUrl = command.LogoUrl,
+                City = command.Location?.City,
+                Address = command.Location?.Address,
+                Latitude = command.Location?.Latitude ?? 0,
+                Longitude = command.Location?.Longitude ?? 0,
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
-                IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
-                IsApproved = command.IsApproved
             };
 
             return result;
@@ -47,8 +48,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var location = item.Location?.ToResult();
-
             var result = new CreateVenueNotification
             {
                 Id = item.Id,
@@ -57,10 +56,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
-                Latitude = location?.Latitude,
-                Longitude = location?.Longitude,
-                City = location?.City,
-                Address = location?.Address,
+                Latitude = item.Latitude,
+                Longitude = item.Longitude,
+                City = item.City,
+                Address = item.Address,
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
                 Phones = item.Phones,
@@ -82,8 +81,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var location = item.Location?.ToResult();
-
             var result = new UpdateVenueNotification
             {
                 Id = item.Id,
@@ -92,10 +89,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = item.Name,
                 Type = item.Type,
                 OwnerId = item.OwnerId,
-                Latitude = location?.Latitude,
-                Longitude = location?.Longitude,
-                City = location?.City,
-                Address = location?.Address,
+                Latitude = item.Latitude,
+                Longitude = item.Longitude,
+                City = item.City,
+                Address = item.Address,
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
                 Phones = item.Phones,
@@ -116,8 +113,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 throw new ArgumentNullException(nameof(item));
             }
-
-            var location = item.Location?.ToResult();
 
             var result = new ArchiveVenueNotification
             {
@@ -144,15 +139,15 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = command.Name,
                 Type = command.Type,
                 OwnerId = command.OwnerId,
-                Location = command.Location?.ToSingle(),
+                City = command.Location?.City,
+                Address = command.Location?.Address,
+                Latitude = command.Location?.Latitude ?? 0,
+                Longitude = command.Location?.Longitude ?? 0,
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
-                LogoUrl = command.LogoUrl,
-                IsArchived = command.IsArchived,
                 IsPublished = command.IsPublished,
-                IsApproved = command.IsApproved
             };
 
             return result;
@@ -174,7 +169,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Type = item.Type,
                 OwnerId = item.OwnerId,
                 Images = item.Images.SplitByCommaAndUnwrap(),
-                Location = item.Location?.ToResult(),
+                Location = item.ToLocation(),
                 IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
                 Phones = item.Phones.SplitByCommaAndUnwrap(),
@@ -185,6 +180,24 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 IsApproved = item.IsApproved,
                 ParentId = item.ParentId
             };
+            return result;
+        }
+
+        public static GetLocationQueryResult ToLocation(this Venue item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var result = new GetLocationQueryResult
+            {
+                City = item.City,
+                Address = item.Address,
+                Latitude = item.Latitude,
+                Longitude = item.Longitude
+            };
+
             return result;
         }
 
