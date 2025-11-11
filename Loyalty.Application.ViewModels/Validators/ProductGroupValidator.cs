@@ -14,6 +14,9 @@ namespace Loyalty.Application.ViewModels.Validators
             RuleFor(x => x.Icon)
                 .GreaterThanOrEqualTo(0);
 
+            RuleFor(x => x.VenueId)
+                .GreaterThan(0);
+
             RuleFor(x => x.Name)
                 .MaximumLength(200)
                 .NotEmpty();

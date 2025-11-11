@@ -82,6 +82,10 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
+            modelBuilder.Entity<LoyaltyProductGroup>()
+                .HasIndex(p => new { p.LoyaltyProgramId, p.Name }).IsUnique()
+                .HasFilter("[IsArchived] = 0");
+
             //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
                 .HasIndex(p => new {p.VenueId, p.Name}).IsUnique()
