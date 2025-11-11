@@ -22,9 +22,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
         {
             //todo: filter by role >= current user role, depends on auth
             var result = await (from workers in Context.Workers
-                where workers.WorkerId == request.UserId
-                from allWorkers in Context.Workers.Where(x => x.VenueId == workers.VenueId)
-                select allWorkers).ToListAsync(cancellationToken);
+                    where workers.WorkerId == request.UserId
+                    from allWorkers in Context.Workers.Where(x => x.VenueId == workers.VenueId)
+                    select allWorkers)
+                .Where(x => x.WorkerId != request.UserId)
+                .ToListAsync(cancellationToken);
 
             return new GetWorkersByUserIdQueryResult
             {

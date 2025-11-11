@@ -17,9 +17,7 @@ namespace Loyalty.Application.ViewModels.Validators
                 .MaximumLength(200);
 
             RuleFor(x => x.Phone)
-                .NotEmpty()
-                .MinimumLength(7)
-                .MaximumLength(20);
+                .SetValidator(new PhoneValidator());
 
             RuleFor(x => x.Role)
                 .LessThanOrEqualTo((int)VenueUserRole.Owner)
