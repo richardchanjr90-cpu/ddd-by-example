@@ -1,4 +1,6 @@
-﻿namespace Loyalty.Domain.Handlers.Queries.QueryResults.Product
+﻿using Loyalty.Shared.Contracts.Enums;
+
+namespace Loyalty.Domain.Handlers.Queries.QueryResults.Product
 {
     public class GetProductByIdQueryResult
     {
@@ -6,7 +8,7 @@
 
         public string Name { get; set; }
 
-        public string Icon { get; set; }
+        public ProductIconType Icon { get; set; }
 
         public long ProductGroupId { get; set; }
     }

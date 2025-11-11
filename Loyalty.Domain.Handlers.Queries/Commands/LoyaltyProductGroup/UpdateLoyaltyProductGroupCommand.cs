@@ -14,8 +14,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
 
         public UpdateRuleCommand Rule { get; set; }
 
-        public bool IsArchived { get; set; }
-
         public string Description { get; set; }
 
         public long ProductGroupId { get; set; }

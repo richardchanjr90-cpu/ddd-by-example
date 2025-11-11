@@ -10,8 +10,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
 
         public string Name { get; set; }
 
-        public bool IsArchived { get; set; }
-
         public CreateRuleCommand Rule { get; set; }
 
         public string Description { get; set; }

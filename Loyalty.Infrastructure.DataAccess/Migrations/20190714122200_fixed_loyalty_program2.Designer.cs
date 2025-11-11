@@ -4,14 +4,16 @@ using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    partial class LoyaltyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190714122200_fixed_loyalty_program2")]
+    partial class fixed_loyalty_program2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -135,7 +137,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<Guid?>("CreatedBy");
 
-                    b.Property<int>("Icon");
+                    b.Property<string>("Icon")
+                        .IsRequired();
 
                     b.Property<bool>("IsArchived");
 
@@ -168,7 +171,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<Guid?>("CreatedBy");
 
-                    b.Property<int>("Icon");
+                    b.Property<string>("Icon")
+                        .IsRequired();
 
                     b.Property<bool>("IsArchived");
 

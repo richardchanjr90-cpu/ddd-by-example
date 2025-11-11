@@ -24,7 +24,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                 select new GetLoyaltyProgramByIdQueryResult
                 {
                     Id = lp.Id,
-                    IsArchived = lp.IsArchived,
                     Description = lp.Description,
                     StartedDate = lp.StartDate,
                     EndedDate = lp.EndDate,

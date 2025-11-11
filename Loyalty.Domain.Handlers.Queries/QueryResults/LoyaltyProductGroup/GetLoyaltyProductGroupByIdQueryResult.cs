@@ -20,7 +20,5 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup
         public GetProductGroupByIdQueryResult ProductGroup { get; set; }
 
         public string Description { get; set; }
-
-        public bool IsArchived { get; set; }
     }
 }

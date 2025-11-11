@@ -35,7 +35,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
             var group = new LoyaltyProductGroup
             {
-                IsArchived = request.IsArchived,
                 LoyaltyProgramId = request.LoyaltyProgramId,
                 Description = request.Description,
                 Name = request.Name,

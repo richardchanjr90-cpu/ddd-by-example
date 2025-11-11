@@ -18,8 +18,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms
 
         public DateTime EndedDate { get; set; }
 
-        public bool IsArchived { get; set; }
-
         public long VenueId { get; set; }
 
         public Guid UserId { get; set; }

@@ -16,11 +16,15 @@ namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenuePutImageFunction
     {
-        private readonly LoyaltyVenueImageAppService service;
+        private readonly LoyaltyVenueAppService service;
+        private readonly LoyaltyVenueImageAppService imageService;
 
-        public VenuePutImageFunction(LoyaltyVenueImageAppService service)
+        public VenuePutImageFunction(
+            LoyaltyVenueAppService service,
+            LoyaltyVenueImageAppService imageService)
         {
             this.service = service;
+            this.imageService = imageService;
         }
 
         [FunctionName("VenuePutImageFunction")]
@@ -33,19 +37,19 @@ namespace LoyaltyProgram.Http.VenueImages
             [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
             Stream blobStream,
             [Queue("venue-images", Connection = "QueueConnectionString")]
-            ICollector<VenueNewBlobImageDto> queueItems)
+            ICollector<VenueQueueImageDto> queueItems)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                var images = await service.ConvertImages(req, id, Guid.Parse(index));
+                var images = await imageService.ConvertImages(req, id, Guid.Parse(index));
 
                 if (images != null && images.Count > 0)
                 {
                     var imageStream = Image.Load(images.First().Image);
                     imageStream.SaveAsJpeg(blobStream);
-                    queueItems.Add(new VenueNewBlobImageDto
+                    queueItems.Add(new VenueQueueImageDto
                     {
                         Index = Guid.Parse(index),
                         VenueId = id

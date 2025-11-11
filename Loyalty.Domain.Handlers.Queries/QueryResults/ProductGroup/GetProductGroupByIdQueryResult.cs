@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup
 {
@@ -11,7 +12,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup
 
         public string Name { get; set; }
 
-        public string Icon { get; set; }
+        public ProductGroupIconType Icon { get; set; }
 
         public List<GetProductByIdQueryResult> Products { get; set; } = new List<GetProductByIdQueryResult>();
     }

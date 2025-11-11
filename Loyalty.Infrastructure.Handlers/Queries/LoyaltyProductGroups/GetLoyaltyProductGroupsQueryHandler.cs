@@ -30,7 +30,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                 .Select(lp => new GetLoyaltyProductGroupByIdQueryResult
                 {
                     Id = lp.Id,
-                    IsArchived = lp.IsArchived,
                     LoyaltyProgramId = lp.LoyaltyProgramId,
                     Description = lp.Description,
                     Name = lp.Name,

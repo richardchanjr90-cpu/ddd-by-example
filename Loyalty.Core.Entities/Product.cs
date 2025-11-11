@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities
 {
@@ -14,7 +15,7 @@ namespace Loyalty.Core.Entities
         public string Name { get; set; }
 
         [Required]
-        public string Icon { get; set; }
+        public ProductIconType Icon { get; set; }
 
         public bool IsArchived { get; set; }
 

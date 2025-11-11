@@ -43,7 +43,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             {
                 group = new LoyaltyProductGroup
                 {
-                    IsArchived = request.IsArchived,
                     LoyaltyProgramId = request.LoyaltyProgramId,
                     Description = request.Description,
                     Name = request.Name,
@@ -58,7 +57,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             }
             else
             {
-                group.IsArchived = request.IsArchived;
                 group.LoyaltyProgramId = request.LoyaltyProgramId;
                 group.Description = request.Description;
                 group.Name = request.Name;

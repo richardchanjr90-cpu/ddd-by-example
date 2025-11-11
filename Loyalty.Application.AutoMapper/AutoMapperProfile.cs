@@ -59,6 +59,7 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<LoyaltyProgramViewModel, CreateLoyaltyProgramCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.VenueId, opt => opt.Ignore())
+                .ForSourceMember(x => x.IsPublished, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
 
             CreateMap<LoyaltyProgramViewModel, UpdateLoyaltyProgramCommand>()

@@ -10,13 +10,9 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms
 
         public string Description { get; set; }
 
-        public bool IsPublished { get; set; }
-
         public DateTime StartedDate { get; set; }
 
         public DateTime? EndedDate { get; set; }
-
-        public bool IsArchived { get; set; }
 
         public long VenueId { get; set; }
 

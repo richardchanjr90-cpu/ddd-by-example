@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -24,10 +25,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(UpdateLoyaltyProgramCommand request,
+        public async Task<ICommandResult> Handle(
+            UpdateLoyaltyProgramCommand request,
             CancellationToken cancellationToken)
         {
             var program = await Context.LoyaltyPrograms
+                .Include(x => x.LoyaltyProductGroups)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -40,9 +43,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     Name = request.Name,
                     StartDate = request.StartedDate,
                     EndDate = request.EndedDate,
-                    Description = request.Description,
-                    IsPublished = request.IsPublished,
-                    IsArchived = request.IsArchived
+                    Description = request.Description
                 };
 
                 Context.LoyaltyPrograms.Add(program);
@@ -53,8 +54,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 program.StartDate = request.StartedDate;
                 program.EndDate = request.EndedDate;
                 program.Description = request.Description;
+
+                if (request.IsPublished && program.LoyaltyProductGroups?.Count == 0)
+                {
+                    throw new ValidationException("You can't publish group without any LoyaltyProductGroups attached.");
+                }
                 program.IsPublished = request.IsPublished;
-                program.IsArchived = request.IsArchived;
             }
 
             var result = new CommandResult
@@ -72,6 +77,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         EndDate = program.EndDate,
                         StartDate = program.StartDate
                     }, cancellationToken);
+
             return result;
         }
     }

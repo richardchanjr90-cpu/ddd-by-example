@@ -12,7 +12,7 @@ namespace Loyalty.Application.ViewModels.Validators
         public ProductGroupValidator()
         {
             RuleFor(x => x.Icon)
-                .NotEmpty();
+                .GreaterThanOrEqualTo(0);
 
             RuleFor(x => x.Name)
                 .MaximumLength(200)

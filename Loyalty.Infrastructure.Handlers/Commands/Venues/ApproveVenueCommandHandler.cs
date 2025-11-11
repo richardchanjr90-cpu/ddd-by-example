@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -33,6 +34,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             var venue = await Context.Venues
                 .Where(x => x.Id == request.Id)
                 .SingleAsync(cancellationToken);
+
+            if (!venue.IsPublished)
+            {
+                throw new ValidationException("Venue is not Published, so it can't be approved.");
+            }
 
             var wasApproved = venue.IsApproved;
             venue.IsApproved = true;

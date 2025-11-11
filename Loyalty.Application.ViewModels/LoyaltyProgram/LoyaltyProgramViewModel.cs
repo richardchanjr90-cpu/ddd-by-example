@@ -22,8 +22,5 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
 
         [JsonProperty("endedDate")]
         public DateTime EndedDate { get; set; }
-
-        [JsonProperty("isArchived")]
-        public bool IsArchived { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Loyalty.Application.ViewModels.ProductGroup
         public string Name { get; set; }
 
         [JsonProperty("icon")]
-        public string Icon { get; set; }
+        public int Icon { get; set; }
 
         [JsonProperty("products")]
         public List<ProductViewModel> Products { get; set; } = new List<ProductViewModel>();

@@ -24,13 +24,12 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                 select new GetLoyaltyProgramByIdQueryResult
                 {
                     Id = lp.Id,
-                    IsArchived = lp.IsArchived,
                     Description = lp.Description,
                     StartedDate = lp.StartDate,
                     EndedDate = lp.EndDate,
                     Name = lp.Name,
                     IsPublished = lp.IsPublished
-                }).SingleAsync(cancellationToken);
+                }).SingleOrDefaultAsync(cancellationToken);
 
             return item;
         }

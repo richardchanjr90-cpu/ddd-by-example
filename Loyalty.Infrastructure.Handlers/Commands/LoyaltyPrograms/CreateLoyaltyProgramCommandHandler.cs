@@ -31,9 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 Name = request.Name,
                 StartDate = request.StartedDate,
                 EndDate = request.EndedDate,
-                Description = request.Description,
-                IsPublished = request.IsPublished,
-                IsArchived = request.IsArchived
+                Description = request.Description
             };
 
             Context.LoyaltyPrograms.Add(program);
