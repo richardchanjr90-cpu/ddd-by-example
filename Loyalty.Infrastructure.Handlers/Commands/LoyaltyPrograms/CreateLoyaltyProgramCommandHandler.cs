@@ -56,7 +56,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     },
                     cancellationToken);
             }
-                
             return result;
         }
     }

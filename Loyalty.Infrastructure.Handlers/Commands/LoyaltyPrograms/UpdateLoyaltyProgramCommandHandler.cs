@@ -85,7 +85,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         IsPublished = program.IsPublished
                     }, cancellationToken);
             }
-
             return result;
         }
     }
