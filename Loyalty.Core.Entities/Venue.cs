@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Loyalty.Common.Shared.Enums;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities
 {
@@ -27,7 +27,15 @@ namespace Loyalty.Core.Entities
 
         public long? ParentId { get; set; }
 
-        public Location Location { get; set; }
+        [MaxLength(200)]
+        public string City { get; set; }
+
+        [MaxLength(200)]
+        public string Address { get; set; }
+
+        public float? Latitude { get; set; }
+
+        public float? Longitude { get; set; }
 
         [Required]
         public VenueType Type { get; set; }
@@ -37,7 +45,16 @@ namespace Loyalty.Core.Entities
         [MaxLength(200)]
         public string LogoUrl { get; set; }
 
-        public VenueDetails VenueDetails { get; set; }
+        [MaxLength(4000)]
+        public string FullDescription { get; set; }
+
+        public string Phones { get; set; }
+
+        public string WebSites { get; set; }
+
+        public string WorkingHours { get; set; }
+
+        public string Images { get; set; }
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
 

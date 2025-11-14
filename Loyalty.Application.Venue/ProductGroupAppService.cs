@@ -13,7 +13,7 @@ using MediatR;
 
 namespace Loyalty.Application.Venue
 {
-    public class ProductGroupAppService: BaseAppService
+    public class ProductGroupAppService : BaseAppService
     {
         private readonly IMapper mapper;
 
@@ -43,22 +43,30 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<ProductGroupViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(ProductGroupViewModel model, long venueId)
+        public async Task<List<ProductGroupViewModel>> Get()
+        {
+            var result = await Mediator.Send(new GetProductGroupsByUserIdQuery
+            {
+                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+            });
+
+            return mapper.Map<List<ProductGroupViewModel>>(result.Result);
+        }
+
+        public async Task<ICommandResult> Create(ProductGroupViewModel model)
         {
             new ProductGroupValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateProductGroupCommand>(model);
-            command.VenueId = venueId;
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(ProductGroupViewModel model, long venueId)
+        public async Task<ICommandResult> Update(ProductGroupViewModel model)
         {
             new ProductGroupValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateProductGroupCommand>(model);
-            command.VenueId = venueId;
             var commandResult = await Mediator.Send(command);
             return commandResult;
         }

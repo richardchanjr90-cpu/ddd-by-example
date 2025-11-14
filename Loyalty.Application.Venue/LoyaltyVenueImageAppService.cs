@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -9,6 +11,7 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using MediatR;
 using Microsoft.Extensions.Options;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Loyalty.Application.Venue
 {
@@ -17,35 +20,101 @@ namespace Loyalty.Application.Venue
         private readonly IMapper mapper;
         private readonly IOptions<VenueGalleryImageSettings> settings;
 
-        public LoyaltyVenueImageAppService(IMediator mediator, IMapper mapper, IOptions<VenueGalleryImageSettings> settings)
+        public LoyaltyVenueImageAppService(IMediator mediator, IMapper mapper,
+            IOptions<VenueGalleryImageSettings> settings)
             : base(mediator)
         {
             this.mapper = mapper;
             this.settings = settings;
         }
 
-        public async Task<List<VenueBlobImageDto>> GetImages(HttpRequestMessage request, long venueId, int index)
+        public async Task<List<VenueNewBlobImageDto>> ConvertImages(HttpRequestMessage request, long venueId, Guid index)
+        {
+            var images = new List<VenueNewBlobImageDto>();
+
+            foreach (var image in GetImages(request))
+            {
+                var venueImage = new VenueNewBlobImageDto
+                {
+                    VenueId = venueId,
+                    Image = image,
+                    Index = index
+                };
+
+                new VenueNewImageValidator(settings.Value)
+                    .ValidateAndThrow(venueImage);
+
+                images.Add(venueImage);
+            }
+
+            return images;
+        }
+
+        public IEnumerable<byte []> GetImages(HttpRequestMessage request)
+        {
+            var content = request.Content.ReadAsMultipartAsync().GetAwaiter().GetResult();
+
+            foreach (var file in content.Contents)
+            {
+               yield return file.ReadAsByteArrayAsync().GetAwaiter().GetResult();
+            }
+        }
+
+        public async Task<List<VenueNewBlobImageDto>> ConvertImages(HttpRequestMessage request, long venueId)
         {
             var content = await request.Content.ReadAsMultipartAsync();
 
-            var images = new List<VenueBlobImageDto>();
+            var images = new List<VenueNewBlobImageDto>();
 
             foreach (var file in content.Contents)
             {
                 var byteImage = await file.ReadAsByteArrayAsync();
-                var venueImage = new VenueBlobImageDto
+                var venueImage = new VenueNewBlobImageDto
                 {
                     VenueId = venueId,
                     Image = byteImage,
-                    Index = index
+                    Index = Guid.NewGuid()
                 };
 
-                new VenueImageValidator(settings.Value)
+                new VenueNewImageValidator(settings.Value)
                     .ValidateAndThrow(venueImage);
 
-                images.Add(venueImage);            
+                images.Add(venueImage);
             }
+
             return images;
+        }
+
+        public async Task<List<string>> GetImages(CloudBlobContainer container, string prefix)
+        {
+            var results = new List<string>();
+            var exists = await container.ExistsAsync();
+
+            if (exists)
+            {
+                var operation =
+                    await container.ListBlobsSegmentedAsync(prefix, true, BlobListingDetails.None, 50,
+                        null, null, null);
+                results = operation.Results.Select(item => item.Uri.ToString()).ToList();
+            }
+
+            return results;
+        }
+
+        public async Task<int> GetCount(CloudBlobContainer container)
+        {
+            var results = 0;
+            var exists = await container.ExistsAsync();
+
+            if (exists)
+            {
+                var operation =
+                    await container.ListBlobsSegmentedAsync("original", true, BlobListingDetails.None, 50,
+                        null, null, null);
+                results = operation.Results.Count();
+            }
+
+            return results;
         }
     }
 }

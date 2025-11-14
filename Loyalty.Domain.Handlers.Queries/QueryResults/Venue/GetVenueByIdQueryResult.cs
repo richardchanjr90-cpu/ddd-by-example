@@ -1,6 +1,8 @@
 ﻿using System;
-using Loyalty.Common.Shared.Enums;
+using System.Collections.Generic;
+
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 {
@@ -19,6 +21,17 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
         public VenueType Type { get; set; }
 
         public VenueCategoryType CategoryType { get; set; }
+
+        public string FullDescription { get; set; }
+
+        public List<string> Phones { get; set; } = new List<string>();
+
+        public List<string> WebSites { get; set; } = new List<string>();
+
+        public List<string> Images { get; set; } = new List<string>();
+
+        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; }
+            = new List<GetVenueWorkingHoursQueryResult>();
 
         public string LogoUrl { get; set; }
 

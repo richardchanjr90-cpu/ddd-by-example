@@ -24,9 +24,6 @@ namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
         [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty("isArchived")]
-        public bool IsArchived { get; set; }
-
         [JsonProperty("productGroup")]
         public ProductGroupViewModel ProductGroup { get; set; }
     }

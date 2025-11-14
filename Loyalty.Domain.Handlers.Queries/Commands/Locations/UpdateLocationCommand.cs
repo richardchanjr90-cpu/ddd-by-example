@@ -2,10 +2,6 @@
 {
     public class UpdateLocationCommand
     {
-        public long Id { get; set; }
-
-        public long VenueId { get; set; }
-
         public string City { get; set; }
 
         public string Address { get; set; }

@@ -7,11 +7,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.28" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="AutoMapper" Version="8.1.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.0" />
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +28,7 @@
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\Loyalty.Application.AutoMapper\Loyalty.Application.AutoMapper.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Handlers.Notifications\Loyalty.Infrastructure.Handlers.Notifications.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Handlers\Loyalty.Infrastructure.Handlers.csproj" />
     <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
   </ItemGroup>

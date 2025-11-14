@@ -1,4 +1,5 @@
-﻿using Loyalty.Application.ViewModels.Location;
+﻿using System.Collections.Generic;
+using Loyalty.Application.ViewModels.Location;
 using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.Venue
@@ -17,6 +18,21 @@ namespace Loyalty.Application.ViewModels.Venue
         [JsonProperty("description")]
         public string Description { get; set; }
 
+        [JsonProperty("fullDescription")]
+        public string FullDescription { get; set; }
+
+        [JsonProperty("phones")]
+        public List<string> Phones { get; set; }
+
+        [JsonProperty("webSites")]
+        public List<string> WebSites { get; set; }
+
+        [JsonProperty("images")]
+        public List<string> Images { get; set; }
+
+        [JsonProperty("workingHours")]
+        public List<WorkingHoursViewModel> WorkingHours { get; set; }
+
         [JsonProperty("parentId")]
         public long? ParentId { get; set; }
 
@@ -32,9 +48,6 @@ namespace Loyalty.Application.ViewModels.Venue
         [JsonProperty("logoUrl")]
         public string LogoUrl { get; set; }
 
-        [JsonProperty("isArchived")]
-        public bool IsArchived { get; set; }
-
         [JsonProperty("isPublished")]
         public bool IsPublished { get; set; }
 
@@ -42,5 +55,3 @@ namespace Loyalty.Application.ViewModels.Venue
         public bool IsApproved { get; set; }
     }
 }
-
-

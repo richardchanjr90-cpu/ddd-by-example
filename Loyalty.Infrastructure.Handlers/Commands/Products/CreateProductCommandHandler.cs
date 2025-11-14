@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
@@ -13,7 +12,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
     public class CreateProductCommandHandler
         : BaseHandler, ICreateProductCommandHandler
     {
-        public CreateProductCommandHandler(ILoyaltyDbContext context) 
+        public CreateProductCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }

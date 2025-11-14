@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Loyalty.Common.Shared.Enums;
+﻿
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
+using Newtonsoft.Json;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {
     public class UpdateSingleRuleCommand : IRequest<ICommandResult>
     {
+        [JsonIgnore]
         public long Id { get; set; }
 
+        [JsonProperty("rule")]
         public object Rule { get; set; }
 
+        [JsonProperty("ruleType")]
         public LoyaltyRuleType RuleType { get; set; }
 
-        public string RuleVersion { get; set; }
+        [JsonProperty("ruleVersion")]
+        public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

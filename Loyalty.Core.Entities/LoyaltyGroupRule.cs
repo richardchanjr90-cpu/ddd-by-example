@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using Loyalty.Common.Shared.Enums;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities
 {
@@ -17,13 +17,8 @@ namespace Loyalty.Core.Entities
 
         public string Rule { get; set; }
 
-        public string RuleVersion { get; set; }
+        public LoyaltyRuleVersion RuleVersion { get; set; }
 
         public bool IsArchived { get; set; }
-
-        public LoyaltyGroupRule ParseRule(string rule, LoyaltyRuleType type)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

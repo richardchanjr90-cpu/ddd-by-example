@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -13,12 +12,13 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 {
     public class GetWorkerByIdQueryHandler : BaseHandler, IGetWorkerByIdQueryHandler
     {
-        public GetWorkerByIdQueryHandler(ILoyaltyDbContext context) 
+        public GetWorkerByIdQueryHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
 
-        public async Task<GetWorkerByIdQueryResult> Handle(GetWorkerByIdQuery request, CancellationToken cancellationToken)
+        public async Task<GetWorkerByIdQueryResult> Handle(GetWorkerByIdQuery request,
+            CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
                 .Where(x => x.Id == request.Id)

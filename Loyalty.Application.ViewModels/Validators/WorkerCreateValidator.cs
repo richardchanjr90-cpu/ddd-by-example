@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
@@ -17,11 +17,10 @@ namespace Loyalty.Application.ViewModels.Validators
                 .MaximumLength(200);
 
             RuleFor(x => x.Phone)
-                .NotEmpty()
-                .MinimumLength(7)
-                .MaximumLength(20);
+                .SetValidator(new PhoneValidator());
 
-            RuleFor(x => x.Role).LessThanOrEqualTo((int)VenueUserRole.Owner)
+            RuleFor(x => x.Role)
+                .LessThanOrEqualTo((int)VenueUserRole.Owner)
                 .WithMessage("Must be in range of Enum values");
 
             RuleFor(x => x.PositionName)

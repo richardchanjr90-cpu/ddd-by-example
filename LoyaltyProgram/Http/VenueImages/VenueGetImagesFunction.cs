@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,20 +15,24 @@ namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenueGetImagesFunction
     {
+        private readonly LoyaltyVenueImageAppService service;
+
+        public VenueGetImagesFunction(LoyaltyVenueImageAppService service)
+        {
+            this.service = service;
+        }
+
         [FunctionName("VenueGetImagesFunction")]
         public async Task<IActionResult> Run(
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details/images")]
             HttpRequest req,
             ILogger log,
-            [Blob("venue-images-{id}", FileAccess.Read)] CloudBlobContainer container)
+            [Blob("venue-images-{id}", FileAccess.Read)]
+            CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
-
-            var operation =
-                await container.ListBlobsSegmentedAsync(req.Query["prefix"], true, BlobListingDetails.None, 50, null, null, null);
-
-            var results = operation.Results.Select(item => item.Uri.ToString()).ToList();
+            var results = await service.GetImages(container, req.Query["prefix"]);
 
             return await ExceptionWrapper.Handle(async () =>
             {

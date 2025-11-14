@@ -4,7 +4,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup
 {
     public class GetLoyaltyProductGroupsQueryResult
     {
-        public List<GetLoyaltyProductGroupByIdQueryResult> Result { get; set; } 
+        public List<GetLoyaltyProductGroupByIdQueryResult> Result { get; set; }
             = new List<GetLoyaltyProductGroupByIdQueryResult>();
     }
 }

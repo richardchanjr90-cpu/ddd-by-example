@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -7,13 +7,14 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class CreateWorkerCommandHandler
         : BaseHandler, ICreateWorkerCommandHandler
     {
-        public CreateWorkerCommandHandler(ILoyaltyDbContext context) 
+        public CreateWorkerCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -30,8 +31,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 Phone = request.Phone,
                 PositionName = request.PositionName,
                 PhotoUri = request.PhotoUri,
-                Role = request.Role              
+                Role = request.Role
             };
+
+            if (worker.Role == VenueUserRole.Owner)
+            {
+                throw new ValidationException("Impossible to create second owner.");
+            }
 
             Context.Workers.Add(worker);
 

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Loyalty.Application.ViewModels.Validators.Extensions;
 using Loyalty.Application.ViewModels.Venue;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
@@ -13,7 +13,8 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .MaximumLength(200);
 
-            RuleFor(x => x.OwnerId).Must(this.BeValidGuid)
+            RuleFor(x => x.OwnerId)
+                .Must(this.BeValidGuid)
                 .WithMessage("Should be a valid guid.");
 
             RuleFor(x => x.Type)
@@ -21,9 +22,24 @@ namespace Loyalty.Application.ViewModels.Validators
                 .When(x => x.ParentId.HasValue)
                 .WithMessage("ParentId should be > 0, when VenueType.Single.");
 
+            RuleFor(x => x.Type)
+                .GreaterThanOrEqualTo((int)VenueType.Single)
+                .LessThanOrEqualTo((int)VenueType.Union);
+
             RuleFor(x => x.Location)
                 .SetValidator(new LocationValidator())
                 .When(x => x.Location != null);
+
+            RuleFor(x => x.CategoryType)
+                .GreaterThanOrEqualTo((int)VenueCategoryType.CoffeeShop);
+
+            RuleForEach(x => x.Phones)
+                .SetValidator(new PhoneValidator())
+                .When(x => x.Phones != null);
+
+            RuleForEach(x => x.WorkingHours)
+                .Must(x => !string.IsNullOrWhiteSpace(x.Day))
+                .When(x => x.WorkingHours != null);
 
             RuleFor(x => x)
                 .SetValidator(new PublishedVenueValidator())

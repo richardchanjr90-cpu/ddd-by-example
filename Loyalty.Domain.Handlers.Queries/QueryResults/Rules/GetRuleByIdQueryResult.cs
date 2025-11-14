@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Loyalty.Common.Shared.Enums;
+﻿using System.Collections.Generic;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Rules
 {

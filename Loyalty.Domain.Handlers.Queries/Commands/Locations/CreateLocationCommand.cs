@@ -2,8 +2,6 @@
 {
     public class CreateLocationCommand
     {
-        public long VenueId { get; set; }
-
         public string City { get; set; }
 
         public string Address { get; set; }

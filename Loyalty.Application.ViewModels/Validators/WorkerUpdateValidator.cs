@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using FluentValidation;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {

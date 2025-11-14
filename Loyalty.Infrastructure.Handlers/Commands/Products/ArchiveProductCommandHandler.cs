@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -14,7 +13,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
     public class ArchiveProductCommandHandler
         : BaseHandler, IArchiveProductCommandHandler
     {
-        public ArchiveProductCommandHandler(ILoyaltyDbContext context) 
+        public ArchiveProductCommandHandler(ILoyaltyDbContext context)
             : base(context)
         {
         }
@@ -25,10 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (product != null)
-            {
-                product.IsArchived = true;
-            }
+            if (product != null) product.IsArchived = true;
 
             return new CommandResult
             {

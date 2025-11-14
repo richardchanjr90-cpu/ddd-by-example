@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +20,14 @@ namespace LoyaltyProgram.Http.Worker
 
         [FunctionName("WorkerDeleteFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
             long id,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{venueId}/workers/{id}")]
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/{id}")]
             HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.Archive(id));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
         }
     }
 }

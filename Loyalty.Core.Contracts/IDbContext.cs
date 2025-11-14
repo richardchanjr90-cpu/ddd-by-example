@@ -10,7 +10,7 @@ namespace Loyalty.Core.Contracts
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
-        EntityEntry<TEntity> Entry<TEntity>(TEntity entity) 
+        EntityEntry<TEntity> Entry<TEntity>(TEntity entity)
             where TEntity : class;
     }
 }

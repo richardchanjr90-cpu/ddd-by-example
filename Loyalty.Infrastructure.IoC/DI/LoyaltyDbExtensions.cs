@@ -1,4 +1,5 @@
-﻿using Loyalty.Common.Shared.Settings;
+﻿using System.Data.SqlClient;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
@@ -12,18 +13,20 @@ namespace Loyalty.Infrastructure.IoC.DI
     public static class LoyaltyDbExtensions
     {
         public static readonly LoggerFactory MyLoggerFactory
-            = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
+            = new LoggerFactory(new[] {new ConsoleLoggerProvider((_, __) => true, true)});
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
-            services.AddScoped<ILoyaltyDbContext, LoyaltyDbContext>();
+            services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
+            var dapperConnection = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
+            services.AddScoped(x => new SqlConnection(dapperConnection));
 
             //todo: remove for staging and prod;
             services.AddEntityFrameworkSqlServer()
                 .AddLogging()
-                .AddDbContext<LoyaltyDbContext>(
+                .AddDbContextPool<LoyaltyDbContext>(
                     options => options.UseSqlServer(
                         connectionString).UseLoggerFactory(MyLoggerFactory));
         }

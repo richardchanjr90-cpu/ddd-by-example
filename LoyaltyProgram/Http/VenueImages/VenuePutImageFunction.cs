@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -15,31 +16,34 @@ namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenuePutImageFunction
     {
-        private readonly LoyaltyVenueImageAppService service;
+        private readonly LoyaltyVenueAppService service;
+        private readonly LoyaltyVenueImageAppService imageService;
 
-        public VenuePutImageFunction(LoyaltyVenueImageAppService service)
+        public VenuePutImageFunction(
+            LoyaltyVenueAppService service,
+            LoyaltyVenueImageAppService imageService)
         {
             this.service = service;
+            this.imageService = imageService;
         }
 
         [FunctionName("VenuePutImageFunction")]
         public async Task<IActionResult> Run(
             long id,
-            int index,
+            string index,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
-            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
-            [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
+            Stream blobStream,
+            [Queue("venue-images", Connection = "QueueConnectionString")]
+            ICollector<VenueQueueImageDto> queueItems)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                //if fails, empty blob is still created;
-                //todo: create an issue in github
-                // Azure Functions bug
-                var images = await service.GetImages(req, id, index);
+                var images = await imageService.ConvertImages(req, id, Guid.Parse(index));
 
                 if (images != null && images.Count > 0)
                 {
@@ -47,7 +51,7 @@ namespace LoyaltyProgram.Http.VenueImages
                     imageStream.SaveAsJpeg(blobStream);
                     queueItems.Add(new VenueQueueImageDto
                     {
-                        Index = index,
+                        Index = Guid.Parse(index),
                         VenueId = id
                     });
                 }

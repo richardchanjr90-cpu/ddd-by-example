@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms
 {
-    public interface IArchiveLoyaltyProgramCommandHandler : IRequestHandler<ArchiveLoyaltyProgramCommand, ICommandResult>
+    public interface
+        IArchiveLoyaltyProgramCommandHandler : IRequestHandler<ArchiveLoyaltyProgramCommand, ICommandResult>
     {
     }
 }

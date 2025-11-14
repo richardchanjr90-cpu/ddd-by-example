@@ -21,7 +21,8 @@ namespace LoyaltyProgram.Http.Product
         [FunctionName("ProductGetAllFunction")]
         public async Task<IActionResult> Run(
             long groupId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productGroups/{groupId}/products")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productGroups/{groupId}/products")]
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(ProductGetAllFunction)} was triggered.");

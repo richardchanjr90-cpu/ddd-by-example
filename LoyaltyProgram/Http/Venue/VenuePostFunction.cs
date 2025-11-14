@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -21,14 +22,16 @@ namespace LoyaltyProgram.Http.Venue
 
         [FunctionName("VenuePostFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]VenueViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
+            VenueViewModel model,
+            HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                //await req.AuthorizeAsync(host);
+                model = await req.Cast<VenueViewModel>();
                 return new OkObjectResult(await service.Create(model));
             });
         }

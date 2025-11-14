@@ -1,5 +1,5 @@
 ﻿using System;
-using Loyalty.Common.Shared.Enums;
+using Loyalty.Shared.Contracts.Enums;
 using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.Rule
@@ -16,6 +16,6 @@ namespace Loyalty.Application.ViewModels.Rule
         public LoyaltyRuleType RuleType { get; set; }
 
         [JsonProperty("ruleVersion")]
-        public string RuleVersion { get; set; }
+        public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

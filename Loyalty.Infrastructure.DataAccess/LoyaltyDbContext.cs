@@ -16,8 +16,6 @@ namespace Loyalty.Infrastructure.DataAccess
         {
         }
 
-        public DbSet<Location> Locations { get; set; }
-
         public DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
@@ -31,8 +29,6 @@ namespace Loyalty.Infrastructure.DataAccess
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Venue> Venues { get; set; }
-
-        public DbSet<VenueDetails> VenueDetails { get; set; }
 
         public DbSet<Worker> Workers { get; set; }
 
@@ -50,12 +46,6 @@ namespace Loyalty.Infrastructure.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<VenueDetails>()
-                .HasOne(p => p.Venue)
-                .WithOne(x => x.VenueDetails)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<ProductGroup>()
                 .HasMany(b => b.Products)
                 .WithOne(x => x.ProductGroup)
@@ -85,21 +75,25 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(p => new {p.ProductGroupId, p.Name}).IsUnique()
+                .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
-            //todo: check on backend;
-            modelBuilder.Entity<ProductGroup>()
+            modelBuilder.Entity<LoyaltyProgram>()
                 .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
             modelBuilder.Entity<LoyaltyProductGroup>()
-                .HasIndex(p => new { p.LoyaltyProgramId, p.ProductGroupId }).IsUnique()
+                .HasIndex(p => new { p.LoyaltyProgramId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
-            modelBuilder.Entity<Location>()
-                .HasIndex(p => new { p.Longitude, p.Latitude }).IsUnique();
+            //todo: check on backend;
+            modelBuilder.Entity<ProductGroup>()
+                .HasIndex(p => new {p.VenueId, p.Name}).IsUnique()
+                .HasFilter("[IsArchived] = 0");
 
+            //modelBuilder.Entity<LoyaltyProductGroup>()
+            //    .HasIndex(p => new {p.LoyaltyProgramId, p.ProductGroupId}).IsUnique()
+            //    .HasFilter("[IsArchived] = 0");
             modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
@@ -107,9 +101,6 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
-
-            modelBuilder.Entity<Location>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<VenueDetails>().HasQueryFilter(p => !p.IsArchived);
         }
 
         private void AddAuditInfo()
@@ -121,12 +112,12 @@ namespace Loyalty.Infrastructure.DataAccess
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((AuditableEntity)entry.Entity).CreatedBy = Guid.Empty;
-                    ((AuditableEntity)entry.Entity).Created = DateTime.UtcNow;
+                    ((AuditableEntity) entry.Entity).CreatedBy = Guid.Empty;
+                    ((AuditableEntity) entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((AuditableEntity)entry.Entity).ModifiedBy = Guid.Empty;
-                ((AuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
+                ((AuditableEntity) entry.Entity).ModifiedBy = Guid.Empty;
+                ((AuditableEntity) entry.Entity).Modified = DateTime.UtcNow;
             }
         }
     }

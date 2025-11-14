@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Loyalty.Domain.Handlers.Notifications.Contracts</RootNamespace>
+    <AssemblyName>Loyalty.Domain.Handlers.Notifications.Contracts</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj" />
+  </ItemGroup>
+
+</Project>

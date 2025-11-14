@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Common.Shared.Exceptions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -22,14 +21,15 @@ namespace LoyaltyProgram.Http.Product
         [FunctionName("ProductPostFunction")]
         public async Task<IActionResult> Run(
             long groupId,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productGroups/{groupId}/products")]ProductViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productGroups/{groupId}/products")]
+            ProductViewModel model,
             ILogger log)
         {
             log.LogInformation($"{nameof(ProductPostFunction)} was triggered.");
 
             return await ExceptionWrapper.Handle(async () =>
             {
-                return new OkObjectResult(await service.Create(model));
+                return new OkObjectResult(await service.Create(model, groupId));
             });
         }
     }

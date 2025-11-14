@@ -16,13 +16,17 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty();
 
             RuleFor(x => x.Description)
-                .MaximumLength(4000);
+                .NotEmpty()
+                .MaximumLength(2000);
 
             RuleFor(x => x.LoyaltyProgramId)
                 .GreaterThanOrEqualTo(1);
 
             RuleFor(x => x.ProductGroupId)
                 .GreaterThanOrEqualTo(1);
+
+            RuleFor(x => x.Rules)
+                .NotNull();
 
             RuleForEach(x => x.Rules.Rules)
                 .NotEmpty()

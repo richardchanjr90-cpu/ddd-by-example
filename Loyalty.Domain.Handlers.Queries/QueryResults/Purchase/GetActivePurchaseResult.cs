@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Purchase
 {
@@ -8,12 +7,12 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Purchase
     {
         public long LoyaltyProgramId { get; set; }
 
-        public long LoyaltyGroupId { get; set; }
+        public string Name { get; set; }
 
-        public LoyaltyRuleType RuleType { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public List<ActivePurchaseResult> Purchases { get; set; } = new List<ActivePurchaseResult>();
+        public DateTime EndDate { get; set; }
 
-        public Guid UserId { get; set; }
+        public List<GroupPurchaseResult> Groups { get; set; } = new List<GroupPurchaseResult>();
     }
 }

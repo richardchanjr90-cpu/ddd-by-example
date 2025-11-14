@@ -14,10 +14,8 @@ namespace Loyalty.InfraStructure.Auth
             Value = value;
         }
 
-        [JsonProperty("typ")]
-        public string Type { get; set; }
+        [JsonProperty("typ")] public string Type { get; set; }
 
-        [JsonProperty("val")]
-        public string Value { get; set; }
+        [JsonProperty("val")] public string Value { get; set; }
     }
 }

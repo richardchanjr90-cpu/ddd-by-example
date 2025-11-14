@@ -36,7 +36,17 @@ namespace Loyalty.Application.Venue
 
         public async Task<List<LoyaltyProgramViewModel>> Get(long venueId)
         {
-            var result = await Mediator.Send(new GetLoyaltyProgramsQuery { VenueId = venueId});
+            var result = await Mediator.Send(new GetLoyaltyProgramsQuery {VenueId = venueId});
+            return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
+        }
+
+        public async Task<List<LoyaltyProgramViewModel>> Get()
+        {
+            var result = await Mediator.Send(new GetLoyaltyProgramsByUserIdQuery
+            {
+                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+            });
+
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
         }
 

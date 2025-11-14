@@ -20,17 +20,13 @@ namespace LoyaltyProgram.Http.Worker
 
         [FunctionName("WorkerGetAllFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/workers")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "workers")]
             HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerGetAllFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
-            {
-                return new OkObjectResult(await service.GetAll(venueId));
-            });
+            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Get()); });
         }
     }
 }

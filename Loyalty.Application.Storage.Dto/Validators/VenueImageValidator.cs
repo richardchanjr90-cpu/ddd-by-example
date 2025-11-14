@@ -15,16 +15,15 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.Image)
                 .NotNull()
-                .Must(x=>x.Length > 1024)
+                .Must(x => x.Length > 1024)
                 .WithMessage("Image should be loaded.");
 
             RuleFor(x => x.VenueId)
                 .GreaterThan(0);
-                
+
             RuleFor(x => x.Index)
                 .LessThan(10)
-                .GreaterThan(-1)
-                .WithMessage("You can upload up tp 10 images. From 0 to 9 indexes are used.");
+                .WithMessage("You can upload up to 10 images. From 0 to 9 indexes are used.");
 
             RuleFor(x => x.Image)
                 .Must(SizeIsLessThan1MbPlusSmallOverhead)
@@ -34,7 +33,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.Image)
                 .Must(ValidateWidthAndHeight)
-                .WithMessage("Image must be between 600x400 and 2560x1440px.");
+                .WithMessage("Image must be between 800x600 and 2560x1440px.");
         }
 
         private bool IsImageValid(byte[] arrayImage)
@@ -57,8 +56,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
         private bool ValidateWidthAndHeight(byte[] arrayImage)
         {
-            var isValid = false;
-
+            bool isValid;
             try
             {
                 var image = Image.Load(arrayImage);
@@ -80,10 +78,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
         {
             var isValid = false;
 
-            if (array != null)
-            {
-                isValid = array.Length <= settings.MaxImageSizeInBytes;
-            }
+            if (array != null) isValid = array.Length <= settings.MaxImageSizeInBytes;
 
             return isValid;
         }

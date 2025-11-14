@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,6 +8,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using Loyalty.Shared.Contracts.Enums;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
@@ -53,6 +54,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 worker.PhotoUri = request.PhotoUri;
                 worker.Role = request.Role;
                 worker.PositionName = request.PositionName;
+            }
+
+            if (worker.Role == VenueUserRole.Owner)
+            {
+                throw new ValidationException("Impossible to create second owner.");
             }
 
             return new CommandResult

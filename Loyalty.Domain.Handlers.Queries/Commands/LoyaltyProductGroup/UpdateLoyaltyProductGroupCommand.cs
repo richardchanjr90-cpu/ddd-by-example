@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using Loyalty.Common.Shared.Enums;
-using Loyalty.Domain.Contracts.Interfaces;
+﻿using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Rules;
-using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
@@ -16,8 +13,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
         public string Name { get; set; }
 
         public UpdateRuleCommand Rule { get; set; }
-
-        public bool IsArchived { get; set; }
 
         public string Description { get; set; }
 
