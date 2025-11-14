@@ -20,7 +20,7 @@ namespace LoyaltyProgram.Http.Venue
 
         [FunctionName("VenueGetAllFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues")]
+            [HttpTrigger(AuthorizationLevel.User, "get", Route = "venues")]
             HttpRequest req,
             ILogger log)
         {
