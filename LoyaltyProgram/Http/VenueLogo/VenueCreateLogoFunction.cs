@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
@@ -33,11 +34,12 @@ namespace LoyaltyProgram.Http.VenueLogo
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/logo/")]
             HttpRequestMessage req,
             ILogger log,
+            [FunctionToken] FunctionTokenResult token,
             [Blob("venue-logo-{id}", FileAccess.Write)] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueCreateImageFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 var items = await imageService.GetCount(container);
                 var images = await imageService.ConvertImages(req, id);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -25,11 +26,12 @@ namespace LoyaltyProgram.Http.Purchase
             string guid,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{guid}")]
             HttpRequest req,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(PurchaseGetActiveFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 return new OkObjectResult(await service.GetActivePurchases(Guid.Parse(guid), venueId));
             });

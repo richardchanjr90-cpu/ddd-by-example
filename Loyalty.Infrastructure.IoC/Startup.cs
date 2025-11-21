@@ -7,6 +7,7 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 
@@ -27,6 +28,8 @@ namespace Loyalty.Infrastructure.IoC
             builder.Services.SetupThirdParty();
             builder.Services.SetupServiceBus(config);
             builder.Services.SetupSettings(config);
+
+
 
             builder.AddAzureFunctionsToken(new TokenAzureB2COptions()
             {

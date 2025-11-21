@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
@@ -23,11 +24,12 @@ namespace LoyaltyProgram.Http.Purchase
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/purchases")]
             PurchaseViewModel model,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(PurchasePostFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 return new OkObjectResult(await service.Purchase(model, venueId));
             });

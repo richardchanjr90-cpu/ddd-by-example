@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Common.Shared.Exceptions;
@@ -23,11 +24,12 @@ namespace LoyaltyProgram.Http.Product
             long groupId,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "productGroups/{groupId}/products")]
             ProductViewModel model,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(ProductPutFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 return new OkObjectResult(await service.Update(model, groupId));
             });

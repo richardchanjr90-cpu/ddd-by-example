@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -23,15 +22,15 @@ namespace LoyaltyProgram.Http.Venue
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "venues")]
             HttpRequest req,
-            [FunctionToken()] FunctionTokenResult token,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueGetAllFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.Get());
-            });
+                 return new OkObjectResult(await service.Get());
+             });
         }
     }
 }

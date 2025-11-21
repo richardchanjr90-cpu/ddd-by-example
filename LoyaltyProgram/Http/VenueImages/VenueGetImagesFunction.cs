@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -28,13 +29,14 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details/images")]
             HttpRequest req,
             ILogger log,
+            [FunctionToken] FunctionTokenResult token,
             [Blob("venue-images-{id}", FileAccess.Read)]
             CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
             var results = await service.GetImages(container, req.Query["prefix"]);
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 return new OkObjectResult(results);
             });

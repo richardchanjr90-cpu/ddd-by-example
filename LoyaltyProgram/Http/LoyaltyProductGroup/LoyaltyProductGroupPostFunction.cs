@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Common.Shared.Exceptions;
@@ -23,11 +24,12 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
             long loyaltyProgramId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "programs/{loyaltyProgramId}/loyaltygroups")]
             LoyaltyProductGroupViewModel model,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupPostFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 return new OkObjectResult(await service.Create(model));
             });

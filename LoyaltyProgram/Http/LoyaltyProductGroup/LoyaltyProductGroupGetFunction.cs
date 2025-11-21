@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -24,11 +25,15 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
             long loyaltyProgramId,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "programs/{loyaltyProgramId}/loyaltygroups/{id}")]
             HttpRequest req,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupGetFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Get(id)); });
+            return await Handler.WrapAsync(token, async () =>
+            {
+                return new OkObjectResult(await service.Get(id));
+            });
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -23,11 +24,15 @@ namespace LoyaltyProgram.Http.Worker
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/{id}")]
             HttpRequest req,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
+            return await Handler.WrapAsync(token, async () =>
+            {
+                return new OkObjectResult(await service.Archive(id));
+            });
         }
     }
 }

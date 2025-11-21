@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
@@ -23,11 +24,15 @@ namespace LoyaltyProgram.Http.Venue
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{id}")]
             HttpRequest req,
             long id,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Archive(id)); });
+            return await Handler.WrapAsync(token, async () =>
+            {
+                return new OkObjectResult(await service.Archive(id));
+            });
         }
     }
 }

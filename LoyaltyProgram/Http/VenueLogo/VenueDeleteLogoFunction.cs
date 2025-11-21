@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using LoyaltyProgram.Http.VenueImages;
@@ -30,12 +31,13 @@ namespace LoyaltyProgram.Http.VenueLogo
             [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "venues/{id}/logo/")]
             HttpRequestMessage req,
             ILogger log,
+            [FunctionToken] FunctionTokenResult token,
             [Blob("venue-logo-{id}", FileAccess.ReadWrite)]
             CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 var blockBlob = container.GetBlockBlobReference($"logo.jpg");
                 Task originalBLobDelete = blockBlob.DeleteIfExistsAsync();

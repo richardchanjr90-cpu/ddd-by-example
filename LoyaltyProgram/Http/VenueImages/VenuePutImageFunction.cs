@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
@@ -34,6 +35,7 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
+            [FunctionToken] FunctionTokenResult token,
             [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
             Stream blobStream,
             [Queue("venue-images", Connection = "QueueConnectionString")]
@@ -41,7 +43,7 @@ namespace LoyaltyProgram.Http.VenueImages
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 var images = await imageService.ConvertImages(req, id, Guid.Parse(index));
 

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
@@ -24,11 +25,12 @@ namespace LoyaltyProgram.Http.Venue
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/approve/")]
             HttpRequest req,
             long id,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await Handler.WrapAsync(token, async () =>
             {
                 req.ValidateSecret();
                 return new OkObjectResult(await service.Approve(id));
