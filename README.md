@@ -5,3 +5,5 @@ This README would normally document whatever steps are necessary to get your app
 ### What is this repository for? ###
 
 Backend for LoyaltyProgam
+
+https://bitbucket.org/loyaltyprogram/backend/wiki/Home
