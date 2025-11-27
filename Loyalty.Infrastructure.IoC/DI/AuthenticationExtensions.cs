@@ -10,7 +10,6 @@ namespace Loyalty.Infrastructure.IoC.DI
     {
         public static void SetupAuthentication(this IServiceCollection collection)
         {
-
         }
     }
 }

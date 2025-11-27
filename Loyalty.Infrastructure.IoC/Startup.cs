@@ -29,8 +29,6 @@ namespace Loyalty.Infrastructure.IoC
             builder.Services.SetupServiceBus(config);
             builder.Services.SetupSettings(config);
 
-
-
             builder.AddAzureFunctionsToken(new TokenAzureB2COptions()
             {
                 AzureB2CSingingKeyUri = new Uri("https://loyaltyprogramapp.b2clogin.com/loyaltyprogramapp.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1_google-web-dev-policy"),
