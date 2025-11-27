@@ -13,7 +13,7 @@ namespace Loyalty.Infrastructure.IoC.DI
     public static class LoyaltyDbExtensions
     {
         public static readonly LoggerFactory MyLoggerFactory
-            = new LoggerFactory(new[] {new ConsoleLoggerProvider((_, __) => true, true)});
+            = new LoggerFactory(new[] { new ConsoleLoggerProvider((_, __) => true, true) });
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
@@ -28,7 +28,8 @@ namespace Loyalty.Infrastructure.IoC.DI
                 .AddLogging()
                 .AddDbContextPool<LoyaltyDbContext>(
                     options => options.UseSqlServer(
-                        connectionString).UseLoggerFactory(MyLoggerFactory));
+                        connectionString, x => x.EnableRetryOnFailure())
+                        .UseLoggerFactory(MyLoggerFactory));
         }
     }
 }
