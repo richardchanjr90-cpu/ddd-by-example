@@ -9,6 +9,7 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Remotion.Linq.Clauses;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
@@ -21,10 +22,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 
         public async Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            var venues = await Context.Venues
-                .Include(x => x.Workers)
-                .Where(x => x.Workers.Select(y => y.WorkerId).Contains(request.UserId))
-                .ToListAsync(cancellationToken);
+            var venues = await (from v in Context.Venues
+                join w in Context.Workers on v.Id equals w.VenueId
+                where w.WorkerId == request.UserId select v).ToListAsync(cancellationToken);
 
             return new GetVenuesQueryResult
             {

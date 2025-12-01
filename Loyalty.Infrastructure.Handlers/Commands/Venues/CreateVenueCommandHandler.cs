@@ -12,7 +12,6 @@ using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
@@ -30,27 +29,20 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         {
             var venue = request.ToSingle();
 
-            var worker = await Context.Workers
-                .Where(x => x.WorkerId == request.OwnerId)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (worker == null)
+            var worker = new Worker
             {
-                 worker = new Worker
-                {
-                    Role = VenueUserRole.Owner,
-                    PositionName = "Владелец",
-                    WorkerId = request.OwnerId,
-                    Phone = request.OwnerPhone,
-                    Name = request.OwnerName,
-                    LastName = request.OwnerSurname
-                };
+                Role = VenueUserRole.Owner,
+                PositionName = "Владелец",
+                WorkerId = request.OwnerId,
+                Phone = request.OwnerPhone,
+                Name = request.OwnerName,
+                LastName = request.OwnerSurname
+            };
 
-                 venue.Workers = new List<Worker>
+            venue.Workers = new List<Worker>
                  {
                      worker
                  };
-            }
 
             Context.Venues.Add(venue);
 
