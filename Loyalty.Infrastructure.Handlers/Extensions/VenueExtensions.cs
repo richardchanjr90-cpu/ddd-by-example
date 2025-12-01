@@ -138,7 +138,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 ParentId = command.ParentId,
                 Name = command.Name,
                 Type = command.Type,
-                OwnerId = command.OwnerId,
                 City = command.Location?.City,
                 Address = command.Location?.Address,
                 Latitude = command.Location?.Latitude ?? 0,

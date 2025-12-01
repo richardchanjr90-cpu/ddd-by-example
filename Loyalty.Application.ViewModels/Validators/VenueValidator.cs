@@ -13,10 +13,6 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .MaximumLength(200);
 
-            RuleFor(x => x.OwnerId)
-                .Must(this.BeValidGuid)
-                .WithMessage("Should be a valid guid.");
-
             RuleFor(x => x.Type)
                 .Must(x => (VenueType)x != VenueType.Single)
                 .When(x => x.ParentId.HasValue)

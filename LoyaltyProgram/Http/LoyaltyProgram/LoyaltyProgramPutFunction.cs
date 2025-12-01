@@ -3,6 +3,7 @@ using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -32,7 +33,7 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
 
             return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.Update(model, venueId));
+                return new OkObjectResult(await service.Update(model, venueId, token.Principal.GetUserId()));
             });
         }
     }

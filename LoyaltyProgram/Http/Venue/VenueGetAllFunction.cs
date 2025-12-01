@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -29,7 +30,7 @@ namespace LoyaltyProgram.Http.Venue
 
             return await Handler.WrapAsync(token, async () =>
             {
-                 return new OkObjectResult(await service.Get());
+                 return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
              });
         }
     }

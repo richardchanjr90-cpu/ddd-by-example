@@ -32,12 +32,11 @@ namespace LoyaltyProgram.Http.Venue
             ILogger log)
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
-            var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            model.OwnerId = identity;
+            
             return await Handler.WrapAsync(token, async () =>
             {
                 model = await req.Cast<VenueViewModel>();
-                return new OkObjectResult(await service.Create(model));
+                return new OkObjectResult(await service.Create(model, token.Principal));
             });
         }
     }

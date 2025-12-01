@@ -34,14 +34,14 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId)
+        public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
         {
             //todo: validate worker belongs to venue
             new PurchaseValidator().ValidateAndThrow(model);
 
             var result = await Mediator.Send(new CreatePurchaseCommand
             {
-                WorkerId = "0abe336d-021c-40b5-ba95-909daeb7ca40",
+                WorkerId = userId,
                 UserId = model.UserId,
                 ProductId = model.ProductId,
                 VenueId = venueId,
@@ -52,14 +52,14 @@ namespace Loyalty.Application.Venue
             return result;
         }
 
-        public async Task<object> Burn(PurchaseViewModel model, long venueId)
+        public async Task<object> Burn(PurchaseViewModel model, long venueId, string userId)
         {
             //todo: validate worker belongs to venue
             new PurchaseValidator().ValidateAndThrow(model);
 
             var result = await Mediator.Send(new BurnPurchaseCommand
             {
-                WorkerId = "0abe336d-021c-40b5-ba95-909daeb7ca40",
+                WorkerId = userId,
                 UserId = model.UserId,
                 VenueId = venueId,
                 Amount = model.Value,

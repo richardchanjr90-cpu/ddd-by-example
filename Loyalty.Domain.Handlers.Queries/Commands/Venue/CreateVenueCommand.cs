@@ -14,6 +14,12 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public string OwnerId { get; set; }
 
+        public string OwnerName { get; set; }
+
+        public string OwnerSurname { get; set; }
+
+        public string OwnerPhone { get; set; }
+
         public string Description { get; set; }
 
         public CreateLocationCommand Location { get; set; }

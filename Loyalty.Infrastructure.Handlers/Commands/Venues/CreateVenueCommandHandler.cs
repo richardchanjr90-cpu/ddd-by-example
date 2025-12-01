@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
@@ -11,6 +12,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
@@ -28,21 +30,27 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         {
             var venue = request.ToSingle();
 
-            //todo: fill owner with real details;
-            var worker = new Worker
-            {
-                WorkerId = request.OwnerId,
-                Role = VenueUserRole.Owner,
-                PositionName = "Owner",
-                Phone = "+37529" + new Random().Next(1000000, 9999999),
-                Name = "NameStub",
-                LastName = "LastNameStub"
-            };
+            var worker = await Context.Workers
+                .Where(x => x.WorkerId == request.OwnerId)
+                .SingleOrDefaultAsync(cancellationToken);
 
-            venue.Workers = new List<Worker>
+            if (worker == null)
             {
-                worker
-            };
+                 worker = new Worker
+                {
+                    Role = VenueUserRole.Owner,
+                    PositionName = "Владелец",
+                    WorkerId = request.OwnerId,
+                    Phone = request.OwnerPhone,
+                    Name = request.OwnerName,
+                    LastName = request.OwnerSurname
+                };
+
+                 venue.Workers = new List<Worker>
+                 {
+                     worker
+                 };
+            }
 
             Context.Venues.Add(venue);
 

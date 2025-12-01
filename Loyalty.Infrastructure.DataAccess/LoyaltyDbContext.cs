@@ -67,10 +67,12 @@ namespace Loyalty.Infrastructure.DataAccess
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Worker>()
-                .HasIndex(u => u.Phone)
-                .IsUnique()
-                .HasFilter("[IsArchived] = 0");
+                .HasIndex(u => u.Phone);
 
+            modelBuilder.Entity<Worker>()
+                .HasIndex(u => u.WorkerId);
+            //.IsUnique()
+            //.HasFilter("[IsArchived] = 0");
             modelBuilder.Entity<Worker>()
                 .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
 

@@ -3,6 +3,7 @@ using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -31,7 +32,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.Purchase(model, venueId));
+                return new OkObjectResult(await service.Purchase(model, venueId, token.Principal.GetUserId()));
             });
         }
     }

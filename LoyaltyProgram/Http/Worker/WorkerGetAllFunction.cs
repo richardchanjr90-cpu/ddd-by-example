@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -24,13 +26,14 @@ namespace LoyaltyProgram.Http.Worker
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "workers")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
+            ClaimsPrincipal principal,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerGetAllFunction)} was triggered.");
 
             return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.Get());
+                return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
             });
         }
     }

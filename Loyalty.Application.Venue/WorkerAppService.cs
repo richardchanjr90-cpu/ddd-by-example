@@ -43,11 +43,11 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<WorkerViewModel>>(result.Result);
         }
 
-        public async Task<List<WorkerViewModel>> Get()
+        public async Task<List<WorkerViewModel>> Get(string userId)
         {
             var result = await Mediator.Send(new GetWorkersByUserIdQuery
             {
-                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
+                UserId = userId
             });
 
             return mapper.Map<List<WorkerViewModel>>(result.Result);
@@ -70,12 +70,12 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> Archive(long id)
+        public async Task<ICommandResult> Archive(long id, string userId)
         {
             var command = new ArchiveWorkerCommand
             {
                 Id = id,
-                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
+                UserId = userId
             };
 
             var commandResult = await Mediator.Send(command);

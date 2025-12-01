@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
 
             return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.Archive(id));
+                return new OkObjectResult(await service.Archive(id, token.Principal.GetUserId()));
             });
         }
     }

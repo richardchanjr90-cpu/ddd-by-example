@@ -40,45 +40,45 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
         }
 
-        public async Task<List<LoyaltyProgramViewModel>> Get()
+        public async Task<List<LoyaltyProgramViewModel>> Get(string userId)
         {
             var result = await Mediator.Send(new GetLoyaltyProgramsByUserIdQuery
             {
-                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
+                UserId = userId
             });
 
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(LoyaltyProgramViewModel model, long venueId)
+        public async Task<ICommandResult> Create(LoyaltyProgramViewModel model, long venueId, string userId)
         {
             new LoyaltyProgramValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateLoyaltyProgramCommand>(model);
             command.VenueId = venueId;
-            command.UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40";
+            command.UserId = userId;
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(LoyaltyProgramViewModel model, long venueId)
+        public async Task<ICommandResult> Update(LoyaltyProgramViewModel model, long venueId, string userId)
         {
             new LoyaltyProgramValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateLoyaltyProgramCommand>(model);
             command.VenueId = venueId;
-            command.UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40";
+            command.UserId = userId;
 
             var commandResult = await Mediator.Send(command);
             return commandResult;
         }
 
-        public async Task<ICommandResult> Archive(long id)
+        public async Task<ICommandResult> Archive(long id, string userId)
         {
             var command = new ArchiveLoyaltyProgramCommand
             {
                 Id = id,
-                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
+                UserId = userId
             };
 
             var commandResult = await Mediator.Send(command);

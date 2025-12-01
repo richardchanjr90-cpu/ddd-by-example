@@ -33,9 +33,9 @@ namespace LoyaltyProgram.Benchmark
 
             var host = builder.Build();
             var service = host.Services.GetRequiredService<LoyaltyVenueAppService>();
-            var result = service.Get().GetAwaiter().GetResult();
+            //var result = service.Get().GetAwaiter().GetResult();
 
-            Console.WriteLine(result);
+            //Console.WriteLine(result);
         }
     }
 }

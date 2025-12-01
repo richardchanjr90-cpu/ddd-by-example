@@ -24,7 +24,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (worker != null) worker.IsArchived = true;
+            if (worker != null)
+            {
+                worker.IsArchived = true;
+            }
 
             return new CommandResult
             {

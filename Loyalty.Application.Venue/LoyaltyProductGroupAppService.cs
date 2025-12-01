@@ -109,12 +109,12 @@ namespace Loyalty.Application.Venue
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Archive(long id)
+        public async Task<ICommandResult> Archive(long id, string userId)
         {
             var command = new ArchiveLoyaltyProductGroupCommand
             {
                 Id = id,
-                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
+                UserId = userId
             };
 
             var commandResult = await Mediator.Send(command);
