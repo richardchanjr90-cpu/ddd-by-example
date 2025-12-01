@@ -4,6 +4,7 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -26,7 +27,7 @@ namespace LoyaltyProgram.Http.ProductGroup
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "productgroups")]
             ProductGroupViewModel model,
             HttpRequest req,
-            [FunctionToken] FunctionTokenResult token,
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {
             model = await req.Cast<ProductGroupViewModel>();

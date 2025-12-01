@@ -6,6 +6,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram
 {
     public class GetLoyaltyProgramsByUserIdQuery : IRequest<GetLoyaltyProgramsByUserIdQueryResult>
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

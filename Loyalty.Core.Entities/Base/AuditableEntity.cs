@@ -5,9 +5,9 @@ namespace Loyalty.Core.Entities.Base
 {
     public abstract class AuditableEntity : Entity
     {
-        public Guid? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
-        public Guid? ModifiedBy { get; set; }
+        public string ModifiedBy { get; set; }
 
         [Required]
         public DateTime Modified { get; set; }

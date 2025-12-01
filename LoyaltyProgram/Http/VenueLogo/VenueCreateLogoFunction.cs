@@ -7,6 +7,7 @@ using AzureExtensions.FunctionToken;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -34,7 +35,7 @@ namespace LoyaltyProgram.Http.VenueLogo
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/logo/")]
             HttpRequestMessage req,
             ILogger log,
-            [FunctionToken] FunctionTokenResult token,
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
             [Blob("venue-logo-{id}", FileAccess.Write)] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueCreateImageFunction)} was triggered.");

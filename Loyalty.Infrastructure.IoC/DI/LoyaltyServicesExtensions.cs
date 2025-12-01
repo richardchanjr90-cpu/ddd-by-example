@@ -15,6 +15,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             collection.AddScoped<ProductGroupAppService>();
             collection.AddScoped<ProductAppService>();
             collection.AddScoped<WorkerAppService>();
+            collection.AddScoped<LoyaltySignupAppService>();
         }
     }
 }

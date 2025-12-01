@@ -13,7 +13,7 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 
-        public Guid? WorkerId { get; set; }
+        public string WorkerId { get; set; }
 
         public VenueUserRole Role { get; set; }
 

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -33,7 +32,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.GetActivePurchases(Guid.Parse(guid), venueId));
+                return new OkObjectResult(await service.GetActivePurchases(guid, venueId));
             });
         }
     }

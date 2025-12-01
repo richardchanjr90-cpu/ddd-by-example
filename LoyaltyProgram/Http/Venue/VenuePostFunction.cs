@@ -1,8 +1,11 @@
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -25,11 +28,12 @@ namespace LoyaltyProgram.Http.Venue
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
             VenueViewModel model,
             HttpRequest req,
-            [FunctionToken] FunctionTokenResult token,
+            [FunctionToken(nameof(VenueUserRole.Owner))] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
-
+            var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            model.OwnerId = identity;
             return await Handler.WrapAsync(token, async () =>
             {
                 model = await req.Cast<VenueViewModel>();

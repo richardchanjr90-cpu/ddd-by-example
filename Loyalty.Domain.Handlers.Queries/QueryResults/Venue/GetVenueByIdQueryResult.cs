@@ -12,7 +12,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 
         public string Name { get; set; }
 
-        public Guid OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         public string Description { get; set; }
 

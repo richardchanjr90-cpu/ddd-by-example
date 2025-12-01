@@ -6,6 +6,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.Venue
 {
     public class GetVenuesByUserIdQuery : IRequest<GetVenuesByUserIdQueryResult>
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -37,13 +37,13 @@ namespace Loyalty.Application.Venue
         {
             var result = await Mediator.Send(new GetVenuesQuery
             {
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
             });
 
             return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
-        public async Task<List<VenueViewModel>> GetByUser(Guid userGuid)
+        public async Task<List<VenueViewModel>> GetByUser(string userGuid)
         {
             var query = new GetVenuesByUserIdQuery
             {
@@ -98,7 +98,7 @@ namespace Loyalty.Application.Venue
             var command = new ArchiveVenueCommand
             {
                 Id = id,
-                OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                OwnerId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
             };
 
             var commandResult = await Mediator.Send(command);

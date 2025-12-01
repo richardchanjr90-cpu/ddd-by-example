@@ -6,6 +6,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.ProductGroup
 {
     public class GetProductGroupsByUserIdQuery : IRequest<GetProductGroupsByUserIdQueryResult>
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

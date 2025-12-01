@@ -8,9 +8,9 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
     {
         public long LoyaltyProductGroupId { get; set; }
 
-        public Guid WorkerId { get; set; }
+        public string WorkerId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public long VenueId { get; set; }
 

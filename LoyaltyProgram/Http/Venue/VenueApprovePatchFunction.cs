@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureExtensions.FunctionToken.FunctionBinding.Enums;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
@@ -25,7 +26,7 @@ namespace LoyaltyProgram.Http.Venue
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/approve/")]
             HttpRequest req,
             long id,
-            [FunctionToken] FunctionTokenResult token,
+            [FunctionToken(AuthLevel.AllowAnonymous)] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");

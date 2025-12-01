@@ -15,7 +15,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -27,7 +27,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<bool>("IsArchived");
 
@@ -35,7 +35,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Rule");
 
@@ -58,7 +58,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -70,7 +70,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -95,7 +95,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Description")
                         .HasMaxLength(2000);
@@ -109,7 +109,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -135,7 +135,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<int>("Icon");
 
@@ -143,7 +143,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -168,7 +168,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<int>("Icon");
 
@@ -176,7 +176,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -203,7 +203,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<bool>("InternalPurchaseMadeBySystem");
 
@@ -211,11 +211,11 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<long?>("ProductId");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<string>("UserId");
 
                     b.Property<decimal?>("Value");
 
@@ -242,7 +242,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Description")
                         .HasMaxLength(2000);
@@ -267,13 +267,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200);
 
-                    b.Property<Guid>("OwnerId");
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
 
                     b.Property<long?>("ParentId");
 
@@ -298,7 +299,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Email");
 
@@ -308,7 +309,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -322,7 +323,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<long>("VenueId");
 
-                    b.Property<Guid?>("WorkerId");
+                    b.Property<string>("WorkerId");
 
                     b.HasKey("Id");
 
@@ -373,7 +374,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.ProductGroup", "ProductGroup")
                         .WithMany("Products")
                         .HasForeignKey("ProductGroupId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.ProductGroup", b =>

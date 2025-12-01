@@ -23,11 +23,11 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(Guid userId, long venueId)
+        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(string UserId, long venueId)
         {
             var result = await Mediator.Send(new GetClientActivePurchasesQuery
             {
-                UserId = userId,
+                UserId = UserId,
                 VenueId = venueId
             });
 
@@ -41,8 +41,8 @@ namespace Loyalty.Application.Venue
 
             var result = await Mediator.Send(new CreatePurchaseCommand
             {
-                WorkerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40"),
-                UserId = Guid.Parse(model.UserId),
+                WorkerId = "0abe336d-021c-40b5-ba95-909daeb7ca40",
+                UserId = model.UserId,
                 ProductId = model.ProductId,
                 VenueId = venueId,
                 Value = model.Value,
@@ -59,8 +59,8 @@ namespace Loyalty.Application.Venue
 
             var result = await Mediator.Send(new BurnPurchaseCommand
             {
-                WorkerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40"),
-                UserId = Guid.Parse(model.UserId),
+                WorkerId = "0abe336d-021c-40b5-ba95-909daeb7ca40",
+                UserId = model.UserId,
                 VenueId = venueId,
                 Amount = model.Value,
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId

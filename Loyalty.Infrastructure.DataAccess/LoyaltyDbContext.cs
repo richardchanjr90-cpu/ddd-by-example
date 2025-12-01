@@ -49,7 +49,7 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<ProductGroup>()
                 .HasMany(b => b.Products)
                 .WithOne(x => x.ProductGroup)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Venue>()
                 .HasMany(b => b.LoyaltyPrograms)
@@ -112,11 +112,11 @@ namespace Loyalty.Infrastructure.DataAccess
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((AuditableEntity) entry.Entity).CreatedBy = Guid.Empty;
+                    ((AuditableEntity) entry.Entity).CreatedBy = null;
                     ((AuditableEntity) entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((AuditableEntity) entry.Entity).ModifiedBy = Guid.Empty;
+                ((AuditableEntity) entry.Entity).ModifiedBy = null;
                 ((AuditableEntity) entry.Entity).Modified = DateTime.UtcNow;
             }
         }

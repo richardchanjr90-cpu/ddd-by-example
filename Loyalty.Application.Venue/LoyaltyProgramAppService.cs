@@ -44,7 +44,7 @@ namespace Loyalty.Application.Venue
         {
             var result = await Mediator.Send(new GetLoyaltyProgramsByUserIdQuery
             {
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
             });
 
             return mapper.Map<List<LoyaltyProgramViewModel>>(result.Result);
@@ -56,7 +56,7 @@ namespace Loyalty.Application.Venue
 
             var command = mapper.Map<CreateLoyaltyProgramCommand>(model);
             command.VenueId = venueId;
-            command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
+            command.UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40";
 
             return await Mediator.Send(command);
         }
@@ -67,7 +67,7 @@ namespace Loyalty.Application.Venue
 
             var command = mapper.Map<UpdateLoyaltyProgramCommand>(model);
             command.VenueId = venueId;
-            command.UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40");
+            command.UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40";
 
             var commandResult = await Mediator.Send(command);
             return commandResult;
@@ -78,7 +78,7 @@ namespace Loyalty.Application.Venue
             var command = new ArchiveLoyaltyProgramCommand
             {
                 Id = id,
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
             };
 
             var commandResult = await Mediator.Send(command);

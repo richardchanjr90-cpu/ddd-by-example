@@ -7,7 +7,7 @@ namespace Loyalty.Domain.Handlers.Notifications.Purchases
     {
         public long LoyaltyProductGroupId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public long VenueId { get; set; }
 

@@ -47,7 +47,7 @@ namespace Loyalty.Application.Venue
         {
             var result = await Mediator.Send(new GetWorkersByUserIdQuery
             {
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
             });
 
             return mapper.Map<List<WorkerViewModel>>(result.Result);
@@ -75,11 +75,21 @@ namespace Loyalty.Application.Venue
             var command = new ArchiveWorkerCommand
             {
                 Id = id,
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
             };
 
             var commandResult = await Mediator.Send(command);
             return commandResult;
+        }
+
+        public async Task<WorkerViewModel> GetByPhone(string phone)
+        {
+            var result = await Mediator.Send(new GetWorkerByPhoneQuery
+            {
+                Phone = phone
+            });
+
+            return mapper.Map<WorkerViewModel>(result);
         }
     }
 }
