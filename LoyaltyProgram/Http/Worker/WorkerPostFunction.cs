@@ -4,7 +4,9 @@ using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -25,14 +27,16 @@ namespace LoyaltyProgram.Http.Worker
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "workers")]
             WorkerViewModel model,
+            HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log,
             [Queue("worker-invite", Connection = "QueueConnectionString")] ICollector<WorkerInviteDto> queueItems)
         {
             log.LogInformation($"{nameof(WorkerPostFunction)} was triggered.");
-
+     
             return await Handler.WrapAsync(token, async () =>
             {
+                model = await req.Cast<WorkerViewModel>();
                 var result = await service.Create(model);
 
                 queueItems.Add(new WorkerInviteDto

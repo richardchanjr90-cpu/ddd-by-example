@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Shared.Contracts.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
@@ -16,12 +17,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
     public class UpdateWorkerCommandHandler
         : BaseHandler, IUpdateWorkerCommandHandler
     {
-        public UpdateWorkerCommandHandler(ILoyaltyDbContext context) : base(context)
+        public UpdateWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
         {
+            if (request.Role == VenueUserRole.Owner)
+            {
+                throw new ValidationException("Impossible to create second owner.");
+            }
+
             var worker = await Context.Workers
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -31,13 +38,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 worker = new Worker
                 {
                     WorkerId = request.WorkerId,
-                    VenueId = request.VenueId,
                     Name = request.Name,
                     Email = request.Email,
                     LastName = request.LastName,
                     Phone = request.Phone,
                     PhotoUri = request.PhotoUri,
-                    Role = request.Role,
                     PositionName = request.PositionName
                 };
 
@@ -46,19 +51,21 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             else
             {
                 worker.WorkerId = request.WorkerId;
-                worker.VenueId = request.VenueId;
                 worker.Name = request.Name;
                 worker.Email = request.Email;
                 worker.LastName = request.LastName;
                 worker.Phone = request.Phone;
                 worker.PhotoUri = request.PhotoUri;
-                worker.Role = request.Role;
                 worker.PositionName = request.PositionName;
             }
 
-            if (worker.Role == VenueUserRole.Owner)
+            foreach (var id in request.VenueIds)
             {
-                throw new ValidationException("Impossible to create second owner.");
+                var venueWorker = new VenueWorker();
+                venueWorker.VenueId = id;
+                venueWorker.Worker = worker;
+                venueWorker.Role = request.Role;
+                Context.VenueWorkers.Add(venueWorker);
             }
 
             return new CommandResult

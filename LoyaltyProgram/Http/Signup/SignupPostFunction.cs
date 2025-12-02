@@ -6,6 +6,8 @@ using AzureExtensions.FunctionToken;
 using FirebaseAdmin.Auth;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -37,12 +39,6 @@ namespace LoyaltyProgram.Http.Signup
                 var role = VenueUserRole.Owner;
                 var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
                 var worker = await service.GetByPhone(phone);
-
-                if (worker != null)
-                {
-                    role = (VenueUserRole)worker.Role;
-                }
-
                 var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
                 var additionalClaims = new Dictionary<string, object>
@@ -53,13 +49,16 @@ namespace LoyaltyProgram.Http.Signup
                     { ClaimTypes.Email, model.Email }
                 };
 
-                await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(identity, additionalClaims);
-
                 if (worker != null)
                 {
+                    role = (VenueUserRole)worker.Role;
                     worker.WorkerId = identity;
                     await service.Update(worker);
+                    additionalClaims.Add(ClaimConstants.VENUE_CLAIM, worker.VenueIds.Select(x => x.ToString())
+                        .ToCommaSeparatedStringOrNull());
                 }
+
+                await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(identity, additionalClaims);
 
                 return new NoContentResult();
             });

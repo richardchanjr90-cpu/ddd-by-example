@@ -12,6 +12,6 @@
     }
   },
   "http": {
-    "routePrefix": "api"
+    "routePrefix": "api/v1"
   }
 }

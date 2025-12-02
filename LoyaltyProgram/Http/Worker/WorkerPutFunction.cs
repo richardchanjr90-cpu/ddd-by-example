@@ -3,6 +3,8 @@ using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -23,6 +25,7 @@ namespace LoyaltyProgram.Http.Worker
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
             WorkerViewModel model,
+            HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
@@ -30,6 +33,7 @@ namespace LoyaltyProgram.Http.Worker
 
             return await Handler.WrapAsync(token, async () =>
             {
+                model = await req.Cast<WorkerViewModel>();
                 return new OkObjectResult(await service.Update(model));
             });
         }

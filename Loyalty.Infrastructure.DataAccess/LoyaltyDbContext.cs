@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Base;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess
 {
-    public class LoyaltyDbContext : DbContext, ILoyaltyDbContext
+    public class LoyaltyDbContext : DbContext, ILoyaltyTenantDbContext
     {
         public LoyaltyDbContext(DbContextOptions options)
             : base(options)
@@ -29,6 +30,8 @@ namespace Loyalty.Infrastructure.DataAccess
         public DbSet<Product> Products { get; set; }
 
         public DbSet<Venue> Venues { get; set; }
+
+        public DbSet<VenueWorker> VenueWorkers { get; set; }
 
         public DbSet<Worker> Workers { get; set; }
 
@@ -69,13 +72,14 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<Worker>()
                 .HasIndex(u => u.Phone);
 
+            //[Role] <> 3 -- owner might create more than 1 venue, as he might be only owner in that venues.
             modelBuilder.Entity<Worker>()
-                .HasIndex(u => u.WorkerId);
-            //.IsUnique()
-            //.HasFilter("[IsArchived] = 0");
-            modelBuilder.Entity<Worker>()
-                .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
+                .HasIndex(u => u.WorkerId)
+                .IsUnique()
+                .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
 
+            //modelBuilder.Entity<Worker>()
+            //    .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
             modelBuilder.Entity<Product>()
                 .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
@@ -90,8 +94,21 @@ namespace Loyalty.Infrastructure.DataAccess
 
             //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
-                .HasIndex(p => new {p.VenueId, p.Name}).IsUnique()
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
+
+            modelBuilder.Entity<VenueWorker>()
+                .HasKey(bc => new { bc.VenueId, bc.WorkerId });
+
+            modelBuilder.Entity<VenueWorker>()
+                .HasOne(bc => bc.Venue)
+                .WithMany(b => b.Workers)
+                .HasForeignKey(bc => bc.VenueId);
+
+            modelBuilder.Entity<VenueWorker>()
+                .HasOne(bc => bc.Worker)
+                .WithMany(c => c.Venues)
+                .HasForeignKey(bc => bc.WorkerId);
 
             //modelBuilder.Entity<LoyaltyProductGroup>()
             //    .HasIndex(p => new {p.LoyaltyProgramId, p.ProductGroupId}).IsUnique()

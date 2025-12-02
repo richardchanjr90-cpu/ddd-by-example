@@ -11,6 +11,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -21,8 +22,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
     {
         private readonly IMediator mediator;
 
-        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }

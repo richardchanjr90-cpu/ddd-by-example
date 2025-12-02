@@ -6,6 +6,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
@@ -13,8 +14,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
     public class ArchiveWorkerCommandHandler
         : BaseHandler, IArchiveWorkerCommandHandler
     {
-        public ArchiveWorkerCommandHandler(ILoyaltyDbContext context)
-            : base(context)
+        public ArchiveWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 

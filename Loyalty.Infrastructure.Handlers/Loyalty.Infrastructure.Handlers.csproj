@@ -39,6 +39,11 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <PackageReference Include="FirebaseAdmin" Version="1.8.0" />
+  </ItemGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

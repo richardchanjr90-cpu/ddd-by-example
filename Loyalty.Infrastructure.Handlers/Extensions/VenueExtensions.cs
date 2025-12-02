@@ -12,7 +12,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 {
     public static class VenueExtensions
     {
-        public static Venue ToSingle(this CreateVenueCommand command)
+        public static Venue ToSingle(this CreateVenueCommand command, string userId)
         {
             if (command == null)
             {
@@ -24,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = command.Name,
                 Type = command.Type,
                 ParentId = command.ParentId,
-                OwnerId = command.OwnerId,
+                OwnerId = userId,
                 CategoryType = command.CategoryType,
                 Description = command.Description,
                 City = command.Location?.City,

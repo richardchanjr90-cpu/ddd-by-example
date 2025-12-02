@@ -61,11 +61,6 @@ namespace Loyalty.Application.Venue
             new VenueValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateVenueCommand>(model);
-            command.OwnerId = principal.GetUserId();
-            command.OwnerPhone = principal.GetPhone();
-            command.OwnerName = principal.GetName();
-            command.OwnerSurname = principal.GetSurname();
-
             return await Mediator.Send(command);
         }
 

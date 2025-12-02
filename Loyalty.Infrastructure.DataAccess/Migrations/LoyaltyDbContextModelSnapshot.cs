@@ -291,6 +291,27 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.ToTable("Venue","loyalty");
                 });
 
+            modelBuilder.Entity("Loyalty.Core.Entities.VenueWorker", b =>
+                {
+                    b.Property<long>("VenueId");
+
+                    b.Property<long>("WorkerId");
+
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Role");
+
+                    b.HasKey("VenueId", "WorkerId");
+
+                    b.HasAlternateKey("Id");
+
+                    b.HasIndex("WorkerId");
+
+                    b.ToTable("VenueWorker","loyalty");
+                });
+
             modelBuilder.Entity("Loyalty.Core.Entities.Worker", b =>
                 {
                     b.Property<long>("Id")
@@ -319,23 +340,15 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<string>("PositionName");
 
-                    b.Property<int>("Role");
-
-                    b.Property<long>("VenueId");
-
                     b.Property<string>("WorkerId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Phone");
 
-                    b.HasIndex("VenueId");
-
-                    b.HasIndex("WorkerId");
-
-                    b.HasIndex("WorkerId", "VenueId")
+                    b.HasIndex("WorkerId")
                         .IsUnique()
-                        .HasFilter("[WorkerId] IS NOT NULL");
+                        .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
 
                     b.ToTable("Worker","loyalty");
                 });
@@ -393,11 +406,16 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.Worker", b =>
+            modelBuilder.Entity("Loyalty.Core.Entities.VenueWorker", b =>
                 {
-                    b.HasOne("Loyalty.Core.Entities.Venue")
+                    b.HasOne("Loyalty.Core.Entities.Venue", "Venue")
                         .WithMany("Workers")
                         .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Loyalty.Core.Entities.Worker", "Worker")
+                        .WithMany("Venues")
+                        .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

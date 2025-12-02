@@ -6,6 +6,7 @@ using Dapper;
 using Loyalty.Domain.Handlers.Contracts.Queries.Purchases;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
+using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 {
@@ -13,8 +14,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
     {
         private readonly SqlConnection connection;
 
-        public GetClientActivePurchasesQueryHandler(SqlConnection connection)
-            : base(connection)
+        public GetClientActivePurchasesQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
             this.connection = connection;
         }

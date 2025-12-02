@@ -41,11 +41,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate())
-                .ForMember(x => x.OwnerId, opt => opt.Ignore())
-                .ForMember(x => x.OwnerPhone, opt => opt.Ignore())
-                .ForMember(x => x.OwnerSurname, opt => opt.Ignore())
-                .ForMember(x => x.OwnerName, opt => opt.Ignore());
+                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
 
             CreateMap<VenueViewModel, UpdateVenueCommand>()
                 .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())

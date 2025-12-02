@@ -1,4 +1,5 @@
 ﻿using Loyalty.Core.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Core.Contracts
@@ -18,6 +19,8 @@ namespace Loyalty.Core.Contracts
         DbSet<Purchase> Purchases { get; set; }
 
         DbSet<Venue> Venues { get; set; }
+
+        DbSet<VenueWorker> VenueWorkers { get; set; }
 
         DbSet<Worker> Workers { get; set; }
     }

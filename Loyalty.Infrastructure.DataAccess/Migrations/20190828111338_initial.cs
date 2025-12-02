@@ -48,6 +48,31 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Worker",
+                schema: "loyalty",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    WorkerId = table.Column<string>(nullable: true),
+                    Phone = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    PhotoUri = table.Column<string>(nullable: true),
+                    PositionName = table.Column<string>(nullable: true),
+                    IsArchived = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Worker", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LoyaltyProgram",
                 schema: "loyalty",
                 columns: table => new
@@ -107,35 +132,32 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Worker",
+                name: "VenueWorker",
                 schema: "loyalty",
                 columns: table => new
                 {
+                    VenueId = table.Column<long>(nullable: false),
+                    WorkerId = table.Column<long>(nullable: false),
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    VenueId = table.Column<long>(nullable: false),
-                    WorkerId = table.Column<string>(nullable: true),
-                    Role = table.Column<int>(nullable: false),
-                    Phone = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    PhotoUri = table.Column<string>(nullable: true),
-                    PositionName = table.Column<string>(nullable: true),
-                    IsArchived = table.Column<bool>(nullable: false)
+                    Role = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Worker", x => x.Id);
+                    table.PrimaryKey("PK_VenueWorker", x => new { x.VenueId, x.WorkerId });
+                    table.UniqueConstraint("AK_VenueWorker_Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Worker_Venue_VenueId",
+                        name: "FK_VenueWorker_Venue_VenueId",
                         column: x => x.VenueId,
                         principalSchema: "loyalty",
                         principalTable: "Venue",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_VenueWorker_Worker_WorkerId",
+                        column: x => x.WorkerId,
+                        principalSchema: "loyalty",
+                        principalTable: "Worker",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -314,26 +336,24 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 column: "LoyaltyProductGroupId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_VenueWorker_WorkerId",
+                schema: "loyalty",
+                table: "VenueWorker",
+                column: "WorkerId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Worker_Phone",
                 schema: "loyalty",
                 table: "Worker",
-                column: "Phone",
+                column: "Phone");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Worker_WorkerId",
+                schema: "loyalty",
+                table: "Worker",
+                column: "WorkerId",
                 unique: true,
                 filter: "[IsArchived] = 0");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Worker_VenueId",
-                schema: "loyalty",
-                table: "Worker",
-                column: "VenueId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Worker_WorkerId_VenueId",
-                schema: "loyalty",
-                table: "Worker",
-                columns: new[] { "WorkerId", "VenueId" },
-                unique: true,
-                filter: "[WorkerId] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -351,11 +371,15 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
-                name: "Worker",
+                name: "VenueWorker",
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
                 name: "LoyaltyProductGroup",
+                schema: "loyalty");
+
+            migrationBuilder.DropTable(
+                name: "Worker",
                 schema: "loyalty");
 
             migrationBuilder.DropTable(

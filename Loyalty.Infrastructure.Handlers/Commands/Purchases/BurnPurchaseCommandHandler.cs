@@ -11,6 +11,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
@@ -19,8 +20,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
     {
         private readonly IMediator mediator;
 
-        public BurnPurchaseCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public BurnPurchaseCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }

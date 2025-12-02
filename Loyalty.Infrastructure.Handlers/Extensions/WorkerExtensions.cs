@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 
@@ -9,18 +10,21 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static GetWorkerByIdQueryResult ToResult(this Worker item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var result = new GetWorkerByIdQueryResult
             {
                 Id = item.Id,
-                VenueId = item.VenueId,
+                VenueIds = item.Venues.Select(x => x.VenueId).ToList(),
                 Name = item.Name,
                 Email = item.Email,
                 LastName = item.LastName,
                 Phone = item.Phone,
                 PhotoUri = item.PhotoUri,
-                Role = item.Role,
+                Role = item.Venues.Select(x => x.Role).First(),
                 WorkerId = item.WorkerId,
                 PositionName = item.PositionName
             };
@@ -29,7 +33,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<GetWorkerByIdQueryResult> ToResults(this List<Worker> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             var results = new List<GetWorkerByIdQueryResult>();
             items.ForEach(x => results.Add(x.ToResult()));

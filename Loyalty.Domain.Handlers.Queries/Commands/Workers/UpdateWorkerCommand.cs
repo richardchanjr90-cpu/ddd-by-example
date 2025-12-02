@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
@@ -10,7 +10,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public long Id { get; set; }
 
-        public long VenueId { get; set; }
+        public List<long> VenueIds { get; set; } = new List<long>();
 
         public string WorkerId { get; set; }
 

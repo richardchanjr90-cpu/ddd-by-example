@@ -2,6 +2,8 @@
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Migrations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,8 @@ namespace Loyalty.Infrastructure.IoC.DI
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
             services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
+            services.AddTransient<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
+            services.AddTransient<ITenantProvider, TenantTokenProvider>();
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
             var dapperConnection = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
@@ -26,9 +30,9 @@ namespace Loyalty.Infrastructure.IoC.DI
             //todo: remove for staging and prod;
             services.AddEntityFrameworkSqlServer()
                 .AddLogging()
-                .AddDbContextPool<LoyaltyDbContext>(
+                .AddDbContext<LoyaltyTenantDbContext>(
                     options => options.UseSqlServer(
-                        connectionString, x => x.EnableRetryOnFailure())
+                            connectionString, x => x.EnableRetryOnFailure())
                         .UseLoggerFactory(MyLoggerFactory));
         }
     }

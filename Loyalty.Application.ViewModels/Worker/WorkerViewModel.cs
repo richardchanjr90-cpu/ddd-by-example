@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.Worker
@@ -8,8 +9,8 @@ namespace Loyalty.Application.ViewModels.Worker
         [JsonProperty("id")]
         public long Id { get; set; }
 
-        [JsonProperty("venueId")]
-        public long VenueId { get; set; }
+        [JsonProperty("venueIds")]
+        public List<long> VenueIds { get; set; } = new List<long>();
 
         [JsonProperty("workerId")]
         public string WorkerId { get; set; }

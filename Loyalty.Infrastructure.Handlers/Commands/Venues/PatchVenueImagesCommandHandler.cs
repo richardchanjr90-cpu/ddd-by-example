@@ -13,6 +13,7 @@ using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -23,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         private readonly IMediator mediator;
 
         public PatchVenueImagesCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+            : base(context, null)
         {
             this.mediator = mediator;
         }
@@ -31,6 +32,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         public async Task<ICommandResult> Handle(PatchVenueImagesCommand request, CancellationToken cancellationToken)
         {
             var venue = await Context.Venues
+                .IgnoreQueryFilters()
                 .Where(x => x.Id == request.Id)
                 .SingleAsync(cancellationToken);
 

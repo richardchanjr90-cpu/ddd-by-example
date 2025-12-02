@@ -8,6 +8,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 {
@@ -16,8 +17,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
     {
         private readonly IMediator mediator;
 
-        public CreateLoyaltyProgramCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public CreateLoyaltyProgramCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }

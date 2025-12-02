@@ -6,6 +6,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
@@ -13,8 +14,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
     public class ArchiveProductCommandHandler
         : BaseHandler, IArchiveProductCommandHandler
     {
-        public ArchiveProductCommandHandler(ILoyaltyDbContext context)
-            : base(context)
+        public ArchiveProductCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 
