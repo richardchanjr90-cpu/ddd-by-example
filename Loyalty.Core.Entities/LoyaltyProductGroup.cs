@@ -32,6 +32,6 @@ namespace Loyalty.Core.Entities
 
         public bool IsArchived { get; set; }
 
-        public override long TenantId => LoyaltyProgram.TenantId;
+        public override long TenantId => Group.TenantId;
     }
 }

@@ -41,13 +41,22 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Venue>().HasQueryFilter(e => TenantIds.Contains(e.Id));
-            modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
-            modelBuilder.Entity<ProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
-            modelBuilder.Entity<Worker>().HasQueryFilter(e => e.Venues.Any(x => TenantIds.Any(y => x.VenueId == y)));
-            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.Group.VenueId));
+            //todo: when named queryfilter appear: separate archive and tenant filters;
+            modelBuilder.Entity<Venue>().HasQueryFilter(e => TenantIds.Contains(e.Id) && !e.IsArchived);
+            modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
+            modelBuilder.Entity<ProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
+            modelBuilder.Entity<Worker>().HasQueryFilter(e => e.Venues.Any(x => TenantIds.Any(y => x.VenueId == y)) && !e.IsArchived);
+            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.Group.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
-            modelBuilder.Entity<Product>().HasQueryFilter(e => TenantIds.Contains(e.ProductGroup.VenueId));
+            modelBuilder.Entity<Product>().HasQueryFilter(e => TenantIds.Contains(e.ProductGroup.VenueId) && !e.IsArchived);
+
+            //modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
+            //modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
+            //modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            //modelBuilder.Entity<Worker>().HasQueryFilter(p => !p.IsArchived);
+            //modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
+            //modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
+            //modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
         }
 
         protected void AddAuditInfo()

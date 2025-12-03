@@ -25,7 +25,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
             var item = Context.LoyaltyProductGroups.Include(x => x.Group)
                 .ThenInclude(x => x.Products)
                 .Include(x => x.Rules)
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.Id == request.Id && x.LoyaltyProgramId == request.ProgramId)
                 .ToList()
                 .Select(lp => new GetLoyaltyProductGroupByIdQueryResult
                 {

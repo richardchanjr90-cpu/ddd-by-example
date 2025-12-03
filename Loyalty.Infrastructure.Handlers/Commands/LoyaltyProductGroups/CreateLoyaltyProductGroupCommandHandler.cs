@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -32,7 +33,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
         {
             var productGroup = await Context.ProductGroups
                 .Where(x => x.Id == request.ProductGroupId)
-                .SingleAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (productGroup == null)
+            {
+                throw new LoyaltyValidationException("No product group with provided id was found.");
+            }
 
             var group = new LoyaltyProductGroup
             {

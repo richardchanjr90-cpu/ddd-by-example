@@ -27,11 +27,12 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<LoyaltyProductGroupGetViewModel> Get(long id)
+        public async Task<LoyaltyProductGroupGetViewModel> Get(long id, long programId)
         {
             var result = await Mediator.Send(new GetLoyaltyProductGroupByIdQuery
             {
-                Id = id
+                Id = id,
+                ProgramId = programId
             });
 
             return mapper.Map<LoyaltyProductGroupGetViewModel>(result);

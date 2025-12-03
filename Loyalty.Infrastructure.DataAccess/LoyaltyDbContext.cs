@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
-using Loyalty.Core.Entities.Base;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess
@@ -127,14 +124,6 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasOne(bc => bc.Worker)
                 .WithMany(c => c.Venues)
                 .HasForeignKey(bc => bc.WorkerId);
-
-            modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<Worker>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
         }
     }
 }

@@ -7,6 +7,7 @@ using AzureExtensions.FunctionToken;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,8 @@ namespace LoyaltyProgram.Http.VenueLogo
 
             return await Handler.WrapAsync(token, async () =>
             {
+                token.Principal.IsInRoleAndThrow(id);
+
                 var items = await imageService.GetCount(container);
                 var images = await imageService.ConvertImages(req, id);
 

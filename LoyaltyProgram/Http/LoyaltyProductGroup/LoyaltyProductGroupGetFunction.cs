@@ -32,7 +32,7 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
 
             return await Handler.WrapAsync(token, async () =>
             {
-                return new OkObjectResult(await service.Get(id));
+                return new OkObjectResult(await service.Get(id, loyaltyProgramId));
             });
         }
     }

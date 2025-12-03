@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Claims;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Shared.Contracts.Enums;
@@ -57,6 +58,18 @@ namespace Loyalty.Common.Shared.Extensions
         public static List<long> GetVenueIds(this ClaimsPrincipal principal)
         {
             return GetVenues(principal).Select(long.Parse).ToList();
+        }
+
+        public static bool IsInRoleAndThrow(this ClaimsPrincipal principal, long id)
+        {
+            var isInRole = GetVenueIds(principal).Contains(id);
+         
+            if (!isInRole)
+            {
+                throw new AuthenticationException();
+            }
+
+            return true;
         }
     }
 }

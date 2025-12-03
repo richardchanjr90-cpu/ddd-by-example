@@ -32,6 +32,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
         {
             var program = await Context.LoyaltyPrograms
                 .Include(x => x.LoyaltyProductGroups)
+                .ThenInclude(x => x.Group)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 

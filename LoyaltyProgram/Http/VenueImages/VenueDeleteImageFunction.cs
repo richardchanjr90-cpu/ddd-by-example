@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -39,6 +40,8 @@ namespace LoyaltyProgram.Http.VenueImages
 
             return await Handler.WrapAsync(token, async () =>
             {
+                token.Principal.IsInRoleAndThrow(id);
+
                 var blockBlob = container.GetBlockBlobReference($"original-image-{index}.jpg");
                 var mdBlob = container.GetBlockBlobReference($"md-image-{index}.jpg");
                 var smBlob = container.GetBlockBlobReference($"sm-image-{index}.jpg");
