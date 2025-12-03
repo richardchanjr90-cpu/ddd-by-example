@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess
 {
-    public class LoyaltyDbContext : DbContext, ILoyaltyTenantDbContext
+    public class LoyaltyDbContext : DbContext, ILoyaltyDbContext
     {
         public LoyaltyDbContext(DbContextOptions options)
             : base(options)
@@ -35,18 +35,6 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<Worker> Workers { get; set; }
 
-        public override int SaveChanges()
-        {
-            AddAuditInfo();
-            return base.SaveChanges();
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
-        {
-            AddAuditInfo();
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductGroup>()
@@ -70,7 +58,13 @@ namespace Loyalty.Infrastructure.DataAccess
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Worker>()
-                .HasIndex(u => u.Phone);
+                .HasIndex(u => u.Phone)
+                .IsUnique();
+
+            modelBuilder.Entity<Worker>()
+                .HasIndex(u => u.Email)
+                .IsUnique()
+                .HasFilter("([Email] IS NOT NULL)");
 
             //[Role] <> 3 -- owner might create more than 1 venue, as he might be only owner in that venues.
             modelBuilder.Entity<Worker>()
@@ -120,24 +114,6 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
-        }
-
-        private void AddAuditInfo()
-        {
-            var entries = ChangeTracker.Entries().Where(e =>
-                e.Entity is AuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
-
-            foreach (var entry in entries)
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    ((AuditableEntity) entry.Entity).CreatedBy = null;
-                    ((AuditableEntity) entry.Entity).Created = DateTime.UtcNow;
-                }
-
-                ((AuditableEntity) entry.Entity).ModifiedBy = null;
-                ((AuditableEntity) entry.Entity).Modified = DateTime.UtcNow;
-            }
         }
     }
 }

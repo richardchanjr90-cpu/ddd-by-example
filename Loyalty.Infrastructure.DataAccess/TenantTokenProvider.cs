@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
@@ -12,9 +13,12 @@ namespace Loyalty.Infrastructure.DataAccess
     {
         private readonly IHttpContextAccessor accessor;
 
+        public ClaimsPrincipal Principal { get; }
+
         public TenantTokenProvider(IHttpContextAccessor accessor)
         {
             this.accessor = accessor;
+            Principal = accessor.HttpContext.User;
         }
 
         public List<long> GetTentants()

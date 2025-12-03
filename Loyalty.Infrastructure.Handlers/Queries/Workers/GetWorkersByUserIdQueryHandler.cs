@@ -24,26 +24,14 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
         public async Task<GetWorkersByUserIdQueryResult> Handle(GetWorkersByUserIdQuery request,
             CancellationToken cancellationToken)
         {
-            VenueUserRole role = Principal.GetRole();
+            var role = Principal.GetRole();
             var userId = Principal.GetUserId();
-            List<long> venuesIds = Principal.GetVenueIds();
 
-            ////todo: filter by role >= current user role, depends on auth
-            //var result = await (
-            //        from workers in Context.Workers
-            //        where workers.WorkerId == request.UserId
-            //        from allWorkers in Context.Workers.Where(x => x.VenueId == workers.VenueId)
-            //        select allWorkers)
-            //    .Where(x => x.WorkerId != request.UserId)
-            //    .ToListAsync(cancellationToken);
-            var result = await Context.Venues
-                    .Include(x => x.Workers)
-                        .ThenInclude(x => x.Worker)
-                    .AsNoTracking()
-                    .Where(x => venuesIds.Contains(x.Id))
-                .SelectMany(v => v.Workers.Where(wv => wv.Worker.WorkerId != userId)
-                    .Select(w => w.Worker))
-                .ToListAsync(cancellationToken);
+            var result = await (from w in Context.Workers
+                    .Include(x => x.Venues)
+                                join p in Context.VenueWorkers on w.Id equals p.WorkerId
+                where w.WorkerId != userId && p.Role <= role
+                     select w).ToListAsync(cancellationToken);
 
             return new GetWorkersByUserIdQueryResult
             {

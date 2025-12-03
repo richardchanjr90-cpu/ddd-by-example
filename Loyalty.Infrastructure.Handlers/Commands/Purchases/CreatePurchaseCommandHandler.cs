@@ -29,6 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 Value = request.Value,
                 UserId = request.UserId,
                 ProductId = request.ProductId,
+                VenueId = request.VenueId,
                 LoyaltyProductGroupId = request.LoyaltyProductGroupId
             };
 
@@ -41,6 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             };
 
             if (result.Success)
+            {
                 await mediator.Publish(
                     new CreatePurchaseNotification
                     {
@@ -50,6 +52,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                         Total = purchase.Value
                     },
                     cancellationToken);
+            }
+
             return result;
         }
     }

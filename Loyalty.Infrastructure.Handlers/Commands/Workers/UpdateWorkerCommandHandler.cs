@@ -46,6 +46,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     PositionName = request.PositionName
                 };
 
+                foreach (var id in request.VenueIds)
+                {
+                    var venueWorker = new VenueWorker();
+                    venueWorker.VenueId = id;
+                    venueWorker.Worker = worker;
+                    venueWorker.Role = request.Role;
+                    Context.VenueWorkers.Add(venueWorker);
+                }
+
                 Context.Workers.Add(worker);
             }
             else
@@ -57,15 +66,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 worker.Phone = request.Phone;
                 worker.PhotoUri = request.PhotoUri;
                 worker.PositionName = request.PositionName;
-            }
-
-            foreach (var id in request.VenueIds)
-            {
-                var venueWorker = new VenueWorker();
-                venueWorker.VenueId = id;
-                venueWorker.Worker = worker;
-                venueWorker.Role = request.Role;
-                Context.VenueWorkers.Add(venueWorker);
             }
 
             return new CommandResult
