@@ -80,7 +80,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             //{
             //    throw new AuthenticationException("Access to another venue. Cross-tenant requests are not allowed.");
             //}
-
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)
