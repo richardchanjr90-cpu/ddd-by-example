@@ -13,6 +13,8 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(LoyaltyProductGroup))]
         public long LoyaltyProductGroupId { get; set; }
 
+        public LoyaltyProductGroup LoyaltyProductGroup { get; set; }
+
         public LoyaltyRuleType RuleType { get; set; }
 
         public string Rule { get; set; }
@@ -20,5 +22,7 @@ namespace Loyalty.Core.Entities
         public LoyaltyRuleVersion RuleVersion { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public override long TenantId => LoyaltyProductGroup.TenantId;
     }
 }

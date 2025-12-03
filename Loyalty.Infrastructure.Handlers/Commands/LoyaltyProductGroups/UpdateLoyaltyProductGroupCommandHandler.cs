@@ -33,6 +33,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             CancellationToken cancellationToken)
         {
             var group = await Context.LoyaltyProductGroups
+                .Include(x => x.LoyaltyProgram)
                 .Include(x => x.Group)
                 .Include(x => x.Rules)
                 .Where(x => x.Id == request.Id)

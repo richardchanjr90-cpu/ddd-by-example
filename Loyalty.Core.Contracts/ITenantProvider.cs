@@ -6,7 +6,7 @@ namespace Loyalty.Core.Contracts
 {
     public interface ITenantProvider
     {
-        List<long> GetTentants();
+        List<long> GetTenants();
 
         ClaimsPrincipal Principal { get; }
     }

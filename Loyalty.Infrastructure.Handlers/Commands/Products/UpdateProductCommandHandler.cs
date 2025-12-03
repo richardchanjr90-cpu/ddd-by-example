@@ -23,6 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
         public async Task<ICommandResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
             var product = await Context.Products
+                .Include(x => x.ProductGroup)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 

@@ -7,7 +7,7 @@ using Loyalty.Shared.Contracts.Enums;
 namespace Loyalty.Core.Entities
 {
     [Table("VenueWorker", Schema = SchemaName.Loyalty)]
-    public class VenueWorker : Entity
+    public class VenueWorker : TenantEntity
     {
         public long VenueId { get; set; }
 
@@ -18,5 +18,7 @@ namespace Loyalty.Core.Entities
         public Worker Worker { get; set; }
 
         public VenueUserRole Role { get; set; }
+
+        public override long TenantId => VenueId;
     }
 }

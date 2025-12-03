@@ -21,13 +21,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
         public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
         {
-            var worker = await Context.Workers
-                .Where(x => x.Id == request.Id)
+            var worker = await Context.VenueWorkers
+                .Include(x => x.Worker)
+                .Where(x => x.WorkerId == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (worker != null)
             {
-                worker.IsArchived = true;
+                Context.VenueWorkers.Remove(worker);
+                worker.Worker.IsArchived = true;
             }
 
             return new CommandResult

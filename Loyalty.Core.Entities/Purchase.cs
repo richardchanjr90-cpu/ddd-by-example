@@ -22,5 +22,7 @@ namespace Loyalty.Core.Entities
         public decimal? Value { get; set; }
 
         public DateTime? BurnDate { get; set; }
+
+        public override long TenantId => VenueId;
     }
 }

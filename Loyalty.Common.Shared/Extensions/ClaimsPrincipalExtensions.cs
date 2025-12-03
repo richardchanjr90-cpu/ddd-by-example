@@ -47,7 +47,8 @@ namespace Loyalty.Common.Shared.Extensions
 
             if (!String.IsNullOrEmpty(claim))
             {
-                claims = claim.Split(',').Select(x=>x.Trim('\"')).ToList();
+                claims = claim.Split(',')
+                    .Select(x=>x.Trim('\"')).ToList();
             }
 
             return claims;

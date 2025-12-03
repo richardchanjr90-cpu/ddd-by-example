@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Microsoft.AspNetCore.Http;
@@ -21,11 +20,12 @@ namespace Loyalty.Infrastructure.DataAccess
             Principal = accessor.HttpContext.User;
         }
 
-        public List<long> GetTentants()
+        public List<long> GetTenants()
         {
             var ids = accessor.HttpContext.User.GetVenues()
                 .Select(x => x.Trim('\"'))
                 .Select(long.Parse).ToList();
+
             return ids;
         }
     }

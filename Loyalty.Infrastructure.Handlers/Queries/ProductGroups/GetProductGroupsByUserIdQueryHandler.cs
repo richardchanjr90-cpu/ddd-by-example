@@ -23,6 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
         public async Task<GetProductGroupsByUserIdQueryResult> Handle(GetProductGroupsByUserIdQuery request,
             CancellationToken cancellationToken)
         {
+            //todo: this query is slow. profile and speed up required
             //var items = await (from worker in Context.Workers
             //    join prGroup in Context.ProductGroups.Include(x => x.Products) on worker.VenueId equals prGroup.VenueId
             //    where worker.Role >= VenueUserRole.Manager && worker.WorkerId == request.UserId

@@ -28,6 +28,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             CancellationToken cancellationToken)
         {
             var group = await Context.LoyaltyProductGroups
+                .Include(x=>x.LoyaltyProgram)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 

@@ -67,5 +67,7 @@ namespace Loyalty.Core.Entities
         public bool IsApproved { get; set; }
 
         public bool IsPublished { get; set; }
+
+        public override long TenantId => Id;
     }
 }

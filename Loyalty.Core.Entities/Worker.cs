@@ -8,7 +8,7 @@ using Loyalty.Core.Entities.Schema;
 namespace Loyalty.Core.Entities
 {
     [Table("Worker", Schema = SchemaName.Loyalty)]
-    public class Worker : AuditableEntity, IArchivableEntity
+    public class Worker : Entity, IAuditableEntity, IArchivableEntity
     {
         public ICollection<VenueWorker> Venues { get; set; }
 
@@ -27,5 +27,13 @@ namespace Loyalty.Core.Entities
         public string PositionName { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string ModifiedBy { get; set; }
+
+        public DateTime Modified { get; set; }
+
+        public DateTime Created { get; set; }
     }
 }

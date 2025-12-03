@@ -38,10 +38,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             var amount = purchases.Sum(x => x.Value);
 
             if (amount < request.Amount)
+            {
                 throw new LoyaltyValidationException("Amount of points is lower than requested");
+            }
 
             var amountToBurn = request.Amount;
-            decimal? resultAmount = 0;
             foreach (var purchase in purchases)
             {
                 var purchaseValue = purchase.Value;
@@ -73,6 +74,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             };
 
             if (result.Success)
+            {
                 await mediator.Publish(
                     new BurnPurchaseNotification
                     {
@@ -82,6 +84,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                         Total = request.Amount
                     },
                     cancellationToken);
+            }
+
             return result;
         }
     }

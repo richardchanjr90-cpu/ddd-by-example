@@ -4,6 +4,8 @@ namespace Loyalty.Common.Shared.Exceptions
 {
     public class LoyaltyValidationException : Exception
     {
+        public int Code { get; }
+
         public LoyaltyValidationException()
         {
         }
@@ -16,6 +18,12 @@ namespace Loyalty.Common.Shared.Exceptions
         public LoyaltyValidationException(string message, Exception inner)
             : base(message, inner)
         {
+        }
+
+        public LoyaltyValidationException(string message, Exception inner, int code)
+            : base(message, inner)
+        {
+            Code = code;
         }
     }
 }

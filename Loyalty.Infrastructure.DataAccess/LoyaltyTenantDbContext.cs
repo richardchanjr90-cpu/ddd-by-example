@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Base;
+using Loyalty.Core.Entities.Base.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
@@ -16,7 +17,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
     {
         private readonly ITenantProvider provider;
 
-        internal List<long> TenantIds => provider.GetTentants();
+        internal List<long> TenantIds => provider.GetTenants();
 
         public LoyaltyTenantDbContext(ITenantProvider provider, DbContextOptions options)
             : base(options)
@@ -30,10 +31,10 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             return base.SaveChanges();
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             AddAuditInfo();
-            return base.SaveChangesAsync(cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -51,19 +52,36 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
         protected void AddAuditInfo()
         {
-            var entries = ChangeTracker.Entries().Where(e =>
-                e.Entity is AuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
+            var entries = ChangeTracker.Entries().
+                Where(e =>
+                e.Entity is IAuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
+
+            var ids = (from e in ChangeTracker.Entries()
+                    where e.Entity is TenantEntity
+                       select ((TenantEntity)e.Entity).TenantId)
+                .Distinct()
+                .ToList();
+
+            if (ids.Count > 1)
+            {
+                throw new AuthenticationException("Access to more than 1 venue. Cross-tenant requests are not allowed.");
+            }
+
+            if (ids.Count > 0 && !TenantIds.Contains(ids.First()))
+            {
+                throw new AuthenticationException("Access to another venue. Cross-tenant requests are not allowed.");
+            }
 
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((AuditableEntity)entry.Entity).CreatedBy = provider.Principal.GetUserId();
-                    ((AuditableEntity)entry.Entity).Created = DateTime.UtcNow;
+                    ((IAuditableEntity)entry.Entity).CreatedBy = provider.Principal.GetUserId();
+                    ((IAuditableEntity)entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((AuditableEntity)entry.Entity).ModifiedBy = provider.Principal.GetUserId();
-                ((AuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
+                ((IAuditableEntity)entry.Entity).ModifiedBy = provider.Principal.GetUserId();
+                ((IAuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
             }
         }
     }
