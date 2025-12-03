@@ -65,21 +65,22 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 Where(e =>
                 e.Entity is IAuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
-            //var ids = (from e in ChangeTracker.Entries()
-            //        where e.Entity is TenantEntity && e.State != EntityState.Unchanged && !(e.State == EntityState.Added && e.Entity is Venue)
-            //           select ((TenantEntity)e.Entity).TenantId)
-            //    .Distinct()
-            //    .ToList();
+            var ids = (from e in ChangeTracker.Entries()
+                       where e.Entity is TenantEntity && e.State != EntityState.Unchanged && !(e.State == EntityState.Added && e.Entity is Venue)
+                       select ((TenantEntity)e.Entity).TenantId)
+                .Distinct()
+                .ToList();
 
-            //if (ids.Count > 1)
-            //{
-            //    throw new AuthenticationException("Access to more than 1 venue. Cross-tenant requests are not allowed.");
-            //}
+            if (ids.Count > 1)
+            {
+                throw new AuthenticationException("Access to more than 1 venue. Cross-tenant requests are not allowed.");
+            }
 
-            //if (ids.Count > 0 && !TenantIds.Contains(ids.First()))
-            //{
-            //    throw new AuthenticationException("Access to another venue. Cross-tenant requests are not allowed.");
-            //}
+            if (ids.Count > 0 && !TenantIds.Contains(ids.First()))
+            {
+                throw new AuthenticationException("Access to another venue. Cross-tenant requests are not allowed.");
+            }
+
             foreach (var entry in entries)
             {
                 if (entry.State == EntityState.Added)

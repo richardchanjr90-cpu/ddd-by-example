@@ -45,11 +45,19 @@ namespace Loyalty.Common.Shared.Extensions
         {
             var claims = new List<string>();
             var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimConstants.VENUE_CLAIM)?.Value;
+            var claim2 = principal.Claims.FirstOrDefault(x => x.Type == ClaimConstants.NEW_VENUE_CLAIM)?.Value;
 
             if (!String.IsNullOrEmpty(claim))
             {
                 claims = claim.Split(',')
                     .Select(x=>x.Trim('\"')).ToList();
+            }
+
+            if (!String.IsNullOrEmpty(claim2))
+            {
+                var tempClaims = claim2.Split(',')
+                    .Select(x => x.Trim('\"')).ToList();
+                claims.AddRange(tempClaims);
             }
 
             return claims;
@@ -58,7 +66,7 @@ namespace Loyalty.Common.Shared.Extensions
         public static ClaimsPrincipal AddVenues(this ClaimsPrincipal principal, long venueId)
         {
             ClaimsIdentity identity = new ClaimsIdentity();
-            identity.AddClaim(new Claim(ClaimConstants.VENUE_CLAIM, venueId.ToString()));
+            identity.AddClaim(new Claim(ClaimConstants.NEW_VENUE_CLAIM, venueId.ToString()));
             principal.AddIdentity(identity);
             return principal;
         }
