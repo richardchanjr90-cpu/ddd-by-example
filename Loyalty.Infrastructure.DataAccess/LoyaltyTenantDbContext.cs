@@ -64,9 +64,9 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             var entries = ChangeTracker.Entries().
                 Where(e =>
                 e.Entity is IAuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
-
+            provider.GetTenants();
             var ids = (from e in ChangeTracker.Entries()
-                    where e.Entity is TenantEntity
+                    where e.Entity is TenantEntity && !(e.State == EntityState.Added && e.Entity is Venue)
                        select ((TenantEntity)e.Entity).TenantId)
                 .Distinct()
                 .ToList();

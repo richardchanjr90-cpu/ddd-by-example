@@ -55,6 +55,14 @@ namespace Loyalty.Common.Shared.Extensions
             return claims;
         }
 
+        public static ClaimsPrincipal AddVenues(this ClaimsPrincipal principal, long venueId)
+        {
+            ClaimsIdentity identity = new ClaimsIdentity();
+            identity.AddClaim(new Claim(ClaimConstants.VENUE_CLAIM, venueId.ToString()));
+            principal.AddIdentity(identity);
+            return principal;
+        }
+
         public static List<long> GetVenueIds(this ClaimsPrincipal principal)
         {
             return GetVenues(principal).Select(long.Parse).ToList();

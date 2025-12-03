@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
@@ -24,23 +25,68 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     public class CreateVenueCommandHandler : BaseHandler, ICreateVenueCommandHandler
     {
         private readonly IMediator mediator;
+        private readonly IHttpContextAccessor accessor;
 
         public CreateVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
+            this.accessor = accessor;
         }
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
+            Venue venue = null;
+            try
+            {
+                venue = CreateVenue(request);
+                var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
+                Principal.AddVenues(venue.Id);
+
+                var worker = await Context.Workers
+                    .Include(x => x.Venues)
+                    .ThenInclude(x => x.Venue)
+                    .Where(x => x.WorkerId == Principal.GetUserId())
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                worker = CreateWorker(worker, venue);
+
+                saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
+
+                var result = new CommandResult
+                {
+                    Success = saved,
+                    Result = venue.Id
+                };
+
+                if (result.Success)
+                {
+                    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
+                    await AddClaimsAboutNewVenue(worker);
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                if (venue != null)
+                {
+                    Context.Venues.Remove(venue);
+                }
+
+                throw;
+            }
+        }
+
+        private Venue CreateVenue(CreateVenueCommand request)
+        {
             var venue = request.ToSingle(Principal.GetUserId());
+            Context.Venues.Add(venue);
+            return venue;
+        }
 
-            var worker = await Context.Workers
-                .Include(x => x.Venues)
-                .ThenInclude(x => x.Venue)
-                .Where(x => x.WorkerId == Principal.GetUserId())
-                .FirstOrDefaultAsync(cancellationToken);
-
+        private Worker CreateWorker(Worker worker, Venue venue)
+        {
             if (worker == null)
             {
                 worker = new Worker
@@ -61,20 +107,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             };
 
             Context.VenueWorkers.Add(venueWorker);
-
-            var result = new CommandResult
-            {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = venue.Id
-            };
-
-            if (result.Success)
-            {
-                await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-                await AddClaimsAboutNewVenue(worker);
-            }
-
-            return result;
+            return worker;
         }
 
         private async Task AddClaimsAboutNewVenue(Worker worker)
