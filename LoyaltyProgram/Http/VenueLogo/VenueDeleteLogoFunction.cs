@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -43,14 +44,12 @@ namespace LoyaltyProgram.Http.VenueLogo
             {
                 token.Principal.IsInRoleAndThrow(id);
 
-                var blockBlob = container.GetBlockBlobReference($"logo.jpg");
-
                 var uris = await imageService.GetImages(container, "logo");
 
                 foreach (var uri in uris)
                 {
-                    var blobReference = container.GetBlockBlobReference(uri);
-                    await blobReference.DeleteIfExistsAsync();
+                    var blockblob = container.GetBlockBlobReference(new CloudBlockBlob(new Uri(uri)).Name);
+                    var p = await blockblob.DeleteIfExistsAsync();
                 }
 
                 await service.PatchLogo(id, null);
