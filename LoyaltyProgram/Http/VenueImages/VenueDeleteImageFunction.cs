@@ -54,7 +54,7 @@ namespace LoyaltyProgram.Http.VenueImages
 
                 await service.Patch(
                     id,
-                    await imageService.GetImages(container, null));
+                    await imageService.GetImages(container, "original"));
 
                 return new NoContentResult();
             });

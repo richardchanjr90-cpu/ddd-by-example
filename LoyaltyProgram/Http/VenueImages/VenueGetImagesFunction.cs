@@ -36,7 +36,7 @@ namespace LoyaltyProgram.Http.VenueImages
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
             var results = await service.GetImages(container, req.Query["prefix"]);
 
-            return await Handler.WrapAsync(token, async () =>
+            return Handler.Wrap(token, () =>
             {
                 return new OkObjectResult(results);
             });

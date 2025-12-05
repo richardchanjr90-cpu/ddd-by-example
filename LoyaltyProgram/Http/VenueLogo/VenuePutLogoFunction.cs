@@ -51,17 +51,18 @@ namespace LoyaltyProgram.Http.VenueLogo
                 {
                     using (var stream = new MemoryStream())
                     {
+                        var logoName = $"logo-{Guid.NewGuid()}.jpg";
                         var imageStream = Image.Load(image);
                         imageStream.SaveAsJpeg(stream);
                         stream.Position = 0;
+
                         await container.CreateIfNotExistsAsync();
-                        var blob = container.GetBlockBlobReference("logo.jpg");
+                
+                        var blob = container.GetBlockBlobReference(logoName);
                         await blob.UploadFromStreamAsync(stream);
+                        await service.PatchLogo(id, blob.Uri.ToString());
                     }
                 }
-
-                var url = (await imageService.GetImages(container, null)).FirstOrDefault();
-                await service.Patch(id, url);
 
                 return new NoContentResult();
             });

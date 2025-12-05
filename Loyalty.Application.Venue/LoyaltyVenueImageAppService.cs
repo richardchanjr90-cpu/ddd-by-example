@@ -101,6 +101,22 @@ namespace Loyalty.Application.Venue
             return results;
         }
 
+        public async Task<List<IListBlobItem>> GetBlobs(CloudBlobContainer container, string prefix)
+        {
+            var results = new List<IListBlobItem>();
+            var exists = await container.ExistsAsync();
+
+            if (exists)
+            {
+                var operation =
+                    await container.ListBlobsSegmentedAsync(prefix, true, BlobListingDetails.None, 50,
+                        null, null, null);
+                results = operation.Results.ToList();
+            }
+
+            return results;
+        }
+
         public async Task<int> GetCount(CloudBlobContainer container)
         {
             var results = 0;

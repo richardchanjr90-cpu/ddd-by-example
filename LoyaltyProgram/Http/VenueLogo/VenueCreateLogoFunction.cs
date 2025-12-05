@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -57,19 +58,18 @@ namespace LoyaltyProgram.Http.VenueLogo
                 {
                     using (var stream = new MemoryStream())
                     {
+                        var logoName = $"logo-{Guid.NewGuid()}.jpg";
                         var item = images.First();
                         var imageStream = Image.Load(item.Image);
                         imageStream.SaveAsJpeg(stream);
                         stream.Position = 0;
                         await container.CreateIfNotExistsAsync();
-                        var blob = container.GetBlockBlobReference("logo.jpg");
+                        var blob = container.GetBlockBlobReference(logoName);
                         await blob.UploadFromStreamAsync(stream);
+
+                        await service.PatchLogo(id, blob.Uri.ToString());
                     }
                 }
-
-                var url = (await imageService.GetImages(container, null)).FirstOrDefault();
-                await service.Patch(id, url);
-
                 return new NoContentResult();
             });
         }

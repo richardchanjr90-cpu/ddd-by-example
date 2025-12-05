@@ -84,7 +84,7 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> Patch(long venueId, string logo)
+        public async Task<ICommandResult> PatchLogo(long venueId, string logo)
         {
             var commandResult = await Mediator.Send(new PatchVenueLogoCommand
             {

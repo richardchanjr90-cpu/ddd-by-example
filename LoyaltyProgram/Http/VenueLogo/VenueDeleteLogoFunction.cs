@@ -44,12 +44,16 @@ namespace LoyaltyProgram.Http.VenueLogo
                 token.Principal.IsInRoleAndThrow(id);
 
                 var blockBlob = container.GetBlockBlobReference($"logo.jpg");
-                Task originalBLobDelete = blockBlob.DeleteIfExistsAsync();
 
-                await Task.WhenAll(originalBLobDelete);
+                var uris = await imageService.GetImages(container, "logo");
 
-                var url = (await imageService.GetImages(container, null)).FirstOrDefault();
-                await service.Patch(id, url);
+                foreach (var uri in uris)
+                {
+                    var blobReference = container.GetBlockBlobReference(uri);
+                    await blobReference.DeleteIfExistsAsync();
+                }
+
+                await service.PatchLogo(id, null);
 
                 return new NoContentResult();
             });
