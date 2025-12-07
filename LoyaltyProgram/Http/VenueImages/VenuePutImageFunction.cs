@@ -4,28 +4,32 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenuePutImageFunction
     {
+        private readonly IOptions<VenueGalleryImageSettings> imageSettings;
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
 
         public VenuePutImageFunction(
+            IOptions<VenueGalleryImageSettings> imageSettings,
             LoyaltyVenueAppService service,
             LoyaltyVenueImageAppService imageService)
         {
+            this.imageSettings = imageSettings;
             this.service = service;
             this.imageService = imageService;
         }
@@ -38,10 +42,9 @@ namespace LoyaltyProgram.Http.VenueImages
             HttpRequestMessage req,
             ILogger log,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
-            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
-            Stream blobStream,
-            [Queue("venue-images", Connection = "QueueConnectionString")]
-            ICollector<VenueQueueImageDto> queueItems)
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
+            [Blob("venue-images-{id}/md-image-{index}.jpg", FileAccess.Write)] Stream mediumBlob,
+            [Blob("venue-images-{id}/sm-image-{index}.jpg", FileAccess.Write)] Stream smallBlob)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
@@ -55,11 +58,19 @@ namespace LoyaltyProgram.Http.VenueImages
                 {
                     var imageStream = Image.Load(images.First().Image);
                     imageStream.SaveAsJpeg(blobStream);
-                    queueItems.Add(new VenueQueueImageDto
-                    {
-                        Index = Guid.Parse(index),
-                        VenueId = id
-                    });
+
+                    var mdWidthMultiplier = imageStream.Width / (float)imageSettings.Value.MdImageWidth;
+                    var smWidthMultiplier = imageStream.Width / (float)imageSettings.Value.SmImageWidth;
+
+                    imageStream.Mutate(ctx => ctx.Resize(
+                        (int)(imageStream.Width / mdWidthMultiplier),
+                        (int)(imageStream.Height / mdWidthMultiplier)));
+                    imageStream.SaveAsJpeg(mediumBlob);
+
+                    imageStream.Mutate(ctx => ctx.Resize(
+                        (int)(imageStream.Width / smWidthMultiplier),
+                        (int)(imageStream.Height / smWidthMultiplier)));
+                    imageStream.SaveAsJpeg(smallBlob);
                 }
 
                 return new NoContentResult();

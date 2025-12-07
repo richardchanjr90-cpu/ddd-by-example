@@ -35,7 +35,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 LastName = request.LastName,
                 Phone = request.Phone,
                 PositionName = request.PositionName,
-                PhotoUri = request.PhotoUri,
             };
 
             foreach (var id in request.VenueIds)

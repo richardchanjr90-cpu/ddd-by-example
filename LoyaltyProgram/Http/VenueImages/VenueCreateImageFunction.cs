@@ -4,26 +4,35 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AzureExtensions.FunctionToken;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenueCreateImageFunction
     {
-        private readonly LoyaltyVenueImageAppService service;
+        private readonly IOptions<VenueGalleryImageSettings> imageSettings;
+        private readonly LoyaltyVenueAppService service;
+        private readonly LoyaltyVenueImageAppService imageService;
 
-        public VenueCreateImageFunction(LoyaltyVenueImageAppService service)
+        public VenueCreateImageFunction(
+            IOptions<VenueGalleryImageSettings> imageSettings,
+            LoyaltyVenueAppService service,
+            LoyaltyVenueImageAppService imageService)
         {
+            this.imageSettings = imageSettings;
             this.service = service;
+            this.imageService = imageService;
         }
 
         [FunctionName("VenueCreateImageFunction")]
@@ -33,8 +42,7 @@ namespace LoyaltyProgram.Http.VenueImages
             HttpRequestMessage req,
             ILogger log,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
-            [Blob("venue-images-{id}", FileAccess.Write)] CloudBlobContainer container,
-            [Queue("venue-images", Connection = "QueueConnectionString")] ICollector<VenueQueueImageDto> queueItems)
+            [Blob("venue-images-{id}", FileAccess.Write)] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueCreateImageFunction)} was triggered.");
 
@@ -42,30 +50,51 @@ namespace LoyaltyProgram.Http.VenueImages
             {
                 token.Principal.IsInRoleAndThrow(id);
 
-                var items = await service.GetCount(container);
-                var images = await service.ConvertImages(req, id);
+                var items = await imageService.GetCount(container);
+                var images = await imageService.ConvertImages(req, id);
 
                 if (items + images.Count > 10)
                 {
-                    return new BadRequestErrorMessageResult("Cannot create more than 10 images"); 
+                    return new BadRequestErrorMessageResult("Cannot create more than 10 images");
                 }
 
                 if (images.Count > 0)
                 {
                     using (var stream = new MemoryStream())
+                    using (var mdStream = new MemoryStream())
+                    using (var smStream = new MemoryStream())
                     {
                         var item = images.First();
                         var imageStream = Image.Load(item.Image);
                         imageStream.SaveAsJpeg(stream);
                         stream.Position = 0;
+
                         await container.CreateIfNotExistsAsync();
                         var blob = container.GetBlockBlobReference($"original-image-{item.Index}.jpg");
+                        var mdBlob = container.GetBlockBlobReference($"md-image-{item.Index}.jpg");
+                        var smBlob = container.GetBlockBlobReference($"sm-image-{item.Index}.jpg");
+
                         await blob.UploadFromStreamAsync(stream);
-                        queueItems.Add(new VenueQueueImageDto
-                        {
-                            Index = item.Index,
-                            VenueId = item.VenueId
-                        });
+
+                        var mdWidthMultiplier = imageStream.Width / (float)imageSettings.Value.MdImageWidth;
+                        var smWidthMultiplier = imageStream.Width / (float)imageSettings.Value.SmImageWidth;
+
+                        imageStream.Mutate(ctx => ctx.Resize(
+                            (int)(imageStream.Width / mdWidthMultiplier),
+                            (int)(imageStream.Height / mdWidthMultiplier)));
+                        imageStream.SaveAsJpeg(mdStream);
+                        await mdBlob.UploadFromStreamAsync(mdStream);
+
+                        imageStream.Mutate(ctx => ctx.Resize(
+                            (int)(imageStream.Width / smWidthMultiplier),
+                            (int)(imageStream.Height / smWidthMultiplier)));
+
+                        imageStream.SaveAsJpeg(smStream);
+                        await smBlob.UploadFromStreamAsync(smStream);
+
+                        await service.Patch(
+                            id,
+                            await imageService.GetImages(container, "original"));
                     }
                 }
 

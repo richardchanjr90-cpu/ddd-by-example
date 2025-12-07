@@ -12,10 +12,6 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .MaximumLength(200);
 
-            RuleFor(x => x.LastName)
-                .NotEmpty()
-                .MaximumLength(200);
-
             RuleFor(x => x.Phone)
                 .SetValidator(new PhoneValidator());
 

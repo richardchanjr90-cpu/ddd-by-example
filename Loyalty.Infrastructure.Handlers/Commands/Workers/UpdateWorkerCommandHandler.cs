@@ -30,6 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             }
 
             var worker = await Context.Workers
+                .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -51,7 +52,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     var venueWorker = new VenueWorker();
                     venueWorker.VenueId = id;
                     venueWorker.Worker = worker;
-                    venueWorker.Role = request.Role;
+                    //venueWorker.Role = request.Role;
                     Context.VenueWorkers.Add(venueWorker);
                 }
 
@@ -64,7 +65,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 worker.Email = request.Email;
                 worker.LastName = request.LastName;
                 worker.Phone = request.Phone;
-                worker.PhotoUri = request.PhotoUri;
                 worker.PositionName = request.PositionName;
             }
 
