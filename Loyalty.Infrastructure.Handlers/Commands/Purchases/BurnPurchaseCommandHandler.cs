@@ -55,6 +55,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                     var leftOverPurchase = new Purchase
                     {
                         UserId = request.UserId,
+                        VenueId = request.VenueId,
                         Value = amountToReSave,
                         InternalPurchaseMadeBySystem = true,
                         LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
