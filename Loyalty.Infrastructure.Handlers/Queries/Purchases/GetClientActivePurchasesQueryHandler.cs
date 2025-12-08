@@ -77,10 +77,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             LoyaltyProductGroupId = z.LgroupId,
                             Products = programs
                                 .Where(q => q.LgroupId == z.LgroupId)
+                                .DefaultIfEmpty(null)
                                 .Select(d => new ProductPurchaseResult
                                 {
-                                    Name = d.ProductName,
-                                    Id = d.ProductId
+                                    Name = d?.ProductName,
+                                    Id = d?.ProductId
                                 }).ToList()
                         }).ToList()
                 })
