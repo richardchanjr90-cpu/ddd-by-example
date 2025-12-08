@@ -11,9 +11,6 @@ namespace Loyalty.Application.ViewModels.Validators
             RuleFor(x => x.LoyaltyProductGroupId)
                 .GreaterThan(0);
 
-            RuleFor(x => x.UserId).Must(this.BeValidGuid)
-                .WithMessage("Should be a valid guid.");
-
             RuleFor(x => x.Value)
                 .GreaterThan(0);
         }

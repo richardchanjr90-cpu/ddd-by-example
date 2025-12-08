@@ -41,7 +41,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     JOIN loyalty.LoyaltyProductGroup lpg ON lpg.LoyaltyProgramId = lp.Id
                     JOIN loyalty.LoyaltyGroupRule lgr ON lgr.LoyaltyProductGroupId = lpg.Id
                     JOIN loyalty.ProductGroup pg ON pg.Id = lpg.ProductGroupId
-                    JOIN loyalty.Product pr ON pr.ProductGroupId = pg.Id
+                    LEFT JOIN loyalty.Product pr ON pr.ProductGroupId = pg.Id
                     LEFT JOIN (SELECT LoyaltyProductGroupId, 
                     COALESCE(SUM([Value]), 0) as total 
                     FROM loyalty.Purchase
