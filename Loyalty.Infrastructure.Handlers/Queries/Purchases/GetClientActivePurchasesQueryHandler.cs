@@ -41,13 +41,16 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     JOIN loyalty.LoyaltyProductGroup lpg ON lpg.LoyaltyProgramId = lp.Id
                     JOIN loyalty.LoyaltyGroupRule lgr ON lgr.LoyaltyProductGroupId = lpg.Id
                     JOIN loyalty.ProductGroup pg ON pg.Id = lpg.ProductGroupId
-                    LEFT JOIN loyalty.Product pr ON pr.ProductGroupId = pg.Id
-                    LEFT JOIN (SELECT LoyaltyProductGroupId, 
-                    COALESCE(SUM([Value]), 0) as total 
-                    FROM loyalty.Purchase
-                    WHERE BurnDate IS NULL AND UserId = @UserId 
-                    GROUP BY LoyaltyProductGroupId) as total ON total.LoyaltyProductGroupId = lpg.Id
-                    WHERE lp.VenueId = @VenueId AND lp.IsArchived = 0";
+					JOIN loyalty.Purchase pur ON pur.LoyaltyProductGroupId = lpg.Id
+                    LEFT JOIN loyalty.Product pr ON pr.Id = pur.ProductId
+					LEFT JOIN (SELECT LoyaltyProductGroupId, 
+					COALESCE(SUM([Value]), 0) as total 
+					FROM loyalty.Purchase
+					WHERE BurnDate IS NULL AND UserId = @UserId
+					GROUP BY LoyaltyProductGroupId) as total ON total.LoyaltyProductGroupId = lpg.Id			
+                    WHERE pur.UserId = @UserId 
+					AND lp.VenueId = @VenueId
+					AND lp.IsArchived = 0 ";
 
             var programs = connection.Query(getPrograms, new
             {
@@ -76,7 +79,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             GroupName = z.LgroupName,
                             LoyaltyProductGroupId = z.LgroupId,
                             Products = programs
-                                .Where(q => q.LgroupId == z.LgroupId)
+                                .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
                                 .DefaultIfEmpty(null)
                                 .Select(d => new ProductPurchaseResult
                                 {
