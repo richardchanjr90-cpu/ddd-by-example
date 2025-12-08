@@ -10,7 +10,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static List<GroupPurchaseResult> ToResult(this IEnumerable<Purchase> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             var results = items
                 .Select(item => new GroupPurchaseResult
