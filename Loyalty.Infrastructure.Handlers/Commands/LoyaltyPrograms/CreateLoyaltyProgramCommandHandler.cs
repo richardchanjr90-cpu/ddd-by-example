@@ -53,7 +53,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         VenueId = program.VenueId,
                         Name = program.Name,
                         EndDate = program.EndDate,
-                        StartDate = program.StartDate
+                        StartDate = program.StartDate,
+                        IsPublished = program.IsPublished
                     },
                     cancellationToken);
             }
