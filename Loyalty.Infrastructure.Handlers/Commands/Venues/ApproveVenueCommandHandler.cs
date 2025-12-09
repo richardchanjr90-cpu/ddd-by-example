@@ -24,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
 
-        public ApproveVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public ApproveVenueCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
