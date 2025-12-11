@@ -41,6 +41,8 @@ namespace LoyaltyProgram.Http.Signup
                 var worker = await service.GetByPhone(phone);
                 var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
+                var claimsDictionary = token.Principal.Claims.ToDictionary(x => x.Type, x => (object) x.Value);
+
                 var additionalClaims = new Dictionary<string, object>
                 {
                     { ClaimTypes.Role, role.ToString() },
@@ -49,6 +51,11 @@ namespace LoyaltyProgram.Http.Signup
                     { ClaimTypes.Email, model.Email },
                     { ClaimTypes.StateOrProvince, model.City }
                 };
+
+                foreach (var claim in additionalClaims)
+                {
+                    claimsDictionary[claim.Key] = claim.Value.ToString();
+                }
 
                 if (worker != null)
                 {
@@ -60,7 +67,10 @@ namespace LoyaltyProgram.Http.Signup
                         .ToCommaSeparatedStringOrNull());
                 }
 
-                await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(identity, additionalClaims);
+                claimsDictionary.Remove("firebase");
+                claimsDictionary.Remove("auth_time");
+
+                await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(identity, claimsDictionary);
 
                 return new NoContentResult();
             });
