@@ -36,7 +36,6 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
         {
-            //todo: validate worker belongs to venue
             new PurchaseValidator().ValidateAndThrow(model);
 
             var result = await Mediator.Send(new CreatePurchaseCommand
@@ -54,7 +53,6 @@ namespace Loyalty.Application.Venue
 
         public async Task<object> Burn(PurchaseViewModel model, long venueId, string userId)
         {
-            //todo: validate worker belongs to venue
             new PurchaseValidator().ValidateAndThrow(model);
 
             var result = await Mediator.Send(new BurnPurchaseCommand

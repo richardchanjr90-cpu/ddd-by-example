@@ -46,7 +46,8 @@ namespace LoyaltyProgram.Http.Signup
                     { ClaimTypes.Role, role.ToString() },
                     { ClaimTypes.Name, model.Name },
                     { ClaimTypes.Surname, model.Surname },
-                    { ClaimTypes.Email, model.Email }
+                    { ClaimTypes.Email, model.Email },
+                    { ClaimTypes.StateOrProvince, model.City }
                 };
 
                 if (worker != null)

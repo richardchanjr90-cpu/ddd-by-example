@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using FluentValidation;
-using FluentValidation.Resources;
-using FluentValidation.Validators;
-using Loyalty.Application.ViewModels.Location;
 using PhoneNumbers;
 
 namespace Loyalty.Application.ViewModels.Validators

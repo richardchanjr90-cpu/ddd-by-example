@@ -73,7 +73,7 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static List<long> GetVenueIds(this ClaimsPrincipal principal)
         {
-            return GetVenues(principal).Select(long.Parse).ToList();
+            return GetVenues(principal)?.Select(long.Parse).ToList();
         }
 
         public static bool IsInRoleAndThrow(this ClaimsPrincipal principal, long id)

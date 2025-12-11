@@ -49,14 +49,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.Group.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
             modelBuilder.Entity<Product>().HasQueryFilter(e => TenantIds.Contains(e.ProductGroup.VenueId) && !e.IsArchived);
-
-            //modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
-            //modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
-            //modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            //modelBuilder.Entity<Worker>().HasQueryFilter(p => !p.IsArchived);
-            //modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            //modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
-            //modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
         }
 
         protected void AddAuditInfo()

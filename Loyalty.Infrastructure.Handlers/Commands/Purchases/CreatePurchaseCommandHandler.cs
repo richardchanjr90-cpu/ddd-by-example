@@ -1,5 +1,7 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -9,6 +11,7 @@ using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
@@ -24,6 +27,25 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
         public async Task<ICommandResult> Handle(CreatePurchaseCommand request, CancellationToken cancellationToken)
         {
+            if (request.ProductId != null)
+            {
+                var product = await Context.Products.Where(x => x.Id == request.ProductId)
+                    .SingleOrDefaultAsync(cancellationToken);
+
+                if (product == null)
+                {
+                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.");
+                }
+            }
+
+            var loyaltyGroup = await Context.LoyaltyProductGroups.Where(x => x.Id == request.LoyaltyProductGroupId)
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (loyaltyGroup == null)
+            {
+                throw new LoyaltyValidationException("LoyaltyProductGroup does not belong to this venue or does not exist.");
+            }
+
             var purchase = new Purchase
             {
                 Value = request.Value,
