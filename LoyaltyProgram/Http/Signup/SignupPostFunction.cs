@@ -61,6 +61,7 @@ namespace LoyaltyProgram.Http.Signup
                 {
                     role = (VenueUserRole)worker.Role;
                     worker.WorkerId = identity;
+                    worker.Email = model.Email;
                     await service.Update(worker);
                     additionalClaims[ClaimTypes.Role] = role.ToString();
                     additionalClaims.Add(ClaimConstants.VENUE_CLAIM, worker.VenueIds.Select(x => x.ToString())
