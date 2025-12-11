@@ -41,7 +41,12 @@ namespace LoyaltyProgram.Http.Signup
                 var worker = await service.GetByPhone(phone);
                 var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-                var claimsDictionary = token.Principal.Claims.ToDictionary(x => x.Type, x => (object) x.Value);
+                var claimsDictionary = new Dictionary<string, object>();
+
+                foreach (var claim in token.Principal.Claims)
+                {
+                    claimsDictionary[claim.Type] = claim.Value;
+                }
 
                 var additionalClaims = new Dictionary<string, object>
                 {
@@ -63,9 +68,10 @@ namespace LoyaltyProgram.Http.Signup
                     worker.WorkerId = identity;
                     worker.Email = model.Email;
                     await service.Update(worker);
-                    additionalClaims[ClaimTypes.Role] = role.ToString();
-                    additionalClaims.Add(ClaimConstants.VENUE_CLAIM, worker.VenueIds.Select(x => x.ToString())
-                        .ToCommaSeparatedStringOrNull());
+
+                    claimsDictionary[ClaimTypes.Role] = role.ToString();
+                    claimsDictionary[ClaimConstants.VENUE_CLAIM] =
+                        worker.VenueIds.Select(x => x.ToString()).ToCommaSeparatedStringOrNull();
                 }
 
                 claimsDictionary.Remove("firebase");

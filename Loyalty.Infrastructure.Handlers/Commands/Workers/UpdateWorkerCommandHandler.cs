@@ -24,15 +24,20 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
         {
-            if (request.Role == VenueUserRole.Owner)
-            {
-                throw new ValidationException("Impossible to create second owner.");
-            }
-
             var worker = await Context.Workers
                 .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
+
+            foreach (var venueId in request.VenueIds)
+            {
+                var venue = worker.Venues.SingleOrDefault(x => x.VenueId == venueId);
+
+                if (request.Role == VenueUserRole.Owner && venue.Role != VenueUserRole.Owner)
+                {
+                    throw new ValidationException("Impossible to create second owner.");
+                }
+            }
 
             if (worker == null)
             {
@@ -52,7 +57,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     var venueWorker = new VenueWorker();
                     venueWorker.VenueId = id;
                     venueWorker.Worker = worker;
-                    //venueWorker.Role = request.Role;
                     Context.VenueWorkers.Add(venueWorker);
                 }
 
