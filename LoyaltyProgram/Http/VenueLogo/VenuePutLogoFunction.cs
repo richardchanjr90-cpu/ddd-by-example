@@ -45,20 +45,19 @@ namespace LoyaltyProgram.Http.VenueLogo
             return await Handler.WrapAsync(token, async () =>
             {
                 token.Principal.IsInRoleAndThrow(id);
-                var image = imageService.GetImages(req).FirstOrDefault();
+
+                var image = await imageService.GetImageOrNullAsync(req);
 
                 if (image != null)
                 {
                     using (var stream = new MemoryStream())
                     {
-                        var logoName = $"logo-{Guid.NewGuid()}.jpg";
-                        var imageStream = Image.Load(image);
-                        imageStream.SaveAsJpeg(stream);
-                        stream.Position = 0;
+                        var blob = await imageService.GetBlobForImageAsync(container, $"logo-{Guid.NewGuid()}.jpg");
 
-                        await container.CreateIfNotExistsAsync();
-                
-                        var blob = container.GetBlockBlobReference(logoName);
+                        imageService.SaveImageOfWidthToStream(
+                            stream,
+                            image);
+
                         await blob.UploadFromStreamAsync(stream);
                         await service.PatchLogo(id, blob.Uri.ToString());
                     }

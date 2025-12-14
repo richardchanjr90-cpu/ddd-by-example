@@ -91,5 +91,16 @@ namespace Loyalty.Application.Venue
 
             return mapper.Map<WorkerViewModel>(result);
         }
+
+        public async Task<ICommandResult> PatchPhoto(string logo, long id)
+        {
+            var result = await Mediator.Send(new PatchWorkerPhotoCommand
+            {
+                Id = id,
+                PhotoUri = logo
+            });
+
+            return result;
+        }
     }
 }

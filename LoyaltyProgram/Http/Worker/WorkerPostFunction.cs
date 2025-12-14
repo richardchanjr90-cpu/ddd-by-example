@@ -1,9 +1,12 @@
+using System;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
@@ -11,15 +14,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure.Storage.Blob;
+using SixLabors.ImageSharp;
 
 namespace LoyaltyProgram.Http.Worker
 {
     public class WorkerPostFunction
     {
+        private readonly LoyaltyVenueImageAppService imageService;
         private readonly WorkerAppService service;
 
-        public WorkerPostFunction(WorkerAppService service)
+        public WorkerPostFunction(WorkerAppService service, LoyaltyVenueImageAppService imageService)
         {
+            this.imageService = imageService;
             this.service = service;
         }
 
@@ -33,17 +40,21 @@ namespace LoyaltyProgram.Http.Worker
             [Queue("worker-invite", Connection = "QueueConnectionString")] ICollector<WorkerInviteDto> queueItems)
         {
             log.LogInformation($"{nameof(WorkerPostFunction)} was triggered.");
-     
+
             return await Handler.WrapAsync(token, async () =>
             {
                 model = await req.Cast<WorkerViewModel>();
+
                 var result = await service.Create(model);
 
-                queueItems.Add(new WorkerInviteDto
+                if (result.Success)
                 {
-                    WorkerPhone = model.Phone,
-                    Inviter = token.Principal.Identity.Name
-                });
+                    queueItems.Add(new WorkerInviteDto
+                    {
+                        WorkerPhone = model.Phone,
+                        Inviter = token.Principal.Identity.Name
+                    });
+                }
 
                 return new OkObjectResult(result);
             });

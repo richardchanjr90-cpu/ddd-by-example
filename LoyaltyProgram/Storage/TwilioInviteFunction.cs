@@ -22,7 +22,6 @@ namespace LoyaltyProgram.Storage
 
             return new CreateMessageOptions(phoneNumber)
             {
-                MessagingServiceSid = "MG829cf1e996e60d1c77fa66eee2eb1500",
                 Body = $"{data.Inviter} пригласил вас в Zalik.App Business " +
                        $"—сылка дл€ скачивани€: http://покаеенет.com"
             };

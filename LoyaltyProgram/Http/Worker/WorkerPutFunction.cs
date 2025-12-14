@@ -1,8 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +34,9 @@ namespace LoyaltyProgram.Http.Worker
             return await Handler.WrapAsync(token, async () =>
             {
                 model = await req.Cast<WorkerViewModel>();
-                return new OkObjectResult(await service.Update(model));
+                var result = await service.Update(model);
+
+                return new OkObjectResult(result);
             });
         }
     }

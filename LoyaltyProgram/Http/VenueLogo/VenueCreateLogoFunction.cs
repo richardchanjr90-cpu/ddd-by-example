@@ -5,9 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AzureExtensions.FunctionToken;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
@@ -16,7 +14,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SixLabors.ImageSharp;
 
 namespace LoyaltyProgram.Http.VenueLogo
 {
@@ -47,28 +44,24 @@ namespace LoyaltyProgram.Http.VenueLogo
                 token.Principal.IsInRoleAndThrow(id);
 
                 var items = await imageService.GetCount(container);
-                var images = await imageService.ConvertImages(req, id);
+                var image = await imageService.ConvertImage(req, id, Guid.NewGuid());
 
-                if (items + images.Count > 1)
+                if (items >= 1)
                 {
-                    return new BadRequestErrorMessageResult("Cannot create more than 1 logo"); 
+                    return new BadRequestErrorMessageResult("Cannot create more than 1 logo");
                 }
 
-                if (images.Count > 0)
+                using (var stream = new MemoryStream())
                 {
-                    using (var stream = new MemoryStream())
-                    {
-                        var logoName = $"logo-{Guid.NewGuid()}.jpg";
-                        var item = images.First();
-                        var imageStream = Image.Load(item.Image);
-                        imageStream.SaveAsJpeg(stream);
-                        stream.Position = 0;
-                        await container.CreateIfNotExistsAsync();
-                        var blob = container.GetBlockBlobReference(logoName);
-                        await blob.UploadFromStreamAsync(stream);
+                    var blob = await imageService.GetBlobForImageAsync(container, $"logo-{image.Index}.jpg");
 
-                        await service.PatchLogo(id, blob.Uri.ToString());
-                    }
+                    imageService.SaveImageOfWidthToStream(
+                        stream,
+                        image.Image);
+
+                    await blob.UploadFromStreamAsync(stream);
+
+                    await service.PatchLogo(id, blob.Uri.ToString());
                 }
                 return new NoContentResult();
             });

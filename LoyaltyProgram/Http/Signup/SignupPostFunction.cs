@@ -10,6 +10,7 @@ using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
@@ -67,6 +68,13 @@ namespace LoyaltyProgram.Http.Signup
                     role = (VenueUserRole)worker.Role;
                     worker.WorkerId = identity;
                     worker.Email = model.Email;
+
+                    //todo: change to CompleteRegistration command.
+                    foreach (var id in worker.VenueIds)
+                    {
+                        token.Principal.AddVenues(id);
+                    }
+
                     await service.Update(worker);
 
                     claimsDictionary[ClaimTypes.Role] = role.ToString();

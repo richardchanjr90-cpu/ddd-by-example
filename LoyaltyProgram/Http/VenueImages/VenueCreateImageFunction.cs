@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -14,8 +15,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
@@ -51,51 +50,43 @@ namespace LoyaltyProgram.Http.VenueImages
                 token.Principal.IsInRoleAndThrow(id);
 
                 var items = await imageService.GetCount(container);
-                var images = await imageService.ConvertImages(req, id);
+                var image = await imageService.ConvertImage(req, id, Guid.NewGuid());
 
-                if (items + images.Count > 10)
+                if (items + 1 > 10)
                 {
                     return new BadRequestErrorMessageResult("Cannot create more than 10 images");
                 }
 
-                if (images.Count > 0)
+                using (var stream = new MemoryStream())
+                using (var mdStream = new MemoryStream())
+                using (var smStream = new MemoryStream())
                 {
-                    using (var stream = new MemoryStream())
-                    using (var mdStream = new MemoryStream())
-                    using (var smStream = new MemoryStream())
-                    {
-                        var item = images.First();
-                        var imageStream = Image.Load(item.Image);
-                        imageStream.SaveAsJpeg(stream);
-                        stream.Position = 0;
+                    await container.CreateIfNotExistsAsync();
+                    var blob = container.GetBlockBlobReference($"original-image-{image.Index}.jpg");
+                    var mdBlob = container.GetBlockBlobReference($"md-image-{image.Index}.jpg");
+                    var smBlob = container.GetBlockBlobReference($"sm-image-{image.Index}.jpg");
 
-                        await container.CreateIfNotExistsAsync();
-                        var blob = container.GetBlockBlobReference($"original-image-{item.Index}.jpg");
-                        var mdBlob = container.GetBlockBlobReference($"md-image-{item.Index}.jpg");
-                        var smBlob = container.GetBlockBlobReference($"sm-image-{item.Index}.jpg");
+                    imageService.SaveImageOfWidthToStream(
+                        stream,
+                        image.Image);
 
-                        await blob.UploadFromStreamAsync(stream);
+                    imageService.SaveImageOfWidthToStream(
+                        mdStream,
+                        image.Image,
+                        imageSettings.Value.MdImageWidth);
 
-                        var mdWidthMultiplier = imageStream.Width / (float)imageSettings.Value.MdImageWidth;
-                        var smWidthMultiplier = imageStream.Width / (float)imageSettings.Value.SmImageWidth;
+                    imageService.SaveImageOfWidthToStream(
+                        smStream,
+                        image.Image,
+                        imageSettings.Value.SmImageWidth);
 
-                        imageStream.Mutate(ctx => ctx.Resize(
-                            (int)(imageStream.Width / mdWidthMultiplier),
-                            (int)(imageStream.Height / mdWidthMultiplier)));
-                        imageStream.SaveAsJpeg(mdStream);
-                        await mdBlob.UploadFromStreamAsync(mdStream);
+                    await blob.UploadFromStreamAsync(stream);
+                    await mdBlob.UploadFromStreamAsync(mdStream);
+                    await smBlob.UploadFromStreamAsync(smStream);
 
-                        imageStream.Mutate(ctx => ctx.Resize(
-                            (int)(imageStream.Width / smWidthMultiplier),
-                            (int)(imageStream.Height / smWidthMultiplier)));
-
-                        imageStream.SaveAsJpeg(smStream);
-                        await smBlob.UploadFromStreamAsync(smStream);
-
-                        await service.Patch(
-                            id,
-                            await imageService.GetImages(container, "original"));
-                    }
+                    await service.Patch(
+                        id,
+                        await imageService.GetImages(container, "original"));
                 }
 
                 return new NoContentResult();

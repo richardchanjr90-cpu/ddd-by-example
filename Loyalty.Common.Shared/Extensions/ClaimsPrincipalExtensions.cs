@@ -16,6 +16,18 @@ namespace Loyalty.Common.Shared.Extensions
             return identity;
         }
 
+        public static bool IsUser(this ClaimsPrincipal principal, string uid)
+        {
+            var identity = principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            if (!identity.Equals(uid))
+            {
+                throw new AuthenticationException();
+            }
+
+            return identity.Equals(uid);
+        }
+
         public static string GetPhone(this ClaimsPrincipal principal)
         {
             var claim = principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;

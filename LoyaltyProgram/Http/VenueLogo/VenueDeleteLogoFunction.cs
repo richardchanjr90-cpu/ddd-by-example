@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
@@ -38,7 +37,7 @@ namespace LoyaltyProgram.Http.VenueLogo
             [Blob("venue-logo-{id}", FileAccess.ReadWrite)]
             CloudBlobContainer container)
         {
-            log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenueDeleteLogoFunction)} was triggered.");
 
             return await Handler.WrapAsync(token, async () =>
             {

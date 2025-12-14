@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
@@ -13,8 +12,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
@@ -42,7 +39,7 @@ namespace LoyaltyProgram.Http.VenueImages
             HttpRequestMessage req,
             ILogger log,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
-            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream blobStream,
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream originalBlob,
             [Blob("venue-images-{id}/md-image-{index}.jpg", FileAccess.Write)] Stream mediumBlob,
             [Blob("venue-images-{id}/sm-image-{index}.jpg", FileAccess.Write)] Stream smallBlob)
         {
@@ -52,25 +49,23 @@ namespace LoyaltyProgram.Http.VenueImages
             {
                 token.Principal.IsInRoleAndThrow(id);
 
-                var images = await imageService.ConvertImages(req, id, Guid.Parse(index));
+                var image = await imageService.ConvertImage(req, id, Guid.Parse(index));
 
-                if (images != null && images.Count > 0)
+                if (image != null)
                 {
-                    var imageStream = Image.Load(images.First().Image);
-                    imageStream.SaveAsJpeg(blobStream);
+                    imageService.SaveImageOfWidthToStream(
+                        originalBlob, 
+                        image.Image);
 
-                    var mdWidthMultiplier = imageStream.Width / (float)imageSettings.Value.MdImageWidth;
-                    var smWidthMultiplier = imageStream.Width / (float)imageSettings.Value.SmImageWidth;
+                    imageService.SaveImageOfWidthToStream(
+                        mediumBlob, 
+                        image.Image, 
+                        imageSettings.Value.MdImageWidth);
 
-                    imageStream.Mutate(ctx => ctx.Resize(
-                        (int)(imageStream.Width / mdWidthMultiplier),
-                        (int)(imageStream.Height / mdWidthMultiplier)));
-                    imageStream.SaveAsJpeg(mediumBlob);
-
-                    imageStream.Mutate(ctx => ctx.Resize(
-                        (int)(imageStream.Width / smWidthMultiplier),
-                        (int)(imageStream.Height / smWidthMultiplier)));
-                    imageStream.SaveAsJpeg(smallBlob);
+                    imageService.SaveImageOfWidthToStream(
+                        smallBlob, 
+                        image.Image, 
+                        imageSettings.Value.SmImageWidth);
                 }
 
                 return new NoContentResult();
