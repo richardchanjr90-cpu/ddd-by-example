@@ -90,6 +90,8 @@ namespace LoyaltyProgram.Http.VenueImages
                     await mdBlob.UploadFromStreamAsync(mdStream);
                     await smBlob.UploadFromStreamAsync(smStream);
 
+                    log.LogDebug($"Venue Image created for: {id}", id);
+
                     await service.Patch(
                         id,
                         await imageService.GetImages(container, "original"));

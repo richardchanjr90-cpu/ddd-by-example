@@ -74,6 +74,7 @@ namespace LoyaltyProgram.Http.VenueImages
                         imageSettings.Value.SmImageWidth);
                 }
 
+                log.LogDebug($"Venue Image created for: {id}", id);
                 return new NoContentResult();
             });
         }
