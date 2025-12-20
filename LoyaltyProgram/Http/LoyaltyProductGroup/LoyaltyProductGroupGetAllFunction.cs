@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -25,6 +26,7 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(LoyaltyProductGroupGetViewModel[]))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("LoyaltyProductGroupGetAllFunction")]
         public async Task<IActionResult> Run(
             long loyaltyProgramId,

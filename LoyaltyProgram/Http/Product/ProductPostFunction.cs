@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Common.Shared.Exceptions;
@@ -25,6 +26,7 @@ namespace LoyaltyProgram.Http.Product
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("ProductPostFunction")]
         public async Task<IActionResult> Run(
             long groupId,

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
@@ -35,6 +36,7 @@ namespace LoyaltyProgram.Http.VenueLogo
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenuePutLogoFunction")]
         public async Task<IActionResult> Run(
             long id,

@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Exceptions;
@@ -27,6 +28,7 @@ namespace LoyaltyProgram.Http.Venue
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenuePutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues")]

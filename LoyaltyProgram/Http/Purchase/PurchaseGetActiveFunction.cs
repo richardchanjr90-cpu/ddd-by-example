@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.Purchase;
@@ -24,6 +25,7 @@ namespace LoyaltyProgram.Http.Purchase
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ActivePurchasesViewModel[]))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("PurchaseGetActiveFunction")]
         public async Task<IActionResult> Run(
             long venueId,

@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
@@ -25,6 +26,7 @@ namespace LoyaltyProgram.Http.Worker
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]

@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureExtensions.FunctionToken.FunctionBinding.Enums;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
@@ -26,6 +27,7 @@ namespace LoyaltyProgram.Http.Venue
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueApprovePatchFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/approve/")]

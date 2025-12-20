@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Domain.Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,7 @@ namespace LoyaltyProgram.Http.Worker
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("WorkerPatchLogoFunction")]
         public async Task<IActionResult> Run(
             long id,

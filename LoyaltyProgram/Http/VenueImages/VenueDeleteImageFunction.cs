@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -29,6 +30,7 @@ namespace LoyaltyProgram.Http.VenueImages
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueDeleteImageFunction")]
         public async Task<IActionResult> Run(
             long id,

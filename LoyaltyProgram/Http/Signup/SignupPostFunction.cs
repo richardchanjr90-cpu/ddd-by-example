@@ -5,6 +5,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using FirebaseAdmin.Auth;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
@@ -31,6 +32,7 @@ namespace LoyaltyProgram.Http.Signup
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("SignupPostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "signup")]
