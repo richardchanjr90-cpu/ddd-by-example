@@ -67,6 +67,7 @@ namespace LoyaltyProgram.Http.VenueLogo
 
                     await blob.UploadFromStreamAsync(stream);
 
+                    log.LogDebug($"Venue Logo created for: {id}", id);
                     await service.PatchLogo(id, blob.Uri.ToString());
                 }
                 return new NoContentResult();
