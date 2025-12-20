@@ -30,7 +30,7 @@ namespace LoyaltyProgram.Http.Worker
         [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
-            WorkerViewModel model,
+            [RequestBodyType(typeof(WorkerViewModel), "WorkerViewModel")]  WorkerViewModel model,
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)

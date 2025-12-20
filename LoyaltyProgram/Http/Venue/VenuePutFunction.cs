@@ -32,7 +32,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenuePutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues")]
-            VenueViewModel model,
+            [RequestBodyType(typeof(VenueViewModel), "VenueViewModel")] VenueViewModel model,
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
             ILogger log)

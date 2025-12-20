@@ -31,7 +31,7 @@ namespace LoyaltyProgram.Http.Purchase
         public async Task<IActionResult> Run(
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/purchases")]
-            PurchaseViewModel model,
+            [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {

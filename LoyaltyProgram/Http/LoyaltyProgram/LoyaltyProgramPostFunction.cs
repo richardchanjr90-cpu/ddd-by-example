@@ -32,7 +32,7 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
         public async Task<IActionResult> Run(
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/programs")]
-            LoyaltyProgramViewModel model,
+            [RequestBodyType(typeof(LoyaltyProgramViewModel), "LoyaltyProgramViewModel")] LoyaltyProgramViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {

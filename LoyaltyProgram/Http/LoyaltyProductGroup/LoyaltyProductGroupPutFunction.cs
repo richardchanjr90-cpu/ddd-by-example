@@ -30,7 +30,7 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
         public async Task<IActionResult> Run(
             long loyaltyProgramId,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "programs/{loyaltyProgramId}/loyaltygroups")]
-            LoyaltyProductGroupViewModel model,
+            [RequestBodyType(typeof(LoyaltyProductGroupViewModel), "LoyaltyProductGroupViewModel")] LoyaltyProductGroupViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {

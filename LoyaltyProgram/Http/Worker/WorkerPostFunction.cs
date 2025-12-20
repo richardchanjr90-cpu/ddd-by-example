@@ -39,7 +39,7 @@ namespace LoyaltyProgram.Http.Worker
         [FunctionName("WorkerPostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "workers")]
-            WorkerViewModel model,
+            [RequestBodyType(typeof(WorkerViewModel), "WorkerViewModel")] WorkerViewModel model,
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log,

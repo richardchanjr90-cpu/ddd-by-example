@@ -31,7 +31,7 @@ namespace LoyaltyProgram.Http.Product
         public async Task<IActionResult> Run(
             long groupId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productGroups/{groupId}/products")]
-            ProductViewModel model,
+            [RequestBodyType(typeof(ProductViewModel), "ProductViewModel")] ProductViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {

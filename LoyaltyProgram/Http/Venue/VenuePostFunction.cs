@@ -33,7 +33,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenuePostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
-            VenueViewModel model,
+            [RequestBodyType(typeof(VenueViewModel), "VenueViewModel")] VenueViewModel model,
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner))] FunctionTokenResult token,
             ILogger log)

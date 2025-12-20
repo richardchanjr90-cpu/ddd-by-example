@@ -36,7 +36,7 @@ namespace LoyaltyProgram.Http.Signup
         [FunctionName("SignupPostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "signup")]
-            SignupViewModel model,
+            [RequestBodyType(typeof(SignupViewModel), "SignupViewModel")] SignupViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
