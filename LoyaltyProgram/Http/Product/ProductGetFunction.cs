@@ -1,6 +1,10 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Application.ViewModels.Product;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +23,8 @@ namespace LoyaltyProgram.Http.Product
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ProductViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("ProductGetFunction")]
         public async Task<IActionResult> Run(
             long id,

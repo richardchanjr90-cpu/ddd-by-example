@@ -1,6 +1,10 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +24,8 @@ namespace LoyaltyProgram.Http.ProductGroup
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ProductGroupViewModel[]))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("ProductGroupGetAllFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productgroups")]

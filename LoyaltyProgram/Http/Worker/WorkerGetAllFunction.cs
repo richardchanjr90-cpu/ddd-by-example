@@ -1,7 +1,11 @@
+using System;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
@@ -21,6 +25,8 @@ namespace LoyaltyProgram.Http.Worker
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(WorkerViewModel[]))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("WorkerGetAllFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "workers")]
