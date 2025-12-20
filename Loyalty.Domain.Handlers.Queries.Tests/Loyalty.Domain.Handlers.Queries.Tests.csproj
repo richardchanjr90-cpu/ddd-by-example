@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Tests.Shared\Loyalty.Tests.Shared.csproj" />
     <ProjectReference Include="..\LoyaltyProgram\LoyaltyProgram.csproj" />
   </ItemGroup>
 
