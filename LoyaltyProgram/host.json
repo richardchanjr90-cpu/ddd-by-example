@@ -17,7 +17,7 @@
   },
   "extensions": {
     "http": {
-      "routePrefix": "api/v1"
+      "routePrefix": "api"
     }
   },
   "healthMonitor": {
