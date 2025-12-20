@@ -41,7 +41,7 @@ namespace LoyaltyProgram.Http.Signup
         {
             log.LogInformation($"{nameof(SignupPostFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 var role = VenueUserRole.Owner;
                 var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;

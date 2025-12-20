@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
         {
             log.LogInformation($"{nameof(LoyaltyProgramPostFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Create(model, venueId, token.Principal.GetUserId()));
             });

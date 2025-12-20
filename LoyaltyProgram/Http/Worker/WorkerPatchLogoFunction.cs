@@ -40,7 +40,7 @@ namespace LoyaltyProgram.Http.Worker
         {
             log.LogInformation($"{nameof(WorkerPatchLogoFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 var image = await imageService.GetImageOrNullAsync(req);
 

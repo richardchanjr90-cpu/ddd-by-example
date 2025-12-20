@@ -44,7 +44,7 @@ namespace LoyaltyProgram.Http.VenueImages
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 token.Principal.IsInRoleAndThrow(id);
 

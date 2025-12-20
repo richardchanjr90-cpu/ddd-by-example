@@ -40,7 +40,7 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenuePostFunction)} was triggered.");
             
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 model = await req.Cast<VenueViewModel>();
                 log.LogDebug($"Venue created: {model}", model);

@@ -39,7 +39,7 @@ namespace LoyaltyProgram.Http.Worker
         {
             log.LogInformation($"{nameof(WorkerGetAllFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
             });

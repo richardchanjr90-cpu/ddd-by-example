@@ -37,7 +37,7 @@ namespace LoyaltyProgram.Http.Purchase
         {
             log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
             });

@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 req.ValidateSecret();
                 return new OkObjectResult(await service.Approve(id));

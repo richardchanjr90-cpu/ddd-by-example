@@ -36,7 +36,7 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenueGetAllFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                  return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
              });

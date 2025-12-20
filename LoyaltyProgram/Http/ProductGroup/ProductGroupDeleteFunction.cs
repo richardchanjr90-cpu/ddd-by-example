@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Http.ProductGroup
         {
             log.LogInformation($"{nameof(ProductGroupDeleteFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Archive(id, token.Principal.GetUserId()));
             });

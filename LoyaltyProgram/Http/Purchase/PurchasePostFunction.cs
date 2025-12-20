@@ -37,7 +37,7 @@ namespace LoyaltyProgram.Http.Purchase
         {
             log.LogInformation($"{nameof(PurchasePostFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Purchase(model, venueId, token.Principal.GetUserId()));
             });

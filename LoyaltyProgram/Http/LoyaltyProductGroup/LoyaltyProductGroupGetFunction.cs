@@ -37,7 +37,7 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupGetFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Get(id, loyaltyProgramId));
             });

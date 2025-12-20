@@ -41,7 +41,7 @@ namespace LoyaltyProgram.Http.VenueSas
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var sas = storageAccount.GetSharedAccessSignature(policy);
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(sas);
             });

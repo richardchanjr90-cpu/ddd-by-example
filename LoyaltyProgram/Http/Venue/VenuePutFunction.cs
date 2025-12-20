@@ -39,7 +39,7 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenuePutFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 model = await req.Cast<VenueViewModel>();
                 return new OkObjectResult(await service.Update(model));

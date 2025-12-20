@@ -40,7 +40,7 @@ namespace LoyaltyProgram.Http.ProductGroup
             model = await req.Cast<ProductGroupViewModel>();
             log.LogInformation($"{nameof(ProductGroupPutFunction)} was triggered.");
 
-            return await Handler.WrapAsync(token, async () =>
+            return await Handler.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Update(model));
             });
