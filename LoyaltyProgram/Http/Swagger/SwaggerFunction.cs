@@ -5,7 +5,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace SampleFunction
+namespace LoyaltyProgram.Http.Swagger
 {
     public static class SwaggerFunctions
     {
@@ -22,7 +22,7 @@ namespace SampleFunction
         [SwaggerIgnore]
         [FunctionName("SwaggerUi")]
         public static Task<HttpResponseMessage> SwaggerUi(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "swagger/ui")]
             HttpRequestMessage req,
             [SwashBuckleClient] ISwashBuckleClient swashBuckleClient)
         {
