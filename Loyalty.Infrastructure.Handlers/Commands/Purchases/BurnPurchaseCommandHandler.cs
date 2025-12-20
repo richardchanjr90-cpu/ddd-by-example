@@ -42,31 +42,16 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 throw new LoyaltyValidationException("Amount of points is lower than requested");
             }
 
-            var amountToBurn = request.Amount;
-            foreach (var purchase in purchases)
+            var purchase = new Purchase
             {
-                var purchaseValue = purchase.Value;
-                purchase.BurnDate = DateTime.Now;
+                UserId = request.UserId,
+                VenueId = request.VenueId,
+                Value = -request.Amount,
+                InternalPurchaseMadeBySystem = true,
+                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+            };
 
-                if (purchaseValue > amountToBurn)
-                {
-                    purchase.BurnDate = DateTime.Now;
-                    var amountToReSave = purchaseValue - amountToBurn;
-                    var leftOverPurchase = new Purchase
-                    {
-                        UserId = request.UserId,
-                        VenueId = request.VenueId,
-                        Value = amountToReSave,
-                        InternalPurchaseMadeBySystem = true,
-                        LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-                        ProductId = purchase.ProductId
-                    };
-                    Context.Purchases.Add(leftOverPurchase);
-                    break;
-                }
-
-                amountToBurn -= purchaseValue ?? 0;
-            }
+            Context.Purchases.Add(purchase);
 
             var result = new CommandResult
             {
