@@ -1,17 +1,30 @@
 {
   "version": "2.0",
   "logging": {
-    "logging": {
-      "fileLoggingMode": "debugOnly"
+    "fileLoggingMode": "always",
+    "logLevel": {
+      "default": "Information",
+      "Host.Results": "Error",
+      "Function": "Trace",
+      "Host.Aggregator": "Trace"
     },
     "applicationInsights": {
-      "sampling": {
+      "samplingSettings": {
         "isEnabled": true,
         "maxTelemetryItemsPerSecond": 5
       }
     }
   },
-  "http": {
-    "routePrefix": "api/v1"
+  "extensions": {
+    "http": {
+      "routePrefix": "api/v1"
+    }
+  },
+  "healthMonitor": {
+    "enabled": true,
+    "healthCheckInterval": "00:00:10",
+    "healthCheckWindow": "00:02:00",
+    "healthCheckThreshold": 6,
+    "counterThreshold": 0.80
   }
 }
