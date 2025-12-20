@@ -134,6 +134,8 @@ namespace Loyalty.Application.Venue
                 height: (int)(imageStream.Height / imageRatio)));
 
             imageStream.SaveAsJpeg(stream: blobStream);
+            blobStream.Position = 0;
+
             return blobStream;
         }
     }
