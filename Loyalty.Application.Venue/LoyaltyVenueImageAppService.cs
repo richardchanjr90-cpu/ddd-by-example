@@ -119,24 +119,22 @@ namespace Loyalty.Application.Venue
             return blob;
         }
 
-        public  Stream SaveImageOfWidthToStream(Stream blobStream, byte [] image, float? width = null)
+        public Stream SaveImageOfWidthToStream(Stream blobStream, byte[] image, float? width = null)
         {
-            using (var imageStream = Image.Load(data: image))
+            var imageStream = Image.Load(data: image);
+            float imageRatio = 1;
+
+            if (width != null)
             {
-                float imageRatio = 1;
-
-                if (width != null)
-                {
-                    imageRatio = imageStream.Width / width.Value;
-                }
-                
-                imageStream.Mutate(operation: ctx => ctx.Resize(
-                    width: (int)(imageStream.Width / imageRatio),
-                    height: (int)(imageStream.Height / imageRatio)));
-
-                imageStream.SaveAsJpeg(stream: blobStream);
-                return blobStream;
+                imageRatio = imageStream.Width / width.Value;
             }
+
+            imageStream.Mutate(operation: ctx => ctx.Resize(
+                width: (int)(imageStream.Width / imageRatio),
+                height: (int)(imageStream.Height / imageRatio)));
+
+            imageStream.SaveAsJpeg(stream: blobStream);
+            return blobStream;
         }
     }
 }

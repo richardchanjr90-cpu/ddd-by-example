@@ -80,6 +80,10 @@ namespace LoyaltyProgram.Http.VenueImages
                         image.Image,
                         imageSettings.Value.SmImageWidth);
 
+                    stream.Position = 0;
+                    mdStream.Position = 0;
+                    smStream.Position = 0;
+
                     await blob.UploadFromStreamAsync(stream);
                     await mdBlob.UploadFromStreamAsync(mdStream);
                     await smBlob.UploadFromStreamAsync(smStream);
