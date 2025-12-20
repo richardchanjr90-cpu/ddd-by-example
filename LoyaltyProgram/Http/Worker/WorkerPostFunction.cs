@@ -18,7 +18,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SixLabors.ImageSharp;
 
 namespace LoyaltyProgram.Http.Worker
 {

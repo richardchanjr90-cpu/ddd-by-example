@@ -3,7 +3,6 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Migrations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

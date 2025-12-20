@@ -11,7 +11,7 @@ using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace Loyalty.Infrastructure.DataAccess.Migrations
+namespace Loyalty.Infrastructure.DataAccess
 {
     public class LoyaltyTenantDbContext : LoyaltyDbContext, ILoyaltyTenantDbContext
     {

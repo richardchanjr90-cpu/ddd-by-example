@@ -11,8 +11,6 @@ using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Remotion.Linq.Clauses;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
