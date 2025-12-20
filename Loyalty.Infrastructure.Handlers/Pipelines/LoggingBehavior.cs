@@ -18,7 +18,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         RequestHandlerDelegate<TResponse> next)
     {
         var log = logFactory.CreateLogger(typeof(TRequest).Name);
-        log.LogInformation($"Handling {request}");
+        log.LogInformation($"Handling {request}", request);
         var response = await next();
         log.LogInformation($"Handled {typeof(TResponse).Name}");
 
