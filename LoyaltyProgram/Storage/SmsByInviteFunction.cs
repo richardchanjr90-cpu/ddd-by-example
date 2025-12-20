@@ -22,9 +22,8 @@ namespace LoyaltyProgram.Storage
 
             var message = $"{data.Inviter} пригласил вас в Zalik.App https://zalik.app/store";
 
-            byte[] bytes = Encoding.Default.GetBytes(message);
-            message = Encoding.Unicode.GetString(bytes);
-
+            //byte[] bytes = Encoding.Default.GetBytes(message);
+            //message = Encoding.Unicode.GetString(bytes);
             string token = "***REDACTED***";
             string phone = data.WorkerPhone.Replace("+", String.Empty);
             string alphanameId = "Zalik.App";
