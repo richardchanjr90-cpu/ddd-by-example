@@ -20,7 +20,7 @@ namespace LoyaltyProgram.Storage
         {
             log.LogInformation($"{nameof(SmsByInviteFunction)} was triggered.");
 
-            var message = $"{data.Inviter} пригласил вас в Zalik.App https://zalik.app/store";
+            var message = $"{data.Inviter} РїСЂРёРіР»Р°СЃРёР» РІР°СЃ РІ Zalik.App https://zalik.app/store";
 
             byte[] bytes = Encoding.Default.GetBytes(message);
             message = Encoding.Unicode.GetString(bytes);
