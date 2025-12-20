@@ -49,15 +49,19 @@ namespace LoyaltyProgram.Http.Worker
             {
                 model = await req.Cast<WorkerViewModel>();
 
-                var result = await service.Create(model);
-
-                queueItems.Add(new WorkerInviteDto
+                try
                 {
-                    WorkerPhone = model.Phone,
-                    Inviter = token.Principal.Identity.Name
-                });
-
-                return new OkObjectResult(result);
+                    var result = await service.Create(model);
+                    return new OkObjectResult(result);
+                }
+                finally
+                {
+                    queueItems.Add(new WorkerInviteDto
+                    {
+                        WorkerPhone = model.Phone,
+                        Inviter = token.Principal.Identity.Name
+                    });
+                }
             });
         }
     }
