@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -52,14 +51,11 @@ namespace LoyaltyProgram.Http.Worker
 
                 var result = await service.Create(model);
 
-                if (result.Success)
+                queueItems.Add(new WorkerInviteDto
                 {
-                    queueItems.Add(new WorkerInviteDto
-                    {
-                        WorkerPhone = model.Phone,
-                        Inviter = token.Principal.Identity.Name
-                    });
-                }
+                    WorkerPhone = model.Phone,
+                    Inviter = token.Principal.Identity.Name
+                });
 
                 return new OkObjectResult(result);
             });
