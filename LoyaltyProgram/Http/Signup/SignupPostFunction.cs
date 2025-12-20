@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
@@ -8,6 +10,7 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Services.AppAuthentication;
@@ -26,6 +29,8 @@ namespace LoyaltyProgram.Http.Signup
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("SignupPostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "signup")]

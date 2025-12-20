@@ -1,12 +1,14 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,8 @@ namespace LoyaltyProgram.Http.VenueLogo
             this.imageService = imageService;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("VenuePutLogoFunction")]
         public async Task<IActionResult> Run(
             long id,

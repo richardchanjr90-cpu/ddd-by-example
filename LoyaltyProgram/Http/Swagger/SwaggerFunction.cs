@@ -12,7 +12,7 @@ namespace SampleFunction
         [SwaggerIgnore]
         [FunctionName("Swagger")]
         public static Task<HttpResponseMessage> Swagger(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/json")]
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "swagger/json")]
             HttpRequestMessage req,
             [SwashBuckleClient] ISwashBuckleClient swashBuckleClient)
         {

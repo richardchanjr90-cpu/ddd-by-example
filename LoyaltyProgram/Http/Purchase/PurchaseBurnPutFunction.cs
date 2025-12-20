@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -20,6 +23,8 @@ namespace LoyaltyProgram.Http.Purchase
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("PurchaseBurnPutFunction")]
         public async Task<IActionResult> Run(
             long venueId,

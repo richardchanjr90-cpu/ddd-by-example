@@ -1,9 +1,12 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -24,6 +27,8 @@ namespace LoyaltyProgram.Http.VenueImages
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("VenueDeleteImageFunction")]
         public async Task<IActionResult> Run(
             long id,

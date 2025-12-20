@@ -1,9 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Net;
+using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureExtensions.FunctionToken.FunctionBinding.Enums;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -21,6 +24,8 @@ namespace LoyaltyProgram.Http.Venue
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("VenueApprovePatchFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/approve/")]

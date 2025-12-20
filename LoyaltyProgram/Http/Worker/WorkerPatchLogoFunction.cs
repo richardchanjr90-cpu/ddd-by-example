@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Domain.Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -23,6 +25,8 @@ namespace LoyaltyProgram.Http.Worker
             this.imageService = imageService;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("WorkerPatchLogoFunction")]
         public async Task<IActionResult> Run(
             long id,

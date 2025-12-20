@@ -1,9 +1,12 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -21,6 +24,8 @@ namespace LoyaltyProgram.Http.LoyaltyProgram
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [FunctionName("LoyaltyProgramPostFunction")]
         public async Task<IActionResult> Run(
             long venueId,
