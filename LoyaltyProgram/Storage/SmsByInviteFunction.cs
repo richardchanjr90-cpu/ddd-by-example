@@ -1,5 +1,6 @@
 using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Loyalty.Application.Storage.Dto;
 using Microsoft.Azure.WebJobs;
@@ -20,6 +21,9 @@ namespace LoyaltyProgram.Storage
             log.LogInformation($"{nameof(SmsByInviteFunction)} was triggered.");
 
             var message = $"{data.Inviter} пригласил вас в Zalik.App https://zalik.app/store";
+
+            byte[] bytes = Encoding.Default.GetBytes(message);
+            message = Encoding.UTF8.GetString(bytes);
 
             string token = "***REDACTED***";
             string phone = data.WorkerPhone.Replace("+", String.Empty);
