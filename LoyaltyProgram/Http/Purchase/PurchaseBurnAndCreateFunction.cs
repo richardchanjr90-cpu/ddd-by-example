@@ -30,7 +30,7 @@ namespace LoyaltyProgram.Http.Purchase
         [FunctionName("PurchaseBurnAndCreateFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases")]
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases/apply")]
             [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)

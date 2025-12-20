@@ -5,11 +5,11 @@ using Microsoft.Extensions.Logging;
 
 public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
 {
-    private readonly ILogger log;
+    private readonly ILoggerFactory logFactory;
 
-    public LoggingBehavior(ILogger log)
+    public LoggingBehavior(ILoggerFactory logFactory)
     {
-        this.log = log;
+        this.logFactory = logFactory;
     }
 
     public async Task<TResponse> Handle(
@@ -17,7 +17,7 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         CancellationToken cancellationToken,
         RequestHandlerDelegate<TResponse> next)
     {
-        log.LogInformation($"Handling {typeof(TRequest).Name}");
+        var log = logFactory.CreateLogger(typeof(TRequest).Name);
         log.LogInformation($"Handling {request}");
         var response = await next();
         log.LogInformation($"Handled {typeof(TResponse).Name}");
