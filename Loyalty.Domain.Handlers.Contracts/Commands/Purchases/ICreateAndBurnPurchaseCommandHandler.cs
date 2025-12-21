@@ -4,8 +4,8 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.Purchases
 {
-    public interface ICreatePurchaseCommandHandler 
-        : IRequestHandler<CreatePurchaseCommand, ICommandNotificationResult>
+    public interface ICreateAndBurnPurchaseCommandHandler
+        : IRequestHandler<CreateAndBurnCommand, ICommandNotificationResult>
     {
     }
 }

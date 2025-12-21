@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -18,12 +19,20 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
         CancellationToken cancellationToken,
         RequestHandlerDelegate<TResponse> next)
     {
-        var log = logFactory.CreateLogger(typeof(TRequest).Name);
-        //var serializedRequest = JsonConvert.SerializeObject(request);
-        //log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}", serializedRequest);
-        var response = await next();
-        log.LogInformation($"Handled {typeof(TResponse).Name}");
+        try
+        {
+            //var serializedRequest = JsonConvert.SerializeObject(request);
+            //log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}", serializedRequest);
+            var log = logFactory.CreateLogger(typeof(TRequest).Name);
+            var response = await next();
+            log.LogInformation($"Handled {typeof(TResponse).Name}");
 
-        return response;
+            return response;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

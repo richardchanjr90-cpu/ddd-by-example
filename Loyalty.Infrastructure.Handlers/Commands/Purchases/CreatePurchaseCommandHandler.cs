@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Exceptions;
@@ -19,14 +21,21 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
     {
         private readonly IMediator mediator;
 
-        public CreatePurchaseCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public CreatePurchaseCommandHandler(
+            ILoyaltyTenantDbContext context,
+            IMediator mediator,
+            IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(CreatePurchaseCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandNotificationResult> Handle(
+            CreatePurchaseCommand request,
+            CancellationToken cancellationToken)
         {
+            var result = new CommandNotificationResult();
+
             if (request.ProductId != null)
             {
                 var product = await Context.Products.Where(x => x.Id == request.ProductId)
@@ -34,16 +43,19 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
                 if (product == null)
                 {
-                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.");
+                    throw new LoyaltyValidationException("Product does not belong " +
+                                                         "to this venue or does not exist.");
                 }
             }
 
-            var loyaltyGroup = await Context.LoyaltyProductGroups.Where(x => x.Id == request.LoyaltyProductGroupId)
+            var loyaltyGroup = await Context.LoyaltyProductGroups
+                .Where(x => x.Id == request.LoyaltyProductGroupId)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (loyaltyGroup == null)
             {
-                throw new LoyaltyValidationException("LoyaltyProductGroup does not belong to this venue or does not exist.");
+                throw new LoyaltyValidationException("LoyaltyProductGroup does not belong " +
+                                                     "to this venue or does not exist.");
             }
 
             var purchase = new Purchase
@@ -57,24 +69,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             Context.Purchases.Add(purchase);
 
-            var result = new CommandResult
+            result.OnSuccessNotifications.Add(() => new CreatePurchaseNotification
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = purchase.Id
-            };
-
-            if (result.Success)
-            {
-                await mediator.Publish(
-                    new CreatePurchaseNotification
-                    {
-                        VenueId = request.VenueId,
-                        UserId = purchase.UserId,
-                        LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-                        Total = purchase.Value
-                    },
-                    cancellationToken);
-            }
+                VenueId = request.VenueId,
+                UserId = purchase.UserId,
+                LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
+                Total = purchase.Value
+            });
 
             return result;
         }

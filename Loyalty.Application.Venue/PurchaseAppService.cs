@@ -36,7 +36,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
         {
-            new PurchaseValidator().ValidateAndThrow(model);
+            new PurchaseValidator()
+                .ValidateAndThrow(model);
 
             var result = await Mediator.Send(new CreatePurchaseCommand
             {
@@ -48,7 +49,19 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return result;
+            return result.CommandResult;
+        }
+
+        public async Task<ICommandResult> PurchaseAndCreate(PurchaseViewModel model, long venueId, string userId)
+        {
+            new PurchaseValidator()
+                .ValidateAndThrow(model);
+
+            var result = await Mediator.Send(new CreateAndBurnCommand
+            {
+            });
+
+            return result.CommandResult;
         }
 
         public async Task<object> Burn(PurchaseViewModel model, long venueId, string userId)

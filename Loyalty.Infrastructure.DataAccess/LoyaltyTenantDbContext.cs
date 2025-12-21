@@ -37,11 +37,21 @@ namespace Loyalty.Infrastructure.DataAccess
             return await base.SaveChangesAsync(cancellationToken);
         }
 
+        public virtual IEnumerable<Entity> GetModifiedOrAddedEntitiesBeforeSaveChanges()
+        {
+            var entities = (from e in ChangeTracker.Entries()
+                       where e.Entity is Entity && (e.State == EntityState.Added || e.State == EntityState.Modified)
+                       select (Entity)e.Entity)
+                .ToList();
+
+            return entities;
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            //todo: when named queryfilter appear: separate archive and tenant filters;
+            //todo: when named query filter appear: separate archive and tenant filters;
             modelBuilder.Entity<Venue>().HasQueryFilter(e => TenantIds.Contains(e.Id) && !e.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);

@@ -48,7 +48,8 @@ namespace Loyalty.Application.Venue
             new ProductValidator().ValidateAndThrow(model);
             var command = mapper.Map<CreateProductCommand>(model);
             command.ProductGroupId = groupId;
-            return await Mediator.Send(command);
+            var result = await Mediator.Send(command);
+            return result.CommandResult;
         }
 
         public async Task<ICommandResult> Update(ProductViewModel model, long groupId)
