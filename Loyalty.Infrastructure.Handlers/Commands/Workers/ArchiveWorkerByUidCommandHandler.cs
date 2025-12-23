@@ -2,28 +2,30 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
-    public class ArchiveWorkerCommandHandler
-        : BaseHandler, IArchiveWorkerCommandHandler
+    public class ArchiveWorkerByUidCommandHandler
+        : BaseHandler, IRequestHandler<ArchiveWorkerByUidCommand, ICommandResult>
     {
-        public ArchiveWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+        public ArchiveWorkerByUidCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
         }
 
-        public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(ArchiveWorkerByUidCommand request, CancellationToken cancellationToken)
         {
             var venueWorkers = await Context.VenueWorkers
                 .Include(x => x.Worker)
-                .Where(x => x.WorkerId == request.Id)
+                .Where(x => x.Worker.WorkerId == request.WorkerId)
                 .ToListAsync(cancellationToken);
 
             var worker = venueWorkers.FirstOrDefault()?.Worker;

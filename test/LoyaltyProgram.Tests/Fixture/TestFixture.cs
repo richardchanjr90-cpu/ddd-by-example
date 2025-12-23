@@ -1,0 +1,67 @@
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Net.Http;
+using Google.Apis.Http;
+
+namespace LoyaltyProgram.Tests.Fixture
+{
+    public class TestFixture : IDisposable
+    {
+        public const string DotnetExecutablePath = "%ProgramFiles%\\dotnet\\dotnet.exe";
+        public const string FunctionHostPath =
+            "%APPDATA%\\npm\\node_modules\\azure-functions-core-tools\\bin\\func.dll";
+        public const string FunctionApplicationPath = "..\\..\\..\\..\\..\\LoyaltyProgram\\bin\\Debug\\netcoreapp2.2";
+
+        private readonly Process funcHostProcess;
+
+        public TestFixture()
+        {
+            var dotnetExePath = Environment.ExpandEnvironmentVariables(DotnetExecutablePath);
+            var functionHostPath = Environment.ExpandEnvironmentVariables(FunctionHostPath);
+            var functionAppFolder = Path.GetRelativePath(Directory.GetCurrentDirectory(), FunctionApplicationPath);
+
+            //funcHostProcess = new Process
+            //{
+            //    StartInfo =
+            //    {
+            //        FileName = dotnetExePath,
+            //        Arguments = $"\"{functionHostPath}\" start -p {Port}",
+            //        WorkingDirectory = functionAppFolder,
+            //        CreateNoWindow = false,
+            //        UseShellExecute = true,
+            //    }
+            //};
+            //var success = funcHostProcess.Start();
+
+            //if (!success)
+            //{
+            //    throw new InvalidOperationException("Could not start Azure Functions host.");
+            //}
+        }
+
+        public int Port { get; } = 7071;
+
+        public string Host { get; } = "http://localhost";
+
+        public HttpClient ConfigureClient(HttpClient client)
+        {
+            if (client != null)
+            {
+                client.BaseAddress = new Uri($"{Host}:{Port}");
+            }
+
+            return client;
+        }
+
+        public virtual void Dispose()
+        {
+            if (funcHostProcess != null && !funcHostProcess.HasExited)
+            {
+                funcHostProcess.Kill();
+            }
+
+            funcHostProcess?.Dispose();
+        }
+    }
+}

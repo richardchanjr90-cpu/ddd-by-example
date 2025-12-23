@@ -18,8 +18,8 @@ namespace Loyalty.Infrastructure.IoC.DI
 
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
-            services.AddScoped<ILoyaltyDbContext, LoyaltyDbContext>();
-            services.AddScoped<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
+            services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
+            services.AddTransient<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
             services.AddTransient<ITenantProvider, TenantTokenProvider>();
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];

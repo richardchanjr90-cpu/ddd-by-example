@@ -44,6 +44,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 Principal.AddVenues(venue.Id);
 
                 var worker = await Context.Workers
+                    .IgnoreQueryFilters()
                     .Include(x => x.Venues)
                     .ThenInclude(x => x.Venue)
                     .Where(x => x.WorkerId == Principal.GetUserId())

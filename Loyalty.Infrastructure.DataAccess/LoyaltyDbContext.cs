@@ -124,6 +124,10 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasOne(bc => bc.Worker)
                 .WithMany(c => c.Venues)
                 .HasForeignKey(bc => bc.WorkerId);
+
+            modelBuilder.Entity<VenueWorker>()
+                .HasIndex(p => new { p.VenueId, p.WorkerId })
+                .IsUnique();
         }
     }
 }

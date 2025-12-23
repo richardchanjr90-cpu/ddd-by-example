@@ -73,14 +73,12 @@ namespace Loyalty.Infrastructure.DataAccess
                 .Distinct()
                 .ToList();
 
-            if (ids.Count > 1)
+            foreach (var id in ids)
             {
-                throw new AuthenticationException("Access to more than 1 venue. Cross-tenant requests are not allowed.");
-            }
-
-            if (ids.Count > 0 && !TenantIds.Contains(ids.First()))
-            {
-                throw new AuthenticationException("Access to another venue. Cross-tenant requests are not allowed.");
+                if (!TenantIds.Contains(id))
+                {
+                    throw new AuthenticationException("Access to another venue. Cross-tenant requests are not allowed.");
+                }
             }
 
             foreach (var entry in entries)

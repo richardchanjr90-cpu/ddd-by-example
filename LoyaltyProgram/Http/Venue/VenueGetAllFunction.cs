@@ -36,10 +36,10 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenueGetAllFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
-            {
-                 return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
-             });
+            return await Handler.WrapAsync(
+                log,
+                token,
+                async () => new OkObjectResult(await service.Get(token.Principal.GetUserId())));
         }
     }
 }

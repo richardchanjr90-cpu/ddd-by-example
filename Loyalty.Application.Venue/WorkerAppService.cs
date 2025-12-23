@@ -82,6 +82,18 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
+        public async Task<ICommandResult> ArchiveByUid(string uid, string userId)
+        {
+            var command = new ArchiveWorkerByUidCommand()
+            {
+                WorkerId = uid,
+                UserId = userId
+            };
+
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
         public async Task<WorkerViewModel> GetByPhone(string phone)
         {
             var result = await Mediator.Send(new GetWorkerByPhoneQuery
