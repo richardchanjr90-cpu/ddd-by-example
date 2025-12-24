@@ -8,8 +8,8 @@ namespace Loyalty.Infrastructure.IoC.DI
     {
         public static void SetupSettings(this IServiceCollection services, IConfigurationRoot config)
         {
-            services.Configure<VenueGalleryImageSettings>(
-                options => config.GetSection(nameof(VenueGalleryImageSettings))
+            services.Configure<ImageSettings>(
+                options => config.GetSection(nameof(ImageSettings))
                     .Bind(options));
         }
     }

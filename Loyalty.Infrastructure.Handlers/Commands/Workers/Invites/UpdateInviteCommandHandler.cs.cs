@@ -16,62 +16,49 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
-    public class UpdateWorkerCommandHandler
-        : BaseHandler, IUpdateWorkerCommandHandler
+    public class UpdateInviteCommandHandler
+        : BaseHandler, IUpdateInviteCommandHandler
     {
-        public UpdateWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+        public UpdateInviteCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
         }
 
-        public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(UpdateInviteCommand request, CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
                 .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            foreach (var venueId in request.VenueIds)
+            if (request.Role == VenueUserRole.Owner)
             {
-                var venue = worker.Venues.SingleOrDefault(x => x.VenueId == venueId);
-
-                if (request.Role == VenueUserRole.Owner && venue.Role != VenueUserRole.Owner)
-                {
-                    throw new LoyaltyValidationException("Impossible to create second owner.", null, ErrorCode.SECOND_OWNER_NOT_ALLOWED);
-                }
+                throw new LoyaltyValidationException("Impossible to create a second owner.", null, ErrorCode.SECOND_OWNER_NOT_ALLOWED);
             }
 
             if (worker == null)
             {
                 worker = new Worker
                 {
-                    WorkerId = request.WorkerId,
                     Name = request.Name,
-                    Email = request.Email,
-                    LastName = request.LastName,
                     Phone = request.Phone,
-                    PhotoUri = request.PhotoUri,
                     PositionName = request.PositionName
                 };
 
-                foreach (var id in request.VenueIds)
-                {
-                    var venueWorker = new VenueWorker();
-                    venueWorker.VenueId = id;
-                    venueWorker.Worker = worker;
-                    Context.VenueWorkers.Add(venueWorker);
-                }
-
+                var venueWorker = new VenueWorker();
+                venueWorker.VenueId = request.VenueId;
+                venueWorker.Worker = worker;
+                Context.VenueWorkers.Add(venueWorker);
                 Context.Workers.Add(worker);
             }
             else
             {
-                worker.WorkerId = request.WorkerId;
                 worker.Name = request.Name;
-                worker.Email = request.Email;
-                worker.LastName = request.LastName;
                 worker.Phone = request.Phone;
                 worker.PositionName = request.PositionName;
+
+                var venueWorker = worker.Venues.Single(x => x.VenueId == request.VenueId);
+                venueWorker.Role = request.Role;
             }
 
             return new CommandResult

@@ -9,6 +9,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using FirebaseAdmin.Auth;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
+using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
@@ -46,11 +47,10 @@ namespace LoyaltyProgram.Http.Signup
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 var role = VenueUserRole.Owner;
-                var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
-                var worker = await service.GetByPhone(phone);
-                var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
                 var claimsDictionary = new Dictionary<string, object>();
+
+                var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
+                var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
                 foreach (var claim in token.Principal.Claims)
                 {
@@ -71,20 +71,32 @@ namespace LoyaltyProgram.Http.Signup
                     claimsDictionary[claim.Key] = claim.Value.ToString();
                 }
 
+                var worker = await service.GetByPhone(phone);
+
                 if (worker != null)
                 {
-                    role = (VenueUserRole)worker.Role;
-                    worker.WorkerId = identity;
-                    worker.Email = model.Email;
+                    var workerModel = new WorkerViewModel();
+                    workerModel.WorkerId = identity;
+          
+                    workerModel.Email = model.Email;
+                    workerModel.Name = model.Name;
+                    workerModel.LastName = model.Surname;
+                    workerModel.Id = worker.Id;
+                    workerModel.PositionName = worker.PositionName;
+                    workerModel.Phone = worker.Phone;
 
-                    //todo: change to CompleteRegistration command.
+                    //todo: uri at startup
+                    //workerModel.Role = (int) worker.Role;
+                    //workerModel.VenueIds = worker.VenueIds;
+                    //workerModel.PhotoUri = worker.Phone;
                     foreach (var id in worker.VenueIds)
                     {
                         token.Principal.AddVenues(id);
                     }
 
-                    await service.Update(worker);
+                    await service.CompleteSignup(workerModel);
 
+                    role = worker.Role;
                     claimsDictionary[ClaimTypes.Role] = role.ToString();
                     claimsDictionary[ClaimConstants.VENUE_CLAIM] =
                         worker.VenueIds.Select(x => x.ToString()).ToCommaSeparatedStringOrNull();

@@ -2,6 +2,7 @@
 using Loyalty.Application.AutoMapper;
 using Loyalty.Infrastructure.Handlers;
 using Loyalty.Infrastructure.Handlers.Notifications;
+using Loyalty.Infrastructure.Handlers.Pipelines;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

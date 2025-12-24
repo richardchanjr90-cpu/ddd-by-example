@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.Workers
 {
-    public interface ICreateWorkerCommandHandler : IRequestHandler<CreateWorkerCommand, ICommandResult>
+    public interface IUpdateInviteCommandHandler : IRequestHandler<UpdateInviteCommand, ICommandResult>
     {
     }
 }

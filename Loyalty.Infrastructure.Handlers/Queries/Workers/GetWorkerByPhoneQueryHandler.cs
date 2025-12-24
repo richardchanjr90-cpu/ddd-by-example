@@ -18,7 +18,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
         {
         }
 
-        public async Task<GetWorkerByIdQueryResult> Handle(
+        public async Task<GetInviteByPhoneQueryResult> Handle(
             GetWorkerByPhoneQuery request,
             CancellationToken cancellationToken)
         {
@@ -28,7 +28,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                 .Where(x => x.Phone == request.Phone)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            return worker?.ToResult();
+            return worker?.ToInvite();
         }
     }
 }

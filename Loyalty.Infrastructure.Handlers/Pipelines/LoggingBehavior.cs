@@ -5,36 +5,39 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+namespace Loyalty.Infrastructure.Handlers.Pipelines
 {
-    private readonly ILoggerFactory logFactory;
-
-    public LoggingBehavior(ILoggerFactory logFactory)
+    public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        this.logFactory = logFactory;
-    }
+        private readonly ILoggerFactory logFactory;
 
-    public async Task<TResponse> Handle(
-        TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
-    {
-        try
+        public LoggingBehavior(ILoggerFactory logFactory)
         {
-            var serializedRequest = JsonConvert.SerializeObject(request);
-            var log = logFactory.CreateLogger(typeof(TRequest).Name);
-            log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}");
-
-            var response = await next();
-
-            log.LogInformation($"Handled {typeof(TResponse).Name}");
-
-            return response;
+            this.logFactory = logFactory;
         }
-        catch (Exception ex)
+
+        public async Task<TResponse> Handle(
+            TRequest request,
+            CancellationToken cancellationToken,
+            RequestHandlerDelegate<TResponse> next)
         {
-            Console.WriteLine(ex);
-            throw;
+            try
+            {
+                var serializedRequest = JsonConvert.SerializeObject(request);
+                var log = logFactory.CreateLogger(typeof(TRequest).Name);
+                log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}");
+
+                var response = await next();
+
+                log.LogInformation($"Handled {typeof(TResponse).Name}");
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
         }
     }
 }

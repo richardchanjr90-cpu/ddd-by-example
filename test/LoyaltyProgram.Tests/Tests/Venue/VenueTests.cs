@@ -184,7 +184,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         }
 
         [Fact]
-        public async void iShouldGetAllUserVenue()
+        public async void ShouldGetAllUserVenue()
         {
             using (var user = new SignedUpUserFixture(fixture))
             using (new VenueFixture(user))

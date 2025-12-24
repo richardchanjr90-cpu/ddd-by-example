@@ -7,63 +7,66 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 
-public class CommandBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+namespace Loyalty.Infrastructure.Handlers.Pipelines
 {
-    private readonly ILoyaltyTenantDbContext context;
-    private readonly IMediator mediator;
-
-    public CommandBehavior(ILoyaltyTenantDbContext context, IMediator mediator)
+    public class CommandBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        this.context = context;
-        this.mediator = mediator;
-    }
+        private readonly ILoyaltyTenantDbContext context;
+        private readonly IMediator mediator;
 
-    public async Task<TResponse> Handle(
-        TRequest request,
-        CancellationToken cancellationToken,
-        RequestHandlerDelegate<TResponse> next)
-    {
-        var response = await next();
-
-        if (response is ICommandNotificationResult responseResult)
+        public CommandBehavior(ILoyaltyTenantDbContext context, IMediator mediator)
         {
-            var entities = context.GetModifiedOrAddedEntitiesBeforeSaveChanges();
-
-            try
-            {
-                responseResult.CommandResult = new CommandResult();
-                responseResult.CommandResult.Success = await context.SaveChangesAsync(cancellationToken) > 0;
-                responseResult.CommandResult.Result = entities.Select(x => x.Id);
-            }
-            catch (Exception ex)
-            {
-                responseResult.CommandResult.Success = false;
-                responseResult.CommandResult.Message = ex.Message;
-                responseResult.CommandResult.Result = ex;
-            }
-
-            if (responseResult.CommandResult.Success)
-            {
-                foreach (var notification in responseResult.OnSuccessNotifications)
-                {
-                    if (notification != null)
-                    {
-                        await mediator.Publish(notification(), cancellationToken);
-                    }
-                }
-            }
-            else
-            {
-                foreach (var notification in responseResult.OnFailNotifications)
-                {
-                    if (notification != null)
-                    {
-                        await mediator.Publish(notification(), cancellationToken);
-                    }
-                }
-            }
+            this.context = context;
+            this.mediator = mediator;
         }
 
-        return response;
+        public async Task<TResponse> Handle(
+            TRequest request,
+            CancellationToken cancellationToken,
+            RequestHandlerDelegate<TResponse> next)
+        {
+            var response = await next();
+
+            if (response is ICommandNotificationResult responseResult)
+            {
+                var entities = context.GetModifiedOrAddedEntitiesBeforeSaveChanges();
+
+                try
+                {
+                    responseResult.CommandResult = new CommandResult();
+                    responseResult.CommandResult.Success = await context.SaveChangesAsync(cancellationToken) > 0;
+                    responseResult.CommandResult.Result = entities.Select(x => x.Id);
+                }
+                catch (Exception ex)
+                {
+                    responseResult.CommandResult.Success = false;
+                    responseResult.CommandResult.Message = ex.Message;
+                    responseResult.CommandResult.Result = ex;
+                }
+
+                if (responseResult.CommandResult.Success)
+                {
+                    foreach (var notification in responseResult.OnSuccessNotifications)
+                    {
+                        if (notification != null)
+                        {
+                            await mediator.Publish(notification(), cancellationToken);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var notification in responseResult.OnFailNotifications)
+                    {
+                        if (notification != null)
+                        {
+                            await mediator.Publish(notification(), cancellationToken);
+                        }
+                    }
+                }
+            }
+
+            return response;
+        }
     }
 }

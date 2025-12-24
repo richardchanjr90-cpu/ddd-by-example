@@ -4,9 +4,9 @@ using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
-    public class WorkerCreateValidator : AbstractValidator<WorkerViewModel>
+    public class WorkerInviteValidator : AbstractValidator<InviteViewModel>
     {
-        public WorkerCreateValidator()
+        public WorkerInviteValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()

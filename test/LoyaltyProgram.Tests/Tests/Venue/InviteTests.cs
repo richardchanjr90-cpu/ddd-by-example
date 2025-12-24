@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Contracts;
 using Loyalty.Shared.Contracts.Enums;
@@ -71,7 +70,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email)))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
             using (var inviteeUser = new InviteFixture(venue.Venue.Id, role, createdUser))
             {
                 var response = await createdUser.Client.GetAsync("api/workers");
@@ -99,13 +98,13 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email)))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
             {
-                var worker =  WorkerFactory.GetWorker(role);
-                worker.VenueIds.Add(venue.Venue.Id);
+                var worker = WorkerFactory.GetInvite(role);
+                worker.VenueId = venue.Venue.Id;
 
                 var content = ModelHelper.Convert(worker);
-                var response = await createdUser.Client.PostAsync("api/workers", content);
+                var response = await createdUser.Client.PostAsync("api/workers/invited", content);
 
                 var getResult = await response.DeserializeAsync<CommandResult>();
                 Assert.False(getResult.Success);
@@ -118,11 +117,11 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             {
-                var worker = WorkerFactory.GetWorker(role);
-                worker.VenueIds.Add(venue.Venue.Id);
+                var worker = WorkerFactory.GetInvite(role);
+                worker.VenueId = venue.Venue.Id;
 
                 var content = ModelHelper.Convert(worker);
-                var response = await signedUpUserFixture.Client.PostAsync("api/workers", content);
+                var response = await signedUpUserFixture.Client.PostAsync("api/workers/invited", content);
 
                 var getResult = await response.DeserializeAsync<CommandResult>();
                 Assert.False(getResult.Success);
@@ -135,16 +134,59 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email)))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
             {
-                var worker = WorkerFactory.GetWorker(role);
-                worker.VenueIds.Add(venue.Venue.Id);
+                var worker = WorkerFactory.GetInvite(role);
+                worker.VenueId = venue.Venue.Id;
 
                 var content = ModelHelper.Convert(worker);
-                var response = await createdUser.Client.PostAsync("api/workers", content);
+                var response = await createdUser.Client.PostAsync("api/workers/invited", content);
 
                 Assert.False(response.IsSuccessStatusCode);
                 Assert.True(response.StatusCode == HttpStatusCode.Unauthorized);
+            }
+        }
+
+        [Theory]
+        [InlineData(VenueUserRole.Director, VenueUserRole.Worker, VenueUserRole.Manager)]
+        [InlineData(VenueUserRole.Director, VenueUserRole.Manager, VenueUserRole.Worker)]
+        public async Task ShouldChangeWorkerRoleInVenue(VenueUserRole inviterRole, VenueUserRole fromRole, VenueUserRole toRole)
+        {
+            using (var venue = new VenueFixture(signedUpUserFixture))
+            using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (new InviteFixture(venue.Venue.Id, fromRole, createdUser))
+            {
+                var response = await createdUser.Client.GetAsync("api/workers");
+                var workers = await response.DeserializeAsync<List<WorkerViewModel>>();
+
+                Assert.True(response.IsSuccessStatusCode);
+
+                foreach (var worker in workers)
+                {
+                    Assert.True(worker.Role == (int)fromRole);
+
+                    var invite = new InviteViewModel();
+                    invite.Role = (int) toRole;
+                    invite.Id = worker.Id;
+                    invite.VenueId = venue.Venue.Id;
+                    invite.Name = worker.Name;
+                    invite.PositionName = worker.PositionName;
+                    invite.Phone = worker.Phone;
+
+                    var content = ModelHelper.Convert(invite);
+                    var response2 = await createdUser.Client.PutAsync("api/workers/invited", content);
+                    var result = await response2.DeserializeAsync<CommandResult>();
+
+                    Assert.True(response2.IsSuccessStatusCode);
+                    Assert.True(result.Success);
+
+                    var response3 = await createdUser.Client.GetAsync($"api/workers/{worker.Id}");
+                    var workerChanged = await response3.DeserializeAsync<WorkerViewModel>();
+
+
+                    Assert.True(workerChanged.Role == (int) toRole);
+                }
             }
         }
 
@@ -159,11 +201,6 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         //}
 
         //[Fact]
-        //public async Task ShouldBeInDifferentRolesForDifferentVenues()
-        //{
-        //}
-
-        //[Fact]
         //public async Task ShouldRemoveWorkerFromVenue()
         //{
         //}
@@ -171,21 +208,6 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         //[Fact]
         //public async Task ShouldChangeWorkerRoleInVenue()
         //{
-        //}
-
-        //[Fact]
-        //public async Task ShouldResendInviteToWorkerIfAsked()
-        //{
-        //    using (var venue = new VenueFixture(signedUpUserFixture))
-        //    using (var invitedWorker = new InviteFixture(venue.Venue.Id, VenueUserRole.Director, signedUpUserFixture))
-        //    using (var signedUpWorker = new InvitedUserFixture(fixture,
-        //        new AuthUser(invitedWorker.InvitedUser.Phone,
-        //            invitedWorker.InvitedUser.Email)))
-        //    {
-
-
-
-        //    }
         //}
     }
 }

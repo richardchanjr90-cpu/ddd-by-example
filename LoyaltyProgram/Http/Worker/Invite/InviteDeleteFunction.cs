@@ -17,11 +17,11 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Worker
 {
-    public class WorkerDeleteByUidFunction
+    public class InviteDeleteFunction
     {
         private readonly WorkerAppService service;
 
-        public WorkerDeleteByUidFunction(WorkerAppService service)
+        public InviteDeleteFunction(WorkerAppService service)
         {
             this.service = service;
         }
@@ -29,15 +29,15 @@ namespace LoyaltyProgram.Http.Worker
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("WorkerDeleteByUidFunction")]
+        [FunctionName("InviteDeleteFunction")]
         public async Task<IActionResult> Run(
             string uid,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/draft/{uid}")]
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/invited/{uid}")]
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(WorkerDeleteByUidFunction)} was triggered.");
+            log.LogInformation($"{nameof(InviteDeleteFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {

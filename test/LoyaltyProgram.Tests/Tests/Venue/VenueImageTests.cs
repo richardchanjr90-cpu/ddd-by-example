@@ -89,7 +89,8 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var originalHash = ImageFactory.GetHash(originamMap);
                 var loadHash = ImageFactory.GetHash(loadedMap);
 
-                int equalElements = originalHash.Zip(loadHash, (i, j) => i == j).Count(eq => eq); Assert.True(equalElements >= 256 * 0.9);
+                int equalElements = originalHash.Zip(loadHash, (i, j) => i == j).Count(eq => eq);
+                Assert.True(equalElements >= 256 * 0.9);
             }
         }
 

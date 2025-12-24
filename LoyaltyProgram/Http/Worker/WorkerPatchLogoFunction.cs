@@ -5,14 +5,17 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using FluentValidation;
+using Loyalty.Application.Storage.Dto.Validators;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.Worker
@@ -21,11 +24,13 @@ namespace LoyaltyProgram.Http.Worker
     {
         private readonly WorkerAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
+        private readonly IOptions<ImageSettings> settings;
 
-        public WorkerPatchLogoFunction(WorkerAppService service, LoyaltyVenueImageAppService imageService)
+        public WorkerPatchLogoFunction(WorkerAppService service, LoyaltyVenueImageAppService imageService, IOptions<ImageSettings> settings)
         {
             this.service = service;
             this.imageService = imageService;
+            this.settings = settings;
         }
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
@@ -45,6 +50,9 @@ namespace LoyaltyProgram.Http.Worker
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 var image = await imageService.GetImageOrNullAsync(req);
+
+                new VenuePhotoValidator(settings.Value)
+                    .ValidateAndThrow(image);
 
                 using (var stream = new MemoryStream())
                 {

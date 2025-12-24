@@ -5,29 +5,26 @@ using SixLabors.ImageSharp;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
-    public class VenueNewImageValidator : AbstractValidator<VenueNewBlobImageDto>
+    public class VenuePhotoValidator : AbstractValidator<byte []>
     {
         private readonly ImageSettings settings;
 
-        public VenueNewImageValidator(ImageSettings settings)
+        public VenuePhotoValidator(ImageSettings settings)
         {
             this.settings = settings;
 
-            RuleFor(x => x.Image)
+            RuleFor(x => x)
                 .NotNull()
                 .Must(x => x.Length > 1024)
                 .WithMessage("Image should be loaded.");
 
-            RuleFor(x => x.VenueId)
-                .GreaterThan(0);
-
-            RuleFor(x => x.Image)
+            RuleFor(x => x)
                 .Must(SizeIsLessThan1MbPlusSmallOverhead)
                 .WithMessage("Image must be up to 1 MB.")
                 .Must(IsImageValid)
                 .WithMessage("Image must be in PNG or JPG format.");
 
-            RuleFor(x => x.Image)
+            RuleFor(x => x)
                 .Must(ValidateWidthAndHeight)
                 .WithMessage("Image must be between 800x600 and 2560x1440px.");
         }
@@ -57,10 +54,10 @@ namespace Loyalty.Application.Storage.Dto.Validators
             {
                 var image = Image.Load(arrayImage);
 
-                isValid = image.Width <= settings.MaxGalleryImageWidth;
-                isValid = isValid && image.Height <= settings.MaxGalleryImageHeight;
-                isValid = isValid && image.Height >= settings.MinGalleryImageHeight;
-                isValid = isValid && image.Width >= settings.MinGalleryImageWidth;
+                isValid = image.Width <= settings.MaxPhotoImageWidth;
+                isValid = isValid && image.Height <= settings.MaxPhotoImageHeight;
+                isValid = isValid && image.Height >= settings.MinPhotoImageHeight;
+                isValid = isValid && image.Width >= settings.MinPhotoImageWidth;
             }
             catch (Exception)
             {

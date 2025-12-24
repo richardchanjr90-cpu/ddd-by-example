@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using MediatR;
 
 namespace Loyalty.Application.Venue
@@ -53,17 +54,37 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<WorkerViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(WorkerViewModel model)
+        public async Task<ICommandResult> Invite(InviteViewModel model)
         {
-            new WorkerCreateValidator().ValidateAndThrow(model);
-            var command = mapper.Map<CreateWorkerCommand>(model);
+            new WorkerInviteValidator().ValidateAndThrow(model);
+            var command = mapper.Map<CreateInviteCommand>(model);
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(WorkerViewModel model)
+        public async Task<ICommandResult> UpdateInvited(InviteViewModel model)
+        {
+            new WorkerInviteValidator().ValidateAndThrow(model);
+            var command = mapper.Map<UpdateInviteCommand>(model);
+
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> CompleteSignup(WorkerViewModel model)
         {
             new WorkerUpdateValidator().ValidateAndThrow(model);
+
+            var command = mapper.Map<UpdateWorkerCommand>(model);
+
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> UpdateProfile(WorkerViewModel model)
+        {
+            new WorkerUpdateValidator().ValidateAndThrow(model);
+
             var command = mapper.Map<UpdateWorkerCommand>(model);
 
             var commandResult = await Mediator.Send(command);
@@ -94,14 +115,14 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<WorkerViewModel> GetByPhone(string phone)
+        public async Task<GetInviteByPhoneQueryResult> GetByPhone(string phone)
         {
             var result = await Mediator.Send(new GetWorkerByPhoneQuery
             {
                 Phone = phone
             });
 
-            return mapper.Map<WorkerViewModel>(result);
+            return result;
         }
 
         public async Task<ICommandResult> PatchPhoto(string logo, long id)

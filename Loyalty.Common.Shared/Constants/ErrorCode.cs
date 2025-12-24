@@ -25,5 +25,7 @@ namespace Loyalty.Common.Shared.Constants
         public const string SECOND_OWNER_NOT_ALLOWED = "SECOND_OWNER_NOT_ALLOWED";
 
         public const string IMPOSSIBLE_TO_CREATE_WITH_ROLE = "INCORRECT_AMOUNT_OF_POINTS";
+
+        public const string VENUE_NOT_FOUND = "VENUE_NOT_FOUND";
     }
 }

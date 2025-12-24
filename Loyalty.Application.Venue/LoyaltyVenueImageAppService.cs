@@ -20,10 +20,10 @@ namespace Loyalty.Application.Venue
 {
     public class LoyaltyVenueImageAppService : BaseAppService
     {
-        private readonly IOptions<VenueGalleryImageSettings> settings;
+        private readonly IOptions<ImageSettings> settings;
 
         public LoyaltyVenueImageAppService(IMediator mediator,
-            IOptions<VenueGalleryImageSettings> settings)
+            IOptions<ImageSettings> settings)
             : base(mediator)
         {
             this.settings = settings;

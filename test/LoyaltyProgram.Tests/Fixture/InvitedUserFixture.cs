@@ -9,12 +9,14 @@ namespace LoyaltyProgram.Tests.Fixture
     public class InvitedUserFixture : IDisposable, IUserCreateFixture
     {
         private readonly TestFixture fixture;
+        private readonly IUserCreateFixture creatorsFixture;
 
         public HttpClient Client { get; } = new HttpClient();
 
-        public InvitedUserFixture(TestFixture fixture, AuthUser user)
+        public InvitedUserFixture(TestFixture fixture, AuthUser user, IUserCreateFixture creatorsFixture)
         {
             this.fixture = fixture;
+            this.creatorsFixture = creatorsFixture;
             User = user;
 
             Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + User.GetAuthTokenAsync().GetAwaiter().GetResult());
@@ -50,7 +52,7 @@ namespace LoyaltyProgram.Tests.Fixture
 
         private async Task DeleteWorkerAsync()
         {
-            await Client.DeleteAsync("api/workers/draft/" + User.Uid);
+            await creatorsFixture.Client.DeleteAsync("api/workers/invited/" + User.Uid);
         }
 
         public AuthUser User { get; }

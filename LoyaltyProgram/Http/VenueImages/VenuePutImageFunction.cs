@@ -22,12 +22,12 @@ namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenuePutImageFunction
     {
-        private readonly IOptions<VenueGalleryImageSettings> imageSettings;
+        private readonly IOptions<ImageSettings> imageSettings;
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
 
         public VenuePutImageFunction(
-            IOptions<VenueGalleryImageSettings> imageSettings,
+            IOptions<ImageSettings> imageSettings,
             LoyaltyVenueAppService service,
             LoyaltyVenueImageAppService imageService)
         {

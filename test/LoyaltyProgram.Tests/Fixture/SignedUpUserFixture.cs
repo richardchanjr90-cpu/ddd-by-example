@@ -50,7 +50,7 @@ namespace LoyaltyProgram.Tests.Fixture
 
         private async Task DeleteWorkerAsync()
         {
-            await Client.DeleteAsync("api/workers/draft/" + User.Uid);
+            await Client.DeleteAsync("api/workers/invited/" + User.Uid);
         }
 
         public AuthUser User { get; }

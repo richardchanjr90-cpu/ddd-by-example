@@ -16,19 +16,19 @@ namespace LoyaltyProgram.Tests.Fixture
 
         public IUserCreateFixture CreatorsUserFixture { get; }
 
-        public InviteFixture(long venueId, VenueUserRole role, IUserCreateFixture creatorsFixture, WorkerViewModel model = null)
+        public InviteFixture(long venueId, VenueUserRole role, IUserCreateFixture creatorsFixture, InviteViewModel model = null)
         {
             CreatorsUserFixture = creatorsFixture;
             InvitedUser = CreateWorkerAsync(venueId, role, model).GetAwaiter().GetResult();
         }
 
-        private async Task<WorkerViewModel> CreateWorkerAsync(long venueId, VenueUserRole role, WorkerViewModel model = null)
+        private async Task<WorkerViewModel> CreateWorkerAsync(long venueId, VenueUserRole role, InviteViewModel model = null)
         {
-            var worker = model ?? WorkerFactory.GetWorker(role);
-            worker.VenueIds.Add(venueId);
+            var worker = model ?? WorkerFactory.GetInvite(role);
+            worker.VenueId = venueId;
 
             var content = ModelHelper.Convert(worker);
-            var response = await CreatorsUserFixture.Client.PostAsync("api/workers", content);
+            var response = await CreatorsUserFixture.Client.PostAsync("api/workers/invited", content);
             var result = await response.DeserializeAsync<CommandResult>();
             await CreatorsUserFixture.UpdateTokenAsync();
 

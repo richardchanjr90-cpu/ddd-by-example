@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Contracts.Queries.Workers
 {
-    public interface IGetWorkerByPhoneQueryHandler : IRequestHandler<GetWorkerByPhoneQuery, GetWorkerByIdQueryResult>
+    public interface IGetWorkerByPhoneQueryHandler : IRequestHandler<GetWorkerByPhoneQuery, GetInviteByPhoneQueryResult>
     {
     }
 }
