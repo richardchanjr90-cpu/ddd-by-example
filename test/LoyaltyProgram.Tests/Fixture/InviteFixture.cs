@@ -49,12 +49,5 @@ namespace LoyaltyProgram.Tests.Fixture
                 DeleteWorkerAsync(InvitedUser.Id).GetAwaiter().GetResult();
             }
         }
-
-        public HttpClient Client { get; }
-
-        public Task UpdateTokenAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

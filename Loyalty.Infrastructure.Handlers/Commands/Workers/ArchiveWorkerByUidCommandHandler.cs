@@ -1,54 +1,82 @@
-﻿using System.Linq;
+﻿using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+using Dapper;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class ArchiveWorkerByUidCommandHandler
-        : BaseHandler, IRequestHandler<ArchiveWorkerByUidCommand, ICommandResult>
+        : BaseDapperHandler, IRequestHandler<ArchiveWorkerByUidCommand, ICommandResult>
     {
-        public ArchiveWorkerByUidCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private readonly SqlConnection connection;
+
+        public ArchiveWorkerByUidCommandHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
+            this.connection = connection;
         }
 
-        public async Task<ICommandResult> Handle(ArchiveWorkerByUidCommand request, CancellationToken cancellationToken)
+        public Task<ICommandResult> Handle(ArchiveWorkerByUidCommand request, CancellationToken cancellationToken)
         {
-            var venueWorkers = await Context.VenueWorkers
-                .Include(x => x.Worker)
-                .Where(x => x.Worker.WorkerId == request.WorkerId)
-                .ToListAsync(cancellationToken);
+            var ids = Principal.GetVenueIds();
+            var userId = request.UserId;
+            ICommandResult result = null;
+            var selectSql = "SELECT Id FROM loyalty.Worker WHERE WorkerId = @userId";
+            var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
+            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
 
-            var worker = venueWorkers.FirstOrDefault()?.Worker;
+            connection.Open();
 
-            foreach (var venueWorker in venueWorkers)
+            using (var scope = new TransactionScope())
             {
-                if (venueWorker != null)
+                var id = connection.ExecuteScalar(selectSql, new
                 {
-                    Context.VenueWorkers.Remove(venueWorker);
-                    worker = venueWorker.Worker;
+                    userId
+                });
+                var number = connection.Execute(deleteSql, new
+                {
+                    id,
+                    ids
+                });
+
+                if (number > 0)
+                {
+                    var number2 = connection.Execute(updateSql, new
+                    {
+                        id
+                    });
+
+                    scope.Complete();
+
+                    result = new CommandResult
+                    {
+                        Success = true,
+                        Result = id
+                    };
                 }
-            }
+                else
+                {
+                    result = new CommandResult
+                    {
+                        Success = false,
+                    };
+                }
 
-            if (worker != null)
-            {
-                worker.IsArchived = true;
+                return Task.FromResult(result);
             }
-
-            return new CommandResult
-            {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = worker?.Id
-            };
         }
     }
 }

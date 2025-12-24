@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+using Dapper;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -12,41 +16,60 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class ArchiveWorkerCommandHandler
-        : BaseHandler, IArchiveWorkerCommandHandler
+        : BaseDapperHandler, IArchiveWorkerCommandHandler
     {
-        public ArchiveWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private readonly SqlConnection connection;
+
+        public ArchiveWorkerCommandHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
+            this.connection = connection;
         }
 
-        public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
+        public Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
         {
-            var venueWorkers = await Context.VenueWorkers
-                .Include(x => x.Worker)
-                .Where(x => x.WorkerId == request.Id)
-                .ToListAsync(cancellationToken);
+            var ids = Principal.GetVenueIds();
+            var id = request.Id;
 
-            var worker = venueWorkers.FirstOrDefault()?.Worker;
+            ICommandResult result = null;
+            var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
+            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
 
-            foreach (var venueWorker in venueWorkers)
+            connection.Open();
+
+            using (var scope = new TransactionScope())
             {
-                if (venueWorker != null)
+                var number = connection.Execute(deleteSql, new
                 {
-                    Context.VenueWorkers.Remove(venueWorker);
-                    worker = venueWorker.Worker;
+                    id,
+                    ids
+                });
+
+                if (number > 0)
+                {
+                    var number2 = connection.Execute(updateSql, new
+                    {
+                        id
+                    });
+
+                    scope.Complete();
+
+                    result = new CommandResult
+                    {
+                        Success = true,
+                        Result = id
+                    };
                 }
-            }
+                else
+                {
+                    result = new CommandResult
+                    {
+                        Success = false,
+                    };
+                }
 
-            if (worker != null)
-            {
-                worker.IsArchived = true;
+                return Task.FromResult(result);
             }
-
-            return new CommandResult
-            {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = worker?.Id
-            };
         }
     }
 }
