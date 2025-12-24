@@ -10,8 +10,10 @@ using FirebaseAdmin.Auth;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -41,7 +43,7 @@ namespace LoyaltyProgram.Http.Signup
         {
             log.LogInformation($"{nameof(SignupPostFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 var role = VenueUserRole.Owner;
                 var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;

@@ -26,6 +26,7 @@ namespace LoyaltyProgram.Tests.Fixture
             var response = await SignupFixture.Client.PostAsync("api/venues", content);
             var result = await response.DeserializeAsync<CommandResult>();
             await SignupFixture.UpdateTokenAsync();
+
             var getResponseMessage = await SignupFixture.Client.GetAsync("api/venues/" + result.Result);
             var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
             return getResult;
@@ -33,7 +34,8 @@ namespace LoyaltyProgram.Tests.Fixture
 
         private async Task DeleteVenueAsync(long id)
         {
-            await SignupFixture.Client.DeleteAsync("api/venues/" + id);
+            var response = await SignupFixture.Client.DeleteAsync("api/venues/" + id);
+            var result = await response.DeserializeAsync<CommandResult>();
         }
 
         public void Dispose()

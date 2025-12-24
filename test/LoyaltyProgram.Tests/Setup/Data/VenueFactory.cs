@@ -19,7 +19,7 @@ namespace LoyaltyProgram.Tests.Setup.Data
             faker.RuleFor(x => x.Description, f => f.Lorem.Sentence());
             faker.RuleFor(x => x.CategoryType, f => new Random().Next(1,3));
             faker.RuleFor(x => x.FullDescription, f => f.Lorem.Text());
-            faker.RuleFor(x => x.Name, f => f.Company.CompanyName());
+            faker.RuleFor(x => x.Name, f => "test_" + f.Company.CompanyName());
             faker.RuleFor(x => x.Type, f => (int)VenueType.Single);
             faker.RuleFor(x => x.WebSites, f=> new List<string>()
             {

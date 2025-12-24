@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -41,7 +42,7 @@ namespace LoyaltyProgram.Http.VenueSas
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var sas = storageAccount.GetSharedAccessSignature(policy);
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(sas);
             });

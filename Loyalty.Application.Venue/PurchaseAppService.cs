@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.TestHelper;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
@@ -23,11 +24,11 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(string UserId, long venueId)
+        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(string userId, long venueId)
         {
             var result = await Mediator.Send(new GetClientActivePurchasesQuery
             {
-                UserId = UserId,
+                UserId = userId,
                 VenueId = venueId
             });
 
@@ -36,8 +37,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
         {
-            new PurchaseValidator()
-                .ValidateAndThrow(model);
+            var testResult = new PurchaseValidator()
+                .TestValidate(model);
 
             var result = await Mediator.Send(new CreatePurchaseCommand
             {

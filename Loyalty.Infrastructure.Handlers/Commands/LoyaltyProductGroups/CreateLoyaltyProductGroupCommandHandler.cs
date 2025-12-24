@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
@@ -37,7 +38,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
             if (productGroup == null)
             {
-                throw new LoyaltyValidationException("No product group with provided id was found.");
+                throw new LoyaltyValidationException("No product group with provided id was found.", null, ErrorCode.INCORRECT_PRODUCT_GROUP);
             }
 
             var group = new LoyaltyProductGroup

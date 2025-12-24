@@ -5,8 +5,10 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -37,7 +39,7 @@ namespace LoyaltyProgram.Http.Worker
         {
             log.LogInformation($"{nameof(WorkerPutFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 model = await req.Cast<WorkerViewModel>();
                 var result = await service.Update(model);

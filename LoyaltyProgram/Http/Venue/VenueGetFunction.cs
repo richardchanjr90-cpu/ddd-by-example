@@ -7,6 +7,7 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -37,7 +38,7 @@ namespace LoyaltyProgram.Http.Venue
         {
             log.LogInformation($"{nameof(VenueGetFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Get(id));
             });

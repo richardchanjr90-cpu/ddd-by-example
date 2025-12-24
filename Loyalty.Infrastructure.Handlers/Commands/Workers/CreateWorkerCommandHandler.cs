@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -22,9 +25,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
         public async Task<ICommandResult> Handle(CreateWorkerCommand request, CancellationToken cancellationToken)
         {
-            if (request.Role == VenueUserRole.Owner)
+            if (request.Role >= Principal.GetRole())
             {
-                throw new ValidationException("Impossible to create second owner.");
+                throw new LoyaltyValidationException("Impossible to create a user with the role that is >= current user's.",null, ErrorCode.IMPOSSIBLE_TO_CREATE_WITH_ROLE);
             }
 
             var worker = new Worker

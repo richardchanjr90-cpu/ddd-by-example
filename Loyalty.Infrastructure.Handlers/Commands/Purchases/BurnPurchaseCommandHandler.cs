@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
@@ -39,7 +40,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             if (amount < request.Amount)
             {
-                throw new LoyaltyValidationException("Amount of points is lower than requested");
+                throw new LoyaltyValidationException("Amount of points is lower than requested", null, ErrorCode.INCORRECT_AMOUNT_OF_POINTS);
             }
 
             var purchase = new Purchase

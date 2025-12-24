@@ -21,17 +21,19 @@ public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, 
     {
         try
         {
-            //var serializedRequest = JsonConvert.SerializeObject(request);
-            //log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}", serializedRequest);
+            var serializedRequest = JsonConvert.SerializeObject(request);
             var log = logFactory.CreateLogger(typeof(TRequest).Name);
+            log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}");
+
             var response = await next();
+
             log.LogInformation($"Handled {typeof(TResponse).Name}");
 
             return response;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(ex);
             throw;
         }
     }

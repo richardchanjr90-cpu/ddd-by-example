@@ -6,7 +6,9 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -37,7 +39,7 @@ namespace LoyaltyProgram.Http.LoyaltyProductGroup
         {
             log.LogInformation($"{nameof(LoyaltyProductGroupGetAllFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.GetAll(loyaltyProgramId));
             });

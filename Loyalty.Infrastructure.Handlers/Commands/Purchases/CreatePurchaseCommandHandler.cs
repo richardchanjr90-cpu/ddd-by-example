@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
@@ -43,8 +44,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
                 if (product == null)
                 {
-                    throw new LoyaltyValidationException("Product does not belong " +
-                                                         "to this venue or does not exist.");
+                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.", null, ErrorCode.INCORRECT_PRODUCT);
                 }
             }
 
@@ -54,8 +54,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             if (loyaltyGroup == null)
             {
-                throw new LoyaltyValidationException("LoyaltyProductGroup does not belong " +
-                                                     "to this venue or does not exist.");
+                throw new LoyaltyValidationException("LoyaltyProductGroup does not belong to this venue or does not exist.", null, ErrorCode.INCORRECT_LOYALTY_GROUP);
             }
 
             var purchase = new Purchase

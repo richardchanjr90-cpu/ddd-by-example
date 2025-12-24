@@ -8,6 +8,7 @@ using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -37,7 +38,7 @@ namespace LoyaltyProgram.Http.Purchase
         {
             log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
             });

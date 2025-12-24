@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -54,7 +56,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             {
                 if (program.IsPublished)
                 {
-                    throw new ValidationException("You can't change already published program.");
+                    throw new LoyaltyValidationException("You can't change already published program.", null, ErrorCode.IS_PUBLISHED);
                 }
 
                 program.Name = request.Name;
@@ -64,7 +66,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
                 if (request.IsPublished && program.LoyaltyProductGroups?.Count == 0)
                 {
-                    throw new ValidationException("You can't publish group without any LoyaltyProductGroups attached.");
+                    throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.",null, ErrorCode.FAILED_TO_PUBLISH);
                 }
                 program.IsPublished = request.IsPublished;
             }

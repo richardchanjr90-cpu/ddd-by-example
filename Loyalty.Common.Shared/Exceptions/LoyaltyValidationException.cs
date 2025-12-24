@@ -1,29 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Loyalty.Common.Shared.Exceptions
 {
     public class LoyaltyValidationException : Exception
     {
-        public int Code { get; }
+        public List<string> Code { get; } = new List<string>();
 
-        public LoyaltyValidationException()
-        {
-        }
-
-        public LoyaltyValidationException(string message)
-            : base(message)
-        {
-        }
-
-        public LoyaltyValidationException(string message, Exception inner)
+        public LoyaltyValidationException(string message, Exception inner, params string [] code)
             : base(message, inner)
         {
-        }
-
-        public LoyaltyValidationException(string message, Exception inner, int code)
-            : base(message, inner)
-        {
-            Code = code;
+            if (code != null)
+            {
+                Code.AddRange(code);
+            }
         }
     }
 }

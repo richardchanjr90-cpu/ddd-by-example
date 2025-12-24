@@ -43,7 +43,7 @@ namespace Loyalty.Infrastructure.DataAccess
             }
             catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlException && (sqlException.Number == 2627 || sqlException.Number == 2601))
             {
-                throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DuplicatedEntity);
+                throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DUPLICATED_ENTITY);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Loyalty.Infrastructure.DataAccess
             }
             catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlException && (sqlException.Number == 2627 || sqlException.Number == 2601))
             {
-                throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DuplicatedEntity);
+                throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DUPLICATED_ENTITY);
             }
         }
 

@@ -12,12 +12,12 @@ using Xunit;
 namespace LoyaltyProgram.Tests.Tests.Venue
 {
     [Collection(nameof(FunctionTestCollection))]
-    public class FunctionsTests : IClassFixture<SignedUpUserFixture>
+    public class VenueTests : IClassFixture<SignedUpUserFixture>
     {
         private readonly TestFixture fixture;
         private readonly SignedUpUserFixture signedUpUserFixture;
 
-        public FunctionsTests(TestFixture fixture, SignedUpUserFixture signedUpUserFixture)
+        public VenueTests(TestFixture fixture, SignedUpUserFixture signedUpUserFixture)
         {
             this.fixture = fixture;
             this.signedUpUserFixture = signedUpUserFixture;
@@ -96,10 +96,8 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 venue.Venue.IsPublished = true;
                 var content = ModelHelper.Convert(venue);
                 var response2 = await signedUpUserFixture.Client.PutAsync("api/venues", content);
-                var resultString = await response2.Content.ReadAsStringAsync();
-
-                Assert.StartsWith("Validation failed", resultString);
-                Assert.False(response2.IsSuccessStatusCode);
+                var getResult = await response2.DeserializeAsync<CommandResult>();
+                Assert.False(getResult.Success);
             }
         }
 
@@ -146,9 +144,9 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                     "imnotjokingthisoneissecretqwezxc1!@#");
                 var getResponseMessage2 =
                     await signedUpUserFixture.Client.PatchAsync($"api/venues/{venue.Venue.Id}/approve", content);
-                var resultString = await getResponseMessage2.Content.ReadAsStringAsync();
 
-                Assert.StartsWith("Venue is not Published, so it can't be approved.", resultString);
+                var getResult = await getResponseMessage2.DeserializeAsync<CommandResult>();
+                Assert.False(getResult.Success);
 
                 var getResponseMessage3 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
                 var getResult3 = await getResponseMessage3.DeserializeAsync<VenueViewModel>();
@@ -186,7 +184,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         }
 
         [Fact]
-        public async void ShouldGetAllUserVenue()
+        public async void iShouldGetAllUserVenue()
         {
             using (var user = new SignedUpUserFixture(fixture))
             using (new VenueFixture(user))

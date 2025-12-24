@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Application.ViewModels.Venue;
+using Loyalty.Domain.Contracts;
 using LoyaltyProgram.Tests.Fixture;
 using LoyaltyProgram.Tests.Fixture.Extensions;
 using LoyaltyProgram.Tests.Setup.Data;
@@ -167,9 +168,8 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             var imageContent = ImageFactory.GetImageContent(width, height);
             var response = await fixture.SignupFixture.Client.PostAsync($"api/venues/{fixture.Venue.Id}/details/images", imageContent);
-            var resultString = await response.Content.ReadAsStringAsync();
-
-            Assert.StartsWith("Validation failed", resultString);
+            var getResult = await response.DeserializeAsync<CommandResult>();
+            Assert.False(getResult.Success);
         }
 
         public void Dispose()

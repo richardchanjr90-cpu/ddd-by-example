@@ -2,7 +2,6 @@
 using Loyalty.Application.AutoMapper;
 using Loyalty.Infrastructure.Handlers;
 using Loyalty.Infrastructure.Handlers.Notifications;
-using Loyalty.Infrastructure.Handlers.Pipelines;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +17,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,////>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandBehavior<,>));
 
             var serviceProvider = services.BuildServiceProvider();

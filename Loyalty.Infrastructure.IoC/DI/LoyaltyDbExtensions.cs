@@ -28,11 +28,11 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             //todo: remove for staging and prod;
             services.AddEntityFrameworkSqlServer()
-                .AddLogging()
+                // .AddLogging()
                 .AddDbContext<LoyaltyDbContext>(
                     options => options.UseSqlServer(
-                            connectionString, x => x.EnableRetryOnFailure())
-                        .UseLoggerFactory(MyLoggerFactory));
+                        connectionString, x => x.EnableRetryOnFailure()));
+            //.UseLoggerFactory(MyLoggerFactory));
         }
     }
 }

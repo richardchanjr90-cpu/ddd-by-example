@@ -6,16 +6,16 @@ using LoyaltyProgram.Tests.Setup.Data;
 
 namespace LoyaltyProgram.Tests.Fixture
 {
-    public class SignedUpUserFixture : IDisposable, IUserCreateFixture
+    public class InvitedUserFixture : IDisposable, IUserCreateFixture
     {
         private readonly TestFixture fixture;
 
         public HttpClient Client { get; } = new HttpClient();
 
-        public SignedUpUserFixture(TestFixture fixture)
+        public InvitedUserFixture(TestFixture fixture, AuthUser user)
         {
             this.fixture = fixture;
-            User = new AuthUser();
+            User = user;
 
             Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + User.GetAuthTokenAsync().GetAwaiter().GetResult());
 

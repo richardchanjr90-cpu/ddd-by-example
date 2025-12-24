@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -35,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
                 if (request.Role == VenueUserRole.Owner && venue.Role != VenueUserRole.Owner)
                 {
-                    throw new ValidationException("Impossible to create second owner.");
+                    throw new LoyaltyValidationException("Impossible to create second owner.", null, ErrorCode.SECOND_OWNER_NOT_ALLOWED);
                 }
             }
 

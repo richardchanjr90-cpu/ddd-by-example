@@ -10,7 +10,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
     {
         public static GetProductGroupByIdQueryResult ToResult(this ProductGroup item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var result = new GetProductGroupByIdQueryResult
             {
@@ -26,7 +29,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<GetProductGroupByIdQueryResult> ToResults(this List<ProductGroup> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             var results = new List<GetProductGroupByIdQueryResult>();
             items.ForEach(x => results.Add(x.ToResult()));

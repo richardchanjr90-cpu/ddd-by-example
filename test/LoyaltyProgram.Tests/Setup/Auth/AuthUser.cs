@@ -17,8 +17,9 @@ namespace LoyaltyProgram.Tests.Setup.Auth
         public const string PhonePrefix = "+376";
 
         private string phone;
-
+        private string email;
         private string uid;
+
         private readonly UserRecord user;
 
         private bool IsActive { get; set; } = true;
@@ -29,22 +30,34 @@ namespace LoyaltyProgram.Tests.Setup.Auth
             private set => phone = value;
         }
 
+        public string Email
+        {
+            get => IsActive ? email : throw new ObjectDisposedException("user");
+            private set => email = value;
+        }
+
         public string Uid
         {
             get => IsActive ? uid : throw new ObjectDisposedException("user");
             private set => uid = value;
         }
 
-        public AuthUser()
+        public AuthUser(string phone, string email)
         {
             using (HttpClient client = new HttpClient())
             {
                 CreateFirebaseInstanceAsync(client).GetAwaiter().GetResult();
             }
 
-            user = CreateFireBaseUser();
+            user = CreateFireBaseUser(phone, email);
             Phone = user.PhoneNumber;
             Uid = user.Uid;
+            Email = user.Email;
+        }
+
+        public AuthUser() 
+            : this(null, null)
+        {
         }
 
         public async Task<string> GetAuthTokenAsync()
@@ -88,14 +101,14 @@ namespace LoyaltyProgram.Tests.Setup.Auth
             }
         }
 
-        private static UserRecord CreateFireBaseUser()
+        private static UserRecord CreateFireBaseUser(string phone = null, string email = null)
         {
             var faker = new Faker();
             var args = new UserRecordArgs
             {
-                PhoneNumber = "+" + faker.Phone.PhoneNumber(PhonePrefix + "29#######"),
-                Email = "test_" + faker.Internet.Email(),
-                DisplayName = "ZalikTest",
+                PhoneNumber = phone ?? "+" + faker.Phone.PhoneNumber(PhonePrefix + "29#######"),
+                Email = email ?? "test_" + faker.Internet.Email(),
+                DisplayName = DisplayName
             };
 
             var userRecord =
@@ -112,6 +125,7 @@ namespace LoyaltyProgram.Tests.Setup.Auth
                 IsActive = false;
                 Uid = null;
                 Phone = null;
+                Email = null;
             }
         }
     }

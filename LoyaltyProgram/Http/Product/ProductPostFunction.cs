@@ -7,6 +7,7 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -37,7 +38,7 @@ namespace LoyaltyProgram.Http.Product
         {
             log.LogInformation($"{nameof(ProductPostFunction)} was triggered.");
 
-            return await Handler.WrapAsync(log, token, async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(await service.Create(model, groupId));
             });

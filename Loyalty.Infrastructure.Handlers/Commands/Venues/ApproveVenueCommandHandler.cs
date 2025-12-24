@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
@@ -38,7 +40,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (!venue.IsPublished)
             {
-                throw new ValidationException("Venue is not Published, so it can't be approved.");
+                throw new LoyaltyValidationException("Venue is not Published, so it can't be approved.", null, ErrorCode.FAILED_APPROVE_NOT_PUBLISHED_VENUE);
             }
 
             var wasApproved = venue.IsApproved;
