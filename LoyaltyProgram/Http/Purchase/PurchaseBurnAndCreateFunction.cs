@@ -36,7 +36,7 @@ namespace LoyaltyProgram.Http.Purchase
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(PurchaseBurnAndCreateFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
