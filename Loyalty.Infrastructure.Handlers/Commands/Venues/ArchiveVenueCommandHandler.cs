@@ -11,6 +11,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
@@ -19,8 +20,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
 
-        public ArchiveVenueCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public ArchiveVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }
@@ -60,13 +61,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     }
                 }
 
-                foreach (var worker in venue.Workers)
-                {
-                    if (worker.Role != VenueUserRole.Owner)
-                    {
-                        worker.IsArchived = true;
-                    }
-                }
+                //todo: review it again.
+                //foreach (var worker in venue.Workers)
+                //{
+                //    if (worker.Role != VenueUserRole.Owner)
+                //    {
+                //        worker.IsArchived = true;
+                //    }
+                //}
             }
 
             var result = new CommandResult

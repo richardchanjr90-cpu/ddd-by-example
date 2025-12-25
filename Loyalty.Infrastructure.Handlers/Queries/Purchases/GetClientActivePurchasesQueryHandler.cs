@@ -6,6 +6,7 @@ using Dapper;
 using Loyalty.Domain.Handlers.Contracts.Queries.Purchases;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
+using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 {
@@ -13,8 +14,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
     {
         private readonly SqlConnection connection;
 
-        public GetClientActivePurchasesQueryHandler(SqlConnection connection)
-            : base(connection)
+        public GetClientActivePurchasesQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
             this.connection = connection;
         }
@@ -39,14 +40,17 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     FROM loyalty.LoyaltyProgram lp
                     JOIN loyalty.LoyaltyProductGroup lpg ON lpg.LoyaltyProgramId = lp.Id
                     JOIN loyalty.LoyaltyGroupRule lgr ON lgr.LoyaltyProductGroupId = lpg.Id
-                    JOIN loyalty.ProductGroup pg ON pg.Id = lpg.ProductGroupId
-                    JOIN loyalty.Product pr ON pr.ProductGroupId = pg.Id
-                    LEFT JOIN (SELECT LoyaltyProductGroupId, 
-                    COALESCE(SUM([Value]), 0) as total 
-                    FROM loyalty.Purchase
-                    WHERE BurnDate IS NULL AND UserId = @UserId 
-                    GROUP BY LoyaltyProductGroupId) as total ON total.LoyaltyProductGroupId = lpg.Id
-                    WHERE lp.VenueId = @VenueId AND lp.IsArchived = 0";
+                    LEFT JOIN loyalty.ProductGroup pg ON pg.Id = lpg.ProductGroupId
+					LEFT JOIN loyalty.Purchase pur ON pur.LoyaltyProductGroupId = lpg.Id
+                    LEFT JOIN loyalty.Product pr ON pr.Id = pur.ProductId
+					LEFT JOIN (SELECT LoyaltyProductGroupId, 
+					COALESCE(SUM([Value]), 0) as total 
+					FROM loyalty.Purchase
+					WHERE BurnDate IS NULL AND UserId = @UserId
+					GROUP BY LoyaltyProductGroupId) as total ON total.LoyaltyProductGroupId = lpg.Id			
+                    WHERE -- pur.UserId = @UserId AND 
+                    lp.VenueId = @VenueId
+					AND lp.IsArchived = 0 ";
 
             var programs = connection.Query(getPrograms, new
             {
@@ -74,13 +78,14 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             RuleType = z.RuleType,
                             GroupName = z.LgroupName,
                             LoyaltyProductGroupId = z.LgroupId,
-                            Products = programs
-                                .Where(q => q.LgroupId == z.LgroupId)
-                                .Select(d => new ProductPurchaseResult
-                                {
-                                    Name = d.ProductName,
-                                    Id = d.ProductId
-                                }).ToList()
+                            //Products = programs
+                            //    .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
+                            //    .DefaultIfEmpty(null)
+                            //    .Select(d => new ProductPurchaseResult
+                            //    {
+                            //        Name = d?.ProductName,
+                            //        Id = d?.ProductId
+                            //    }).ToList()
                         }).ToList()
                 })
                 .ToList();

@@ -6,14 +6,15 @@ using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 {
     public class GetWorkerByIdQueryHandler : BaseHandler, IGetWorkerByIdQueryHandler
     {
-        public GetWorkerByIdQueryHandler(ILoyaltyDbContext context)
-            : base(context)
+        public GetWorkerByIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 
@@ -21,6 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
             CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
+                .Include(x=>x.Venues)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 

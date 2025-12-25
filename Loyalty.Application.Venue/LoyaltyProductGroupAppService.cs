@@ -27,11 +27,12 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<LoyaltyProductGroupGetViewModel> Get(long id)
+        public async Task<LoyaltyProductGroupGetViewModel> Get(long id, long programId)
         {
             var result = await Mediator.Send(new GetLoyaltyProductGroupByIdQuery
             {
-                Id = id
+                Id = id,
+                ProgramId = programId
             });
 
             return mapper.Map<LoyaltyProductGroupGetViewModel>(result);
@@ -109,12 +110,12 @@ namespace Loyalty.Application.Venue
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Archive(long id)
+        public async Task<ICommandResult> Archive(long id, string userId)
         {
             var command = new ArchiveLoyaltyProductGroupCommand
             {
                 Id = id,
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = userId
             };
 
             var commandResult = await Mediator.Send(command);

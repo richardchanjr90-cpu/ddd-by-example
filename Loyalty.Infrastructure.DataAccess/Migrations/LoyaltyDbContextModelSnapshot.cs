@@ -15,7 +15,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -27,7 +27,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<bool>("IsArchived");
 
@@ -35,7 +35,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Rule");
 
@@ -58,7 +58,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -70,7 +70,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -95,7 +95,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Description")
                         .HasMaxLength(2000);
@@ -109,7 +109,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -135,7 +135,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<int>("Icon");
 
@@ -143,7 +143,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -168,7 +168,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<int>("Icon");
 
@@ -176,7 +176,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -203,7 +203,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<bool>("InternalPurchaseMadeBySystem");
 
@@ -211,13 +211,15 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<long?>("ProductId");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<string>("UserId");
 
                     b.Property<decimal?>("Value");
+
+                    b.Property<long>("VenueId");
 
                     b.HasKey("Id");
 
@@ -242,7 +244,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Description")
                         .HasMaxLength(2000);
@@ -267,13 +269,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200);
 
-                    b.Property<Guid>("OwnerId");
+                    b.Property<string>("OwnerId")
+                        .IsRequired();
 
                     b.Property<long?>("ParentId");
 
@@ -290,6 +293,30 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.ToTable("Venue","loyalty");
                 });
 
+            modelBuilder.Entity("Loyalty.Core.Entities.VenueWorker", b =>
+                {
+                    b.Property<long>("VenueId");
+
+                    b.Property<long>("WorkerId");
+
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Role");
+
+                    b.HasKey("VenueId", "WorkerId");
+
+                    b.HasAlternateKey("Id");
+
+                    b.HasIndex("WorkerId");
+
+                    b.HasIndex("VenueId", "WorkerId")
+                        .IsUnique();
+
+                    b.ToTable("VenueWorker","loyalty");
+                });
+
             modelBuilder.Entity("Loyalty.Core.Entities.Worker", b =>
                 {
                     b.Property<long>("Id")
@@ -298,7 +325,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Created");
 
-                    b.Property<Guid?>("CreatedBy");
+                    b.Property<string>("CreatedBy");
 
                     b.Property<string>("Email");
 
@@ -308,7 +335,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<DateTime>("Modified");
 
-                    b.Property<Guid?>("ModifiedBy");
+                    b.Property<string>("ModifiedBy");
 
                     b.Property<string>("Name");
 
@@ -318,30 +345,28 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<string>("PositionName");
 
-                    b.Property<int>("Role");
-
-                    b.Property<long>("VenueId");
-
-                    b.Property<Guid?>("WorkerId");
+                    b.Property<string>("WorkerId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("([Email] IS NOT NULL)");
+
                     b.HasIndex("Phone")
                         .IsUnique()
-                        .HasFilter("[IsArchived] = 0");
+                        .HasFilter("[Phone] IS NOT NULL");
 
-                    b.HasIndex("VenueId");
-
-                    b.HasIndex("WorkerId", "VenueId")
+                    b.HasIndex("WorkerId")
                         .IsUnique()
-                        .HasFilter("[WorkerId] IS NOT NULL");
+                        .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
 
                     b.ToTable("Worker","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyGroupRule", b =>
                 {
-                    b.HasOne("Loyalty.Core.Entities.LoyaltyProductGroup")
+                    b.HasOne("Loyalty.Core.Entities.LoyaltyProductGroup", "LoyaltyProductGroup")
                         .WithMany("Rules")
                         .HasForeignKey("LoyaltyProductGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -349,7 +374,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
             modelBuilder.Entity("Loyalty.Core.Entities.LoyaltyProductGroup", b =>
                 {
-                    b.HasOne("Loyalty.Core.Entities.LoyaltyProgram")
+                    b.HasOne("Loyalty.Core.Entities.LoyaltyProgram", "LoyaltyProgram")
                         .WithMany("LoyaltyProductGroups")
                         .HasForeignKey("LoyaltyProgramId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -373,7 +398,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.ProductGroup", "ProductGroup")
                         .WithMany("Products")
                         .HasForeignKey("ProductGroupId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.ProductGroup", b =>
@@ -392,11 +417,16 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.Worker", b =>
+            modelBuilder.Entity("Loyalty.Core.Entities.VenueWorker", b =>
                 {
-                    b.HasOne("Loyalty.Core.Entities.Venue")
+                    b.HasOne("Loyalty.Core.Entities.Venue", "Venue")
                         .WithMany("Workers")
                         .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Loyalty.Core.Entities.Worker", "Worker")
+                        .WithMany("Venues")
+                        .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

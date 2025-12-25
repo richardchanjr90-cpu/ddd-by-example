@@ -1,6 +1,13 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -18,16 +25,23 @@ namespace LoyaltyProgram.Http.Worker
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(WorkerViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("WorkerGetFunction")]
         public async Task<IActionResult> Run(
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "workers/{id}")]
             HttpRequest req,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerGetFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () => { return new OkObjectResult(await service.Get(id)); });
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
+            {
+                return new OkObjectResult(await service.Get(id));
+            });
         }
     }
 }

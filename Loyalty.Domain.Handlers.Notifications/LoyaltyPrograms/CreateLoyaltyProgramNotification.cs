@@ -14,5 +14,7 @@ namespace Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms
         public DateTime StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
+
+        public bool IsPublished { get; set; }
     }
 }

@@ -1,8 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Common.Shared.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,19 +27,23 @@ namespace LoyaltyProgram.Http.VenueImages
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(string[]))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueGetImagesFunction")]
         public async Task<IActionResult> Run(
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{id}/details/images")]
             HttpRequest req,
             ILogger log,
+            [FunctionToken] FunctionTokenResult token,
             [Blob("venue-images-{id}", FileAccess.Read)]
             CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueGetImagesFunction)} was triggered.");
             var results = await service.GetImages(container, req.Query["prefix"]);
 
-            return await ExceptionWrapper.Handle(async () =>
+            return Handler.Wrap(token, () =>
             {
                 return new OkObjectResult(results);
             });

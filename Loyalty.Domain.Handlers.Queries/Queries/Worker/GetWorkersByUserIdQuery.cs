@@ -6,6 +6,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.Worker
 {
     public class GetWorkersByUserIdQuery : IRequest<GetWorkersByUserIdQueryResult>
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

@@ -1,21 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
-using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities
 {
     [Table("Worker", Schema = SchemaName.Loyalty)]
-    public class Worker : AuditableEntity, IArchivableEntity
+    public class Worker : Entity, IAuditableEntity, IArchivableEntity
     {
-        [ForeignKey(nameof(Venue))]
-        public long VenueId { get; set; }
+        public ICollection<VenueWorker> Venues { get; set; }
 
-        public Guid? WorkerId { get; set; }
-
-        public VenueUserRole Role { get; set; }
+        public string WorkerId { get; set; }
 
         public string Phone { get; set; }
 
@@ -30,5 +27,13 @@ namespace Loyalty.Core.Entities
         public string PositionName { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string ModifiedBy { get; set; }
+
+        public DateTime Modified { get; set; }
+
+        public DateTime Created { get; set; }
     }
 }

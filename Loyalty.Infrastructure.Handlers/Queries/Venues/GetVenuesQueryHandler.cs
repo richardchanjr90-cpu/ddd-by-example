@@ -1,35 +1,47 @@
-﻿using System.Linq;
+﻿using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
-    public class GetVenuesQueryHandler : BaseHandler, IGetVenuesQueryHandler
+    public class GetVenuesQueryHandler : BaseDapperHandler, IGetVenuesQueryHandler
     {
-        public GetVenuesQueryHandler(ILoyaltyDbContext context, IOptions<DbSettings> settings)
-            : base(context)
+        private readonly SqlConnection connection;
+
+        public GetVenuesQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
+            this.connection = connection;
         }
 
-        public async Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
+        public Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            var venues = await Context.Venues
-                .Include(x => x.Workers)
-                .Where(x => x.Workers.Select(y => y.WorkerId).Contains(request.UserId))
-                .ToListAsync(cancellationToken);
-
-            return new GetVenuesQueryResult
+            var getItems = @"SELECT * FROM loyalty.Venue WHERE Id in @ids";
+            var ids = Principal.GetVenueIds();
+            var venues = connection.Query<Venue>(getItems, new
             {
-                Venues = venues?.ToResults()
+                ids
+            }).ToList();
+
+            var result = new GetVenuesQueryResult
+            {
+                Venues = venues.ToResults()
             };
+
+            return Task.FromResult(result);
         }
     }
 }

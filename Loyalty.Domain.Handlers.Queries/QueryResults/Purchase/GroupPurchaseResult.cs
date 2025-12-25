@@ -16,6 +16,6 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Purchase
 
         public decimal? Total { get; set; }
 
-        public List<ProductPurchaseResult> Products { get; set; } = new List<ProductPurchaseResult>();
+        //public List<ProductPurchaseResult> Products { get; set; } = new List<ProductPurchaseResult>();
     }
 }

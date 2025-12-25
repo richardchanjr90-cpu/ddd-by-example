@@ -6,14 +6,15 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
+using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 {
     public class CreateProductGroupCommandHandler
         : BaseHandler, ICreateProductGroupCommandHandler
     {
-        public CreateProductGroupCommandHandler(ILoyaltyDbContext context)
-            : base(context)
+        public CreateProductGroupCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 

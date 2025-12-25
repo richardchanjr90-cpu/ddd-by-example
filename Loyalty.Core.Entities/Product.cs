@@ -22,5 +22,7 @@ namespace Loyalty.Core.Entities
         public long ProductGroupId { get; set; }
 
         public ProductGroup ProductGroup { get; set; }
+
+        public override long TenantId => ProductGroup.TenantId;
     }
 }

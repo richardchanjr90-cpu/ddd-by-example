@@ -9,6 +9,7 @@ using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
@@ -18,8 +19,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
     {
         private readonly IMediator mediator;
 
-        public ArchiveLoyaltyProgramCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public ArchiveLoyaltyProgramCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }
@@ -30,6 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
         {
             var program = await Context.LoyaltyPrograms
                 .Include(x => x.LoyaltyProductGroups)
+                .ThenInclude(x => x.Group)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 

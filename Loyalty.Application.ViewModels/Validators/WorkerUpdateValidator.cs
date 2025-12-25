@@ -15,13 +15,13 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .MaximumLength(200);
 
-            RuleFor(x => x.Email)
-                .NotEmpty()
-                .EmailAddress();
-
             RuleFor(x => x.LastName)
                 .NotEmpty()
                 .MaximumLength(200);
+
+            RuleFor(x => x.Email)
+                .NotEmpty()
+                .EmailAddress();
 
             RuleFor(x => x.Phone)
                 .NotEmpty()
@@ -38,11 +38,6 @@ namespace Loyalty.Application.ViewModels.Validators
 
             RuleFor(x => x.Role).LessThanOrEqualTo((int)VenueUserRole.Owner)
                 .WithMessage("Must be in range of Enum values");
-
-            RuleFor(x => x.PhotoUri)
-                .NotEmpty().WithMessage("Enter photo.")
-                .Length(4, 200).WithMessage("Length between 4 and 200 chars.")
-                .Matches(@"[a-z\-\d]").WithMessage("Incorrect format.");
         }
     }
 }

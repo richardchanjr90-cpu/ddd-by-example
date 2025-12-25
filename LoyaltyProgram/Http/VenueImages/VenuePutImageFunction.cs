@@ -1,32 +1,44 @@
 using System;
 using System.IO;
-using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Loyalty.Application.Storage.Dto;
+using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
+using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
+using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using SixLabors.ImageSharp;
+using Microsoft.Extensions.Options;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
     public class VenuePutImageFunction
     {
+        private readonly IOptions<ImageSettings> imageSettings;
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
 
         public VenuePutImageFunction(
+            IOptions<ImageSettings> imageSettings,
             LoyaltyVenueAppService service,
             LoyaltyVenueImageAppService imageService)
         {
+            this.imageSettings = imageSettings;
             this.service = service;
             this.imageService = imageService;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenuePutImageFunction")]
         public async Task<IActionResult> Run(
             long id,
@@ -34,28 +46,37 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/details/images/{index}")]
             HttpRequestMessage req,
             ILogger log,
-            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)]
-            Stream blobStream,
-            [Queue("venue-images", Connection = "QueueConnectionString")]
-            ICollector<VenueQueueImageDto> queueItems)
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream originalBlob,
+            [Blob("venue-images-{id}/md-image-{index}.jpg", FileAccess.Write)] Stream mediumBlob,
+            [Blob("venue-images-{id}/sm-image-{index}.jpg", FileAccess.Write)] Stream smallBlob)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var images = await imageService.ConvertImages(req, id, Guid.Parse(index));
+                token.Principal.IsInRoleAndThrow(id);
 
-                if (images != null && images.Count > 0)
+                var image = await imageService.ConvertImage(req, id, Guid.Parse(index));
+
+                if (image != null)
                 {
-                    var imageStream = Image.Load(images.First().Image);
-                    imageStream.SaveAsJpeg(blobStream);
-                    queueItems.Add(new VenueQueueImageDto
-                    {
-                        Index = Guid.Parse(index),
-                        VenueId = id
-                    });
+                    imageService.SaveImageOfWidthToStream(
+                        originalBlob, 
+                        image.Image);
+
+                    imageService.SaveImageOfWidthToStream(
+                        mediumBlob, 
+                        image.Image, 
+                        imageSettings.Value.MdImageWidth);
+
+                    imageService.SaveImageOfWidthToStream(
+                        smallBlob, 
+                        image.Image, 
+                        imageSettings.Value.SmImageWidth);
                 }
 
+                log.LogDebug($"Venue Image created for: {id}", id);
                 return new NoContentResult();
             });
         }

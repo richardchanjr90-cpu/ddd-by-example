@@ -5,13 +5,14 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
+using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
 {
     public class GetLoyaltyProgramsByUserIdQueryHandler : BaseHandler, IGetLoyaltyProgramsByUserIdQueryHandler
     {
-        public GetLoyaltyProgramsByUserIdQueryHandler(ILoyaltyDbContext context)
-            : base(context)
+        public GetLoyaltyProgramsByUserIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 

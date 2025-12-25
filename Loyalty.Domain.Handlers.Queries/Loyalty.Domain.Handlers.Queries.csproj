@@ -42,6 +42,11 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Commands\Workers\CompleteSignup\" />
+  </ItemGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
     <LangVersion>7.1</LangVersion>

@@ -1,7 +1,15 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -18,17 +26,25 @@ namespace LoyaltyProgram.Http.Worker
             this.service = service;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
-            WorkerViewModel model,
+            [RequestBodyType(typeof(WorkerViewModel), "WorkerViewModel")] WorkerViewModel model,
+            HttpRequest req,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerPutFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Update(model));
+                model = await req.Cast<WorkerViewModel>();
+                var result = await service.UpdateProfile(model);
+
+                return new OkObjectResult(result);
             });
         }
     }

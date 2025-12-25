@@ -2,9 +2,9 @@
 {
     public enum VenueUserRole
     {
-        Worker,
-        Manager,
-        Director,
-        Owner
+        Worker = 0,
+        Manager = 1,
+        Director = 2,
+        Owner = 3,
     }
 }

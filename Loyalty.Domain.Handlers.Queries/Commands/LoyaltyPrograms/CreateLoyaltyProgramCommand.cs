@@ -16,6 +16,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms
 
         public long VenueId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

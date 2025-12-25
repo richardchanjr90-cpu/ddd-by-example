@@ -48,7 +48,8 @@ namespace Loyalty.Application.Venue
             new ProductValidator().ValidateAndThrow(model);
             var command = mapper.Map<CreateProductCommand>(model);
             command.ProductGroupId = groupId;
-            return await Mediator.Send(command);
+            var result = await Mediator.Send(command);
+            return result.CommandResult;
         }
 
         public async Task<ICommandResult> Update(ProductViewModel model, long groupId)
@@ -60,12 +61,12 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> Archive(long id)
+        public async Task<ICommandResult> Archive(long id, string userId)
         {
             var command = new ArchiveProductCommand
             {
                 Id = id,
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = userId
             };
 
             var commandResult = await Mediator.Send(command);

@@ -1,17 +1,23 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
+using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.IoC;
+using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SixLabors.ImageSharp;
 
 namespace LoyaltyProgram.Http.VenueLogo
 {
@@ -28,35 +34,40 @@ namespace LoyaltyProgram.Http.VenueLogo
             this.imageService = imageService;
         }
 
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
+        [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenuePutLogoFunction")]
         public async Task<IActionResult> Run(
             long id,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{id}/logo/")]
             HttpRequestMessage req,
             ILogger log,
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
             [Blob("venue-logo-{id}", FileAccess.Write)] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 
-            return await ExceptionWrapper.Handle(async () =>
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var image = imageService.GetImages(req).FirstOrDefault();
+                token.Principal.IsInRoleAndThrow(id);
+
+                var image = await imageService.GetImageOrNullAsync(req);
 
                 if (image != null)
                 {
                     using (var stream = new MemoryStream())
                     {
-                        var imageStream = Image.Load(image);
-                        imageStream.SaveAsJpeg(stream);
-                        stream.Position = 0;
-                        await container.CreateIfNotExistsAsync();
-                        var blob = container.GetBlockBlobReference("logo.jpg");
+                        var blob = await imageService.GetBlobForImageAsync(container, $"logo-{Guid.NewGuid()}.jpg");
+
+                        imageService.SaveImageOfWidthToStream(
+                            stream,
+                            image);
+
                         await blob.UploadFromStreamAsync(stream);
+                        await service.PatchLogo(id, blob.Uri.ToString());
                     }
                 }
-
-                var url = (await imageService.GetImages(container, null)).FirstOrDefault();
-                await service.Patch(id, url);
 
                 return new NoContentResult();
             });

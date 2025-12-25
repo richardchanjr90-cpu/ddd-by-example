@@ -82,8 +82,10 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
 
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
-            CreateMap<WorkerViewModel, CreateWorkerCommand>()
+
+            CreateMap<InviteViewModel, CreateInviteCommand>()
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
+            CreateMap<InviteViewModel, UpdateInviteCommand>();
 
             CreateMap<WorkerViewModel, UpdateWorkerCommand>();
 

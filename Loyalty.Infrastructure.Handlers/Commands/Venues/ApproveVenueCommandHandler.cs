@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
@@ -14,6 +15,7 @@ using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -23,8 +25,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
 
-        public ApproveVenueCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public ApproveVenueCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }
@@ -37,7 +39,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (!venue.IsPublished)
             {
-                throw new ValidationException("Venue is not Published, so it can't be approved.");
+                throw new LoyaltyValidationException("Venue is not Published, so it can't be approved.", null, ErrorCode.FAILED_APPROVE_NOT_PUBLISHED_VENUE);
             }
 
             var wasApproved = venue.IsApproved;

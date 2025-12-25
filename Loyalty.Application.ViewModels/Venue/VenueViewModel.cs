@@ -12,9 +12,6 @@ namespace Loyalty.Application.ViewModels.Venue
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("ownerId")]
-        public string OwnerId { get; set; }
-
         [JsonProperty("description")]
         public string Description { get; set; }
 

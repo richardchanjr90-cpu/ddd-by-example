@@ -28,5 +28,7 @@ namespace Loyalty.Core.Entities
         public virtual ICollection<Product> Products { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public override long TenantId => VenueId;
     }
 }

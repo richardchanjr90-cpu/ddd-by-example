@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Linq;
+using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
-using Loyalty.Core.Entities.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess
@@ -30,18 +31,32 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<Venue> Venues { get; set; }
 
+        public DbSet<VenueWorker> VenueWorkers { get; set; }
+
         public DbSet<Worker> Workers { get; set; }
 
         public override int SaveChanges()
         {
-            AddAuditInfo();
-            return base.SaveChanges();
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlException && (sqlException.Number == 2627 || sqlException.Number == 2601))
+            {
+                throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DUPLICATED_ENTITY);
+            }
         }
 
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
-            AddAuditInfo();
-            return base.SaveChangesAsync(cancellationToken);
+            try
+            {
+                return await base.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateException ex) when (ex.InnerException is SqlException sqlException && (sqlException.Number == 2627 || sqlException.Number == 2601))
+            {
+                throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DUPLICATED_ENTITY);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -49,7 +64,7 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<ProductGroup>()
                 .HasMany(b => b.Products)
                 .WithOne(x => x.ProductGroup)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Venue>()
                 .HasMany(b => b.LoyaltyPrograms)
@@ -68,11 +83,17 @@ namespace Loyalty.Infrastructure.DataAccess
 
             modelBuilder.Entity<Worker>()
                 .HasIndex(u => u.Phone)
-                .IsUnique()
-                .HasFilter("[IsArchived] = 0");
+                .IsUnique();
 
             modelBuilder.Entity<Worker>()
-                .HasIndex(p => new { p.WorkerId, p.VenueId }).IsUnique();
+                .HasIndex(u => u.Email)
+                .IsUnique()
+                .HasFilter("([Email] IS NOT NULL)");
+
+            modelBuilder.Entity<Worker>()
+                .HasIndex(u => u.WorkerId)
+                .IsUnique()
+                .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
 
             modelBuilder.Entity<Product>()
                 .HasIndex(p => new { p.ProductGroupId, p.Name }).IsUnique()
@@ -88,37 +109,25 @@ namespace Loyalty.Infrastructure.DataAccess
 
             //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
-                .HasIndex(p => new {p.VenueId, p.Name}).IsUnique()
+                .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
-            //modelBuilder.Entity<LoyaltyProductGroup>()
-            //    .HasIndex(p => new {p.LoyaltyProgramId, p.ProductGroupId}).IsUnique()
-            //    .HasFilter("[IsArchived] = 0");
-            modelBuilder.Entity<Venue>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<Worker>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<ProductGroup>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<Product>().HasQueryFilter(p => !p.IsArchived);
-            modelBuilder.Entity<Purchase>().HasQueryFilter(p => p.BurnDate.HasValue);
-        }
+            modelBuilder.Entity<VenueWorker>()
+                .HasKey(bc => new { bc.VenueId, bc.WorkerId });
 
-        private void AddAuditInfo()
-        {
-            var entries = ChangeTracker.Entries().Where(e =>
-                e.Entity is AuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
+            modelBuilder.Entity<VenueWorker>()
+                .HasOne(bc => bc.Venue)
+                .WithMany(b => b.Workers)
+                .HasForeignKey(bc => bc.VenueId);
 
-            foreach (var entry in entries)
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    ((AuditableEntity) entry.Entity).CreatedBy = Guid.Empty;
-                    ((AuditableEntity) entry.Entity).Created = DateTime.UtcNow;
-                }
+            modelBuilder.Entity<VenueWorker>()
+                .HasOne(bc => bc.Worker)
+                .WithMany(c => c.Venues)
+                .HasForeignKey(bc => bc.WorkerId);
 
-                ((AuditableEntity) entry.Entity).ModifiedBy = Guid.Empty;
-                ((AuditableEntity) entry.Entity).Modified = DateTime.UtcNow;
-            }
+            modelBuilder.Entity<VenueWorker>()
+                .HasIndex(p => new { p.VenueId, p.WorkerId })
+                .IsUnique();
         }
     }
 }

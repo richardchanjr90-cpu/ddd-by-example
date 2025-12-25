@@ -7,14 +7,15 @@ using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
 {
     public class GetLoyaltyProductGroupByIdQueryHandler : BaseHandler, IGetLoyaltyProductGroupByIdQueryHandler
     {
-        public GetLoyaltyProductGroupByIdQueryHandler(ILoyaltyDbContext context)
-            : base(context)
+        public GetLoyaltyProductGroupByIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 
@@ -24,7 +25,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
             var item = Context.LoyaltyProductGroups.Include(x => x.Group)
                 .ThenInclude(x => x.Products)
                 .Include(x => x.Rules)
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.Id == request.Id && x.LoyaltyProgramId == request.ProgramId)
                 .ToList()
                 .Select(lp => new GetLoyaltyProductGroupByIdQueryResult
                 {

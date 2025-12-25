@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Venue;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
@@ -33,17 +35,17 @@ namespace Loyalty.Application.Venue
             return mapper.Map<VenueViewModel>(result);
         }
 
-        public async Task<List<VenueViewModel>> Get()
+        public async Task<List<VenueViewModel>> Get(string userId)
         {
             var result = await Mediator.Send(new GetVenuesQuery
             {
-                UserId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                UserId = userId
             });
 
             return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
-        public async Task<List<VenueViewModel>> GetByUser(Guid userGuid)
+        public async Task<List<VenueViewModel>> GetByUser(string userGuid)
         {
             var query = new GetVenuesByUserIdQuery
             {
@@ -54,7 +56,7 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
-        public async Task<ICommandResult> Create(VenueViewModel model)
+        public async Task<ICommandResult> Create(VenueViewModel model, ClaimsPrincipal principal)
         {
             new VenueValidator().ValidateAndThrow(model);
 
@@ -82,7 +84,7 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> Patch(long venueId, string logo)
+        public async Task<ICommandResult> PatchLogo(long venueId, string logo)
         {
             var commandResult = await Mediator.Send(new PatchVenueLogoCommand
             {
@@ -93,12 +95,12 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> Archive(long id)
+        public async Task<ICommandResult> Archive(long id, string userId)
         {
             var command = new ArchiveVenueCommand
             {
                 Id = id,
-                OwnerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40")
+                OwnerId = userId
             };
 
             var commandResult = await Mediator.Send(command);

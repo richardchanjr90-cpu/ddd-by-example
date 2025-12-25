@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -11,6 +12,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -21,8 +23,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
     {
         private readonly IMediator mediator;
 
-        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public UpdateLoyaltyProductGroupCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }
@@ -32,6 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             CancellationToken cancellationToken)
         {
             var group = await Context.LoyaltyProductGroups
+                .Include(x => x.LoyaltyProgram)
                 .Include(x => x.Group)
                 .Include(x => x.Rules)
                 .Where(x => x.Id == request.Id)
@@ -46,7 +49,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
             if (program.IsPublished)
             {
-                throw new ValidationException("Impossible to change after program was published.");
+                throw new LoyaltyValidationException("Impossible to change after program was published.",null, ErrorCode.IS_PUBLISHED);
             }
 
             if (group == null)

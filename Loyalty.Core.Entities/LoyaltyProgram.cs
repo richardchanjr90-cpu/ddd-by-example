@@ -33,5 +33,7 @@ namespace Loyalty.Core.Entities
         public bool IsPublished { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public override long TenantId => VenueId;
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Loyalty.Shared.Contracts.Enums
 {
@@ -13,5 +11,6 @@ namespace Loyalty.Shared.Contracts.Enums
         Drinks = 4,
         IceCream = 5,
         AlcoholicBeverages = 6,
+        Salads = 7
     }
 }

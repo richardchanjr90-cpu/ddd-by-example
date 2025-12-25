@@ -23,7 +23,7 @@ namespace Loyalty.Application.ViewModels.Purchase
         [JsonProperty("total")]
         public decimal? Total { get; set; }
 
-        [JsonProperty("products")]
-        public List<ProductPurchaseViewModel> Products { get; set; } = new List<ProductPurchaseViewModel>();
+        //[JsonProperty("products")]
+        //public List<ProductPurchaseViewModel> Products { get; set; } = new List<ProductPurchaseViewModel>();
     }
 }

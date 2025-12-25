@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -12,9 +13,24 @@ namespace Loyalty.Common.Shared.Extensions
     {
         public static async Task<T> Cast<T>(this HttpRequest request)
         {
-            if (request == null) throw new ArgumentNullException(nameof(request));
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
 
             var body = await request.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<T>(body);
+            return result;
+        }
+
+        public static async Task<T> Cast<T>(this HttpRequestMessage request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var body = await request.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<T>(body);
             return result;
         }

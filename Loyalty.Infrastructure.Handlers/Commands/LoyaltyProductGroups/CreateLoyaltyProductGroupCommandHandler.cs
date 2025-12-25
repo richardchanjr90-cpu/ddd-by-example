@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -11,6 +13,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -21,8 +24,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
     {
         private readonly IMediator mediator;
 
-        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }
@@ -31,7 +34,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
         {
             var productGroup = await Context.ProductGroups
                 .Where(x => x.Id == request.ProductGroupId)
-                .SingleAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
+
+            if (productGroup == null)
+            {
+                throw new LoyaltyValidationException("No product group with provided id was found.", null, ErrorCode.INCORRECT_PRODUCT_GROUP);
+            }
 
             var group = new LoyaltyProductGroup
             {

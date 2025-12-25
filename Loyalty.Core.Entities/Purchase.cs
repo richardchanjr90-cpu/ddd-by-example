@@ -11,14 +11,18 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(LoyaltyProductGroup))]
         public long LoyaltyProductGroupId { get; set; }
 
+        public long VenueId { get; set; }
+
         public long? ProductId { get; set; }
 
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public bool InternalPurchaseMadeBySystem { get; set; }
 
         public decimal? Value { get; set; }
 
         public DateTime? BurnDate { get; set; }
+
+        public override long TenantId => VenueId;
     }
 }

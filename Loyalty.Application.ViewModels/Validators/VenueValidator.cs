@@ -13,10 +13,6 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .MaximumLength(200);
 
-            RuleFor(x => x.OwnerId)
-                .Must(this.BeValidGuid)
-                .WithMessage("Should be a valid guid.");
-
             RuleFor(x => x.Type)
                 .Must(x => (VenueType)x != VenueType.Single)
                 .When(x => x.ParentId.HasValue)
@@ -38,7 +34,7 @@ namespace Loyalty.Application.ViewModels.Validators
                 .When(x => x.Phones != null);
 
             RuleForEach(x => x.WorkingHours)
-                .Must(x => !string.IsNullOrWhiteSpace(x.Day))
+                .Must(x => !string.IsNullOrWhiteSpace(x.Day) && x.To <= 24*60)
                 .When(x => x.WorkingHours != null);
 
             RuleFor(x => x)

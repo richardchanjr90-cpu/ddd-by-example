@@ -7,9 +7,9 @@ namespace Loyalty.Application.Storage.Dto.Validators
 {
     public class VenueImageValidator : AbstractValidator<VenueBlobImageDto>
     {
-        private readonly VenueGalleryImageSettings settings;
+        private readonly ImageSettings settings;
 
-        public VenueImageValidator(VenueGalleryImageSettings settings)
+        public VenueImageValidator(ImageSettings settings)
         {
             this.settings = settings;
 

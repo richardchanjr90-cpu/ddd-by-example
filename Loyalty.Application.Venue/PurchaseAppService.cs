@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.TestHelper;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
@@ -23,7 +24,7 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(Guid userId, long venueId)
+        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(string userId, long venueId)
         {
             var result = await Mediator.Send(new GetClientActivePurchasesQuery
             {
@@ -34,33 +35,44 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId)
+        public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
         {
-            //todo: validate worker belongs to venue
-            new PurchaseValidator().ValidateAndThrow(model);
+            var testResult = new PurchaseValidator()
+                .TestValidate(model);
 
             var result = await Mediator.Send(new CreatePurchaseCommand
             {
-                WorkerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40"),
-                UserId = Guid.Parse(model.UserId),
+                WorkerId = userId,
+                UserId = model.UserId,
                 ProductId = model.ProductId,
                 VenueId = venueId,
                 Value = model.Value,
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return result;
+            return result.CommandResult;
         }
 
-        public async Task<object> Burn(PurchaseViewModel model, long venueId)
+        public async Task<ICommandResult> PurchaseAndCreate(PurchaseViewModel model, long venueId, string userId)
         {
-            //todo: validate worker belongs to venue
+            new PurchaseValidator()
+                .ValidateAndThrow(model);
+
+            var result = await Mediator.Send(new CreateAndBurnCommand
+            {
+            });
+
+            return result.CommandResult;
+        }
+
+        public async Task<object> Burn(PurchaseViewModel model, long venueId, string userId)
+        {
             new PurchaseValidator().ValidateAndThrow(model);
 
             var result = await Mediator.Send(new BurnPurchaseCommand
             {
-                WorkerId = Guid.Parse("0abe336d-021c-40b5-ba95-909daeb7ca40"),
-                UserId = Guid.Parse(model.UserId),
+                WorkerId = userId,
+                UserId = model.UserId,
                 VenueId = venueId,
                 Amount = model.Value,
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId

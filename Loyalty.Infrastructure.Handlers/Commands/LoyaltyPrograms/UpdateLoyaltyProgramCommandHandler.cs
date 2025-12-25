@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
@@ -10,6 +11,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
@@ -19,8 +21,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
     {
         private readonly IMediator mediator;
 
-        public UpdateLoyaltyProgramCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public UpdateLoyaltyProgramCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }
@@ -31,6 +33,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
         {
             var program = await Context.LoyaltyPrograms
                 .Include(x => x.LoyaltyProductGroups)
+                .ThenInclude(x => x.Group)
                 .Where(x => x.Id == request.Id)
                 .FirstOrDefaultAsync(cancellationToken);
 
@@ -52,7 +55,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             {
                 if (program.IsPublished)
                 {
-                    throw new ValidationException("You can't change already published program.");
+                    throw new LoyaltyValidationException("You can't change already published program.", null, ErrorCode.IS_PUBLISHED);
                 }
 
                 program.Name = request.Name;
@@ -62,7 +65,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
                 if (request.IsPublished && program.LoyaltyProductGroups?.Count == 0)
                 {
-                    throw new ValidationException("You can't publish group without any LoyaltyProductGroups attached.");
+                    throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.",null, ErrorCode.FAILED_TO_PUBLISH);
                 }
                 program.IsPublished = request.IsPublished;
             }

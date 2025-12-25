@@ -13,6 +13,8 @@ namespace Loyalty.Core.Entities
         [ForeignKey(nameof(LoyaltyProgram))]
         public long LoyaltyProgramId { get; set; }
 
+        public LoyaltyProgram LoyaltyProgram { get; set; }
+
         public string Name { get; set; }
 
         public virtual ICollection<LoyaltyGroupRule> Rules { get; set; }
@@ -29,5 +31,7 @@ namespace Loyalty.Core.Entities
         public string Description { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public override long TenantId => Group.TenantId;
     }
 }

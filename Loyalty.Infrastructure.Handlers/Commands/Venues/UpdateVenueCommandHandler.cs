@@ -9,6 +9,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
@@ -18,8 +19,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
 
-        public UpdateVenueCommandHandler(ILoyaltyDbContext context, IMediator mediator)
-            : base(context)
+        public UpdateVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
             this.mediator = mediator;
         }

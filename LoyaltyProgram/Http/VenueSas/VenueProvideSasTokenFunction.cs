@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AzureExtensions.FunctionToken;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -16,6 +18,7 @@ namespace LoyaltyProgram.Http.VenueSas
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "security/sas/")]
             HttpRequest req,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueProvideSasTokenFunction)} was triggered.");
@@ -38,7 +41,8 @@ namespace LoyaltyProgram.Http.VenueSas
 
             var storageAccount = CloudStorageAccount.Parse(connectionString);
             var sas = storageAccount.GetSharedAccessSignature(policy);
-            return await ExceptionWrapper.Handle(async () =>
+
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 return new OkObjectResult(sas);
             });

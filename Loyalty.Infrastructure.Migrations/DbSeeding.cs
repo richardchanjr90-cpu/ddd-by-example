@@ -23,7 +23,7 @@ namespace Loyalty.Infrastructure.Migrations
                     {
                         CategoryType = VenueCategoryType.CoffeeShop,
                         Created = DateTime.Now,
-                        CreatedBy = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40"),
+                        //CreatedBy = "0abe336d-021c-40b5-ba95-909daeb7ca40",
                         Modified = DateTime.Now,
                         LogoUrl = "http://clipart-library.com/images/8cEb974Xi.jpg",
                         Description = "Venue without details and programs.",
@@ -31,7 +31,7 @@ namespace Loyalty.Infrastructure.Migrations
                         IsPublished = false,
                         Name = "Venue1",
                         Type = VenueType.Single,
-                        OwnerId = Guid.Parse("0ABE336D-021C-40B5-BA95-909DAEB7CA40")
+                        //OwnerId = "0abe336d-021c-40b5-ba95-909daeb7ca40"
                     });
 
                 context.SaveChanges();

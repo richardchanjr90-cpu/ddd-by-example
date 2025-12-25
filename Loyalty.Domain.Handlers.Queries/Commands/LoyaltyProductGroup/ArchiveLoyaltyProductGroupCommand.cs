@@ -6,7 +6,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup
 {
     public class ArchiveLoyaltyProductGroupCommand : IRequest<ICommandResult>
     {
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
 
         public long Id { get; set; }
     }

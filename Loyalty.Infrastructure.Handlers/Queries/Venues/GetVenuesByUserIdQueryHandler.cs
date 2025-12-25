@@ -7,15 +7,15 @@ using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
     public class GetVenuesByUserIdQueryHandler : BaseHandler, IGetVenuesByUserIdQueryHandler
     {
-        public GetVenuesByUserIdQueryHandler(ILoyaltyDbContext context, IOptions<DbSettings> settings)
-            : base(context)
+        public GetVenuesByUserIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+            : base(context, accessor)
         {
         }
 

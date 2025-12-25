@@ -20,7 +20,7 @@ namespace Loyalty.Core.Entities
         public string Name { get; set; }
 
         [Required]
-        public Guid OwnerId { get; set; }
+        public string OwnerId { get; set; }
 
         [MaxLength(2000)]
         public string Description { get; set; }
@@ -58,7 +58,7 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
-        public virtual ICollection<Worker> Workers { get; set; }
+        public virtual ICollection<VenueWorker> Workers { get; set; }
 
         public virtual ICollection<ProductGroup> ProductGroups { get; set; }
 
@@ -67,5 +67,7 @@ namespace Loyalty.Core.Entities
         public bool IsApproved { get; set; }
 
         public bool IsPublished { get; set; }
+
+        public override long TenantId => Id;
     }
 }
