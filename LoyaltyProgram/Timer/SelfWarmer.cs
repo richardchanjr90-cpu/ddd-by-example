@@ -1,15 +1,30 @@
 using System;
+using Loyalty.Infrastructure.DataAccess;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Timer
 {
-    public static class SelfWarmer
+    public class SelfWarmer
     {
+        private readonly LoyaltyDbContext context;
+
+        public SelfWarmer(LoyaltyDbContext context)
+        {
+            this.context = context;
+        }
+
         [FunctionName("SelfWarmer")]
-        public static void Run([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer, ILogger log)
+        public void Run([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer, ILogger log)
         {
             log.LogInformation($"SelfWarmer executed: {DateTime.Now}");
+
+            using (context)
+            {
+                //force the model creation
+                var model = context.Model; 
+                Console.WriteLine(model);
+            }
         }
     }
 }
