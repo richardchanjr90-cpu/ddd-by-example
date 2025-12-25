@@ -4,23 +4,25 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.Purchase;
+using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
+using Loyalty.Shared.Contracts.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Purchase
+namespace LoyaltyProgram.Http.Venue
 {
-    public class PurchaseBurnAndCreateFunction
+    public class VenuePutFunction
     {
-        private readonly PurchaseAppService service;
+        private readonly LoyaltyVenueAppService service;
 
-        public PurchaseBurnAndCreateFunction(PurchaseAppService service)
+        public VenuePutFunction(LoyaltyVenueAppService service)
         {
             this.service = service;
         }
@@ -28,19 +30,20 @@ namespace LoyaltyProgram.Http.Purchase
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("PurchaseBurnAndCreateFunction")]
+        [FunctionName("VenuePutFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases/apply")]
-            [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
-            [FunctionToken] FunctionTokenResult token,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues")]
+            [RequestBodyType(typeof(VenueViewModel), "VenueViewModel")] VenueViewModel model,
+            HttpRequest req,
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenuePutFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
+                model = await req.Cast<VenueViewModel>();
+                return new OkObjectResult(await service.Update(model));
             });
         }
     }

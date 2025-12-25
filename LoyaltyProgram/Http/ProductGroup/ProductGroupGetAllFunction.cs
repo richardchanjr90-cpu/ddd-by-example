@@ -1,46 +1,46 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.Purchase;
+using Loyalty.Application.ViewModels.LoyaltyProductGroup;
+using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Purchase
+namespace LoyaltyProgram.Http.ProductGroup
 {
-    public class PurchaseBurnAndCreateFunction
+    public class ProductGroupGetAllFunction
     {
-        private readonly PurchaseAppService service;
+        private readonly ProductGroupAppService service;
 
-        public PurchaseBurnAndCreateFunction(PurchaseAppService service)
+        public ProductGroupGetAllFunction(ProductGroupAppService service)
         {
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ProductGroupViewModel[]))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("PurchaseBurnAndCreateFunction")]
+        [FunctionName("ProductGroupGetAllFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases/apply")]
-            [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productgroups")]
+            HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(ProductGroupGetAllFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
+                return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
             });
         }
     }

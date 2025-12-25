@@ -16,11 +16,11 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Purchase
 {
-    public class PurchaseBurnAndCreateFunction
+    public class PurchaseBurnPutFunction
     {
         private readonly PurchaseAppService service;
 
-        public PurchaseBurnAndCreateFunction(PurchaseAppService service)
+        public PurchaseBurnPutFunction(PurchaseAppService service)
         {
             this.service = service;
         }
@@ -28,10 +28,10 @@ namespace LoyaltyProgram.Http.Purchase
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("PurchaseBurnAndCreateFunction")]
+        [FunctionName("PurchaseBurnPutFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases/apply")]
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases")]
             [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)

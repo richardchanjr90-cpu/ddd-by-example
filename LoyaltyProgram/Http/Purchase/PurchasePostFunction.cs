@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -12,15 +13,16 @@ using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Purchase
 {
-    public class PurchaseBurnAndCreateFunction
+    public class PurchasePostFunction
     {
         private readonly PurchaseAppService service;
 
-        public PurchaseBurnAndCreateFunction(PurchaseAppService service)
+        public PurchasePostFunction(PurchaseAppService service)
         {
             this.service = service;
         }
@@ -28,19 +30,19 @@ namespace LoyaltyProgram.Http.Purchase
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("PurchaseBurnAndCreateFunction")]
+        [FunctionName("PurchasePostFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases/apply")]
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{venueId}/purchases")]
             [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(PurchasePostFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
+                return new OkObjectResult(await service.Purchase(model, venueId, token.Principal.GetUserId()));
             });
         }
     }
