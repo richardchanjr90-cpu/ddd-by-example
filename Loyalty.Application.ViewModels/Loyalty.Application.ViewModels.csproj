@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.5.0" />
-    <PackageReference Include="libphonenumber-csharp" Version="8.10.20" />
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.4" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
   </ItemGroup>

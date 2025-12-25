@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using FluentValidation;
-using PhoneNumbers;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
@@ -18,8 +18,11 @@ namespace Loyalty.Application.ViewModels.Validators
             bool isValid = true;
             try
             {
-                var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-                var parsedNumber = phoneNumberUtil.Parse(phoneString, "BY");
+                if (phoneString.StartsWith("+"))
+                {
+                    phoneString = phoneString.TrimStart('+');
+                    var number = Int64.Parse(phoneString);
+                }
             }
             catch (Exception e)
             {
