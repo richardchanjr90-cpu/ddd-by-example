@@ -31,14 +31,17 @@ namespace LoyaltyProgram
             builder.Services.SetupSettings(config);
             builder.Services.AddHttpContextAccessor();
 
-            builder.AddAzureFunctionsToken(new FireBaseOptions()
+            builder.AddAzureFunctionsToken(new FireBaseOptions
             {
                 Audience = "zalik-243111",
                 Issuer = "https://securetoken.google.com/zalik-243111",
                 GoogleServiceAccountJsonUri = new Uri("https://secretstorage.blob.core.windows.net/firebase/zalik-243111-firebase-adminsdk-83897-987d10f2db.json?sp=r&st=2019-08-17T10:10:57Z&se=2099-08-17T18:10:57Z&spr=https&sv=2018-03-28&sig=REDACTED_SAS_SIG&sr=b")
             });
 
-            builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
+            if (Environment.GetEnvironmentVariable("FUNCTION_ENV") != "stage")
+            {
+                builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
+            }
         }
     }
 }

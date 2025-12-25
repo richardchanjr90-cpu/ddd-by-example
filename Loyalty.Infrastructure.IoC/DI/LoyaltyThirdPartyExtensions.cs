@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Reflection;
+using AutoMapper;
 using Loyalty.Application.AutoMapper;
 using Loyalty.Infrastructure.Handlers;
 using Loyalty.Infrastructure.Handlers.Notifications;
@@ -18,13 +20,15 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,////>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandBehavior<,>));
 
-            var serviceProvider = services.BuildServiceProvider();
-            var mapper = serviceProvider.GetRequiredService<IMapper>();
+            if (Environment.GetEnvironmentVariable("FUNCTION_ENV") != "stage")
+            {
+                var serviceProvider = services.BuildServiceProvider();
+                var mapper = serviceProvider.GetRequiredService<IMapper>();
 
-            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+                mapper.ConfigurationProvider.AssertConfigurationIsValid();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -190,24 +191,33 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             }
         }
 
-        //[Fact]
-        //public async Task ShouldHaveAccessOnlyToYourVenues()
-        //{
-        //}
 
-        //[Fact]
-        //public async Task ShouldBeInRoleForThatVenue()
-        //{
-        //}
+        [Theory]
+        [InlineData(VenueUserRole.Director, VenueUserRole.Worker)]
+        [InlineData(VenueUserRole.Manager, VenueUserRole.Worker)]
+        public async Task ShouldArchiveInvitedPerson(VenueUserRole inviterRole, VenueUserRole role)
+        {
+            using (var venue = new VenueFixture(signedUpUserFixture))
+            using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var inviteeUser = new InviteFixture(venue.Venue.Id, role, createdUser))
+            {
+                var response = await createdUser.Client.GetAsync("api/workers");
+                var workers = await response.DeserializeAsync<List<WorkerViewModel>>();
 
-        //[Fact]
-        //public async Task ShouldRemoveWorkerFromVenue()
-        //{
-        //}
+                Assert.True(response.IsSuccessStatusCode);
+                Assert.True(workers.Count == 1);
 
-        //[Fact]
-        //public async Task ShouldChangeWorkerRoleInVenue()
-        //{
-        //}
+                var response2 = await createdUser.Client.DeleteAsync($"api/workers/{workers.First().Id}");
+
+                Assert.True(response2.IsSuccessStatusCode);
+            
+                var response3 = await createdUser.Client.GetAsync("api/workers");
+                var workers2 = await response3.DeserializeAsync<List<WorkerViewModel>>();
+
+                Assert.True(workers2.Count == 0);
+            }
+        }
+
     }
 }

@@ -9,6 +9,7 @@ using FluentValidation;
 using Loyalty.Application.Storage.Dto.Validators;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +67,11 @@ namespace LoyaltyProgram.Http.Worker
 
                     await service.PatchPhoto(blob.Uri.ToString(), id);
                 }
-                return new NoContentResult();
+
+                return new OkObjectResult(new CommandResult
+                {
+                    Success = true
+                });
             });
         }
     }

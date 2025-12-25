@@ -220,5 +220,14 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             }
         }
 
+        [Fact]
+        public async void ShouldGetOnlyOwnVenues()
+        {
+        }
+
+        [Fact]
+        public async void ShouldGetOnlyNotArchiveVenues()
+        {
+        }
     }
 }

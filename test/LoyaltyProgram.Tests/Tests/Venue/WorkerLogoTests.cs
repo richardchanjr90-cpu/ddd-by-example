@@ -31,14 +31,16 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         }
 
 
-        [Fact]
-        public async Task ShouldSaveAvatar()
+        [Theory]
+        [InlineData(400, 400)]
+        [InlineData(2000, 2000)]
+        public async Task ShouldSaveAvatar(int width, int height)
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, VenueUserRole.Worker, signedUpUserFixture))
             using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
             {
-                var imageContent = ImageFactory.GetImageContent();
+                var imageContent = ImageFactory.GetImageContent(width, height);
                 var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);
 
                 Assert.True(response.IsSuccessStatusCode);
@@ -54,7 +56,6 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 Assert.True(result);
             }
         }
-
 
         [Theory]
         [InlineData(400, 400)]
@@ -88,6 +89,26 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
                 int equalElements = originalHash.Zip(loadHash, (i, j) => i == j).Count(eq => eq); Assert.True(equalElements >= 256 * 0.9);
 
+            }
+        }
+
+
+        [Theory]
+        [InlineData(1, 1)]
+        [InlineData(0, 0)]
+        [InlineData(400, 200)]
+        [InlineData(200, 400)]
+        [InlineData(3000, 3000)]
+        public async Task ShouldNotAddPhotoToUser(int width, int height)
+        {
+            using (var venue = new VenueFixture(signedUpUserFixture))
+            using (var invitedUser = new InviteFixture(venue.Venue.Id, VenueUserRole.Worker, signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            {
+                var imageContent = ImageFactory.GetImageContent(width, height);
+                var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);
+                var getResult = await response.DeserializeAsync<CommandResult>();
+                Assert.False(getResult.Success);
             }
         }
     }
