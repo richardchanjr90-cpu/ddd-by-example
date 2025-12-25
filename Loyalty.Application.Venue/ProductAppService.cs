@@ -49,7 +49,7 @@ namespace Loyalty.Application.Venue
             var command = mapper.Map<CreateProductCommand>(model);
             command.ProductGroupId = groupId;
             var result = await Mediator.Send(command);
-            return result.CommandResult;
+            return result;
         }
 
         public async Task<ICommandResult> Update(ProductViewModel model, long groupId)

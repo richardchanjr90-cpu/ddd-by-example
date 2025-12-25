@@ -20,7 +20,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
         {
         }
 
-        public async Task<ICommandNotificationResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
             Product product = null;
 
@@ -37,10 +37,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                     Name = request.Name,
                     ProductGroupId = request.ProductGroupId,
                 };
+
                 group.Products.Add(product);
             }
 
-            return new CommandNotificationResult();
+            return new CommandResult
+            {
+                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Result = product?.Id
+            };
         }
     }
 }

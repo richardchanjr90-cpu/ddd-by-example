@@ -4,6 +4,7 @@ using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
 using LoyaltyProgram.Tests.Fixture.Extensions;
 using LoyaltyProgram.Tests.Setup.Data;
+using Xunit;
 
 namespace LoyaltyProgram.Tests.Fixture
 {
@@ -36,6 +37,7 @@ namespace LoyaltyProgram.Tests.Fixture
         {
             var response = await SignupFixture.Client.DeleteAsync("api/venues/" + id);
             var result = await response.DeserializeAsync<CommandResult>();
+            Assert.True(result.Success);
         }
 
         public void Dispose()

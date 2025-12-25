@@ -63,7 +63,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
         [Theory]
         [InlineData(800, 600)]
-        [InlineData(1920, 1080)]
+        [InlineData(1600, 1200)]
         public async Task ShouldAddImagesToVenueAndCheckThatItIsTheSame(int width, int height)
         {
             var sas = await fixture.SignupFixture.Client.GetAsync($"api/security/sas");

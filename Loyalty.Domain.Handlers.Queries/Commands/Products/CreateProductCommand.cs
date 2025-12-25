@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Products
 {
-    public class CreateProductCommand : IRequest<ICommandNotificationResult>
+    public class CreateProductCommand : IRequest<ICommandResult>
     {
         public string Name { get; set; }
 
