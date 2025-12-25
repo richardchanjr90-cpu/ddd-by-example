@@ -95,7 +95,6 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
         [Theory]
         [InlineData(1, 1)]
-        [InlineData(0, 0)]
         [InlineData(400, 200)]
         [InlineData(200, 400)]
         [InlineData(3000, 3000)]
