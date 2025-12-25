@@ -23,12 +23,11 @@ namespace Loyalty.Application.ViewModels.Validators
 
             RuleFor(x => x.WorkingHours)
                 .Must(x => x != null && x.Count >= 1);
+            //RuleFor(x => x.Images)
+            //    .Must(x => x != null && x.Count >= 1);
 
-            RuleFor(x => x.Images)
-                .Must(x => x != null && x.Count >= 1);
-
-            RuleFor(x => x.LogoUrl)
-                .NotEmpty();
+            //RuleFor(x => x.LogoUrl)
+            //    .NotEmpty();
         }
     }
 }
