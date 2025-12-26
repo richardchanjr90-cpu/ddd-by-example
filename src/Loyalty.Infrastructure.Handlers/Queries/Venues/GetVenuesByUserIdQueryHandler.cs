@@ -26,9 +26,15 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
         {
             var result = await Context.Venues.FirstOrDefaultAsync(cancellationToken);
 
+            var results = new List<Venue>();
+            if (result != null)
+            {
+                results.Add(result);
+            }
+
             return new GetVenuesByUserIdQueryResult
             {
-                Venues = new List<Venue>() { result }.ToResults()
+                Venues = results.ToResults()
             };
         }
     }
