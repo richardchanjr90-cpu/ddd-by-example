@@ -16,7 +16,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
     public class GetVenuesByUserIdQueryHandler : BaseHandler, IGetVenuesByUserIdQueryHandler
     {
-        public GetVenuesByUserIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+        public GetVenuesByUserIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
         }
