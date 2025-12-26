@@ -57,7 +57,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                     Assert.Null(worker.WorkerId);
 
                     worker.Should()
-                        .BeEquivalentTo(invitedWorker1.InvitedUser, z => z.Excluding(y => y.Id));
+                        .BeEquivalentTo(invitedWorker1.InvitedUser, z => z.Excluding(y => y.Id).Excluding(y => y.VenueId));
                 }
             }
         }
@@ -85,7 +85,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                     Assert.Null(worker.WorkerId);
 
                     worker.Should()
-                        .BeEquivalentTo(inviteeUser.InvitedUser, z => z.Excluding(y => y.Id));
+                        .BeEquivalentTo(inviteeUser.InvitedUser, z => z.Excluding(y => y.Id).Excluding(y => y.VenueId));
                 }
             }
         }

@@ -42,7 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             var result = new GetInviteByPhoneQueryResult
             {
                 Id = item.Id,
-                VenueIds = item.Venues.Select(x => x.VenueId).ToList(),
+                VenueIds = item?.Venues.Select(x => x.VenueId).ToList(),
                 Name = item.Name,
                 Phone = item.Phone,
                 PositionName = item.PositionName,

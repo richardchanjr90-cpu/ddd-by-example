@@ -13,6 +13,7 @@ using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
@@ -48,7 +49,6 @@ namespace LoyaltyProgram.Http.Signup
             {
                 var role = VenueUserRole.Owner;
                 var claimsDictionary = new Dictionary<string, object>();
-
                 var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
                 var identity = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
@@ -77,7 +77,6 @@ namespace LoyaltyProgram.Http.Signup
                 {
                     var workerModel = new WorkerViewModel();
                     workerModel.WorkerId = identity;
-          
                     workerModel.Email = model.Email;
                     workerModel.Name = model.Name;
                     workerModel.LastName = model.Surname;
@@ -85,10 +84,6 @@ namespace LoyaltyProgram.Http.Signup
                     workerModel.PositionName = worker.PositionName;
                     workerModel.Phone = worker.Phone;
 
-                    //todo: uri at startup
-                    //workerModel.Role = (int) worker.Role;
-                    //workerModel.VenueIds = worker.VenueIds;
-                    //workerModel.PhotoUri = worker.Phone;
                     foreach (var id in worker.VenueIds)
                     {
                         token.Principal.AddVenues(id);
@@ -107,7 +102,10 @@ namespace LoyaltyProgram.Http.Signup
 
                 await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(identity, claimsDictionary);
 
-                return new NoContentResult();
+                return new OkObjectResult(new CommandResult
+                {
+                    Success = true
+                });
             });
         }
     }

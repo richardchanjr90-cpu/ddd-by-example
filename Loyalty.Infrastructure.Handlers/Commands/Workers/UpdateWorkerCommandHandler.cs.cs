@@ -43,6 +43,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             worker.Email = request.Email;
             worker.PhotoUri = request.PhotoUri;
             worker.PositionName = request.PositionName;
+            worker.IsArchived = false;
 
             return new CommandResult
             {
