@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using Bogus;
-using Bogus.Extensions.UnitedStates;
-using Loyalty.Application.Storage.Dto.Validators;
 using Loyalty.Application.ViewModels.Location;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Shared.Contracts.Enums;
@@ -19,16 +16,16 @@ namespace LoyaltyProgram.Tests.Setup.Data
             faker.RuleFor(x => x.Description, f => f.Lorem.Sentence());
             faker.RuleFor(x => x.CategoryType, f => new Random().Next(1,3));
             faker.RuleFor(x => x.FullDescription, f => f.Lorem.Text());
-            faker.RuleFor(x => x.Name, f => "test_" + f.Company.CompanyName());
+            faker.RuleFor(x => x.Name, f => f.Company.CompanyName());
             faker.RuleFor(x => x.Type, f => (int)VenueType.Single);
-            faker.RuleFor(x => x.WebSites, f=> new List<string>()
+            faker.RuleFor(x => x.WebSites, f=> new List<string>
             {
                 f.Person.Website,
                 f.Person.Website,
                 f.Person.Website,
             });
 
-            faker.RuleFor(x => x.Phones, f => new List<string>()
+            faker.RuleFor(x => x.Phones, f => new List<string>
             {
                 "+" + f.Phone.PhoneNumber("37629#######"),
                 "+" + f.Phone.PhoneNumber("37629#######"),
@@ -40,8 +37,8 @@ namespace LoyaltyProgram.Tests.Setup.Data
                 new WorkingHoursViewModel
                 {
                     Day = "Monday",
-                    To = new Random().Next(1,100),
-                    From = new Random().Next(101,1000)
+                    From = new Random().Next(480,540),
+                    To = new Random().Next(700,1000),
                 }
             });
             faker.RuleFor(x => x.Location, f => new LocationViewModel
