@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Dapper;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
@@ -13,28 +15,36 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
 {
-    public class GetProductGroupsByUserIdQueryHandler : BaseHandler, IGetProductGroupsByUserIdQueryHandler
+    public class GetProductGroupsByUserIdQueryHandler : BaseDapperHandler, IGetProductGroupsByUserIdQueryHandler
     {
-        public GetProductGroupsByUserIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private readonly SqlConnection connection;
+
+        public GetProductGroupsByUserIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
+            this.connection = connection;
         }
 
         public async Task<GetProductGroupsByUserIdQueryResult> Handle(GetProductGroupsByUserIdQuery request,
             CancellationToken cancellationToken)
         {
-            //todo: this query is slow. profile and speed up required
-            var items = await Context.ProductGroups.Include(x => x.Products)
-                .Include(x => x.OwnerVenue)
-                .ThenInclude(x => x.Workers)
-                .ThenInclude(x => x.Worker)
-                .AsNoTracking()
-                .Where(z => z.OwnerVenue.Workers.Select(x => x.Worker).Any(x => x.WorkerId == request.UserId))
-                .ToListAsync(cancellationToken);
+            var userId = request.UserId;
+
+            var getItems =
+                @"SELECT pg.* FROM 
+                    loyalty.ProductGroup pg 
+                    JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId
+                    JOIN loyalty.Worker w ON vw.WorkerId = w.Id
+                    WHERE w.WorkerId = @userId AND w.IsArchived = 0 AND pg.IsArchived = 0";
+
+            var items = connection.Query<ProductGroup>(getItems, new
+            {
+                userId
+            }).ToList();
 
             return new GetProductGroupsByUserIdQueryResult
             {
-                Result = items?.ToResults()
+                Result = items.ToResults()
             };
         }
     }

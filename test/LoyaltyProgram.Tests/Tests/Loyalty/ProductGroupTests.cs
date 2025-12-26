@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
+using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Tests.Fixture;
 using LoyaltyProgram.Tests.Fixture.Extensions;
+using LoyaltyProgram.Tests.Setup.Auth;
 using LoyaltyProgram.Tests.Setup.Data;
 using LoyaltyProgram.Tests.Setup.Data.Loyalty;
 using Xunit;
@@ -16,10 +19,13 @@ namespace LoyaltyProgram.Tests.Tests.Loyalty
     [Collection(nameof(FunctionTestCollection))]
     public class ProductGroupTests : IClassFixture<SignedUpUserFixture>
     {
+        private readonly TestFixture fixture;
+
         private readonly SignedUpUserFixture signedUpUserFixture;
 
-        public ProductGroupTests(SignedUpUserFixture signedUpUserFixture)
+        public ProductGroupTests(TestFixture fixture, SignedUpUserFixture signedUpUserFixture)
         {
+            this.fixture = fixture;
             this.signedUpUserFixture = signedUpUserFixture;
         }
 
@@ -36,6 +42,40 @@ namespace LoyaltyProgram.Tests.Tests.Loyalty
 
                 Assert.True(response.IsSuccessStatusCode);
                 Assert.True((long)result.Result > 0);
+            }
+        }
+
+        [Fact]
+        public async Task ShouldGetProductGroups()
+        {
+            using (var venue1 = new VenueFixture(signedUpUserFixture))
+            using (var venue2 = new VenueFixture(signedUpUserFixture))
+            using (var invitedUser1 = new InviteFixture(venue1.Venue.Id, VenueUserRole.Director, signedUpUserFixture))
+            using (var createdUser1 = new InvitedUserFixture(fixture, new AuthUser(invitedUser1.InvitedUser.Phone, invitedUser1.InvitedUser.Email), signedUpUserFixture))
+            using (var invitedUser2 = new InviteFixture(venue2.Venue.Id, VenueUserRole.Director, signedUpUserFixture))
+            using (var createdUser2 = new InvitedUserFixture(fixture, new AuthUser(invitedUser2.InvitedUser.Phone, invitedUser2.InvitedUser.Email), signedUpUserFixture))
+            using (new ProductGroupFixture(venue1.Venue.Id, signedUpUserFixture))
+            using (new ProductGroupFixture(venue1.Venue.Id, signedUpUserFixture))
+            using (new ProductGroupFixture(venue1.Venue.Id, signedUpUserFixture))
+            using (new ProductGroupFixture(venue2.Venue.Id, signedUpUserFixture))
+            using (new ProductGroupFixture(venue2.Venue.Id, signedUpUserFixture))
+            using (new ProductGroupFixture(venue2.Venue.Id, signedUpUserFixture))
+            {
+                var response1 = await createdUser1.Client.GetAsync($"api/productGroups/");
+                var response2 = await createdUser2.Client.GetAsync($"api/productGroups/");
+                var response3 = await signedUpUserFixture.Client.GetAsync($"api/productGroups/");
+
+                Assert.True(response1.IsSuccessStatusCode);
+                Assert.True(response2.IsSuccessStatusCode);
+                Assert.True(response3.IsSuccessStatusCode);
+
+                var result1 = await response1.DeserializeAsync<List<ProductGroupViewModel>>();
+                var result2 = await response2.DeserializeAsync<List<ProductGroupViewModel>>();
+                var result3 = await response3.DeserializeAsync<List<ProductGroupViewModel>>();
+
+                Assert.True(result1.Count == 3);
+                Assert.True(result2.Count == 3);
+                Assert.True(result3.Count == 6);
             }
         }
 
@@ -92,7 +132,7 @@ namespace LoyaltyProgram.Tests.Tests.Loyalty
         }
 
         [Fact]
-        public async Task ShouldArchiveProduct()
+        public async Task ShouldArchiveProductGroup()
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             {
@@ -113,6 +153,40 @@ namespace LoyaltyProgram.Tests.Tests.Loyalty
 
                 Assert.True(response4.IsSuccessStatusCode);
                 Assert.True(result4.Count == 0);
+            }
+        }
+
+        [Fact]
+        public async Task ShouldArchiveProductGroupThatIsAssignedToArchivedLoyaltyGroup()
+        {
+            using (var venue = new VenueFixture(signedUpUserFixture))
+            using (var program = new LoyaltyProgramFixture(DateTime.Today.AddDays(1), DateTime.Today.AddDays(2), venue.Venue.Id, signedUpUserFixture))
+            using (var group = new ProductGroupFixture(venue.Venue.Id, signedUpUserFixture))
+            using (var lpg = new LoyaltyProductGroupFixture(group.ProductGroup.Id, program.LoyaltyProgram.Id, signedUpUserFixture))
+            {
+                lpg.Dispose();
+
+                var response = await signedUpUserFixture.Client.DeleteAsync($"api/productGroups/{group.ProductGroup.Id}");
+                var result = await response.DeserializeAsync<CommandResult>();
+
+                Assert.True(response.IsSuccessStatusCode);
+                Assert.True(result.Success);
+            }
+        }
+
+        [Fact]
+        public async Task ShouldNotArchiveProductGroupThatIsAssignedToActiveLoyaltyGroup()
+        {
+            using (var venue = new VenueFixture(signedUpUserFixture))
+            using (var program = new LoyaltyProgramFixture(DateTime.Today.AddDays(1), DateTime.Today.AddDays(2), venue.Venue.Id, signedUpUserFixture))
+            using (var group = new ProductGroupFixture(venue.Venue.Id, signedUpUserFixture))
+            using (var lpg = new LoyaltyProductGroupFixture(group.ProductGroup.Id, program.LoyaltyProgram.Id, signedUpUserFixture))
+            {
+                var response = await signedUpUserFixture.Client.DeleteAsync($"api/productGroups/{group.ProductGroup.Id}");
+                var result = await response.DeserializeAsync<CommandResult>();
+
+                Assert.False(response.IsSuccessStatusCode);
+                Assert.False(result.Success);
             }
         }
     }

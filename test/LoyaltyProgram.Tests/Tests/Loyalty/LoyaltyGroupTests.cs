@@ -5,6 +5,7 @@ using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Domain.Contracts;
 using LoyaltyProgram.Tests.Fixture;
 using LoyaltyProgram.Tests.Fixture.Extensions;
+using LoyaltyProgram.Tests.Setup.Data.Loyalty;
 using Xunit;
 
 namespace LoyaltyProgram.Tests.Tests.Loyalty
@@ -37,6 +38,25 @@ namespace LoyaltyProgram.Tests.Tests.Loyalty
             using (var lpg = new LoyaltyProductGroupFixture(group.ProductGroup.Id, program.LoyaltyProgram.Id, signedUpUserFixture))
             {
                 Assert.True(lpg.LoyaltyProductGroup.Id > 0);
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(ValidDateTestData))]
+        public async Task ShouldNotCreateGroupWithLoyaltyGroupFromDifferentVenues(DateTime start, DateTime finish)
+        {
+            using (var venue1 = new VenueFixture(signedUpUserFixture))
+            using (var venue2 = new VenueFixture(signedUpUserFixture))
+            using (var program1 = new LoyaltyProgramFixture(start, finish, venue1.Venue.Id, signedUpUserFixture))
+            using (var program2 = new LoyaltyProgramFixture(start, finish, venue2.Venue.Id, signedUpUserFixture))
+            using (var group1 = new ProductGroupFixture(venue1.Venue.Id, signedUpUserFixture))
+            {
+                var group = LoyaltyGroupFactory.Get(group1.ProductGroup.Id, program2.LoyaltyProgram.Id);
+                var groupContent = ModelHelper.Convert(group);
+
+                var response = await signedUpUserFixture.Client.PostAsync($"api/programs/{program2.LoyaltyProgram.Id}/loyaltygroups", groupContent);
+                var result = await response.DeserializeAsync<CommandResult>();
+                Assert.False(result.Success);
             }
         }
 

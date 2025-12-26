@@ -45,7 +45,6 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedWorker1 = new InviteFixture(venue.Venue.Id, role, signedUpUserFixture))
             {
-                //var content = ModelHelper.Convert(venue);
                 var response = await signedUpUserFixture.Client.GetAsync("api/workers");
                 var workers = await response.DeserializeAsync<List<WorkerViewModel>>();
 
