@@ -15,7 +15,7 @@ namespace LoyaltyProgram.Tests.Fixture
         public SignedUpUserFixture(TestFixture fixture)
         {
             this.fixture = fixture;
-            User = new AuthUser();
+            User = new AuthUser("+375291602219");
 
             Client.DefaultRequestHeaders.Add("Authorization", "Bearer " + User.GetAuthTokenAsync().GetAwaiter().GetResult());
 

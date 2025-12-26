@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Loyalty.Application.ViewModels.Signup;
 using LoyaltyProgram.Tests.Setup.Auth;
 using LoyaltyProgram.Tests.Setup.Data;
 
@@ -10,6 +11,7 @@ namespace LoyaltyProgram.Tests.Fixture
     {
         private readonly TestFixture fixture;
         private readonly IUserCreateFixture creatorsFixture;
+        public SignupViewModel Signup { get; private set; }
 
         public HttpClient Client { get; } = new HttpClient();
 
@@ -28,8 +30,8 @@ namespace LoyaltyProgram.Tests.Fixture
 
         private async Task SignupAsync(AuthUser user)
         {
-            var signup = UserFactory.GetSignup();
-            var content = ModelHelper.Convert(signup);
+            Signup = UserFactory.GetSignup();
+            var content = ModelHelper.Convert(Signup);
             var response = await fixture.ConfigureClient(Client).PostAsync("api/signup", content);
 
             if (!response.IsSuccessStatusCode)

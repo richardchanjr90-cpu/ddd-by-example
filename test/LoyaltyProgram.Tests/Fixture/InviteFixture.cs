@@ -12,7 +12,7 @@ namespace LoyaltyProgram.Tests.Fixture
 {
     public class InviteFixture : IDisposable
     {
-        public WorkerViewModel InvitedUser { get; }
+        public InviteViewModel InvitedUser { get; }
 
         public IUserCreateFixture CreatorsUserFixture { get; }
 
@@ -22,7 +22,7 @@ namespace LoyaltyProgram.Tests.Fixture
             InvitedUser = CreateWorkerAsync(venueId, role, model).GetAwaiter().GetResult();
         }
 
-        private async Task<WorkerViewModel> CreateWorkerAsync(long venueId, VenueUserRole role, InviteViewModel model = null)
+        private async Task<InviteViewModel> CreateWorkerAsync(long venueId, VenueUserRole role, InviteViewModel model = null)
         {
             var worker = model ?? WorkerFactory.GetInvite(role);
             worker.VenueId = venueId;
@@ -34,7 +34,16 @@ namespace LoyaltyProgram.Tests.Fixture
 
             var getResponseMessage = await CreatorsUserFixture.Client.GetAsync("api/workers/" + result.Result);
             var getResult = await getResponseMessage.DeserializeAsync<WorkerViewModel>();
-            return getResult;
+
+            var invite = new InviteViewModel();
+            invite.Id = getResult.Id;
+            invite.Role = getResult.Role;
+            invite.Name = getResult.Name;
+            invite.Phone = getResult.Phone;
+            invite.PositionName = getResult.PositionName;
+            invite.VenueId = venueId;
+
+            return invite;
         }
 
         private async Task DeleteWorkerAsync(long id)

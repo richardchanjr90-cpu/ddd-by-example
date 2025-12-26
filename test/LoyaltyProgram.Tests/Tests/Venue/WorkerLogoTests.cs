@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, VenueUserRole.Worker, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var imageContent = ImageFactory.GetImageContent(width, height);
                 var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);
@@ -64,7 +64,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, VenueUserRole.Worker, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var sas = await signedUpUserFixture.Client.GetAsync($"api/security/sas");
                 var sasToken = await sas.Content.ReadAsStringAsync();
@@ -102,7 +102,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, VenueUserRole.Worker, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var imageContent = ImageFactory.GetImageContent(width, height);
                 var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);

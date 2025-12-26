@@ -70,7 +70,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             using (var inviteeUser = new InviteFixture(venue.Venue.Id, role, createdUser))
             {
                 var response = await createdUser.Client.GetAsync("api/workers");
@@ -98,7 +98,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var worker = WorkerFactory.GetInvite(role);
                 worker.VenueId = venue.Venue.Id;
@@ -134,7 +134,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var worker = WorkerFactory.GetInvite(role);
                 worker.VenueId = venue.Venue.Id;
@@ -154,7 +154,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             using (new InviteFixture(venue.Venue.Id, fromRole, createdUser))
             {
                 var response = await createdUser.Client.GetAsync("api/workers");
@@ -198,7 +198,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             using (var invitedUser = new InviteFixture(venue.Venue.Id, inviterRole, signedUpUserFixture))
-            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone, invitedUser.InvitedUser.Email), signedUpUserFixture))
+            using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             using (var inviteeUser = new InviteFixture(venue.Venue.Id, role, createdUser))
             {
                 var response = await createdUser.Client.GetAsync("api/workers");

@@ -55,7 +55,7 @@ namespace LoyaltyProgram.Tests.Setup.Data
 
             var faker = new Faker<InviteViewModel>();
             faker.RuleFor(x => x.Name, f => f.Person.FirstName);
-            faker.RuleFor(x => x.PositionName, f => "Бариста");
+            faker.RuleFor(x => x.PositionName, f => stringRole);
             faker.RuleFor(x => x.Phone, f => f.Phone.PhoneNumber("+37629#######"));
             faker.RuleFor(x => x.Role, f => (int)role);
 

@@ -89,7 +89,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 
             return new GetWorkersByUserIdQueryResult
             {
-                Result = items //workers.ToResults()
+                Result = items
             };
         }
     }

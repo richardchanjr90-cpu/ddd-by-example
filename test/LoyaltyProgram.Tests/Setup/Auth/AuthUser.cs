@@ -17,7 +17,6 @@ namespace LoyaltyProgram.Tests.Setup.Auth
         public const string PhonePrefix = "+376";
 
         private string phone;
-        private string email;
         private string uid;
 
         private readonly UserRecord user;
@@ -30,33 +29,26 @@ namespace LoyaltyProgram.Tests.Setup.Auth
             private set => phone = value;
         }
 
-        public string Email
-        {
-            get => IsActive ? email : throw new ObjectDisposedException("user");
-            private set => email = value;
-        }
-
         public string Uid
         {
             get => IsActive ? uid : throw new ObjectDisposedException("user");
             private set => uid = value;
         }
 
-        public AuthUser(string phone, string email)
+        public AuthUser(string phone)
         {
             using (HttpClient client = new HttpClient())
             {
                 CreateFirebaseInstanceAsync(client).GetAwaiter().GetResult();
             }
 
-            user = CreateFireBaseUser(phone, email);
+            user = CreateFireBaseUser(phone);
             Phone = user.PhoneNumber;
             Uid = user.Uid;
-            Email = user.Email;
         }
 
         public AuthUser() 
-            : this(null, null)
+            : this(null)
         {
         }
 
@@ -101,13 +93,12 @@ namespace LoyaltyProgram.Tests.Setup.Auth
             }
         }
 
-        private static UserRecord CreateFireBaseUser(string phone = null, string email = null)
+        private static UserRecord CreateFireBaseUser(string phone = null)
         {
             var faker = new Faker();
             var args = new UserRecordArgs
             {
                 PhoneNumber = phone ?? "+" + faker.Phone.PhoneNumber(PhonePrefix + "29#######"),
-                Email = email ?? "test_" + faker.Internet.Email(),
                 DisplayName = DisplayName
             };
 
@@ -125,7 +116,6 @@ namespace LoyaltyProgram.Tests.Setup.Auth
                 IsActive = false;
                 Uid = null;
                 Phone = null;
-                Email = null;
             }
         }
     }
