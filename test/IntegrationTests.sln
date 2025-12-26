@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoyaltyProgram.Tests", "Loy
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoayaltyProgram.Availability.AppInsights", "LoayaltyProgram.Availability.AppInsights\LoayaltyProgram.Availability.AppInsights.csproj", "{36975117-9F97-4EF2-90CA-E195A67F7E26}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoyaltyProgram", "..\LoyaltyProgram\LoyaltyProgram.csproj", "{8444781A-E249-4469-A37D-140E8AFAFC71}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{36975117-9F97-4EF2-90CA-E195A67F7E26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36975117-9F97-4EF2-90CA-E195A67F7E26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36975117-9F97-4EF2-90CA-E195A67F7E26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8444781A-E249-4469-A37D-140E8AFAFC71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8444781A-E249-4469-A37D-140E8AFAFC71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8444781A-E249-4469-A37D-140E8AFAFC71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8444781A-E249-4469-A37D-140E8AFAFC71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

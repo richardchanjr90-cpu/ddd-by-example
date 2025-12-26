@@ -37,7 +37,7 @@ namespace LoyaltyProgram.Tests.Fixture
         {
             var response = await SignupFixture.Client.DeleteAsync("api/venues/" + id);
             var result = await response.DeserializeAsync<CommandResult>();
-            Assert.True(result.Success);
+            Assert.True(response.IsSuccessStatusCode);
         }
 
         public void Dispose()
