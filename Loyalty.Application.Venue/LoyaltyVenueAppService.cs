@@ -45,11 +45,10 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<VenueViewModel>>(result.Venues);
         }
 
-        public async Task<List<VenueViewModel>> GetByUser(string userGuid)
+        public async Task<List<VenueViewModel>> GetByUser()
         {
             var query = new GetVenuesByUserIdQuery
             {
-                UserId = userGuid
             };
 
             var result = await Mediator.Send(query);
