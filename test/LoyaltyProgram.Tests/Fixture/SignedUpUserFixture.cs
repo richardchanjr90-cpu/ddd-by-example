@@ -32,7 +32,8 @@ namespace LoyaltyProgram.Tests.Fixture
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new InvalidOperationException("Could not sign up.");
+                var resultString = await response.Content.ReadAsStringAsync();
+                throw new InvalidOperationException("Could not sign up: " + resultString);
             }
         }
 
