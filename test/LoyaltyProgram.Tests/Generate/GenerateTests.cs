@@ -31,8 +31,8 @@ namespace LoyaltyProgram.Tests.Generate
             }
         }
 
-        [Theory(Skip = "This is not a test")]
-        [ClassData(typeof(ValidDateTestData))]
+        //[Theory(Skip = "This is not a test")]
+        //[ClassData(typeof(ValidDateTestData))]
         public async Task ShouldCreateFullyOperableVenue(DateTime start, DateTime finish)
         {
             var venue1 = new VenueFixture(signedUpUserFixture);

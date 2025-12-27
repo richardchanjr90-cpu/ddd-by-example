@@ -8,10 +8,13 @@ namespace LoyaltyProgram.Tests.Fixture
 {
     public class TestFixture : IDisposable
     {
-        public const string DotnetExecutablePath = "%ProgramFiles%\\dotnet\\dotnet.exe";
-        public const string FunctionHostPath =
-            "%APPDATA%\\npm\\node_modules\\azure-functions-core-tools\\bin\\func.dll";
-        public const string FunctionApplicationPath = "..\\..\\..\\..\\..\\LoyaltyProgram\\bin\\Debug\\netcoreapp2.2";
+        public string DotnetExecutablePath = 
+            Environment.GetEnvironmentVariable(nameof(DotnetExecutablePath)) 
+            ?? "%ProgramFiles%\\dotnet\\dotnet.exe";
+        public string FunctionHostPath =
+            Environment.GetEnvironmentVariable(nameof(FunctionHostPath)) 
+            ?? "C:\\Users\\User\\Documents\\Portable\\dev\\node-v12.11.0-win-x64\\node_modules\\azure-functions-core-tools\\bin\\func.dll";
+        public string FunctionApplicationPath = "..\\..\\..\\..\\..\\src\\LoyaltyProgram\\bin\\Debug\\netcoreapp2.2";
 
         private readonly Process funcHostProcess;
 
@@ -21,23 +24,24 @@ namespace LoyaltyProgram.Tests.Fixture
             var functionHostPath = Environment.ExpandEnvironmentVariables(FunctionHostPath);
             var functionAppFolder = Path.GetRelativePath(Directory.GetCurrentDirectory(), FunctionApplicationPath);
 
-            //funcHostProcess = new Process
-            //{
-            //    StartInfo =
-            //    {
-            //        FileName = dotnetExePath,
-            //        Arguments = $"\"{functionHostPath}\" start -p {Port}",
-            //        WorkingDirectory = functionAppFolder,
-            //        CreateNoWindow = false,
-            //        UseShellExecute = true,
-            //    }
-            //};
-            //var success = funcHostProcess.Start();
+            funcHostProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = dotnetExePath,
+                    Arguments = $"\"{functionHostPath}\" start -p {Port}",
+                    WorkingDirectory = functionAppFolder,
+                    //CreateNoWindow = false,
+                    //UseShellExecute = true,
+                    //WindowStyle = ProcessWindowStyle.Normal
+        }
+            };
+            var success = funcHostProcess.Start();
 
-            //if (!success)
-            //{
-            //    throw new InvalidOperationException("Could not start Azure Functions host.");
-            //}
+            if (!success)
+            {
+                throw new InvalidOperationException("Could not start Azure Functions host.");
+            }
         }
 
         public int Port { get; } = 7071;
