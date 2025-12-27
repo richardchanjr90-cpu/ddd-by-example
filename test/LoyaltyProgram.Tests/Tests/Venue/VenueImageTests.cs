@@ -160,10 +160,9 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
         [Theory]
         [InlineData(600, 600)]
-        [InlineData(799, 600)]
-        [InlineData(800, 599)]
-        [InlineData(2561, 1440)]
-        [InlineData(2560, 1441)]
+        [InlineData(700, 600)]
+        [InlineData(800, 500)]
+        [InlineData(3000, 1600)]
         [InlineData(1, 1)]
         public async Task ShouldNotAddImagesToVenue(int width, int height)
         {

@@ -12,18 +12,24 @@ namespace LoyaltyProgram.Tests.Setup.Data
 {
     public class ImageFactory
     {
-        public static byte[] GetImage(int width = 800, int height = 600)
+        public static byte[] GetImage(int width = 800, int height = 600, bool isAlternativeSource = false)
         {
             try
             {
-                return GetImagePrivate(width, height);
+                if (!isAlternativeSource)
+                {
+                    return GetImagePrivate(width, height);
+                }
+                else
+                {
+                    return GetImageFlickr(width, height);
+                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return GetImage(width, height);
+                return GetImage(width, height, true);
             }
         }
-
 
         private static byte[] GetImagePrivate(int width = 800, int height = 600)
         {
@@ -31,6 +37,18 @@ namespace LoyaltyProgram.Tests.Setup.Data
             {
                 var faker = new Faker();
                 var uri = faker.Image.PicsumUrl(width, height);
+
+                byte[] bytes = client.DownloadData(uri);
+                return bytes;
+            }
+        }
+
+        private static byte[] GetImageFlickr(int width = 800, int height = 600)
+        {
+            using (WebClient client = new WebClient())
+            {
+                var faker = new Faker();
+                var uri = faker.Image.LoremPixelUrl("random",width, height);
 
                 byte[] bytes = client.DownloadData(uri);
                 return bytes;

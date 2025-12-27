@@ -83,7 +83,10 @@ namespace Loyalty.Application.Storage.Dto.Validators
         {
             var isValid = false;
 
-            if (array != null) isValid = array.Length <= settings.MaxImageSizeInBytes;
+            if (array != null)
+            {
+                isValid = array.Length <= settings.MaxImageSizeInBytes;
+            }
 
             return isValid;
         }

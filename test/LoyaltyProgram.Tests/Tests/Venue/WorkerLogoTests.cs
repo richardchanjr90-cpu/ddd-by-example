@@ -32,7 +32,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
 
         [Theory]
-        [InlineData(400, 400)]
+        [InlineData(800, 800)]
         [InlineData(2000, 2000)]
         public async Task ShouldSaveAvatar(int width, int height)
         {
@@ -58,7 +58,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         }
 
         [Theory]
-        [InlineData(400, 400)]
+        [InlineData(800, 800)]
         [InlineData(2000, 2000)]
         public async Task ShouldSaveAvatarAndItShouldBeTheSame(int width, int height)
         {

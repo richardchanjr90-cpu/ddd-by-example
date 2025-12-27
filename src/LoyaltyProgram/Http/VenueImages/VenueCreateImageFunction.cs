@@ -11,6 +11,7 @@ using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
@@ -99,7 +100,10 @@ namespace LoyaltyProgram.Http.VenueImages
                         await imageService.GetImages(container, "original"));
                 }
 
-                return new NoContentResult();
+                return new OkObjectResult(new CommandResult
+                {
+                    Success = true
+                });
             });
         }
     }
