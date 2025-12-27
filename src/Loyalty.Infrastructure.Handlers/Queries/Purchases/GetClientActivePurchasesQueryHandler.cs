@@ -36,7 +36,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     lgr.[Rule] as [Rule],
                     lgr.RuleType as RuleType,
                     lgr.RuleVersion as RuleVersion,
-                    total.total as Total
+                    ISNULL(total.total, 0) as Total
                     FROM loyalty.LoyaltyProgram lp
                     JOIN loyalty.LoyaltyProductGroup lpg ON lpg.LoyaltyProgramId = lp.Id
                     JOIN loyalty.LoyaltyGroupRule lgr ON lgr.LoyaltyProductGroupId = lpg.Id
