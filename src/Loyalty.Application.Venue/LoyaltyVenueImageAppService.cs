@@ -21,11 +21,15 @@ namespace Loyalty.Application.Venue
     {
         private readonly IOptions<ImageSettings> settings;
 
+        private readonly IOptions<ImageStorageSettings> imageStorageSettings;
+
         public LoyaltyVenueImageAppService(IMediator mediator,
-            IOptions<ImageSettings> settings)
+            IOptions<ImageSettings> settings,
+            IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
             this.settings = settings;
+            this.imageStorageSettings = imageStorageSettings;
         }
 
         public async Task<VenueNewBlobImageDto> ConvertImage(HttpRequestMessage request, long venueId, Guid index)
@@ -90,6 +94,13 @@ namespace Loyalty.Application.Venue
                     await container.ListBlobsSegmentedAsync(prefix, true, BlobListingDetails.None, 50,
                         null, null, null);
                 results = operation.Results.Select(item => item.Uri.ToString()).ToList();
+
+                if (!String.IsNullOrEmpty(imageStorageSettings.Value.CDN) &&
+                    !String.IsNullOrEmpty(imageStorageSettings.Value.StorageAccountUrl))
+                {
+                    results = results.Select(x =>
+                        x.Replace(imageStorageSettings.Value.StorageAccountUrl, imageStorageSettings.Value.CDN)).ToList();
+                }
             }
 
             return results;
