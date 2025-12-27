@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using Google.Apis.Http;
 
 namespace LoyaltyProgram.Tests.Fixture
@@ -35,8 +36,9 @@ namespace LoyaltyProgram.Tests.Fixture
                     //UseShellExecute = true,
                     RedirectStandardOutput = true,
                     WindowStyle = ProcessWindowStyle.Normal
-        }
+                }
             };
+
             funcHostProcess.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
             {
                 if (!String.IsNullOrEmpty(e.Data))
@@ -52,6 +54,9 @@ namespace LoyaltyProgram.Tests.Fixture
                     Console.WriteLine(e.Data);
                 }
             });
+
+            //Waiting till AF will load.
+            Thread.Sleep(5000);
 
             var success = funcHostProcess.Start();
             funcHostProcess.BeginOutputReadLine();
