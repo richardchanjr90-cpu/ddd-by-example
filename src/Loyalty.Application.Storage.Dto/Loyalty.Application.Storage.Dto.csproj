@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="8.5.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
+    <PackageReference Include="SkiaSharp" Version="1.68.0" />
   </ItemGroup>
 
 </Project>

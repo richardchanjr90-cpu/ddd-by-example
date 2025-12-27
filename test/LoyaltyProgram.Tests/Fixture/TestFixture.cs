@@ -24,24 +24,24 @@ namespace LoyaltyProgram.Tests.Fixture
             var functionHostPath = Environment.ExpandEnvironmentVariables(FunctionHostPath);
             var functionAppFolder = Path.GetRelativePath(Directory.GetCurrentDirectory(), FunctionApplicationPath);
 
-            funcHostProcess = new Process
-            {
-                StartInfo =
-                {
-                    FileName = dotnetExePath,
-                    Arguments = $"\"{functionHostPath}\" start -p {Port}",
-                    WorkingDirectory = functionAppFolder,
-                    //CreateNoWindow = false,
-                    //UseShellExecute = true,
-                    //WindowStyle = ProcessWindowStyle.Normal
-        }
-            };
-            var success = funcHostProcess.Start();
+        //    funcHostProcess = new Process
+        //    {
+        //        StartInfo =
+        //        {
+        //            FileName = dotnetExePath,
+        //            Arguments = $"\"{functionHostPath}\" start -p {Port}",
+        //            WorkingDirectory = functionAppFolder,
+        //            CreateNoWindow = false,
+        //            UseShellExecute = true,
+        //            WindowStyle = ProcessWindowStyle.Normal
+        //}
+        //    };
+        //    var success = funcHostProcess.Start();
 
-            if (!success)
-            {
-                throw new InvalidOperationException("Could not start Azure Functions host.");
-            }
+            //if (!success)
+            //{
+            //    throw new InvalidOperationException("Could not start Azure Functions host.");
+            //}
         }
 
         public int Port { get; } = 7071;
