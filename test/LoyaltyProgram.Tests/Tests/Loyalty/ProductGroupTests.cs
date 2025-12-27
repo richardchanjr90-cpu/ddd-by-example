@@ -102,6 +102,23 @@ namespace LoyaltyProgram.Tests.Tests.Loyalty
         }
 
         [Fact]
+        public async Task ShouldGetProductGroupWithProducts()
+        {
+            using (var venue = new VenueFixture(signedUpUserFixture))
+            using (var group = new ProductGroupFixture(venue.Venue.Id, signedUpUserFixture))
+            using (var product = new ProductFixture(group.ProductGroup.Id, signedUpUserFixture))
+            using (var product2 = new ProductFixture(group.ProductGroup.Id, signedUpUserFixture))
+            {
+                var response3 = await signedUpUserFixture.Client.GetAsync($"api/productGroups/{group.ProductGroup.Id}/");
+                var result3 = await response3.DeserializeAsync<ProductGroupViewModel>();
+
+                Assert.True(response3.IsSuccessStatusCode);
+                Assert.True(result3.Id > 0);
+                Assert.True(result3.Products.Count == 2);
+            }
+        }
+
+        [Fact]
         public async Task ShouldPutProductGroup()
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
