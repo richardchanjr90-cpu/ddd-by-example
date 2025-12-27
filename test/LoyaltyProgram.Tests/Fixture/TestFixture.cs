@@ -8,11 +8,11 @@ namespace LoyaltyProgram.Tests.Fixture
 {
     public class TestFixture : IDisposable
     {
-        public string DotnetExecutablePath = 
-            Environment.GetEnvironmentVariable(nameof(DotnetExecutablePath)) 
+        public string DotnetExecutablePath =
+            Environment.GetEnvironmentVariable(nameof(DotnetExecutablePath))
             ?? "%ProgramFiles%\\dotnet\\dotnet.exe";
         public string FunctionHostPath =
-            Environment.GetEnvironmentVariable(nameof(FunctionHostPath)) 
+            Environment.GetEnvironmentVariable(nameof(FunctionHostPath))
             ?? "C:\\Users\\User\\Documents\\Portable\\dev\\node-v12.11.0-win-x64\\node_modules\\azure-functions-core-tools\\bin\\func.dll";
         public string FunctionApplicationPath = "..\\..\\..\\..\\..\\src\\LoyaltyProgram\\bin\\Debug\\netcoreapp2.2";
 
@@ -31,12 +31,30 @@ namespace LoyaltyProgram.Tests.Fixture
                     FileName = dotnetExePath,
                     Arguments = $"\"{functionHostPath}\" start -p {Port}",
                     WorkingDirectory = functionAppFolder,
-                    CreateNoWindow = false,
-                    UseShellExecute = true,
+                    //CreateNoWindow = false,
+                    //UseShellExecute = true,
+                    RedirectStandardOutput = true,
                     WindowStyle = ProcessWindowStyle.Normal
         }
             };
+            funcHostProcess.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                if (!String.IsNullOrEmpty(e.Data))
+                {
+                    Console.WriteLine("e:" + e.Data);
+                }
+            });
+
+            funcHostProcess.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+            {
+                if (!String.IsNullOrEmpty(e.Data))
+                {
+                    Console.WriteLine(e.Data);
+                }
+            });
+
             var success = funcHostProcess.Start();
+            funcHostProcess.BeginOutputReadLine();
 
             if (!success)
             {
