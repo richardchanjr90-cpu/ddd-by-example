@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
 {
-    public class CreatePurchaseCommand : IRequest<ICommandNotificationResult>
+    public class CreatePurchaseCommand : IRequest<ICommandResult>
     {
         public long LoyaltyProductGroupId { get; set; }
 

@@ -7,11 +7,13 @@ using FluentValidation;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace Loyalty.Application.Venue
 {
@@ -19,7 +21,9 @@ namespace Loyalty.Application.Venue
     {
         private readonly IMapper mapper;
 
-        public LoyaltyVenueAppService(IMediator mediator, IMapper mapper)
+        private readonly IOptions<ImageStorageSettings> imageStorageSettings;
+
+        public LoyaltyVenueAppService(IMediator mediator, IMapper mapper, IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
             this.mapper = mapper;
@@ -85,6 +89,12 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> PatchLogo(long venueId, string logo)
         {
+            if (!String.IsNullOrEmpty(logo) && !String.IsNullOrEmpty(imageStorageSettings.Value.CDN) &&
+                !String.IsNullOrEmpty(imageStorageSettings.Value.StorageAccountUrl))
+            {
+                logo = logo.Replace(imageStorageSettings.Value.StorageAccountUrl, imageStorageSettings.Value.CDN);
+            }
+
             var commandResult = await Mediator.Send(new PatchVenueLogoCommand
             {
                 Id = venueId,

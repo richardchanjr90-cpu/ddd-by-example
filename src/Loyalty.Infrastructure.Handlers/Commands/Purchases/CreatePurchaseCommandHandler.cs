@@ -31,12 +31,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             this.mediator = mediator;
         }
 
-        public async Task<ICommandNotificationResult> Handle(
+        public async Task<ICommandResult> Handle(
             CreatePurchaseCommand request,
             CancellationToken cancellationToken)
         {
-            var result = new CommandNotificationResult();
-
             if (request.ProductId != null)
             {
                 var product = await Context.Products.Where(x => x.Id == request.ProductId)
@@ -68,14 +66,29 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             Context.Purchases.Add(purchase);
 
-            result.OnSuccessNotifications.Add(() => new CreatePurchaseNotification
-            {
-                VenueId = request.VenueId,
-                UserId = purchase.UserId,
-                LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-                Total = purchase.Value
-            });
+            var result = new CommandResult();
+            result.Success = await Context.SaveChangesAsync(cancellationToken) > 0;
 
+            if (result.Success)
+            {
+                var notification = new CreatePurchaseNotification
+                {
+                    VenueId = request.VenueId,
+                    UserId = purchase.UserId,
+                    LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
+                    Total = purchase.Value
+                };
+
+                await mediator.Publish(notification, cancellationToken);
+            }
+
+            //result.OnSuccessNotifications.Add(() => new CreatePurchaseNotification
+            //{
+            //    VenueId = request.VenueId,
+            //    UserId = purchase.UserId,
+            //    LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
+            //    Total = purchase.Value
+            //});
             return result;
         }
     }

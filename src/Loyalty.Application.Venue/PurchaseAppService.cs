@@ -50,7 +50,7 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return result.CommandResult;
+            return result;
         }
 
         public async Task<ICommandResult> PurchaseAndCreate(PurchaseViewModel model, long venueId, string userId)
