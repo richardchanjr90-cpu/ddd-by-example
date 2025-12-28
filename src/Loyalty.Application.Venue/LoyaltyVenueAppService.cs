@@ -26,6 +26,7 @@ namespace Loyalty.Application.Venue
         public LoyaltyVenueAppService(IMediator mediator, IMapper mapper, IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
+            this.imageStorageSettings = imageStorageSettings;
             this.mapper = mapper;
         }
 
