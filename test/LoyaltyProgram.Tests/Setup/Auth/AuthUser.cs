@@ -74,7 +74,7 @@ namespace LoyaltyProgram.Tests.Setup.Auth
         private async Task CreateFirebaseInstanceAsync(HttpClient client)
         {
             var uri = new Uri(
-                "https://secretstorage.blob.core.windows.net/firebase/zalik-243111-firebase-adminsdk-83897-987d10f2db.json?sp=r&st=2019-08-17T10:10:57Z&se=2099-08-17T18:10:57Z&spr=https&sv=2018-03-28&sig=REDACTED_SAS_SIG&sr=b");
+                "https://secretstorage.blob.core.windows.net/firebase-stage/zalik-stage-firebase-adminsdk-jl439-ba4cb39f7e.json?sp=r&st=2019-10-20T12:49:58Z&se=2099-10-20T20:49:58Z&spr=https&sv=2019-02-02&sr=b&sig=REDACTED_SAS_SIG");
 
             using (var result = await client.GetAsync(uri))
             {

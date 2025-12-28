@@ -83,13 +83,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 await mediator.Publish(notification, cancellationToken);
             }
 
-            //result.OnSuccessNotifications.Add(() => new CreatePurchaseNotification
-            //{
-            //    VenueId = request.VenueId,
-            //    UserId = purchase.UserId,
-            //    LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-            //    Total = purchase.Value
-            //});
             return result;
         }
     }

@@ -25,46 +25,46 @@ namespace LoyaltyProgram.Tests.Fixture
             var functionHostPath = Environment.ExpandEnvironmentVariables(FunctionHostPath);
             var functionAppFolder = Path.GetRelativePath(Directory.GetCurrentDirectory(), FunctionApplicationPath);
 
-            funcHostProcess = new Process
-            {
-                StartInfo =
-                {
-                    FileName = dotnetExePath,
-                    Arguments = $"\"{functionHostPath}\" start -p {Port}",
-                    WorkingDirectory = functionAppFolder,
-                    //CreateNoWindow = false,
-                    //UseShellExecute = true,
-                    RedirectStandardOutput = true,
-                    WindowStyle = ProcessWindowStyle.Normal
-                }
-            };
+            //funcHostProcess = new Process
+            //{
+            //    StartInfo =
+            //    {
+            //        FileName = dotnetExePath,
+            //        Arguments = $"\"{functionHostPath}\" start -p {Port}",
+            //        WorkingDirectory = functionAppFolder,
+            //        //CreateNoWindow = false,
+            //        //UseShellExecute = true,
+            //        RedirectStandardOutput = true,
+            //        WindowStyle = ProcessWindowStyle.Normal
+            //    }
+            //};
 
-            funcHostProcess.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
-            {
-                if (!String.IsNullOrEmpty(e.Data))
-                {
-                    Console.WriteLine("e:" + e.Data);
-                }
-            });
+            //funcHostProcess.ErrorDataReceived += new DataReceivedEventHandler((sender, e) =>
+            //{
+            //    if (!String.IsNullOrEmpty(e.Data))
+            //    {
+            //        Console.WriteLine("e:" + e.Data);
+            //    }
+            //});
 
-            funcHostProcess.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
-            {
-                if (!String.IsNullOrEmpty(e.Data))
-                {
-                    Console.WriteLine(e.Data);
-                }
-            });
+            //funcHostProcess.OutputDataReceived += new DataReceivedEventHandler((sender, e) =>
+            //{
+            //    if (!String.IsNullOrEmpty(e.Data))
+            //    {
+            //        Console.WriteLine(e.Data);
+            //    }
+            //});
 
             //Waiting till AF will load.
             Thread.Sleep(5000);
 
-            var success = funcHostProcess.Start();
-            funcHostProcess.BeginOutputReadLine();
+            //var success = funcHostProcess.Start();
+            //funcHostProcess.BeginOutputReadLine();
 
-            if (!success)
-            {
-                throw new InvalidOperationException("Could not start Azure Functions host.");
-            }
+            //if (!success)
+            //{
+            //    throw new InvalidOperationException("Could not start Azure Functions host.");
+            //}
         }
 
         public int Port { get; } = 7071;
