@@ -68,6 +68,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             var result = new CommandResult();
             result.Success = await Context.SaveChangesAsync(cancellationToken) > 0;
+            result.Result = purchase.Id;
 
             if (result.Success)
             {
