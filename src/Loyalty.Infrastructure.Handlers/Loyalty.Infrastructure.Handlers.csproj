@@ -6,14 +6,17 @@
 
   <ItemGroup>
     <Compile Remove="Commands\Cards\**" />
+    <Compile Remove="Commands\NewFolder\**" />
     <Compile Remove="Commands\Stamps\**" />
     <Compile Remove="Queries\Cards\**" />
     <Compile Remove="Queries\NewFolder\**" />
     <EmbeddedResource Remove="Commands\Cards\**" />
+    <EmbeddedResource Remove="Commands\NewFolder\**" />
     <EmbeddedResource Remove="Commands\Stamps\**" />
     <EmbeddedResource Remove="Queries\Cards\**" />
     <EmbeddedResource Remove="Queries\NewFolder\**" />
     <None Remove="Commands\Cards\**" />
+    <None Remove="Commands\NewFolder\**" />
     <None Remove="Commands\Stamps\**" />
     <None Remove="Queries\Cards\**" />
     <None Remove="Queries\NewFolder\**" />
@@ -25,7 +28,6 @@
     <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj" />
-    <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,12 +39,9 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-
   <ItemGroup>
     <PackageReference Include="FirebaseAdmin" Version="1.9.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
   </ItemGroup>
-
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
