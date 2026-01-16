@@ -24,12 +24,12 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
             try
             {
                 var serializedRequest = JsonConvert.SerializeObject(request);
-                var log = logFactory.CreateLogger(typeof(TRequest).Name);
-                log.LogInformation($"Handling {typeof(TResponse).Name}: {serializedRequest}");
+                var log = logFactory.CreateLogger(typeof(TRequest)?.Name);
+                log.LogInformation($"Handling {typeof(TResponse)?.Name}: {serializedRequest}");
 
                 var response = await next();
 
-                log.LogInformation($"Handled {typeof(TResponse).Name}");
+                log.LogInformation($"Handled {typeof(TResponse)?.Name}");
 
                 return response;
             }
