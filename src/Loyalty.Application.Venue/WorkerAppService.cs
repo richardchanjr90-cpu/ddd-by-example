@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
+using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using MediatR;
@@ -25,24 +26,14 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<WorkerViewModel> Get(long id)
+        public async Task<FullUserProfileViewModel> GetProfile(string userId)
         {
-            var result = await Mediator.Send(new GetWorkerByIdQuery
+            var result = await Mediator.Send(new GetUserProfileByIdQuery()
             {
-                Id = id
+                UserId = userId
             });
 
-            return mapper.Map<WorkerViewModel>(result);
-        }
-
-        public async Task<List<WorkerViewModel>> GetAll(long venueId)
-        {
-            var result = await Mediator.Send(new GetWorkersQuery
-            {
-                VenueId = venueId
-            });
-
-            return mapper.Map<List<WorkerViewModel>>(result.Result);
+            return mapper.Map<FullUserProfileViewModel>(result);
         }
 
         public async Task<List<WorkerViewModel>> Get(string userId)
@@ -82,11 +73,12 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> UpdateProfile(WorkerViewModel model)
+        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, string userId)
         {
-            new WorkerUpdateValidator().ValidateAndThrow(model);
+            new UserProfileUpdateValidator().ValidateAndThrow(model);
 
-            var command = mapper.Map<UpdateWorkerCommand>(model);
+            var command = mapper.Map<UpdateUserProfileCommand>(model);
+            command.WorkerId = userId;
 
             var commandResult = await Mediator.Send(command);
             return commandResult;
@@ -126,11 +118,11 @@ namespace Loyalty.Application.Venue
             return result;
         }
 
-        public async Task<ICommandResult> PatchPhoto(string logo, long id)
+        public async Task<ICommandResult> PatchPhoto(string logo, string userId)
         {
             var result = await Mediator.Send(new PatchWorkerPhotoCommand
             {
-                Id = id,
+                UserId = userId,
                 PhotoUri = logo
             });
 

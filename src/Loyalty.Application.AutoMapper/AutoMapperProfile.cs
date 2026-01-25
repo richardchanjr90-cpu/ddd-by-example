@@ -22,6 +22,7 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
+using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 
@@ -37,6 +38,8 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetLocationQueryResult, LocationViewModel>();
 
             CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
+            CreateMap<UserProfileViewModel, UpdateUserProfileCommand>()
+                .ForMember(x => x.WorkerId, opt => opt.Ignore());
 
             CreateMap<VenueViewModel, CreateVenueCommand>()
                 .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
@@ -92,6 +95,7 @@ namespace Loyalty.Application.AutoMapper
 
             CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
             CreateMap<GetSingleRuleByIdQueryResult, SingleRuleViewModel>();
+            CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
         }
     }
 }

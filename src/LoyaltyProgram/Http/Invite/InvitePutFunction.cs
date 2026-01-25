@@ -5,7 +5,6 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
@@ -15,13 +14,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Worker
+namespace LoyaltyProgram.Http.Invite
 {
-    public class WorkerPutFunction
+    public class InvitePutFunction
     {
         private readonly WorkerAppService service;
 
-        public WorkerPutFunction(WorkerAppService service)
+        public InvitePutFunction(WorkerAppService service)
         {
             this.service = service;
         }
@@ -29,20 +28,20 @@ namespace LoyaltyProgram.Http.Worker
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("WorkerPutFunction")]
+        [FunctionName("InvitePutFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
-            [RequestBodyType(typeof(WorkerViewModel), "WorkerViewModel")] WorkerViewModel model,
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers/invited")]
+            [RequestBodyType(typeof(InviteViewModel), "WorkerViewModel")] InviteViewModel model,
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(WorkerPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(InvitePutFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<WorkerViewModel>();
-                var result = await service.UpdateProfile(model);
+                model = await req.Cast<InviteViewModel>();
+                var result = await service.UpdateInvited(model);
 
                 return new OkObjectResult(result);
             });

@@ -8,6 +8,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public string PhotoUri { get; set; }
 
-        public long Id { get; set; }
+        public string UserId { get; set; }
     }
 }

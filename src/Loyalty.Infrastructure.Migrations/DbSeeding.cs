@@ -18,6 +18,7 @@ namespace Loyalty.Infrastructure.Migrations
                 context.Database.EnsureCreated();
 
                 var venue = context.Venues.FirstOrDefault(v => v.Name == "Venue1");
+
                 if (venue == null)
                     context.Venues.Add(new Venue
                     {
