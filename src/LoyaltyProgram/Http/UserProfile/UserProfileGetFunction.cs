@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -14,33 +13,32 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Worker
+namespace LoyaltyProgram.Http.UserProfile
 {
-    public class WorkerGetAllFunction
+    public class UserProfileGetFunction
     {
         private readonly WorkerAppService service;
 
-        public WorkerGetAllFunction(WorkerAppService service)
+        public UserProfileGetFunction(WorkerAppService service)
         {
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(WorkerViewModel[]))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(WorkerViewModel))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("WorkerGetAllFunction")]
+        [FunctionName("UserProfileGetFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "workers")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userprofiles")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
-            ClaimsPrincipal principal,
             ILogger log)
         {
-            log.LogInformation($"{nameof(WorkerGetAllFunction)} was triggered.");
+            log.LogInformation($"{nameof(UserProfileGetFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Get(token.Principal.GetUserId()));
+                return new OkObjectResult(await service.GetProfile(token.Principal.GetUserId()));
             });
         }
     }

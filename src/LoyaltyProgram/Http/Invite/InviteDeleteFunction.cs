@@ -14,7 +14,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Worker.Invite
+namespace LoyaltyProgram.Http.Invite
 {
     public class InviteDeleteFunction
     {

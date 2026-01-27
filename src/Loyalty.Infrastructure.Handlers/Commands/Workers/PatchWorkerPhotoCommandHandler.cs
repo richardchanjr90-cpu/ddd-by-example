@@ -26,10 +26,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         {
             var worker = await Context.Workers
                 .Include(x => x.Venues)
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.WorkerId == request.UserId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            if (worker != null && worker.WorkerId == Principal.GetUserId())
+            if (worker != null)
             {
                 worker.PhotoUri = request.PhotoUri;
             }

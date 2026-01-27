@@ -27,5 +27,7 @@ namespace Loyalty.Common.Shared.Constants
         public const string IMPOSSIBLE_TO_CREATE_WITH_ROLE = "INCORRECT_AMOUNT_OF_POINTS";
 
         public const string VENUE_NOT_FOUND = "VENUE_NOT_FOUND";
+
+        public const string EMAIL_EXISTS = "EMAIL_EXISTS";
     }
 }
