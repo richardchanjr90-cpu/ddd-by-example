@@ -32,33 +32,24 @@ namespace Loyalty.Application.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<LocationViewModel, CreateLocationCommand>();
-            CreateMap<LocationViewModel, UpdateLocationCommand>();
-
-            CreateMap<GetLocationQueryResult, LocationViewModel>();
-
-            CreateMap<GetVenueByIdQueryResult, VenueViewModel>();
-            CreateMap<UserProfileViewModel, UpdateUserProfileCommand>()
-                .ForMember(x => x.WorkerId, opt => opt.Ignore());
-
-            CreateMap<VenueViewModel, CreateVenueCommand>()
-                .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
-
-            CreateMap<VenueViewModel, UpdateVenueCommand>()
-                .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
-
-            CreateMap<WorkingHoursViewModel, GetVenueWorkingHoursQueryResult>();
-            CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
+            MapVenue();
+            MapWorker();
+            MapProductsAndGroups();
+            MapLoyaltyPrograms();
 
             CreateMap<ProductPurchaseResult, ProductPurchaseViewModel>();
             CreateMap<GroupPurchaseResult, GroupPurchaseViewModel>();
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
 
+            CreateMap<UserProfileViewModel, UpdateUserProfileCommand>()
+                .ForMember(x => x.WorkerId, opt => opt.Ignore());
+            CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
+        }
+
+        private void MapLoyaltyPrograms()
+        {
+            CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
+            CreateMap<GetSingleRuleByIdQueryResult, SingleRuleViewModel>();
             CreateMap<GetLoyaltyProgramByIdQueryResult, LoyaltyProgramViewModel>();
             CreateMap<LoyaltyProgramViewModel, CreateLoyaltyProgramCommand>()
                 .ForMember(x => x.UserId, opt => opt.Ignore())
@@ -70,6 +61,11 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.UserId, opt => opt.Ignore())
                 .ForMember(x => x.VenueId, opt => opt.Ignore());
 
+            CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupGetViewModel>();
+        }
+
+        private void MapProductsAndGroups()
+        {
             CreateMap<GetProductByIdQueryResult, ProductViewModel>();
             CreateMap<ProductViewModel, CreateProductCommand>()
                 .ForMember(x => x.ProductGroupId, opt => opt.Ignore())
@@ -78,13 +74,14 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<ProductViewModel, UpdateProductCommand>()
                 .ForMember(x => x.ProductGroupId, opt => opt.Ignore());
 
-            CreateMap<GetLoyaltyProductGroupByIdQueryResult, LoyaltyProductGroupGetViewModel>();
-
             CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
             CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
+        }
 
+        private void MapWorker()
+        {
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
 
             CreateMap<InviteViewModel, CreateInviteCommand>()
@@ -92,10 +89,32 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<InviteViewModel, UpdateInviteCommand>();
 
             CreateMap<WorkerViewModel, UpdateWorkerCommand>();
+        }
 
-            CreateMap<GetRuleByIdQueryResult, RuleViewModel>();
-            CreateMap<GetSingleRuleByIdQueryResult, SingleRuleViewModel>();
-            CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
+        private void MapVenue()
+        {
+            CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
+            CreateMap<WorkingHoursViewModel, GetVenueWorkingHoursQueryResult>();
+            CreateMap<LocationViewModel, CreateLocationCommand>();
+            CreateMap<LocationViewModel, UpdateLocationCommand>();
+
+            CreateMap<GetLocationQueryResult, LocationViewModel>();
+
+            CreateMap<GetVenueByIdQueryResult, UpdateVenueViewModel>();
+
+            CreateMap<CreateVenueViewModel, CreateVenueCommand>()
+                .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
+
+            CreateMap<UpdateVenueViewModel, UpdateVenueCommand>()
+                .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
+                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
+
+            CreateMap<GetSocialNetworksResult, SocialNetworksViewModel>();
+            CreateMap<SocialNetworksViewModel, UpdateSocialNetworksCommand>();
+            CreateMap<SocialNetworksViewModel, CreateSocialNetworksCommand>();
         }
     }
 }

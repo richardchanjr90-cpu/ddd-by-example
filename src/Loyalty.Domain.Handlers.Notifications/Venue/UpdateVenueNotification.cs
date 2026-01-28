@@ -36,6 +36,8 @@ namespace Loyalty.Domain.Handlers.Notifications.Venue
 
         public VenueCategoryType CategoryType { get; set; }
 
+        public string SocialNetworks { get; set; }
+
         public string LogoUrl { get; set; }
 
         public bool IsArchived { get; set; }

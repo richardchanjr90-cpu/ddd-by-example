@@ -33,6 +33,8 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
         public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; }
             = new List<GetVenueWorkingHoursQueryResult>();
 
+        public GetSocialNetworksResult SocialNetworks { get; set; }
+
         public string LogoUrl { get; set; }
 
         public bool IsPublished { get; set; }

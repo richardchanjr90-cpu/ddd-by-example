@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
@@ -36,6 +37,12 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 IsPublished = command.IsPublished,
+                SocialNetworks = new SocialNetworks
+                {
+                    Facebook = command?.SocialNetworks?.Facebook,
+                    Instagram = command?.SocialNetworks?.Instagram,
+                    Vkontakte = command?.SocialNetworks?.Vkontakte,
+                }
             };
 
             return result;
@@ -68,8 +75,13 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WorkingHours = item.WorkingHours,
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
-                ParentId = item.ParentId
+                ParentId = item.ParentId,
             };
+
+            if (item.SocialNetworks != null)
+            {
+                result.SocialNetworks = JsonConvert.SerializeObject(item.SocialNetworks);
+            }
 
             return result;
         }
@@ -101,8 +113,13 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WorkingHours = item.WorkingHours,
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
-                ParentId = item.ParentId
+                ParentId = item.ParentId,
             };
+
+            if (item.SocialNetworks != null)
+            {
+                result.SocialNetworks = JsonConvert.SerializeObject(item.SocialNetworks);
+            }
 
             return result;
         }
@@ -147,6 +164,12 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 IsPublished = command.IsPublished,
+                SocialNetworks = new SocialNetworks
+                {
+                    Facebook = command?.SocialNetworks?.Facebook,
+                    Instagram = command?.SocialNetworks?.Instagram,
+                    Vkontakte = command?.SocialNetworks?.Vkontakte,
+                }
             };
 
             return result;
@@ -177,7 +200,13 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WorkingHours = JsonConvert.DeserializeObject<List<GetVenueWorkingHoursQueryResult>>(item.WorkingHours),
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
-                ParentId = item.ParentId
+                ParentId = item.ParentId,
+                SocialNetworks = new GetSocialNetworksResult()
+                {
+                    Facebook = item?.SocialNetworks?.Facebook,
+                    Instagram = item?.SocialNetworks?.Instagram,
+                    Vkontakte = item?.SocialNetworks?.Vkontakte,
+                }
             };
             return result;
         }

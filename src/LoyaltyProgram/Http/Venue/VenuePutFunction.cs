@@ -33,7 +33,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenuePutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues")]
-            [RequestBodyType(typeof(VenueViewModel), "VenueViewModel")] VenueViewModel model,
+            [RequestBodyType(typeof(UpdateVenueViewModel), "VenueViewModel")] UpdateVenueViewModel model,
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
             ILogger log)
@@ -42,7 +42,7 @@ namespace LoyaltyProgram.Http.Venue
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<VenueViewModel>();
+                model = await req.Cast<UpdateVenueViewModel>();
                 return new OkObjectResult(await service.Update(model));
             });
         }

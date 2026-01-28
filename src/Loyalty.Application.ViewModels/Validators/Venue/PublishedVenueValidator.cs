@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Loyalty.Application.ViewModels.Venue;
 
-namespace Loyalty.Application.ViewModels.Validators
+namespace Loyalty.Application.ViewModels.Validators.Venue
 {
-    public class PublishedVenueValidator : AbstractValidator<VenueViewModel>
+    public class PublishedVenueValidator : AbstractValidator<UpdateVenueViewModel>
     {
         public PublishedVenueValidator()
         {
@@ -23,11 +23,6 @@ namespace Loyalty.Application.ViewModels.Validators
 
             RuleFor(x => x.WorkingHours)
                 .Must(x => x != null && x.Count >= 1);
-            //RuleFor(x => x.Images)
-            //    .Must(x => x != null && x.Count >= 1);
-
-            //RuleFor(x => x.LogoUrl)
-            //    .NotEmpty();
         }
     }
 }

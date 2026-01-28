@@ -1,14 +1,16 @@
 ﻿using FluentValidation;
-using Loyalty.Application.ViewModels.Validators.Extensions;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Shared.Contracts.Enums;
 
-namespace Loyalty.Application.ViewModels.Validators
+namespace Loyalty.Application.ViewModels.Validators.Venue
 {
-    public class VenueValidator : AbstractValidator<VenueViewModel>
+    public class UpdateVenueValidator : AbstractValidator<UpdateVenueViewModel>
     {
-        public VenueValidator()
+        public UpdateVenueValidator()
         {
+            RuleFor(x => x.Id)
+                .GreaterThan(0);
+
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(200);

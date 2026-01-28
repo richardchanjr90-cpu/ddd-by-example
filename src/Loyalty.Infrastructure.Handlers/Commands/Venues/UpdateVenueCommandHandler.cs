@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
@@ -51,6 +52,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.Latitude = request.Location?.Latitude ?? 0.0f;
                 venue.Longitude = request.Location?.Longitude ?? 0.0f;
                 venue.IsPublished = request.IsPublished;
+                venue.SocialNetworks = new SocialNetworks()
+                {
+                    Vkontakte = request.SocialNetworks?.Vkontakte,
+                    Facebook = request.SocialNetworks?.Facebook,
+                    Instagram = request.SocialNetworks?.Instagram,
+                };
             }
 
             var result = new CommandResult

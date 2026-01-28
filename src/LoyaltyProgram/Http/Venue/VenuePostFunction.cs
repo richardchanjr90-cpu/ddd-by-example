@@ -35,7 +35,7 @@ namespace LoyaltyProgram.Http.Venue
         [FunctionName("VenuePostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
-            [RequestBodyType(typeof(VenueViewModel), "VenueViewModel")] VenueViewModel model,
+            [RequestBodyType(typeof(CreateVenueViewModel), "VenueViewModel")] CreateVenueViewModel model,
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner))] FunctionTokenResult token,
             ILogger log)
@@ -44,7 +44,7 @@ namespace LoyaltyProgram.Http.Venue
             
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<VenueViewModel>();
+                model = await req.Cast<CreateVenueViewModel>();
                 log.LogDebug($"Venue created: {model}", model);
                 return new OkObjectResult(await service.Create(model, token.Principal));
             });

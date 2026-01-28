@@ -6,6 +6,7 @@ using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
+using Loyalty.Infrastructure.DataAccess.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess
@@ -68,20 +69,10 @@ namespace Loyalty.Infrastructure.DataAccess
                 .WithOne(x => x.ProductGroup)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Venue>()
-                .HasMany(b => b.LoyaltyPrograms)
-                .WithOne(x => x.OwnerVenue)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<LoyaltyProductGroup>()
                 .HasOne(b => b.Group)
                 .WithMany(x => x.LoyaltyProductGroups)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Venue>()
-                .HasMany(b => b.ProductGroups)
-                .WithOne(x => x.OwnerVenue)
-                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Worker>()
                 .HasIndex(u => u.Phone)
@@ -109,7 +100,6 @@ namespace Loyalty.Infrastructure.DataAccess
                 .HasIndex(p => new { p.LoyaltyProgramId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
 
-            //todo: check on backend;
             modelBuilder.Entity<ProductGroup>()
                 .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
@@ -134,6 +124,8 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<UserCode>()
                 .HasIndex(p => new { p.CodeValue })
                 .IsUnique();
+
+            modelBuilder.ApplyConfiguration(new VenueConfiguration());
         }
     }
 }

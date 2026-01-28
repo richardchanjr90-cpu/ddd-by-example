@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
 using Loyalty.Application.ViewModels.Validators;
+using Loyalty.Application.ViewModels.Validators.Venue;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
@@ -30,47 +31,47 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<VenueViewModel> Get(long id)
+        public async Task<UpdateVenueViewModel> Get(long id)
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
                 Id = id
             });
 
-            return mapper.Map<VenueViewModel>(result);
+            return mapper.Map<UpdateVenueViewModel>(result);
         }
 
-        public async Task<List<VenueViewModel>> Get(string userId)
+        public async Task<List<UpdateVenueViewModel>> Get(string userId)
         {
             var result = await Mediator.Send(new GetVenuesQuery
             {
                 UserId = userId
             });
 
-            return mapper.Map<List<VenueViewModel>>(result.Venues);
+            return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
         }
 
-        public async Task<List<VenueViewModel>> GetByUser()
+        public async Task<List<UpdateVenueViewModel>> GetByUser()
         {
             var query = new GetVenuesByUserIdQuery
             {
             };
 
             var result = await Mediator.Send(query);
-            return mapper.Map<List<VenueViewModel>>(result.Venues);
+            return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
         }
 
-        public async Task<ICommandResult> Create(VenueViewModel model, ClaimsPrincipal principal)
+        public async Task<ICommandResult> Create(CreateVenueViewModel model, ClaimsPrincipal principal)
         {
-            new VenueValidator().ValidateAndThrow(model);
+            new CreateVenueValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<CreateVenueCommand>(model);
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(VenueViewModel model)
+        public async Task<ICommandResult> Update(UpdateVenueViewModel model)
         {
-            new VenueValidator().ValidateAndThrow(model);
+            new UpdateVenueValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateVenueCommand>(model);
             var commandResult = await Mediator.Send(command);

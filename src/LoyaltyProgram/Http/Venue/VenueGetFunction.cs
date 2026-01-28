@@ -25,7 +25,7 @@ namespace LoyaltyProgram.Http.Venue
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(VenueViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UpdateVenueViewModel))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueGetFunction")]

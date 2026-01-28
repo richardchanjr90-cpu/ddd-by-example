@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.Venue
 {
-    public class VenueViewModel
+    public class CreateVenueViewModel
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -29,6 +29,9 @@ namespace Loyalty.Application.ViewModels.Venue
 
         [JsonProperty("workingHours")]
         public List<WorkingHoursViewModel> WorkingHours { get; set; }
+
+        [JsonProperty("socialNetworks")]
+        public SocialNetworksViewModel SocialNetworks { get; set; }
 
         [JsonProperty("parentId")]
         public long? ParentId { get; set; }

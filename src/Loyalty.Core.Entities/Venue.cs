@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.Schema;
+using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities
@@ -67,6 +68,8 @@ namespace Loyalty.Core.Entities
         public bool IsApproved { get; set; }
 
         public bool IsPublished { get; set; }
+
+        public SocialNetworks SocialNetworks { get; set; }
 
         public override long TenantId => Id;
     }
