@@ -15,7 +15,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
     {
         private readonly SqlConnection connection;
 
-        public GetUserInfoByCodeQueryHandler(IUserDbConnection connection, IHttpContextAccessor accessor)
+        public GetUserInfoByCodeQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)
         {
             this.connection = connection;
