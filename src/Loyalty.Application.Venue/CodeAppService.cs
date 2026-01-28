@@ -1,8 +1,12 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
+using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
+using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Code;
 using MediatR;
 
@@ -10,12 +14,15 @@ namespace Loyalty.Application.Venue
 {
     public class CodeAppService : BaseAppService
     {
-        public CodeAppService(IMediator mediator)
+        private readonly IMapper mapper;
+
+        public CodeAppService(IMediator mediator, IMapper mapper)
             : base(mediator)
         {
+            this.mapper = mapper;
         }
 
-        public async Task<GetUserInfoByCodeQueryResult> GetByCode(string code)
+        public async Task<List<ActivePurchasesViewModel>> GetByCode(string code, long venueId)
         {
             if (String.IsNullOrEmpty(code))
             {
@@ -27,7 +34,13 @@ namespace Loyalty.Application.Venue
                 Code = code
             });
 
-            throw new NotImplementedException();
+            var result = await Mediator.Send(new GetClientActivePurchasesQuery
+            {
+                UserId = item.UserId,
+                VenueId = venueId
+            });
+
+            return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
         }
     }
 }

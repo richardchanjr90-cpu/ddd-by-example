@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
+using Loyalty.Core.Contracts.Connection;
 using Loyalty.Core.Entities;
+using Loyalty.Core.UserEntities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Code;
@@ -12,9 +14,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
 {
     public class GetUserInfoByCodeQueryHandler : BaseDapperHandler, IGetUserInfoByCodeQueryHandler
     {
-        private readonly SqlConnection connection;
+        private readonly IUserDbConnection connection;
 
-        public GetUserInfoByCodeQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+        public GetUserInfoByCodeQueryHandler(IUserDbConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)
         {
             this.connection = connection;

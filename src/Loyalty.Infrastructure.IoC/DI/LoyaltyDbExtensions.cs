@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data;
+using System.Data.SqlClient;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Infrastructure.DataAccess;
@@ -20,6 +21,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             var dapperConnection = connectionString;
 
             services.AddScoped(x => new SqlConnection(dapperConnection));
+            services.AddScoped<IDbConnection>(x => new SqlConnection(dapperConnection));
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContextPool<LoyaltyDbContext>(

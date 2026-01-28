@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Loyalty.Core.Entities.Schema;
+using Loyalty.Core.UserEntities.Schema;
 
-namespace Loyalty.Core.Entities
+namespace Loyalty.Core.UserEntities
 {
-    [Table("UserCode", Schema = SchemaName.Loyalty)]
+    [Table("UserCode", Schema = SchemaName.User)]
     public class UserCode
     {
         [Key]
