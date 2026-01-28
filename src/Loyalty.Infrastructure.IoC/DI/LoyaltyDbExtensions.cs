@@ -21,7 +21,6 @@ namespace Loyalty.Infrastructure.IoC.DI
             var dapperConnection = connectionString;
 
             services.AddScoped(x => new SqlConnection(dapperConnection));
-            services.AddScoped<IDbConnection>(x => new SqlConnection(dapperConnection));
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContextPool<LoyaltyDbContext>(

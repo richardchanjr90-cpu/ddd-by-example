@@ -13,7 +13,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
 {
     public class GetUserInfoByCodeQueryHandler : BaseDapperHandler, IGetUserInfoByCodeQueryHandler
     {
-        private readonly IUserDbConnection connection;
+        private readonly SqlConnection connection;
 
         public GetUserInfoByCodeQueryHandler(IUserDbConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)
@@ -30,7 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                                   FROM [loyalty].[UserCode]
                                   WHERE CodeValue = @Code";
 
-            var result = connection.QuerySingle<UserCode>(getUserByCodeQuery, new
+            var result = connection.QueryFirstOrDefault<UserCode>(getUserByCodeQuery, new
             {
                 request.Code
             });
