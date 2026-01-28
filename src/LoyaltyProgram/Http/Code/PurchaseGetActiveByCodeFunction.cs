@@ -22,7 +22,7 @@ namespace LoyaltyProgram.Http.Code
         public async Task<IActionResult> Run(
             string code,
             long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{code}")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/{code}")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
