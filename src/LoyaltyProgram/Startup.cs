@@ -39,10 +39,7 @@ namespace LoyaltyProgram
                 GoogleServiceAccountJsonUri = new Uri(config[$"{nameof(GoogleAuthSettings)}:{nameof(GoogleAuthSettings.JsonUri)}"])
             });
 
-            if (Environment.GetEnvironmentVariable("FUNCTION_ENV") != "stage")
-            {
-                builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
-            }
+            builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
         }
     }
 }
