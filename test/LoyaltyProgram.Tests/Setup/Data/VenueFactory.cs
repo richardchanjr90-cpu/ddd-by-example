@@ -9,9 +9,9 @@ namespace LoyaltyProgram.Tests.Setup.Data
 {
     public class VenueFactory
     {
-        public static VenueViewModel GetVenue()
+        public static CreateVenueViewModel GetVenue()
         {
-            var faker = new Faker<VenueViewModel>();
+            var faker = new Faker<CreateVenueViewModel>();
 
             faker.RuleFor(x => x.Description, f => f.Lorem.Sentence());
             faker.RuleFor(x => x.CategoryType, f => new Random().Next(1,3));

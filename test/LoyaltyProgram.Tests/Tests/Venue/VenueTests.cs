@@ -50,7 +50,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 Assert.True(response2.IsSuccessStatusCode);
 
                 var getResponseMessage2 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Id);
-                var getResult2 = await getResponseMessage2.DeserializeAsync<VenueViewModel>();
+                var getResult2 = await getResponseMessage2.DeserializeAsync<UpdateVenueViewModel>();
 
                 Assert.Equal(venue.Id, getResult2.Id);
                 Assert.NotEqual(venue.Description, getResult2.Description);
@@ -72,7 +72,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 await signedUpUserFixture.Client.PostAsync($"api/venues/{venue.Venue.Id}/details/images", imageContent2);
 
                 var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
-                var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+                var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
                 getResult.IsPublished = true;
 
@@ -81,7 +81,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 Assert.True(response2.IsSuccessStatusCode);
 
                 var getResponseMessage2 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
-                var getResult2 = await getResponseMessage2.DeserializeAsync<VenueViewModel>();
+                var getResult2 = await getResponseMessage2.DeserializeAsync<UpdateVenueViewModel>();
 
                 Assert.True(getResult2.IsPublished);
             }
@@ -112,7 +112,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 await signedUpUserFixture.Client.PostAsync($"api/venues/{venue.Venue.Id}/details/images", imageContent2);
 
                 var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
-                var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+                var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
                 getResult.IsPublished = true;
 
@@ -125,7 +125,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 Assert.True(getResponseMessage2.IsSuccessStatusCode);
 
                 var getResponseMessage3 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
-                var getResult3 = await getResponseMessage3.DeserializeAsync<VenueViewModel>();
+                var getResult3 = await getResponseMessage3.DeserializeAsync<UpdateVenueViewModel>();
 
                 Assert.True(getResult3.IsPublished);
                 Assert.True(getResult3.IsApproved);
@@ -149,7 +149,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 Assert.False(getResult.Success);
 
                 var getResponseMessage3 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
-                var getResult3 = await getResponseMessage3.DeserializeAsync<VenueViewModel>();
+                var getResult3 = await getResponseMessage3.DeserializeAsync<UpdateVenueViewModel>();
 
                 Assert.False(getResult3.IsPublished);
                 Assert.False(getResult3.IsApproved);
@@ -162,7 +162,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             using (var venue = new VenueFixture(signedUpUserFixture))
             {
                 var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
-                var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+                var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
                 getResult.Should()
                     .BeEquivalentTo(venue.Venue, z => z.Excluding(y => y.Id).Excluding(x => x.Images));
@@ -191,7 +191,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             using (new VenueFixture(user))
             {
                 var getResponseMessage = await user.Client.GetAsync("api/venues/");
-                var getResult = await getResponseMessage.DeserializeAsync<List<VenueViewModel>>();
+                var getResult = await getResponseMessage.DeserializeAsync<List<UpdateVenueViewModel>>();
 
                 Assert.True(getResponseMessage.IsSuccessStatusCode);
                 Assert.True(getResult.Count == 2);
@@ -210,7 +210,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var getResult2 = await result.DeserializeAsync<CommandResult>();
 
                 var getResponseMessage = await user.Client.GetAsync("api/venues/");
-                var getResult = await getResponseMessage.DeserializeAsync<List<VenueViewModel>>();
+                var getResult = await getResponseMessage.DeserializeAsync<List<UpdateVenueViewModel>>();
 
                 Assert.True(getResponseMessage.IsSuccessStatusCode);
                 Assert.True(getResult.Count == 1);

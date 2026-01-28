@@ -36,7 +36,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             var imageContent = ImageFactory.GetImageContent();
             var response = await fixture.SignupFixture.Client.PostAsync($"api/venues/{fixture.Venue.Id}/logo", imageContent);
             var getResponseMessage = await fixture.SignupFixture.Client.GetAsync("api/venues/" + fixture.Venue.Id);
-            var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+            var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
             Assert.True(response.IsSuccessStatusCode);
             Assert.NotNull(getResult.LogoUrl);

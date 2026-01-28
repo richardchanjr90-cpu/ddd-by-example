@@ -49,7 +49,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             var imageContent = ImageFactory.GetImageContent();
             var response = await fixture.SignupFixture.Client.PostAsync($"api/venues/{fixture.Venue.Id}/details/images", imageContent);
             var getResponseMessage = await fixture.SignupFixture.Client.GetAsync("api/venues/" + fixture.Venue.Id);
-            var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+            var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
             Assert.True(response.IsSuccessStatusCode);
             Assert.NotNull(getResult.Images);
@@ -73,7 +73,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             var imageContent = ImageFactory.GetImageContent(imageBytes);
             await fixture.SignupFixture.Client.PostAsync($"api/venues/{fixture.Venue.Id}/details/images", imageContent);
             var getResponseMessage = await fixture.SignupFixture.Client.GetAsync("api/venues/" + fixture.Venue.Id);
-            var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+            var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
             foreach (var image in getResult.Images)
             {
@@ -110,13 +110,13 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             var imageContent1 = ImageFactory.GetImageContent(imageBytes1);
             await fixture.SignupFixture.Client.PostAsync($"api/venues/{fixture.Venue.Id}/details/images", imageContent1);
             var getResponseMessage1 = await fixture.SignupFixture.Client.GetAsync("api/venues/" + venue1.Venue.Id);
-            var getResult1 = await getResponseMessage1.DeserializeAsync<VenueViewModel>();
+            var getResult1 = await getResponseMessage1.DeserializeAsync<UpdateVenueViewModel>();
 
             var imageBytes2 = ImageFactory.GetImage(width, height);
             var imageContent2 = ImageFactory.GetImageContent(imageBytes2);
             await fixture.SignupFixture.Client.PostAsync($"api/venues/{fixture.Venue.Id}/details/images", imageContent2);
             var getResponseMessage2 = await fixture.SignupFixture.Client.GetAsync("api/venues/" + venue2.Venue.Id);
-            var getResult2 = await getResponseMessage2.DeserializeAsync<VenueViewModel>();
+            var getResult2 = await getResponseMessage2.DeserializeAsync<UpdateVenueViewModel>();
 
             foreach (var image in getResult1.Images)
             {

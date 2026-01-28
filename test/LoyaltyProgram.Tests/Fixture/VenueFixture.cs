@@ -10,7 +10,7 @@ namespace LoyaltyProgram.Tests.Fixture
 {
     public class VenueFixture : IDisposable
     {
-        public VenueViewModel Venue { get; }
+        public CreateVenueViewModel Venue { get; }
 
         public SignedUpUserFixture SignupFixture { get; }
 
@@ -20,7 +20,7 @@ namespace LoyaltyProgram.Tests.Fixture
             Venue = CreateVenueAsync().GetAwaiter().GetResult();
         }
 
-        private async Task<VenueViewModel> CreateVenueAsync()
+        private async Task<CreateVenueViewModel> CreateVenueAsync()
         {
             var venue = VenueFactory.GetVenue();
             var content = ModelHelper.Convert(venue);
@@ -29,7 +29,7 @@ namespace LoyaltyProgram.Tests.Fixture
             await SignupFixture.UpdateTokenAsync();
 
             var getResponseMessage = await SignupFixture.Client.GetAsync("api/venues/" + result.Result);
-            var getResult = await getResponseMessage.DeserializeAsync<VenueViewModel>();
+            var getResult = await getResponseMessage.DeserializeAsync<CreateVenueViewModel>();
             return getResult;
         }
 
