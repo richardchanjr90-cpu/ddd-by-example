@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,14 +32,49 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
         {
             var getItems = @"SELECT * FROM loyalty.Venue WHERE Id in @ids";
             var ids = Principal.GetVenueIds();
-            var venues = connection.Query<Venue>(getItems, new
+            var venues = connection.Query(getItems, new
             {
                 ids
             }).ToList();
 
+            var list = new List<Venue>();
+
+            foreach (var dynamicVenue in venues)
+            {
+                var ven = new Venue()
+                {
+                    Id = dynamicVenue.Id,
+                    CreatedBy = dynamicVenue.CreatedBy,
+                    ModifiedBy = dynamicVenue.ModifiedBy,
+                    Modified = dynamicVenue.Modified,
+                    Created = dynamicVenue.Created,
+                    Name = dynamicVenue.Name,
+                    OwnerId = dynamicVenue.OwnerId,
+                    Description = dynamicVenue.Description,
+                    ParentId = dynamicVenue.ParentId,
+                    City = dynamicVenue.City,
+                    Address = dynamicVenue.Address,
+                    Latitude = dynamicVenue.Latitude,
+                    Longitude = dynamicVenue.Longitude,
+                    Type = dynamicVenue.Type,
+                    CategoryType = dynamicVenue.CategoryType,
+                    LogoUrl = dynamicVenue.LogoUrl,
+                    FullDescription = dynamicVenue.FullDescription,
+                    Phones = dynamicVenue.Phones,
+                    WebSites = dynamicVenue.WebSites,
+                    WorkingHours = dynamicVenue.WorkingHours,
+                    Images = dynamicVenue.Images,
+                    IsArchived = dynamicVenue.IsArchived,
+                    IsApproved = dynamicVenue.IsApproved,
+                    IsPublished = dynamicVenue.IsPublished,
+                    //SocialNetworks = dynamicVenue.SocialNetworks
+                };
+                list.Add(ven);
+            }
+
             var result = new GetVenuesQueryResult
             {
-                Venues = venues.ToResults()
+                Venues = list.ToResults()
             };
 
             return Task.FromResult(result);
