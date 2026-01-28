@@ -8,13 +8,16 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
@@ -30,18 +33,14 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 
         public Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            var getItems = @"SELECT * FROM loyalty.Venue WHERE Id in @ids";
+            var getItems = "SELECT * FROM loyalty.Venue WHERE Id in @ids";
             var ids = Principal.GetVenueIds();
             var venues = connection.Query(getItems, new
             {
                 ids
             }).ToList();
 
-            var list = new List<Venue>();
-
-            foreach (var dynamicVenue in venues)
-            {
-                var ven = new Venue()
+            var venuesList = venues.Select(dynamicVenue => new Venue
                 {
                     Id = dynamicVenue.Id,
                     CreatedBy = dynamicVenue.CreatedBy,
@@ -56,8 +55,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                     Address = dynamicVenue.Address,
                     Latitude = dynamicVenue.Latitude,
                     Longitude = dynamicVenue.Longitude,
-                    Type = dynamicVenue.Type,
-                    CategoryType = dynamicVenue.CategoryType,
+                    Type = (VenueType) dynamicVenue.Type,
+                    CategoryType = (VenueCategoryType) dynamicVenue.CategoryType,
                     LogoUrl = dynamicVenue.LogoUrl,
                     FullDescription = dynamicVenue.FullDescription,
                     Phones = dynamicVenue.Phones,
@@ -67,14 +66,13 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                     IsArchived = dynamicVenue.IsArchived,
                     IsApproved = dynamicVenue.IsApproved,
                     IsPublished = dynamicVenue.IsPublished,
-                    //SocialNetworks = dynamicVenue.SocialNetworks
-                };
-                list.Add(ven);
-            }
+                    SocialNetworks = JsonConvert.DeserializeObject<SocialNetworks>(dynamicVenue.SocialNetworks)
+                })
+                .ToList();
 
             var result = new GetVenuesQueryResult
             {
-                Venues = list.ToResults()
+                Venues = venuesList.ToResults()
             };
 
             return Task.FromResult(result);
