@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj" />
-    <ProjectReference Include="..\Loyalty.Core.UserEntities\Loyalty.Core.UserEntities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

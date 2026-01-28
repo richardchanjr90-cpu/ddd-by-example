@@ -40,11 +40,11 @@ namespace LoyaltyProgram.ServiceBus
 
         private void ProcessClientCode(CodeGeneratedNotification deserialize)
         {
-            var mergeSql = @"MERGE [user].UserCode
+            var mergeSql = @"MERGE [loyalty].UserCode
                                 USING ( 
                                     VALUES (@UserId, @CodeValue, @ExpirationDate)
                                 ) AS foo (userId, codeValue, expirationDate) 
-                                ON [user].UserCode.userId = foo.userId 
+                                ON [loyalty].UserCode.userId = foo.userId 
                                 WHEN MATCHED THEN
                                    UPDATE SET codeValue = foo.codeValue, expirationDate = foo.expirationDate
                                 WHEN NOT MATCHED THEN

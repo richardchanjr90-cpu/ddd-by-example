@@ -22,5 +22,7 @@ namespace Loyalty.Core.Contracts
         DbSet<VenueWorker> VenueWorkers { get; set; }
 
         DbSet<Worker> Workers { get; set; }
+
+        DbSet<UserCode> UserCodes { get; set; }
     }
 }

@@ -20,9 +20,9 @@ namespace LoyaltyProgram.Http.Code
 
         [FunctionName("PurchaseGetActiveByCodeFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{code}")]
             string code,
             long venueId,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{code}")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)

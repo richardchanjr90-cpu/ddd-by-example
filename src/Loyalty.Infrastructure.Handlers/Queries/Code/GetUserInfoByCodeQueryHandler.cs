@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Core.Contracts.Connection;
 using Loyalty.Core.Entities;
-using Loyalty.Core.UserEntities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Code;

@@ -35,6 +35,8 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<Worker> Workers { get; set; }
 
+        public DbSet<UserCode> UserCodes { get; set; }
+
         public override int SaveChanges()
         {
             try
@@ -127,6 +129,10 @@ namespace Loyalty.Infrastructure.DataAccess
 
             modelBuilder.Entity<VenueWorker>()
                 .HasIndex(p => new { p.VenueId, p.WorkerId })
+                .IsUnique();
+
+            modelBuilder.Entity<UserCode>()
+                .HasIndex(p => new { p.CodeValue })
                 .IsUnique();
         }
     }
