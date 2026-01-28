@@ -66,7 +66,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                     IsArchived = dynamicVenue.IsArchived,
                     IsApproved = dynamicVenue.IsApproved,
                     IsPublished = dynamicVenue.IsPublished,
-                    SocialNetworks = JsonConvert.DeserializeObject<SocialNetworks>(dynamicVenue.SocialNetworks)
+                    SocialNetworks = dynamicVenue.SocialNetworks != null ? 
+                        JsonConvert.DeserializeObject<SocialNetworks>(dynamicVenue.SocialNetworks) 
+                        : null
                 })
                 .ToList();
 
