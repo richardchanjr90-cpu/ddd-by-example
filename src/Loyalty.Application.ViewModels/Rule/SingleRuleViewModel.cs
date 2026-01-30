@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 using Loyalty.Shared.Contracts.Enums;
-using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.Rule
 {
     public class SingleRuleViewModel
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("rule")]
+        [JsonPropertyName("rule")]
         public string Rule { get; set; }
 
-        [JsonProperty("ruleType")]
+        [JsonPropertyName("ruleType")]
         public LoyaltyRuleType RuleType { get; set; }
 
-        [JsonProperty("ruleVersion")]
+        [JsonPropertyName("ruleVersion")]
         public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

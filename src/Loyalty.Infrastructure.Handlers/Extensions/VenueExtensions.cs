@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.ValueObject;
@@ -7,7 +8,6 @@ using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {
@@ -34,7 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Longitude = command.Location?.Longitude ?? 0,
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
-                WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
+                WorkingHours = JsonSerializer.Serialize(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 IsPublished = command.IsPublished,
                 SocialNetworks = new SocialNetworks
@@ -80,7 +80,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
             if (item.SocialNetworks != null)
             {
-                result.SocialNetworks = JsonConvert.SerializeObject(item.SocialNetworks);
+                result.SocialNetworks = JsonSerializer.Serialize(item.SocialNetworks);
             }
 
             return result;
@@ -118,7 +118,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
             if (item.SocialNetworks != null)
             {
-                result.SocialNetworks = JsonConvert.SerializeObject(item.SocialNetworks);
+                result.SocialNetworks = JsonSerializer.Serialize(item.SocialNetworks);
             }
 
             return result;
@@ -161,7 +161,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Longitude = command.Location?.Longitude ?? 0,
                 FullDescription = command.FullDescription,
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
-                WorkingHours = JsonConvert.SerializeObject(command.WorkingHours),
+                WorkingHours = JsonSerializer.Serialize(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
                 IsPublished = command.IsPublished,
                 SocialNetworks = new SocialNetworks
@@ -197,7 +197,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Phones = item.Phones.SplitByCommaAndUnwrap(),
                 FullDescription = item.FullDescription,
                 WebSites = item.WebSites.SplitByCommaAndUnwrap(),
-                WorkingHours = JsonConvert.DeserializeObject<List<GetVenueWorkingHoursQueryResult>>(item.WorkingHours),
+                WorkingHours = JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>(item.WorkingHours),
                 IsArchived = item.IsArchived,
                 IsApproved = item.IsApproved,
                 ParentId = item.ParentId,

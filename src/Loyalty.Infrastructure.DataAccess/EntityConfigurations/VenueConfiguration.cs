@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
+using System.Text.Json;
 using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
 {
@@ -24,10 +23,10 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(e => e.SocialNetworks).HasConversion(
-                v => JsonConvert.SerializeObject(v,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}),
-                v => JsonConvert.DeserializeObject<SocialNetworks>(v,
-                    new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
+                v => JsonSerializer.Serialize(v,
+                    new JsonSerializerOptions() { IgnoreNullValues = true}),
+                v => JsonSerializer.Deserialize<SocialNetworks>(v,
+                    new JsonSerializerOptions() { IgnoreNullValues = true}));
         }
     }
 }

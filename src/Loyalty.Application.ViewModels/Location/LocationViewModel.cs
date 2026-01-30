@@ -1,19 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Location
 {
     public class LocationViewModel
     {
-        [JsonProperty("city")]
+        [JsonPropertyName("city")]
         public string City { get; set; }
 
-        [JsonProperty("address")]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [JsonProperty("latitude")]
+        [JsonPropertyName("latitude")]
         public float Latitude { get; set; }
 
-        [JsonProperty("longitude")]
+        [JsonPropertyName("longitude")]
         public float Longitude { get; set; }
     }
 }

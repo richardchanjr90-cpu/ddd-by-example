@@ -1,17 +1,18 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Core.Entities.ValueObject
 {
     public class SocialNetworks
     {
-        [JsonProperty("instagram")]
+        [JsonPropertyName("instagram")]
         public Uri Instagram { get; set; }
 
-        [JsonProperty("facebook")]
+        [JsonPropertyName("facebook")]
         public Uri Facebook { get; set; }
 
-        [JsonProperty("vkontakte")]
+        [JsonPropertyName("vkontakte")]
         public Uri Vkontakte { get; set; }
     }
 }

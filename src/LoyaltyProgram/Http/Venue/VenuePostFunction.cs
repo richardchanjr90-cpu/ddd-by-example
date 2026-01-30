@@ -1,18 +1,16 @@
 using System;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -36,7 +34,7 @@ namespace LoyaltyProgram.Http.Venue
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
             [RequestBodyType(typeof(CreateVenueViewModel), "VenueViewModel")] CreateVenueViewModel model,
-            HttpRequest req,
+            HttpRequestMessage req,
             [FunctionToken(nameof(VenueUserRole.Owner))] FunctionTokenResult token,
             ILogger log)
         {

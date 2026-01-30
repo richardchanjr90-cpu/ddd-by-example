@@ -1,30 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Rule;
-using Newtonsoft.Json;
 
 namespace Loyalty.Application.ViewModels.LoyaltyProductGroup
 {
     public class LoyaltyProductGroupGetViewModel
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("loyaltyProgramId")]
+        [JsonPropertyName("loyaltyProgramId")]
         public long LoyaltyProgramId { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("rules")]
+        [JsonPropertyName("rules")]
         public RuleViewModel Rules { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("productGroup")]
+        [JsonPropertyName("productGroup")]
         public ProductGroupViewModel ProductGroup { get; set; }
     }
 }

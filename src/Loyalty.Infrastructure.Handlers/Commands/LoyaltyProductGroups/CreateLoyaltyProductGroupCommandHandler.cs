@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
@@ -15,7 +16,6 @@ using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 {
@@ -70,7 +70,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             {
                 var rule = new LoyaltyGroupRule
                 {
-                    Rule = JsonConvert.SerializeObject(commandRule.Rule),
+                    Rule = JsonSerializer.Serialize(commandRule.Rule),
                     RuleVersion = commandRule.RuleVersion,
                     RuleType = commandRule.RuleType
                 };
@@ -94,7 +94,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                         Id = group.Id,
                         LoyaltyProgramId = group.LoyaltyProgramId,
                         GroupName = group.Name,
-                        Rule = JsonConvert.SerializeObject(request.Rule.Rules)
+                        Rule = JsonSerializer.Serialize(request.Rule.Rules)
                     },
                     cancellationToken);
             }

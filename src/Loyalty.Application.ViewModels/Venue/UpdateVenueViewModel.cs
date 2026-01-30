@@ -1,57 +1,57 @@
 ﻿using System.Collections.Generic;
 using Loyalty.Application.ViewModels.Location;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Venue
 {
     public class UpdateVenueViewModel
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("fullDescription")]
+        [JsonPropertyName("fullDescription")]
         public string FullDescription { get; set; }
 
-        [JsonProperty("phones")]
+        [JsonPropertyName("phones")]
         public List<string> Phones { get; set; }
 
-        [JsonProperty("webSites")]
+        [JsonPropertyName("webSites")]
         public List<string> WebSites { get; set; }
 
-        [JsonProperty("images")]
+        [JsonPropertyName("images")]
         public List<string> Images { get; set; }
 
-        [JsonProperty("workingHours")]
+        [JsonPropertyName("workingHours")]
         public List<WorkingHoursViewModel> WorkingHours { get; set; }
 
-        [JsonProperty("parentId")]
+        [JsonPropertyName("parentId")]
         public long? ParentId { get; set; }
 
-        [JsonProperty("location")]
+        [JsonPropertyName("location")]
         public LocationViewModel Location { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public int Type { get; set; }
 
-        [JsonProperty("categoryType")]
+        [JsonPropertyName("categoryType")]
         public int CategoryType { get; set; }
 
-        [JsonProperty("logoUrl")]
+        [JsonPropertyName("logoUrl")]
         public string LogoUrl { get; set; }
 
-        [JsonProperty("socialNetworks")]
+        [JsonPropertyName("socialNetworks")]
         public SocialNetworksViewModel SocialNetworks { get; set; }
 
-        [JsonProperty("isPublished")]
+        [JsonPropertyName("isPublished")]
         public bool IsPublished { get; set; }
 
-        [JsonProperty("isApproved")]
+        [JsonPropertyName("isApproved")]
         public bool IsApproved { get; set; }
     }
 }

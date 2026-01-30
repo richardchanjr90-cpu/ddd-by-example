@@ -1,8 +1,8 @@
 ﻿
+using System.Text.Json.Serialization;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {
@@ -11,13 +11,13 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
         [JsonIgnore]
         public long Id { get; set; }
 
-        [JsonProperty("rule")]
+        [JsonPropertyName("rule")]
         public object Rule { get; set; }
 
-        [JsonProperty("ruleType")]
+        [JsonPropertyName("ruleType")]
         public LoyaltyRuleType RuleType { get; set; }
 
-        [JsonProperty("ruleVersion")]
+        [JsonPropertyName("ruleVersion")]
         public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

@@ -13,7 +13,6 @@ using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {

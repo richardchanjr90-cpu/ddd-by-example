@@ -1,6 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Loyalty.Core.Entities.Base.Interface;
-using Microsoft.Build.Framework;
 
 namespace Loyalty.Core.Entities.Base
 {

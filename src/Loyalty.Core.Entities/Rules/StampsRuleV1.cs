@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using Loyalty.Shared.Contracts.Enums;
-using Newtonsoft.Json;
 
 namespace Loyalty.Core.Entities.Rules
 {
     public class StampsRuleV1 : BaseRule
     {
-        [JsonProperty("stampsToCollectles")]
+        [JsonPropertyName("stampsToCollectles")]
         public int StampsToCollect { get; set; }
 
-        [JsonProperty("stampsToAssign")]
+        [JsonPropertyName("stampsToAssign")]
         public int StampsToAssign { get; set; } = 0;
 
         public override List<LoyaltyRuleType> CompatibleRules { get; set; }

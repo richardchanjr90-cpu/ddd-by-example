@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Code
 {

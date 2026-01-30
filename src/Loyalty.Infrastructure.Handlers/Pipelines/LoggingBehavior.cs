@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Pipelines
 {
@@ -23,7 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
         {
             try
             {
-                var serializedRequest = JsonConvert.SerializeObject(request);
+                var serializedRequest = JsonSerializer.Serialize(request);
                 var log = logFactory.CreateLogger(typeof(TRequest)?.Name);
                 log.LogInformation($"Handling {typeof(TResponse)?.Name}: {serializedRequest}");
 

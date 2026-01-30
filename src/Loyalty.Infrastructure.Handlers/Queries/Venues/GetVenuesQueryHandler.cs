@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Common.Shared.Settings;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
@@ -15,9 +14,6 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
@@ -67,7 +63,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                     IsApproved = dynamicVenue.IsApproved,
                     IsPublished = dynamicVenue.IsPublished,
                     SocialNetworks = dynamicVenue.SocialNetworks != null ? 
-                        JsonConvert.DeserializeObject<SocialNetworks>(dynamicVenue.SocialNetworks) 
+                        JsonSerializer.Deserialize<SocialNetworks>(dynamicVenue.SocialNetworks) 
                         : null
                 })
                 .ToList();

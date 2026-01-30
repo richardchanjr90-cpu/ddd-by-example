@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
-using Newtonsoft.Json;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {

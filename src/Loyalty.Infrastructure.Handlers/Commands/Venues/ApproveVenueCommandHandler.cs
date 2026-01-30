@@ -17,7 +17,6 @@ using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {

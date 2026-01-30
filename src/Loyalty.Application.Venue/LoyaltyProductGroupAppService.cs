@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
@@ -13,7 +14,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.Venue
 {
@@ -132,7 +133,7 @@ namespace Loyalty.Application.Venue
                 var name = Enum.GetName(typeof(LoyaltyRuleType), rule.RuleType);
 
                 var type = Type.GetType($"{nameSpace}.{name}RuleV{rule.RuleVersion}, {assemblyName}");
-                var result = JsonConvert.DeserializeObject(rule.Rule, type);
+                var result = JsonSerializer.Deserialize(rule.Rule, type);
 
                 action?.Invoke(result, rule);
             }

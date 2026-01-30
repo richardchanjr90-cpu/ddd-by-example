@@ -1,17 +1,17 @@
-﻿using Loyalty.Shared.Contracts.Enums;
-using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {
     public class CreateSingleRuleCommand
     {
-        [JsonProperty("rule")]
+        [JsonPropertyName("rule")]
         public object Rule { get; set; }
 
-        [JsonProperty("ruleType")]
+        [JsonPropertyName("ruleType")]
         public LoyaltyRuleType RuleType { get; set; }
 
-        [JsonProperty("ruleVersion")]
+        [JsonPropertyName("ruleVersion")]
         public LoyaltyRuleVersion RuleVersion { get; set; }
     }
 }

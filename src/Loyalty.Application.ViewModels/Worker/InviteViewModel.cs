@@ -1,26 +1,26 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Worker
 {
     public class InviteViewModel
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("venueId")]
+        [JsonPropertyName("venueId")]
         public long VenueId { get; set; }
 
-        [JsonProperty("role")]
+        [JsonPropertyName("role")]
         public int Role { get; set; }
 
-        [JsonProperty("phone")]
+        [JsonPropertyName("phone")]
         public string Phone { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("positionName")]
+        [JsonPropertyName("positionName")]
         public string PositionName { get; set; }
     }
 }

@@ -2,10 +2,11 @@
 using System.Linq;
 using System.Net.Http;
 using System.Security.Authentication;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Newtonsoft.Json;
+
 
 namespace Loyalty.Common.Shared.Extensions
 {
@@ -19,7 +20,7 @@ namespace Loyalty.Common.Shared.Extensions
             }
 
             var body = await request.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<T>(body);
+            var result = JsonSerializer.Deserialize<T>(body);
             return result;
         }
 
@@ -31,7 +32,7 @@ namespace Loyalty.Common.Shared.Extensions
             }
 
             var body = await request.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<T>(body);
+            var result = JsonSerializer.Deserialize<T>(body);
             return result;
         }
 

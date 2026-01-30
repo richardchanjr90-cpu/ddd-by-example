@@ -1,21 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AzureFunctionsVersion>v2</AzureFunctionsVersion>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.7" />
-    <PackageReference Include="AzureFunctions.Extensions.Swashbuckle" Version="1.4.1" />
-    <PackageReference Include="FirebaseAdmin" Version="1.9.0" />
+    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.9" />
+    <PackageReference Include="AzureFunctions.Extensions.Swashbuckle" Version="1.4.4" />
+    <PackageReference Include="FirebaseAdmin" Version="1.9.1" />
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="3.2.0" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.8" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.10" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.2" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="SkiaSharp" Version="1.68.0" />
+    <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
   </ItemGroup>
 
   <ItemGroup>

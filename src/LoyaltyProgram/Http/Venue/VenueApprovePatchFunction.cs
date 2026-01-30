@@ -5,7 +5,6 @@ using AzureExtensions.FunctionToken;
 using AzureExtensions.FunctionToken.FunctionBinding.Enums;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;

@@ -1,39 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Worker
 {
     public class WorkerViewModel
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonProperty("venueIds")]
+        [JsonPropertyName("venueIds")]
         public List<long> VenueIds { get; set; } = new List<long>();
 
-        [JsonProperty("workerId")]
+        [JsonPropertyName("workerId")]
         public string WorkerId { get; set; }
 
-        [JsonProperty("role")]
+        [JsonPropertyName("role")]
         public int Role { get; set; }
 
-        [JsonProperty("phone")]
+        [JsonPropertyName("phone")]
         public string Phone { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("lastName")]
+        [JsonPropertyName("lastName")]
         public string LastName { get; set; }
 
-        [JsonProperty("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonProperty("photoUri")]
+        [JsonPropertyName("photoUri")]
         public string PhotoUri { get; set; }
 
-        [JsonProperty("positionName")]
+        [JsonPropertyName("positionName")]
         public string PositionName { get; set; }
         
     }

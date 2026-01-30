@@ -1,17 +1,17 @@
 ﻿using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Venue
 {
     public class WorkingHoursViewModel
     {
-        [JsonProperty("day")]
+        [JsonPropertyName("day")]
         public string Day { get; set; }
 
-        [JsonProperty("from")]
+        [JsonPropertyName("from")]
         public int? From { get; set; }
 
-        [JsonProperty("to")]
+        [JsonPropertyName("to")]
         public int? To { get; set; }
     }
 }

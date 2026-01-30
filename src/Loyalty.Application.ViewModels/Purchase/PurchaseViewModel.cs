@@ -1,19 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Purchase
 {
     public class PurchaseViewModel
     {
-        [JsonProperty("loyaltyProductGroupId")]
+        [JsonPropertyName("loyaltyProductGroupId")]
         public long LoyaltyProductGroupId { get; set; }
 
-        [JsonProperty("productId")]
+        [JsonPropertyName("productId")]
         public long? ProductId { get; set; }
 
-        [JsonProperty("value")]
+        [JsonPropertyName("value")]
         public decimal Value { get; set; }
 
-        [JsonProperty("userId")]
+        [JsonPropertyName("userId")]
         public string UserId { get; set; }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Rule
 {
     public class RuleViewModel
     {
-        [JsonProperty("rules")]
+        [JsonPropertyName("rules")]
         public List<SingleRuleViewModel> Rules { get; set;  }
     }
 }

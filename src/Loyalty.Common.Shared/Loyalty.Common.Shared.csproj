@@ -1,25 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.7" />
+    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.9" />
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.4" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29">
-          <PrivateAssets>all</PrivateAssets>
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.2" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.2">
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MediatR" Version="7.0.0">
-    <PrivateAssets>all</PrivateAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.0.0">
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.3.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
-  
+
 
 </Project>

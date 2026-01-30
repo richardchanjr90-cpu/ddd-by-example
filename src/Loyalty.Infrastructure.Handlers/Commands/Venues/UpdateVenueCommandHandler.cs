@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
@@ -12,7 +13,6 @@ using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
@@ -45,7 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.Type = request.Type;
                 venue.FullDescription = request.FullDescription;
                 venue.WebSites = request.WebSites.ToCommaSeparatedStringOrNull();
-                venue.WorkingHours = JsonConvert.SerializeObject(request.WorkingHours);
+                venue.WorkingHours = JsonSerializer.Serialize(request.WorkingHours);
                 venue.Phones = request.Phones.ToCommaSeparatedStringOrNull();
                 venue.Address = request.Location?.Address;
                 venue.City = request.Location?.City;

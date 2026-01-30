@@ -1,24 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Purchase
 {
     public class ActivePurchasesViewModel
     {
-        [JsonProperty("loyaltyProgramId")]
+        [JsonPropertyName("loyaltyProgramId")]
         public long LoyaltyProgramId { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("startDate")]
+        [JsonPropertyName("startDate")]
         public DateTime StartDate { get; set; }
 
-        [JsonProperty("endDate")]
+        [JsonPropertyName("endDate")]
         public DateTime EndDate { get; set; }
 
-        [JsonProperty("groups")]
+        [JsonPropertyName("groups")]
         public List<GroupPurchaseViewModel> Groups { get; set; } = new List<GroupPurchaseViewModel>();
     }
 }
