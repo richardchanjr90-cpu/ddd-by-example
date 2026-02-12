@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentValidation;
+using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Shared.Contracts.Enums;
 

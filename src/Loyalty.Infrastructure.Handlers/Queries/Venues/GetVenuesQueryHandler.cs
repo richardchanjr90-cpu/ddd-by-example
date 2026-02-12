@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 
         public Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            var getItems = "SELECT * FROM loyalty.Venue WHERE Id in @ids";
+            var getItems = "SELECT * FROM loyalty.Venue WHERE Id in @ids AND IsArchived = 0";
             var ids = Principal.GetVenueIds();
             var venues = connection.Query(getItems, new
             {

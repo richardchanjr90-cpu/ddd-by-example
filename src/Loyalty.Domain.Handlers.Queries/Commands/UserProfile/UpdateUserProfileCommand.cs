@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Shared.Contracts.Enums;
+﻿using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 
-namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
+namespace Loyalty.Domain.Handlers.Queries.Commands.UserProfile
 {
     public class UpdateUserProfileCommand : IRequest<ICommandResult>
     {

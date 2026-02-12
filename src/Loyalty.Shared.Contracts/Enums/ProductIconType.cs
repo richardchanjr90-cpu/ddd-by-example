@@ -17,7 +17,6 @@ namespace Loyalty.Shared.Contracts.Enums
         Cocktail = 8,
         CoffeeBig = 9,
         TeaBig = 10,
-        Burger = 11,
-        Beer = 13
+        Beer = 11
     }
 }

@@ -23,7 +23,7 @@ namespace Loyalty.Shared.Contracts.Enums
         Pizzeria = 32768,
         Pub = 65536,
         Shawarma = 131072,
-        Gastrobar = 131072,
+        Gastrobar = 262144,
         Bakery = 524288,
         Burgers = 1048576,
         Sushi =2097152,

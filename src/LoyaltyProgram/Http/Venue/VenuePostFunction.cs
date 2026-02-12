@@ -11,6 +11,7 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -34,7 +35,7 @@ namespace LoyaltyProgram.Http.Venue
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues")]
             [RequestBodyType(typeof(CreateVenueViewModel), "VenueViewModel")] CreateVenueViewModel model,
-            HttpRequestMessage req,
+            HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner))] FunctionTokenResult token,
             ILogger log)
         {

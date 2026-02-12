@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
-namespace Loyalty.Application.ViewModels.Worker
+namespace Loyalty.Application.ViewModels.UserProfile
 {
     public class UserProfileViewModel
     {

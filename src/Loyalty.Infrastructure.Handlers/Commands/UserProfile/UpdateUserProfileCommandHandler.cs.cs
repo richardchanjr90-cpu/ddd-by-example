@@ -4,17 +4,14 @@ using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
-using Loyalty.Domain.Handlers.Queries.Commands.Workers;
-using Loyalty.Shared.Contracts.Enums;
+using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
-namespace Loyalty.Infrastructure.Handlers.Commands.Workers
+namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
 {
     public class UpdateUserProfileCommandHandler
         : BaseHandler, IRequestHandler<UpdateUserProfileCommand, ICommandResult>

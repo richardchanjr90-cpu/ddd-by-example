@@ -2,14 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
-using Loyalty.Core.Contracts.Connection;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Code;
 using Microsoft.AspNetCore.Http;
 
-namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
+namespace Loyalty.Infrastructure.Handlers.Queries.Code
 {
     public class GetUserInfoByCodeQueryHandler : BaseDapperHandler, IGetUserInfoByCodeQueryHandler
     {
