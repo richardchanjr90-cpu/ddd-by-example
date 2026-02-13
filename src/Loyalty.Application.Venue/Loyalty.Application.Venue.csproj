@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Application.Storage.Dto\Loyalty.Application.Storage.Dto.csproj" />
     <ProjectReference Include="..\Loyalty.Application.ViewModels\Loyalty.Application.ViewModels.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
   </ItemGroup>

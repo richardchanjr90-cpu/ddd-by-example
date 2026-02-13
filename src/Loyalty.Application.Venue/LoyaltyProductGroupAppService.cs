@@ -15,6 +15,7 @@ using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using System.Text.Json.Serialization;
+using Loyalty.Core.Entities.Base;
 
 namespace Loyalty.Application.Venue
 {
@@ -126,13 +127,11 @@ namespace Loyalty.Application.Venue
         private void TransformRules(LoyaltyProductGroupViewModel model, Action<object, SingleRuleViewModel> action)
         {
             var nameSpace = "Loyalty.Core.Entities.Rules";
-            var assemblyName = "Loyalty.Core.Entities";
-
+                //todo: this should be tested
             foreach (var rule in model.Rules.Rules)
             {
                 var name = Enum.GetName(typeof(LoyaltyRuleType), rule.RuleType);
-
-                var type = Type.GetType($"{nameSpace}.{name}RuleV{rule.RuleVersion}, {assemblyName}");
+                var type = typeof(Entity).Assembly.GetType($"{nameSpace}.{name}Rule{rule.RuleVersion}");
                 var result = JsonSerializer.Deserialize(rule.Rule, type);
 
                 action?.Invoke(result, rule);
