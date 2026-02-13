@@ -2,9 +2,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-    <!--<PublishTrimmed>true</PublishTrimmed>
-    <PublishSingleFile>true</PublishSingleFile>
-    <PublishReadyToRun>true</PublishReadyToRun>-->
   </PropertyGroup>
 
   <ItemGroup>
@@ -53,14 +50,4 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy $(OutDir)$(ProjectName).deps.json $(OutDir)bin\function.deps.json" />
-    <Exec Command="copy $(OutDir)local.settings.json $(OutDir)bin\local.settings.json" />
-  </Target>
-  <Target Name="PostPublish" BeforeTargets="Publish">
-    <Exec Command="copy $(PublishDir)$(ProjectName).deps.json $(PublishDir)bin\function.deps.json" />
-    <Exec Command="copy $(PublishDir)local.settings.json $(PublishDir)bin\local.settings.json" />
-  </Target>
-
 </Project>
