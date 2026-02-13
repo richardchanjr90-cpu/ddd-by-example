@@ -8,7 +8,7 @@ namespace Loyalty.Core.Entities.Rules
 {
     public class StampsRuleV1 : BaseRule
     {
-        [JsonPropertyName("stampsToCollectles")]
+        [JsonPropertyName("stampsToCollect")]
         public int StampsToCollect { get; set; }
 
         [JsonPropertyName("stampsToAssign")]
