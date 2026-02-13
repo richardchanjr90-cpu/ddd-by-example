@@ -40,7 +40,7 @@ namespace Loyalty.Application.ViewModels.Venue
         public int Type { get; set; }
 
         [JsonPropertyName("categoryType")]
-        public int CategoryType { get; set; }
+        public long CategoryType { get; set; }
 
         [JsonPropertyName("logoUrl")]
         public string LogoUrl { get; set; }
@@ -48,10 +48,7 @@ namespace Loyalty.Application.ViewModels.Venue
         [JsonPropertyName("socialNetworks")]
         public SocialNetworksViewModel SocialNetworks { get; set; }
 
-        [JsonPropertyName("isPublished")]
-        public bool IsPublished { get; set; }
-
-        [JsonPropertyName("isApproved")]
-        public bool IsApproved { get; set; }
+        [JsonPropertyName("venueApprovalStatus")]
+        public int VenueApprovalStatus { get; set; }
     }
 }

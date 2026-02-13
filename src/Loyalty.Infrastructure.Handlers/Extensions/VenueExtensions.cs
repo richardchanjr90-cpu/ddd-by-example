@@ -8,6 +8,7 @@ using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {
@@ -36,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = JsonSerializer.Serialize(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
-                IsPublished = command.IsPublished,
+                VenueStatus = command.VenueApprovalStatus,
                 SocialNetworks = new SocialNetworks
                 {
                     Facebook = command?.SocialNetworks?.Facebook,
@@ -67,14 +68,14 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Longitude = item.Longitude,
                 City = item.City,
                 Address = item.Address,
-                IsPublished = item.IsPublished,
+                IsPublished = item.VenueStatus >= VenueApprovalStatus.Published,
                 LogoUrl = item.LogoUrl,
                 Phones = item.Phones,
                 FullDescription = item.FullDescription,
                 WebSites = item.WebSites,
                 WorkingHours = item.WorkingHours,
                 IsArchived = item.IsArchived,
-                IsApproved = item.IsApproved,
+                IsApproved = item.VenueStatus == VenueApprovalStatus.Approved,
                 ParentId = item.ParentId,
             };
 
@@ -105,14 +106,14 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Longitude = item.Longitude,
                 City = item.City,
                 Address = item.Address,
-                IsPublished = item.IsPublished,
+                IsPublished = item.VenueStatus >= VenueApprovalStatus.Published,
                 LogoUrl = item.LogoUrl,
                 Phones = item.Phones,
                 FullDescription = item.FullDescription,
                 WebSites = item.WebSites,
                 WorkingHours = item.WorkingHours,
                 IsArchived = item.IsArchived,
-                IsApproved = item.IsApproved,
+                IsApproved = item.VenueStatus == VenueApprovalStatus.Approved,
                 ParentId = item.ParentId,
             };
 
@@ -163,7 +164,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
                 WorkingHours = JsonSerializer.Serialize(command.WorkingHours),
                 Phones = command.Phones.ToCommaSeparatedStringOrNull(),
-                IsPublished = command.IsPublished,
+                VenueStatus = command.VenueApprovalStatus,
                 SocialNetworks = new SocialNetworks
                 {
                     Facebook = command?.SocialNetworks?.Facebook,
@@ -192,14 +193,13 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 OwnerId = item.OwnerId,
                 Images = item.Images.SplitByCommaAndUnwrap(),
                 Location = item.ToLocation(),
-                IsPublished = item.IsPublished,
                 LogoUrl = item.LogoUrl,
                 Phones = item.Phones.SplitByCommaAndUnwrap(),
                 FullDescription = item.FullDescription,
                 WebSites = item.WebSites.SplitByCommaAndUnwrap(),
                 WorkingHours = JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>(item.WorkingHours),
                 IsArchived = item.IsArchived,
-                IsApproved = item.IsApproved,
+                VenueApprovalStatus = item.VenueStatus,
                 ParentId = item.ParentId,
                 SocialNetworks = new GetSocialNetworksResult()
                 {

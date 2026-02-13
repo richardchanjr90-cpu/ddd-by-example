@@ -12,9 +12,7 @@ namespace Loyalty.Core.Entities
 {
     [Table("Venue", Schema = SchemaName.Loyalty)]
     public class Venue : AuditableEntity, 
-        IRequireTwoStepSaveEntity, 
-        IArchivableEntity, 
-        IRequireApprovalEntity
+        IArchivableEntity
     {
         [Required]
         [MaxLength(200)]
@@ -65,9 +63,7 @@ namespace Loyalty.Core.Entities
 
         public bool IsArchived { get; set; }
 
-        public bool IsApproved { get; set; }
-
-        public bool IsPublished { get; set; }
+        public VenueApprovalStatus VenueStatus { get; set; }
 
         public SocialNetworks SocialNetworks { get; set; }
 

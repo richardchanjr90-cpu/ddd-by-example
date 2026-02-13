@@ -60,8 +60,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                     WorkingHours = dynamicVenue.WorkingHours,
                     Images = dynamicVenue.Images,
                     IsArchived = dynamicVenue.IsArchived,
-                    IsApproved = dynamicVenue.IsApproved,
-                    IsPublished = dynamicVenue.IsPublished,
+                    VenueStatus = (VenueApprovalStatus) dynamicVenue.VenueStatus,
                     SocialNetworks = dynamicVenue.SocialNetworks != null ? 
                         JsonSerializer.Deserialize<SocialNetworks>(dynamicVenue.SocialNetworks) 
                         : null

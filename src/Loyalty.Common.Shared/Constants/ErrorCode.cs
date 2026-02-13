@@ -29,5 +29,7 @@ namespace Loyalty.Common.Shared.Constants
         public const string VENUE_NOT_FOUND = "VENUE_NOT_FOUND";
 
         public const string EMAIL_EXISTS = "EMAIL_EXISTS";
+
+        public const string NOT_POSSIBLE_TO_APPROVE_VENUE = "NOT_POSSIBLE_TO_APPROVE_VENUE";
     }
 }

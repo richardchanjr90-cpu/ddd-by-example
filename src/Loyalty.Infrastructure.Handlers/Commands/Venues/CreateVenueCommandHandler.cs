@@ -87,6 +87,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         {
             if (worker == null)
             {
+                //todo: rework
                 worker = new Worker
                 {
                     PositionName = "Владелец",

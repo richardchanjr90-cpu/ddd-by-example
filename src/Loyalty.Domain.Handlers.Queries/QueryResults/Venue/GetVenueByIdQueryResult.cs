@@ -37,9 +37,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
 
         public string LogoUrl { get; set; }
 
-        public bool IsPublished { get; set; }
-
-        public bool IsApproved { get; set; }
+        public VenueApprovalStatus VenueApprovalStatus { get; set; }
 
         public bool IsArchived { get; set; }
 

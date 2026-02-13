@@ -22,6 +22,7 @@
     <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj" />
+    <ProjectReference Include="..\Loyalty.Shared.Contracts\Loyalty.Shared.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

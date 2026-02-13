@@ -26,7 +26,10 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
                 .When(x => x.Location != null);
 
             RuleFor(x => x.CategoryType)
-                .GreaterThanOrEqualTo((int)VenueCategoryType.CoffeeShop);
+                .GreaterThan(0);
+
+            RuleFor(x => x.VenueApprovalStatus)
+                .LessThanOrEqualTo((int)VenueApprovalStatus.Published);
 
             RuleForEach(x => x.Phones)
                 .SetValidator(new PhoneValidator())
@@ -35,11 +38,6 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
             RuleForEach(x => x.WorkingHours)
                 .Must(x => !string.IsNullOrWhiteSpace(x.Day) && x.To <= 24*60)
                 .When(x => x.WorkingHours != null);
-
-            RuleFor(x => x)
-                .Must(x => x.IsPublished)
-                .When(x => x.IsApproved)
-                .WithMessage("Venue can't be accepted if it's not published.");
         }
     }
 }

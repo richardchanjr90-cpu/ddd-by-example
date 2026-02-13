@@ -2,6 +2,8 @@
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.ValueObject;
@@ -10,6 +12,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +42,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             }
             else
             {
+                if (venue.VenueStatus != request.VenueApprovalStatus
+                    && (request.VenueApprovalStatus == VenueApprovalStatus.Approved
+                        || request.VenueApprovalStatus == VenueApprovalStatus.Rejected)
+                    || venue.VenueStatus == VenueApprovalStatus.Approved)
+                {
+                    throw new LoyaltyValidationException("Not possible to change venue's status", null, ErrorCode.NOT_POSSIBLE_TO_APPROVE_VENUE);
+                }
+
                 venue.CategoryType = request.CategoryType;
                 venue.Description = request.Description;
                 venue.Name = request.Name;
@@ -51,7 +62,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.City = request.Location?.City;
                 venue.Latitude = request.Location?.Latitude ?? 0.0f;
                 venue.Longitude = request.Location?.Longitude ?? 0.0f;
-                venue.IsPublished = request.IsPublished;
+                venue.VenueStatus = request.VenueApprovalStatus;
                 venue.SocialNetworks = new SocialNetworks()
                 {
                     Vkontakte = request.SocialNetworks?.Vkontakte,

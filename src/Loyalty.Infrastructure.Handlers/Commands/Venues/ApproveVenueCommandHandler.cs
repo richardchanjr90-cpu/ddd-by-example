@@ -14,6 +14,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -36,13 +37,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 .Where(x => x.Id == request.Id)
                 .SingleAsync(cancellationToken);
 
-            if (!venue.IsPublished)
+            if (venue.VenueStatus == VenueApprovalStatus.Saved)
             {
                 throw new LoyaltyValidationException("Venue is not Published, so it can't be approved.", null, ErrorCode.FAILED_APPROVE_NOT_PUBLISHED_VENUE);
             }
 
-            var wasApproved = venue.IsApproved;
-            venue.IsApproved = true;
+            var wasApproved = venue.VenueStatus == VenueApprovalStatus.Approved;
+            venue.VenueStatus = VenueApprovalStatus.Approved;
 
             var result = new CommandResult
             {

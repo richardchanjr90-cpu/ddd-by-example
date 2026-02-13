@@ -106,13 +106,11 @@ namespace Loyalty.Application.AutoMapper
 
             CreateMap<CreateVenueViewModel, CreateVenueCommand>()
                 .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate());
 
             CreateMap<UpdateVenueViewModel, UpdateVenueCommand>()
                 .ForSourceMember(x => x.LogoUrl, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate())
-                .ForSourceMember(x => x.IsApproved, opt => opt.DoNotValidate());
+                .ForSourceMember(x => x.Images, opt => opt.DoNotValidate());
 
             CreateMap<GetSocialNetworksResult, SocialNetworksViewModel>();
             CreateMap<SocialNetworksViewModel, UpdateSocialNetworksCommand>();

@@ -33,8 +33,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public VenueCategoryType CategoryType { get; set; }
 
-        public bool IsPublished { get; set; }
-
-        public bool IsApproved { get; set; }
+        public VenueApprovalStatus VenueApprovalStatus { get; set; }
     }
 }

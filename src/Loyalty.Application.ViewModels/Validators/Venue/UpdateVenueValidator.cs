@@ -29,7 +29,7 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
                 .When(x => x.Location != null);
 
             RuleFor(x => x.CategoryType)
-                .GreaterThanOrEqualTo((int)VenueCategoryType.CoffeeShop);
+                .GreaterThanOrEqualTo(0);
 
             RuleForEach(x => x.Phones)
                 .SetValidator(new PhoneValidator())
@@ -41,13 +41,8 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
 
             RuleFor(x => x)
                 .SetValidator(new PublishedVenueValidator())
-                .When(x => x.IsPublished)
+                .When(x => x.VenueApprovalStatus == (int) VenueApprovalStatus.Published)
                 .WithMessage("Venue can be published only when all fields are set.");
-
-            RuleFor(x => x)
-                .Must(x => x.IsPublished)
-                .When(x => x.IsApproved)
-                .WithMessage("Venue can't be accepted if it's not published.");
         }
     }
 }
