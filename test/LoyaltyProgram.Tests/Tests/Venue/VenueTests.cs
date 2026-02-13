@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
+using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Tests.Fixture;
 using LoyaltyProgram.Tests.Fixture.Extensions;
 using LoyaltyProgram.Tests.Setup.Data;
@@ -74,7 +75,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
                 var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
-                getResult.IsPublished = true;
+                getResult.VenueApprovalStatus = (int)VenueApprovalStatus.Published;
 
                 var content = ModelHelper.Convert(getResult);
                 var response2 = await signedUpUserFixture.Client.PutAsync("api/venues", content);
@@ -83,7 +84,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var getResponseMessage2 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
                 var getResult2 = await getResponseMessage2.DeserializeAsync<UpdateVenueViewModel>();
 
-                Assert.True(getResult2.IsPublished);
+                Assert.True(getResult2.VenueApprovalStatus == (int)VenueApprovalStatus.Published);
             }
 
         }
@@ -93,7 +94,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
             {
-                venue.Venue.IsPublished = true;
+                venue.Venue.VenueApprovalStatus = (int)VenueApprovalStatus.Published;
                 var content = ModelHelper.Convert(venue);
                 var response2 = await signedUpUserFixture.Client.PutAsync("api/venues", content);
                 var getResult = await response2.DeserializeAsync<CommandResult>();
@@ -114,7 +115,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
                 var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
 
-                getResult.IsPublished = true;
+                getResult.VenueApprovalStatus = (int)VenueApprovalStatus.Published;
 
                 var content = ModelHelper.Convert(getResult);
                 await signedUpUserFixture.Client.PutAsync("api/venues", content);
@@ -127,8 +128,8 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var getResponseMessage3 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
                 var getResult3 = await getResponseMessage3.DeserializeAsync<UpdateVenueViewModel>();
 
-                Assert.True(getResult3.IsPublished);
-                Assert.True(getResult3.IsApproved);
+                Assert.True(getResult3.VenueApprovalStatus == (int)VenueApprovalStatus.Approved);
+                Assert.True(getResult3.VenueApprovalStatus == (int)VenueApprovalStatus.Approved);
             }
         }
 
@@ -151,8 +152,8 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                 var getResponseMessage3 = await signedUpUserFixture.Client.GetAsync("api/venues/" + venue.Venue.Id);
                 var getResult3 = await getResponseMessage3.DeserializeAsync<UpdateVenueViewModel>();
 
-                Assert.False(getResult3.IsPublished);
-                Assert.False(getResult3.IsApproved);
+                Assert.False(getResult3.VenueApprovalStatus == (int)VenueApprovalStatus.Approved);
+                Assert.False(getResult3.VenueApprovalStatus == (int)VenueApprovalStatus.Approved);
             }
         }
 
