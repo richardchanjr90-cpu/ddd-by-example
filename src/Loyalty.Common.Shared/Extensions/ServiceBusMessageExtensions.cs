@@ -2,7 +2,6 @@
 using System.Text.Json;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
-using System.Text.Json.Serialization;
 
 namespace Loyalty.Common.Shared.Extensions
 {
@@ -13,13 +12,18 @@ namespace Loyalty.Common.Shared.Extensions
             return JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(item.Body));
         }
 
-        public static Message ToMessage(this INotification item)
+        public static Message ToMessage(this object item)
         {
-            var messageBody = JsonSerializer.Serialize(item);
+            var messageBody = JsonSerializer.Serialize(item, new JsonSerializerOptions()
+            {
+
+            });
+
             var message = new Message(Encoding.UTF8.GetBytes(messageBody))
             {
                 ContentType = item.GetType().Name
             };
+
             return message;
         }
     }
