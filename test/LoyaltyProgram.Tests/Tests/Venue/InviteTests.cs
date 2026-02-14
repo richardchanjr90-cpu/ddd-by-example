@@ -181,9 +181,9 @@ namespace LoyaltyProgram.Tests.Tests.Venue
                     Assert.True(response2.IsSuccessStatusCode);
                     Assert.True(result.Success);
 
-                    var response3 = await createdUser.Client.GetAsync($"api/workers/{worker.Id}");
-                    var workerChanged = await response3.DeserializeAsync<WorkerViewModel>();
-
+                    var response3 = await createdUser.Client.GetAsync("api/workers/");
+                    var workersResult = await response3.DeserializeAsync<List<WorkerViewModel>>();
+                    var workerChanged = workersResult.Single(x => x.Id == invitedUser.InvitedUser.Id);
 
                     Assert.True(workerChanged.Role == (int) toRole);
                 }

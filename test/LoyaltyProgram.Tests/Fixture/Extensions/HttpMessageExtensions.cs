@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -10,7 +11,7 @@ namespace LoyaltyProgram.Tests.Fixture.Extensions
         {
             var resultString = await message.Content.ReadAsStringAsync();
             var myContent = JsonConvert.DeserializeObject<T>(resultString);
-            return myContent;
+            return (T) myContent;
         }
     }
 }

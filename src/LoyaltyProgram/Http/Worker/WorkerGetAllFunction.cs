@@ -33,7 +33,6 @@ namespace LoyaltyProgram.Http.Worker
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "workers")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
-            ClaimsPrincipal principal,
             ILogger log)
         {
             log.LogInformation($"{nameof(WorkerGetAllFunction)} was triggered.");

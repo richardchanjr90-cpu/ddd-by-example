@@ -2,8 +2,6 @@
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Security.Authentication;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -15,15 +13,12 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.UserProfile
 {

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Shared.Contracts.Enums;
@@ -61,8 +62,9 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             using (var invitedDirector = new InviteFixture(venue.Venue.Id, VenueUserRole.Director, signedUpUserFixture))
             using (var director = new InvitedUserFixture(fixture, new AuthUser(invitedDirector.InvitedUser.Phone), signedUpUserFixture))
             {
-                var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/workers/" + invitedDirector.InvitedUser.Id);
-                var getResult = await getResponseMessage.DeserializeAsync<WorkerViewModel>();
+                var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/workers/");
+                var workers = await getResponseMessage.DeserializeAsync<List<WorkerViewModel>>();
+                var getResult = workers.Single(x => x.Id == invitedDirector.InvitedUser.Id);
 
                 Assert.Equal(getResult.Id, invitedDirector.InvitedUser.Id);
                 Assert.Equal(getResult.Name, director.Signup.Name);

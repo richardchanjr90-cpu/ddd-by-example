@@ -26,10 +26,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
         {
-            var worker = await Context.Workers
-                .Include(x => x.Venues)
+            var worker = Context.Workers
                 .Where(x => x.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
+                .AsEnumerable()
+                .FirstOrDefault();
 
             if (request.Role == VenueUserRole.Owner)
             {

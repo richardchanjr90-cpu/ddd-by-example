@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace LoyaltyProgram.Tests.Fixture
 {
@@ -12,7 +12,7 @@ namespace LoyaltyProgram.Tests.Fixture
     {
         public static ByteArrayContent Convert(object data)
         {
-            var myContent = JsonConvert.SerializeObject(data);
+            var myContent = JsonSerializer.Serialize(data);
             var buffer = Encoding.UTF8.GetBytes(myContent);
             var byteContent = new ByteArrayContent(buffer);
             byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
@@ -22,13 +22,13 @@ namespace LoyaltyProgram.Tests.Fixture
         public static async Task<T> DeserializeAsync<T>(HttpResponseMessage message)
         {
             var resultString = await message.Content.ReadAsStringAsync();
-            var myContent = JsonConvert.DeserializeObject<T>(resultString);
+            var myContent = JsonSerializer.Deserialize<T>(resultString);
             return myContent;
         }
 
         public static T Deserialize<T>(string data)
         {
-            var myContent = JsonConvert.DeserializeObject<T>(data);
+            var myContent = JsonSerializer.Deserialize<T>(data);
             return myContent;
         }
     }

@@ -41,12 +41,12 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var imageContent = ImageFactory.GetImageContent(width, height);
-                var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);
-
+                var response = await createdUser.Client.PatchAsync($"api/userprofiles/avatar", imageContent);
                 Assert.True(response.IsSuccessStatusCode);
 
-                var getResponseMessage = await signedUpUserFixture.Client.GetAsync($"api/workers/{invitedUser.InvitedUser.Id}");
-                var getResult = await getResponseMessage.DeserializeAsync<WorkerViewModel>();
+                var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/workers/");
+                var workers = await getResponseMessage.DeserializeAsync<List<WorkerViewModel>>();
+                var getResult = workers.Single(x => x.Id == invitedUser.InvitedUser.Id);
 
                 Assert.True(response.IsSuccessStatusCode);
                 Assert.NotNull(getResult.PhotoUri);
@@ -71,9 +71,11 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
                 var imageBytes = ImageFactory.GetImage(width, height);
                 var imageContent = ImageFactory.GetImageContent(imageBytes);
-                var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);
-                var getResponseMessage = await signedUpUserFixture.Client.GetAsync($"api/workers/{invitedUser.InvitedUser.Id}");
-                var getResult = await getResponseMessage.DeserializeAsync<WorkerViewModel>();
+                var response = await createdUser.Client.PatchAsync($"api/userprofiles/avatar", imageContent);
+
+                var getResponseMessage = await signedUpUserFixture.Client.GetAsync("api/workers/");
+                var workers = await getResponseMessage.DeserializeAsync<List<WorkerViewModel>>();
+                var getResult = workers.Single(x => x.Id == invitedUser.InvitedUser.Id);
 
                 var uri = $"{getResult.PhotoUri}{sasToken}";
                 var loadedImage = ImageFactory.Load(uri);
@@ -105,7 +107,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             using (var createdUser = new InvitedUserFixture(fixture, new AuthUser(invitedUser.InvitedUser.Phone), signedUpUserFixture))
             {
                 var imageContent = ImageFactory.GetImageContent(width, height);
-                var response = await createdUser.Client.PatchAsync($"api/workers/{invitedUser.InvitedUser.Id}/photo", imageContent);
+                var response = await createdUser.Client.PatchAsync($"api/userprofiles/avatar", imageContent);
                 var getResult = await response.DeserializeAsync<CommandResult>();
                 Assert.False(getResult.Success);
             }

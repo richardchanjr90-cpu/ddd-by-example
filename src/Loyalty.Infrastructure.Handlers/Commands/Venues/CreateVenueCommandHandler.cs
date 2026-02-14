@@ -62,7 +62,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
                     await AddClaimsAboutNewVenue(worker);
                 }
-
                 return result;
             }
             catch (Exception)

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Loyalty.Application.ViewModels.Worker;
@@ -32,15 +34,17 @@ namespace LoyaltyProgram.Tests.Fixture
             var result = await response.DeserializeAsync<CommandResult>();
             //await CreatorsUserFixture.UpdateTokenAsync();
 
-            var getResponseMessage = await CreatorsUserFixture.Client.GetAsync("api/workers/" + result.Result);
-            var getResult = await getResponseMessage.DeserializeAsync<WorkerViewModel>();
+            var getResponseMessage = await CreatorsUserFixture.Client.GetAsync("api/workers/");
+            var workers = await getResponseMessage.DeserializeAsync<List<WorkerViewModel>>();
+            var workerResult = workers.Single(x => x.Id == (long)result.Result);
 
             var invite = new InviteViewModel();
-            invite.Id = getResult.Id;
-            invite.Role = getResult.Role;
-            invite.Name = getResult.Name;
-            invite.Phone = getResult.Phone;
-            invite.PositionName = getResult.PositionName;
+            invite.Id = workerResult.Id;
+            invite.Role = workerResult.Role;
+            invite.Name = workerResult.Name;
+            invite.Phone = workerResult.Phone;
+            invite.PositionName = workerResult.PositionName;
+
             invite.VenueId = venueId;
 
             return invite;

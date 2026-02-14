@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Domain.Contracts;
+using Loyalty.Domain.Contracts.Interfaces;
 using LoyaltyProgram.Tests.Fixture.Extensions;
 using LoyaltyProgram.Tests.Setup.Data;
 using Xunit;
@@ -10,7 +11,7 @@ namespace LoyaltyProgram.Tests.Fixture
 {
     public class VenueFixture : IDisposable
     {
-        public CreateVenueViewModel Venue { get; }
+        public UpdateVenueViewModel Venue { get; }
 
         public SignedUpUserFixture SignupFixture { get; }
 
@@ -20,7 +21,7 @@ namespace LoyaltyProgram.Tests.Fixture
             Venue = CreateVenueAsync().GetAwaiter().GetResult();
         }
 
-        private async Task<CreateVenueViewModel> CreateVenueAsync()
+        private async Task<UpdateVenueViewModel> CreateVenueAsync()
         {
             var venue = VenueFactory.GetVenue();
             var content = ModelHelper.Convert(venue);
@@ -29,7 +30,7 @@ namespace LoyaltyProgram.Tests.Fixture
             await SignupFixture.UpdateTokenAsync();
 
             var getResponseMessage = await SignupFixture.Client.GetAsync("api/venues/" + result.Result);
-            var getResult = await getResponseMessage.DeserializeAsync<CreateVenueViewModel>();
+            var getResult = await getResponseMessage.DeserializeAsync<UpdateVenueViewModel>();
             return getResult;
         }
 

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,7 +6,6 @@ using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Code;
 using MediatR;
 
 namespace Loyalty.Application.Venue

@@ -5,15 +5,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
-using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 {

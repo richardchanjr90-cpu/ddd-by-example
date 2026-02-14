@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -31,13 +32,13 @@ namespace LoyaltyProgram.Storage
 
             var alphaResponse = await Client.GetAsync(new Uri(alphaUri));
             var alpha = await alphaResponse.Content.ReadAsStringAsync();
-            dynamic alphaId = JsonSerializer.Deserialize<dynamic>(alpha);
+            var alphaId = (JsonElement) JsonSerializer.Deserialize<object>(alpha);
 
             var uri = "http://app.sms.by/api/v1/sendQuickSms?" +
                       $"token={token}&" +
                       $"message={message}" +
                       $"&phone={phone}" +
-                      $"&alphaname_id={alphaId.id}";
+                      $"&alphaname_id={alphaId.GetProperty("id")}";
 
             if (phone.StartsWith("375"))
             {
