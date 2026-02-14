@@ -33,7 +33,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
         [Theory]
         [InlineData(800, 800)]
-        [InlineData(2000, 2000)]
+        [InlineData(2560, 1440)]
         public async Task ShouldSaveAvatar(int width, int height)
         {
             using (var venue = new VenueFixture(signedUpUserFixture))
@@ -59,7 +59,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
         [Theory]
         [InlineData(800, 800)]
-        [InlineData(2000, 2000)]
+        [InlineData(2560, 1440)]
         public async Task ShouldSaveAvatarAndItShouldBeTheSame(int width, int height)
         {
             using (var venue = new VenueFixture(signedUpUserFixture))

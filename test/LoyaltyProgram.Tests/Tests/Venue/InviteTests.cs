@@ -183,7 +183,7 @@ namespace LoyaltyProgram.Tests.Tests.Venue
 
                     var response3 = await createdUser.Client.GetAsync("api/workers/");
                     var workersResult = await response3.DeserializeAsync<List<WorkerViewModel>>();
-                    var workerChanged = workersResult.Single(x => x.Id == invitedUser.InvitedUser.Id);
+                    var workerChanged = workersResult.Single(x => x.Id == (long) result.Result);
 
                     Assert.True(workerChanged.Role == (int) toRole);
                 }
