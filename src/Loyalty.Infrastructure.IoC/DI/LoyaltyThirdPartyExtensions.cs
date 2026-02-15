@@ -2,6 +2,7 @@
 using System.Reflection;
 using AutoMapper;
 using Loyalty.Application.AutoMapper;
+using Loyalty.Infrastructure.Firebase.Handlers;
 using Loyalty.Infrastructure.Handlers;
 using Loyalty.Infrastructure.Handlers.Notifications;
 using Loyalty.Infrastructure.Handlers.Pipelines;
@@ -17,6 +18,8 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddLogging();
             services.AddMediatR(typeof(BaseHandler).Assembly);
             services.AddMediatR(typeof(BaseNotificationHandler).Assembly);
+            services.AddMediatR(typeof(BaseFirebaseHandler).Assembly);
+
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));

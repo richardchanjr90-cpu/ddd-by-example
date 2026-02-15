@@ -7,5 +7,7 @@
         public string Issuer { get; set; }
 
         public string JsonUri { get; set; }
+
+        public string AuthKey { get; set; }
     }
 }

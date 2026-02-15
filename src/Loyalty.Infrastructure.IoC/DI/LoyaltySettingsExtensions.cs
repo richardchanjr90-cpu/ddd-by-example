@@ -15,6 +15,10 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.Configure<ImageStorageSettings>(
                 options => config.GetSection(nameof(ImageStorageSettings))
                     .Bind(options));
+
+            services.Configure<GoogleAuthSettings>(
+                options => config.GetSection(nameof(GoogleAuthSettings))
+                    .Bind(options));
         }
     }
 }

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Application.ViewModels\Loyalty.Application.ViewModels.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Firebase.Queries\Loyalty.Domain.Handlers.Firebase.Queries.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
   </ItemGroup>
 

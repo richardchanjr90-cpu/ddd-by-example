@@ -13,14 +13,16 @@ namespace Loyalty.Application.Venue
     public class CodeAppService : BaseAppService
     {
         private readonly IMapper mapper;
+        private readonly ClientInfoAppService clientService;
 
-        public CodeAppService(IMediator mediator, IMapper mapper)
+        public CodeAppService(IMediator mediator, IMapper mapper, ClientInfoAppService clientService)
             : base(mediator)
         {
             this.mapper = mapper;
+            this.clientService = clientService;
         }
 
-        public async Task<List<ActivePurchasesViewModel>> GetByCode(string code, long venueId)
+        public async Task<ClientInfoPurchasesViewModel> GetByCode(string code, long venueId)
         {
             if (String.IsNullOrEmpty(code))
             {
@@ -32,13 +34,20 @@ namespace Loyalty.Application.Venue
                 Code = code
             });
 
-            var result = await Mediator.Send(new GetClientActivePurchasesQuery
+            var purchases = await Mediator.Send(new GetClientActivePurchasesQuery
             {
                 UserId = item.UserId,
                 VenueId = venueId
             });
 
-            return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
+            var clientInfo = await clientService.Get(item.UserId);
+            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases.Result);
+
+            return new ClientInfoPurchasesViewModel()
+            {
+                ActivePurchases = purchasesModels,
+                ClientInfo = clientInfo
+            };
         }
     }
 }

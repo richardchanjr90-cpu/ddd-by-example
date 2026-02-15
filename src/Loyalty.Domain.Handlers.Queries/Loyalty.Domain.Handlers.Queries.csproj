@@ -43,7 +43,6 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-
   <ItemGroup>
     <Folder Include="Commands\Workers\CompleteSignup\" />
     <Folder Include="QueryResults\Code\" />

@@ -53,6 +53,12 @@ namespace Loyalty.Common.Shared.Extensions
             return value;
         }
 
+        public static string GetCity(this ClaimsPrincipal principal)
+        {
+            var claim = principal.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
+            return claim;
+        }
+
         public static List<string> GetVenues(this ClaimsPrincipal principal)
         {
             var claims = new List<string>();

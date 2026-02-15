@@ -17,14 +17,16 @@ namespace Loyalty.Application.Venue
     public class PurchaseAppService : BaseAppService
     {
         private readonly IMapper mapper;
+        private readonly ClientInfoAppService clientService;
 
-        public PurchaseAppService(IMediator mediator, IMapper mapper)
+        public PurchaseAppService(IMediator mediator, IMapper mapper, ClientInfoAppService clientService)
             : base(mediator)
         {
             this.mapper = mapper;
+            this.clientService = clientService;
         }
 
-        public async Task<List<ActivePurchasesViewModel>> GetActivePurchases(string userId, long venueId)
+        public async Task<ClientInfoPurchasesViewModel> GetActivePurchases(string userId, long venueId)
         {
             var result = await Mediator.Send(new GetClientActivePurchasesQuery
             {
@@ -32,7 +34,16 @@ namespace Loyalty.Application.Venue
                 VenueId = venueId
             });
 
-            return mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
+            var purchases = mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
+
+            var clientInfo = await clientService.Get(userId);
+            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases);
+
+            return new ClientInfoPurchasesViewModel()
+            {
+                ActivePurchases = purchasesModels,
+                ClientInfo = clientInfo
+            };
         }
 
         public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)

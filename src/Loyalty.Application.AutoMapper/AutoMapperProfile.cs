@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Loyalty.Application.ViewModels.ClientInfo;
 using Loyalty.Application.ViewModels.Location;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
@@ -9,6 +10,7 @@ using Loyalty.Application.ViewModels.Rule;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
@@ -46,6 +48,8 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<UserProfileViewModel, UpdateUserProfileCommand>()
                 .ForMember(x => x.WorkerId, opt => opt.Ignore());
             CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
+
+            CreateMap<GetClientInfoFirebaseQueryResult, ClientInfoViewModel>();
         }
 
         private void MapLoyaltyPrograms()
