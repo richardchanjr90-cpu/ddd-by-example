@@ -45,7 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 await mediator.Publish(
                     new PatchVenueLogoNotification
                     {
-                        Logo = venue.LogoUrl,
+                        Logo = request.SmallLogo,
                         Id = venue.Id
                     },
                     cancellationToken);

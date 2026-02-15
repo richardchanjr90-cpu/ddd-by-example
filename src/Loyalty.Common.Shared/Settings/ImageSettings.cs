@@ -14,5 +14,7 @@
         public int MaxPhotoImageWidth { get; set; } = 2560;
         public int MinPhotoImageHeight { get; set; } = 400;
         public int MinPhotoImageWidth { get; set; } = 400;
+
+        public int SmLogoWidth { get; set; } = 400;
     }
 }

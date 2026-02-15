@@ -59,7 +59,7 @@ namespace LoyaltyProgram.Http.VenueLogo
                     var p = await blockblob.DeleteIfExistsAsync();
                 }
 
-                await service.PatchLogo(id, null);
+                await service.PatchLogo(id, null, null);
 
                 return new NoContentResult();
             });

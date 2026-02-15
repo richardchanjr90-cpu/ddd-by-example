@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.VenueLogo
@@ -25,13 +26,16 @@ namespace LoyaltyProgram.Http.VenueLogo
     {
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
+        private readonly IOptions<ImageSettings> imageSettings;
 
         public VenuePutLogoFunction(
             LoyaltyVenueAppService service, 
-            LoyaltyVenueImageAppService imageService)
+            LoyaltyVenueImageAppService imageService,
+            IOptions<ImageSettings> imageSettings)
         {
             this.service = service;
             this.imageService = imageService;
+            this.imageSettings = imageSettings;
         }
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
@@ -57,15 +61,29 @@ namespace LoyaltyProgram.Http.VenueLogo
                 if (image != null)
                 {
                     using (var stream = new MemoryStream())
+                    using (var smStream = new MemoryStream())
                     {
-                        var blob = await imageService.GetBlobForImageAsync(container, $"logo-{Guid.NewGuid()}.jpg");
+                        var newGuid = Guid.NewGuid();
+                        var blob = await imageService.GetBlobForImageAsync(container, $"logo-{newGuid}.jpg");
+                        var smBlob = await imageService.GetBlobForImageAsync(container, $"logo-{newGuid}-sm.jpg");
 
                         imageService.SaveImageOfWidthToStream(
                             stream,
                             image);
+                        imageService.SaveImageOfWidthToStream(
+                            smStream,
+                            image,
+                            imageSettings.Value.SmLogoWidth);
 
                         await blob.UploadFromStreamAsync(stream);
-                        await service.PatchLogo(id, blob.Uri.ToString());
+                        await smBlob.UploadFromStreamAsync(smStream);
+
+                        await blob.UploadFromStreamAsync(stream);
+
+                        await service.PatchLogo(
+                            id, 
+                            blob.Uri.ToString(), 
+                            smBlob.Uri.ToString());
                     }
                 }
 

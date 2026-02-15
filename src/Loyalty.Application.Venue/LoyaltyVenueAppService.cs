@@ -89,7 +89,7 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> PatchLogo(long venueId, string logo)
+        public async Task<ICommandResult> PatchLogo(long venueId, string logo, string smallLogo)
         {
             if (!String.IsNullOrEmpty(logo) && !String.IsNullOrEmpty(imageStorageSettings.Value.CDN) &&
                 !String.IsNullOrEmpty(imageStorageSettings.Value.StorageAccountUrl))
@@ -100,7 +100,8 @@ namespace Loyalty.Application.Venue
             var commandResult = await Mediator.Send(new PatchVenueLogoCommand
             {
                 Id = venueId,
-                Logo = logo
+                Logo = logo,
+                SmallLogo = smallLogo
             });
 
             return commandResult;

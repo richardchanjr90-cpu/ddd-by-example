@@ -10,6 +10,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
@@ -18,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.VenueLogo
@@ -26,11 +28,16 @@ namespace LoyaltyProgram.Http.VenueLogo
     {
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
+        private readonly IOptions<ImageSettings> imageSettings;
 
-        public VenueCreateLogoFunction(LoyaltyVenueAppService service, LoyaltyVenueImageAppService imageService)
+        public VenueCreateLogoFunction(
+            LoyaltyVenueAppService service, 
+            LoyaltyVenueImageAppService imageService,
+            IOptions<ImageSettings> imageSettings)
         {
             this.service = service;
             this.imageService = imageService;
+            this.imageSettings = imageSettings;
         }
 
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
@@ -60,17 +67,29 @@ namespace LoyaltyProgram.Http.VenueLogo
                 }
 
                 using (var stream = new MemoryStream())
+                using (var smStream = new MemoryStream())
                 {
                     var blob = await imageService.GetBlobForImageAsync(container, $"logo-{image.Index}.jpg");
+                    var smBlob = await imageService.GetBlobForImageAsync(container, $"logo-{image.Index}-sm.jpg");
 
                     imageService.SaveImageOfWidthToStream(
                         stream,
                         image.Image);
+                    
+                    imageService.SaveImageOfWidthToStream(
+                        smStream,
+                        image.Image,
+                        imageSettings.Value.SmLogoWidth);
 
                     await blob.UploadFromStreamAsync(stream);
+                    await smBlob.UploadFromStreamAsync(smStream);
 
                     log.LogDebug($"Venue Logo created for: {id}", id);
-                    await service.PatchLogo(id, blob.Uri.ToString());
+
+                    await service.PatchLogo(
+                        id, 
+                        blob.Uri.ToString(), 
+                        smBlob.Uri.ToString());
                 }
                 return new NoContentResult();
             });

@@ -11,5 +11,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
         public long Id { get; set; }
 
         public string Logo { get; set; }
+
+        public string SmallLogo { get; set; }
     }
 }
