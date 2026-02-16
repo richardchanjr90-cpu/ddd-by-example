@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
 
                 if (emailUser != null)
                 {
-                    throw new LoyaltyValidationException("This email is already taken", null, ErrorCode.EMAIL_EXISTS);
+                    throw new LoyaltyValidationException("This email is already taken.", null, ErrorCode.EMAIL_EXISTS);
                 }
             }
 

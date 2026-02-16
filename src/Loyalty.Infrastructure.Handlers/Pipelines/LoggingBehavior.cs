@@ -23,7 +23,10 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
         {
             try
             {
-                var serializedRequest = JsonSerializer.Serialize(request);
+                var serializedRequest = JsonSerializer.Serialize(request, new JsonSerializerOptions()
+                {
+                    AllowTrailingCommas = true,
+                });
                 var log = logFactory.CreateLogger(typeof(TRequest)?.Name);
                 log.LogInformation($"Handling {typeof(TResponse)?.Name}: {serializedRequest}");
 

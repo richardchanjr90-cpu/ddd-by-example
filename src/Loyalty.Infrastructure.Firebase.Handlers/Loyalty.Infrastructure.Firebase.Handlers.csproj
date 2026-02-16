@@ -22,7 +22,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Firebase.Queries\Loyalty.Domain.Handlers.Firebase.Queries.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\" />
   </ItemGroup>
 
   <PropertyGroup>

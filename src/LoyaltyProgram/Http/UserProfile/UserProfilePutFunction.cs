@@ -42,7 +42,7 @@ namespace LoyaltyProgram.Http.UserProfile
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 model = await req.Cast<UserProfileViewModel>();
-                var result = await service.UpdateProfile(model, token.Principal.GetUserId());
+                var result = await service.UpdateProfile(model, token, token.Principal.GetUserId());
 
                 return new OkObjectResult(result);
             });

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using AzureExtensions.FunctionToken;
 using FluentValidation;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
@@ -14,6 +15,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
+using LoyaltyUser.Domain.Handlers.Queries.Commands.User;
 using MediatR;
 
 namespace Loyalty.Application.Venue
@@ -75,15 +77,29 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, string userId)
+        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, FunctionTokenResult token, string userId)
         {
             new UserProfileUpdateValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateUserProfileCommand>(model);
             command.WorkerId = userId;
-
             var commandResult = await Mediator.Send(command);
-            return commandResult;
+
+            ICommandResult result2 = null;
+
+            if (commandResult.Success)
+            { 
+                result2 = await Mediator.Send(new UpdateFirebaseTokenCommand
+                {
+                    Email = model.Email,
+                    Surname = model.LastName,
+                    Name = model.Name,
+                    Token = token
+                });
+            }
+
+            //todo: do it in a transaction.
+            return result2 ?? commandResult;
         }
 
         public async Task<ICommandResult> Archive(long id, string userId)

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -8,6 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.4" />
     <PackageReference Include="MediatR" Version="8.0.0" />
+    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />
+    <PackageReference Include="FirebaseAdmin" Version="1.9.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,7 +18,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
