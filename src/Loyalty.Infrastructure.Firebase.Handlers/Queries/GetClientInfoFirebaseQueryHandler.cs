@@ -39,6 +39,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
             var surname = claimsPrincipal.GetSurname();
             var phone = claimsPrincipal.GetPhone();
             var city = claimsPrincipal.GetCity();
+            var avatar = claimsPrincipal.GetAvatarOrNull();
 
             return new GetClientInfoFirebaseQueryResult()
             {
@@ -46,7 +47,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                 Name = name,
                 City = city,
                 Phone = phone,
-                PhotoUrl = null,
+                PhotoUrl = avatar,
                 Surname = surname
             };
         }

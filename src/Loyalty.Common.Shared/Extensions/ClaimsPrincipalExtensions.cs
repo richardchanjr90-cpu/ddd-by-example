@@ -59,6 +59,13 @@ namespace Loyalty.Common.Shared.Extensions
             return claim;
         }
 
+        public static string GetAvatarOrNull(this ClaimsPrincipal principal)
+        {
+            //todo: put in a common lib as a const.
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == "client_photo")?.Value;
+            return claim;
+        }
+
         public static List<string> GetVenues(this ClaimsPrincipal principal)
         {
             var claims = new List<string>();
