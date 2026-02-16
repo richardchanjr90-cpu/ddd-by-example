@@ -4,10 +4,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Validators.Venue;
 using Loyalty.Application.ViewModels.Venue;
-using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -24,7 +22,10 @@ namespace Loyalty.Application.Venue
 
         private readonly IOptions<ImageStorageSettings> imageStorageSettings;
 
-        public LoyaltyVenueAppService(IMediator mediator, IMapper mapper, IOptions<ImageStorageSettings> imageStorageSettings)
+        public LoyaltyVenueAppService(
+            IMediator mediator, 
+            IMapper mapper, 
+            IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
             this.imageStorageSettings = imageStorageSettings;

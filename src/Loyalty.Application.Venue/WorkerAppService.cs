@@ -7,6 +7,7 @@ using FluentValidation;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
@@ -17,17 +18,23 @@ using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using LoyaltyUser.Domain.Handlers.Queries.Commands.User;
 using MediatR;
+using Microsoft.Extensions.Options;
 
 namespace Loyalty.Application.Venue
 {
     public class WorkerAppService : BaseAppService
     {
         private readonly IMapper mapper;
+        private readonly IOptions<ImageStorageSettings> imageStorageSettings;
 
-        public WorkerAppService(IMediator mediator, IMapper mapper)
+        public WorkerAppService(
+            IMediator mediator, 
+            IMapper mapper, 
+            IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
             this.mapper = mapper;
+            this.imageStorageSettings = imageStorageSettings;
         }
 
         public async Task<FullUserProfileViewModel> GetProfile(string userId)
@@ -138,6 +145,12 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> PatchPhoto(string logo, string userId)
         {
+            if (!String.IsNullOrEmpty(logo) && !String.IsNullOrEmpty(imageStorageSettings.Value.CDN) &&
+                !String.IsNullOrEmpty(imageStorageSettings.Value.StorageAccountUrl))
+            {
+                logo = logo.Replace(imageStorageSettings.Value.StorageAccountUrl, imageStorageSettings.Value.CDN);
+            }
+
             var result = await Mediator.Send(new PatchWorkerPhotoCommand
             {
                 UserId = userId,
