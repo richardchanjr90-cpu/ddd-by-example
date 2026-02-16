@@ -112,7 +112,7 @@ namespace LoyaltyProgram.Tests.Setup.Auth
         {
             if (user != null)
             {
-                FirebaseAuth.DefaultInstance.DeleteUserAsync(user.Uid).GetAwaiter().GetResult();
+                //FirebaseAuth.DefaultInstance.DeleteUserAsync(user.Uid).GetAwaiter().GetResult();
                 IsActive = false;
                 Uid = null;
                 Phone = null;

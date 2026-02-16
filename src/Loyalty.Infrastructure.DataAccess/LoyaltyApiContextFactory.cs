@@ -15,7 +15,7 @@ namespace Loyalty.Infrastructure.DataAccess
         public LoyaltyDbContext CreateDbContext(params string[] args)
         {
             var defaultPath =
-                $"{Environment.CurrentDirectory}{Path.DirectorySeparatorChar}..{Path.DirectorySeparatorChar}LoyaltyProgram";
+                $"{Environment.CurrentDirectory}\\..\\LoyaltyProgram";
 
             if (args.Length == 1)
             {

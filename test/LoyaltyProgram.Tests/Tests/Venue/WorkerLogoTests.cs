@@ -30,7 +30,6 @@ namespace LoyaltyProgram.Tests.Tests.Venue
             this.signedUpUserFixture = signedUpUserFixture;
         }
 
-
         [Theory]
         [InlineData(800, 800)]
         [InlineData(2560, 1440)]

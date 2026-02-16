@@ -32,7 +32,6 @@ namespace LoyaltyProgram.Tests.Fixture
             var content = ModelHelper.Convert(worker);
             var response = await CreatorsUserFixture.Client.PostAsync("api/workers/invited", content);
             var result = await response.DeserializeAsync<CommandResult>();
-            //await CreatorsUserFixture.UpdateTokenAsync();
 
             var getResponseMessage = await CreatorsUserFixture.Client.GetAsync("api/workers/");
             var workers = await getResponseMessage.DeserializeAsync<List<WorkerViewModel>>();
