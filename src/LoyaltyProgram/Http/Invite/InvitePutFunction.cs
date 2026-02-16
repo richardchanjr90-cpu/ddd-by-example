@@ -31,7 +31,7 @@ namespace LoyaltyProgram.Http.Invite
         [FunctionName("InvitePutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers/invited")]
-            [RequestBodyType(typeof(InviteViewModel), "WorkerViewModel")] InviteViewModel model,
+            [RequestBodyType(typeof(InviteViewModel), "InviteViewModel")] InviteViewModel model,
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)

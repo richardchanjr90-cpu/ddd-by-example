@@ -52,9 +52,9 @@ namespace LoyaltyProgram.ServiceBus
                                    VALUES (foo.userId, foo.codeValue, foo.expirationDate)
                                 ; --A MERGE statement must be terminated by a semi-colon (;).";
 
-            connection.Open();
             using (var scope = new TransactionScope())
             {
+                connection.Open();
                 var isSuccess = connection.Execute(mergeSql, deserialize);
                 scope.Complete();
             }

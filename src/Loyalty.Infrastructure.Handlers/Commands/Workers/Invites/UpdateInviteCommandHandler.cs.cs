@@ -28,37 +28,19 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             var worker = await Context.Workers
                 .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
+                .SingleAsync(cancellationToken);
 
             if (request.Role == VenueUserRole.Owner)
             {
                 throw new LoyaltyValidationException("Impossible to create a second owner.", null, ErrorCode.SECOND_OWNER_NOT_ALLOWED);
             }
 
-            if (worker == null)
-            {
-                worker = new Worker
-                {
-                    Name = request.Name,
-                    Phone = request.Phone,
-                    PositionName = request.PositionName
-                };
+            worker.Name = request.Name;
+            worker.Phone = request.Phone;
+            worker.PositionName = request.PositionName;
 
-                var venueWorker = new VenueWorker();
-                venueWorker.VenueId = request.VenueId;
-                venueWorker.Worker = worker;
-                Context.VenueWorkers.Add(venueWorker);
-                Context.Workers.Add(worker);
-            }
-            else
-            {
-                worker.Name = request.Name;
-                worker.Phone = request.Phone;
-                worker.PositionName = request.PositionName;
-
-                var venueWorker = worker.Venues.Single(x => x.VenueId == request.VenueId);
-                venueWorker.Role = request.Role;
-            }
+            var venueWorker = worker.Venues.Single(x => x.VenueId == request.VenueId);
+            venueWorker.Role = request.Role;
 
             return new CommandResult
             {

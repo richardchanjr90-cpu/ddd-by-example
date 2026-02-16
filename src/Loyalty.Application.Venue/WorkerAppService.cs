@@ -98,7 +98,7 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> ArchiveByUid(string uid, string userId)
+        public async Task<ICommandResult> ArchiveById(string uid, string userId)
         {
             var command = new ArchiveWorkerByUidCommand()
             {

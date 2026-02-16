@@ -33,15 +33,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         {
             var ids = Principal.GetVenueIds();
             var userId = request.UserId;
+
             ICommandResult result = null;
             var selectSql = "SELECT Id FROM loyalty.Worker WHERE WorkerId = @userId";
             var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
             var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
 
-            connection.Open();
-
             using (var scope = new TransactionScope())
             {
+                connection.Open();
                 var id = connection.ExecuteScalar(selectSql, new
                 {
                     userId

@@ -30,8 +30,8 @@ namespace LoyaltyProgram.Http.Invite
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("InviteDeleteFunction")]
         public async Task<IActionResult> Run(
-            string uid,
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/invited/{uid}")]
+            long id,
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "workers/invited/{id}")]
             HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
@@ -40,7 +40,7 @@ namespace LoyaltyProgram.Http.Invite
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.ArchiveByUid(uid, token.Principal.GetUserId()));
+                return new OkObjectResult(await service.Archive(id, token.Principal.GetUserId()));
             });
         }
     }

@@ -35,10 +35,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
             var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
 
-            connection.Open();
-
             using (var scope = new TransactionScope())
             {
+                connection.Open();
                 var number = connection.Execute(deleteSql, new
                 {
                     id,
