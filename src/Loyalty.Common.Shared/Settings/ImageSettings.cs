@@ -2,7 +2,7 @@
 {
     public class ImageSettings
     {
-        public int MaxImageSizeInBytes = 1048576;
+        public int MaxImageSizeInBytes { get; set; } = 1048576;
         public int MaxGalleryImageHeight { get; set; } = 1440;
         public int MaxGalleryImageWidth { get; set; } = 2560;
         public int MinGalleryImageHeight { get; set; } = 600;

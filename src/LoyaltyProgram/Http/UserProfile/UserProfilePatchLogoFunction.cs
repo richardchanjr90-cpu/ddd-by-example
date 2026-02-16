@@ -57,6 +57,7 @@ namespace LoyaltyProgram.Http.UserProfile
 
                    new VenuePhotoValidator(settings.Value)
                        .ValidateAndThrow(image);
+
                    using (var stream = new MemoryStream())
                    {
                        var uri = claimsId.ToLower();
