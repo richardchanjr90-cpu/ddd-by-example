@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Loyalty.Core.Contracts;
+using Loyalty.Infrastructure.DataAccess;
 using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers

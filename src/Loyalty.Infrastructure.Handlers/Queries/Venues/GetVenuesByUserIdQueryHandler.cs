@@ -8,6 +8,7 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
+using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

@@ -1,7 +1,8 @@
-﻿using Loyalty.Core.Entities;
+﻿using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Loyalty.Core.Contracts
+namespace Loyalty.Infrastructure.DataAccess
 {
     public interface ILoyaltyDbContext : IDbContext
     {

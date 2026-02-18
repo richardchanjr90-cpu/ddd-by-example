@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.4" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.5" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
   </ItemGroup>
 
@@ -17,11 +17,9 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <AdditionalFiles Include="..\stylecop.json" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.5" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Loyalty.Shared.Contracts\Loyalty.Shared.Contracts.csproj" />
-  </ItemGroup>
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

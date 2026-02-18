@@ -5,6 +5,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.Products;
 using Loyalty.Domain.Handlers.Queries.Queries.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
+using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

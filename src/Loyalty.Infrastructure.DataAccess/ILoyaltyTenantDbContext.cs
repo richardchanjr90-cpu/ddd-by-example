@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Loyalty.Core.Entities.Base;
 
-namespace Loyalty.Core.Contracts
+namespace Loyalty.Infrastructure.DataAccess
 {
     public interface ILoyaltyTenantDbContext : ILoyaltyDbContext
     {

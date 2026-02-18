@@ -27,13 +27,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj" />
-    <ProjectReference Include="..\Loyalty.Shared.Contracts\Loyalty.Shared.Contracts.csproj" />
   </ItemGroup>
 
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.4" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.5" />
     <PackageReference Include="MediatR" Version="8.0.0" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>

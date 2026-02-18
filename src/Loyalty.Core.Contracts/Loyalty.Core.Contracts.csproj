@@ -13,9 +13,9 @@
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>
 
-  <ItemGroup>
+  <!--<ItemGroup>
     <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
-  </ItemGroup>
+  </ItemGroup>-->
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

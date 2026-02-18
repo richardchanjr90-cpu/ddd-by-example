@@ -3,7 +3,7 @@ using AzureExtensions.FunctionToken;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 
-namespace LoyaltyUser.Domain.Handlers.Queries.Commands.User
+namespace Loyalty.Domain.Handlers.Firebase.Queries.Commands.User
 {
     public class UpdateFirebaseTokenCommand : IRequest<ICommandResult>
     {

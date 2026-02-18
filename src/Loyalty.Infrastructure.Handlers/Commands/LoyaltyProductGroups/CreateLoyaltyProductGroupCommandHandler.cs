@@ -13,6 +13,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
+using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

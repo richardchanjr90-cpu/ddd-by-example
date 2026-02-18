@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 
 namespace Loyalty.Infrastructure.Handlers.Pipelines

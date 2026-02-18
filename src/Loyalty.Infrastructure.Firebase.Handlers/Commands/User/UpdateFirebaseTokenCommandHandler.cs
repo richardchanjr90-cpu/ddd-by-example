@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using LoyaltyUser.Domain.Handlers.Queries.Commands.User;
+using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
 using MediatR;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User

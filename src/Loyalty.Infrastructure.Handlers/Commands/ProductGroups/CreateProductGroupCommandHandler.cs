@@ -6,6 +6,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
+using Loyalty.Infrastructure.DataAccess;
 using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups

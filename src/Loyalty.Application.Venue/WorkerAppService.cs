@@ -10,13 +10,13 @@ using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
-using LoyaltyUser.Domain.Handlers.Queries.Commands.User;
 using MediatR;
 using Microsoft.Extensions.Options;
 

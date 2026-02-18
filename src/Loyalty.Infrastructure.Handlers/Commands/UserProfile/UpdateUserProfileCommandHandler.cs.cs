@@ -7,6 +7,7 @@ using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
+using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;

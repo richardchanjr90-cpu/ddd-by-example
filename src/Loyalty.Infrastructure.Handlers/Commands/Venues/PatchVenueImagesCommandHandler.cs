@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
+using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

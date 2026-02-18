@@ -11,6 +11,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
+using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
