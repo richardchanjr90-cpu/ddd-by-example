@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Shared.Contracts.Enums;
 
@@ -36,7 +37,7 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
                 .When(x => x.Phones != null);
 
             RuleForEach(x => x.WorkingHours)
-                .Must(x => !string.IsNullOrWhiteSpace(x.Day) && x.To <= 24*60)
+                .Must(x => !String.IsNullOrWhiteSpace(x.Day) && x.To <= 24*60)
                 .When(x => x.WorkingHours != null);
         }
     }

@@ -7,6 +7,7 @@ using FirebaseAdmin.Auth;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
+using Loyalty.Shared.Contracts.Constants;
 using MediatR;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
@@ -25,8 +26,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
 
             var additionalClaims = new Dictionary<string, object>
             {
-                { ClaimTypes.Name, request.Name },
-                { ClaimTypes.Surname, request.Surname },
+                { CustomClaimsConstants.Firstname, request.Name },
+                { CustomClaimsConstants.Lastname, request.Surname },
                 { ClaimTypes.Email, request.Email },
             };
 

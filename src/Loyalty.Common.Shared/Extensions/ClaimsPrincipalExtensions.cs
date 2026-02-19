@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using Loyalty.Common.Shared.Constants;
+using Loyalty.Shared.Contracts.Constants;
 using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Common.Shared.Extensions
@@ -36,13 +37,13 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static string GetSurname(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.Surname).Value;
+            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Lastname).Value;
             return claim;
         }
 
         public static string GetName(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.Name).Value;
+            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Firstname).Value;
             return claim;
         }
 
@@ -55,14 +56,14 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static string GetCity(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.StateOrProvince).Value;
+            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.City).Value;
             return claim;
         }
 
         public static string GetAvatarOrNull(this ClaimsPrincipal principal)
         {
             //todo: put in a common lib as a const.
-            var claim = principal.Claims.FirstOrDefault(x => x.Type == "client_photo")?.Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.ClientPhoto)?.Value;
             return claim;
         }
 

@@ -46,7 +46,9 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetActivePurchaseResult, ActivePurchasesViewModel>();
 
             CreateMap<UserProfileViewModel, UpdateUserProfileCommand>()
-                .ForMember(x => x.WorkerId, opt => opt.Ignore());
+                .ForMember(x => x.WorkerId, opt => opt.Ignore())
+                .ForSourceMember(x => x.PositionName, opt => opt.DoNotValidate());
+
             CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
 
             CreateMap<GetClientInfoFirebaseQueryResult, ClientInfoViewModel>();

@@ -36,7 +36,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Code
 
             return new GetUserInfoByCodeQueryResult
             {
-                UserId = result.UserId
+                UserId = result?.UserId
             };
         }
     }

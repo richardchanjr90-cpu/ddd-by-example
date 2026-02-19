@@ -23,9 +23,6 @@ namespace Loyalty.Application.ViewModels.Validators
             RuleFor(x => x.Email)
                 .NotEmpty()
                 .EmailAddress();
-
-            RuleFor(x => x.PositionName)
-                .NotEmpty();
         }
     }
 }

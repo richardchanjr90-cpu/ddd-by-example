@@ -16,6 +16,7 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
+using Loyalty.Shared.Contracts.Constants;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -60,10 +61,10 @@ namespace LoyaltyProgram.Http.Signup
                 var additionalClaims = new Dictionary<string, object>
                 {
                     { ClaimTypes.Role, role.ToString() },
-                    { ClaimTypes.Name, model.Name },
-                    { ClaimTypes.Surname, model.Surname },
+                    { CustomClaimsConstants.Firstname, model.Name },
+                    { CustomClaimsConstants.Lastname, model.Surname },
                     { ClaimTypes.Email, model.Email },
-                    { ClaimTypes.StateOrProvince, model.City }
+                    { CustomClaimsConstants.City, model.City }
                 };
 
                 foreach (var claim in additionalClaims)

@@ -17,6 +17,7 @@ using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
@@ -25,7 +26,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         private readonly IMediator mediator;
         private readonly IHttpContextAccessor accessor;
 
-        public CreateVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public CreateVenueCommandHandler(
+            ILoyaltyTenantDbContext context, 
+            IMediator mediator, 
+            IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
@@ -37,6 +41,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             Venue venue = null;
             try
             {
+                //todo: add in transaction
                 venue = CreateVenue(request);
                 var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
                 Principal.AddVenues(venue.Id);
@@ -65,11 +70,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 }
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (venue != null)
                 {
                     Context.Venues.Remove(venue);
+                    Context.SaveChanges();
                 }
 
                 throw;

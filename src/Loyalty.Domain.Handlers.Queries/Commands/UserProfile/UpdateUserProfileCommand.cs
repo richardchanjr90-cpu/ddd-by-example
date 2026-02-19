@@ -12,7 +12,5 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.UserProfile
         public string LastName { get; set; }
 
         public string Email { get; set; }
-
-        public string PositionName { get; set; }
     }
 }

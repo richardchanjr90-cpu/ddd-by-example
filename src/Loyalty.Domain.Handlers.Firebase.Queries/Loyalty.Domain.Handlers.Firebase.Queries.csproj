@@ -6,7 +6,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.5" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.6" />
     <PackageReference Include="MediatR" Version="8.0.0" />
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />
     <PackageReference Include="FirebaseAdmin" Version="1.9.1" />

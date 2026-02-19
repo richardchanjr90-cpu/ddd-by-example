@@ -29,25 +29,33 @@ namespace Loyalty.Application.Venue
                 throw new ArgumentNullException(nameof(code));
             }
 
+            var clientPurchases = new ClientInfoPurchasesViewModel();
+
             var item = await Mediator.Send(new GetUserInfoByCodeQuery
             {
                 Code = code
             });
 
-            var purchases = await Mediator.Send(new GetClientActivePurchasesQuery
+            if (!String.IsNullOrEmpty(item.UserId))
             {
-                UserId = item.UserId,
-                VenueId = venueId
-            });
+                var purchases = await Mediator.Send(new GetClientActivePurchasesQuery
+                {
+                    UserId = item.UserId,
+                    VenueId = venueId
+                });
 
-            var clientInfo = await clientService.Get(item.UserId);
-            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases.Result);
+                var clientInfo = await clientService.Get(item.UserId);
+                var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases.Result);
 
-            return new ClientInfoPurchasesViewModel()
-            {
-                ActivePurchases = purchasesModels,
-                ClientInfo = clientInfo
-            };
+                clientPurchases = new ClientInfoPurchasesViewModel()
+                {
+                    ActivePurchases = purchasesModels,
+                    ClientInfo = clientInfo
+                };
+            }
+
+
+            return clientPurchases;
         }
     }
 }

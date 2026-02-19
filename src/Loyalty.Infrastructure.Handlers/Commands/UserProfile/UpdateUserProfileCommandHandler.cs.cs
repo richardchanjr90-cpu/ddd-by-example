@@ -45,7 +45,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
             worker.Name = request.Name;
             worker.LastName = request.LastName;
             worker.Email = request.Email;
-            worker.PositionName = request.PositionName;
 
             return new CommandResult
             {

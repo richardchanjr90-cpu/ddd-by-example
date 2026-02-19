@@ -38,15 +38,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (venue == null)
             {
-                venue = request.ToSingle();
-                Context.Venues.Add(venue);
+                throw new LoyaltyValidationException("Venue not found.", null, ErrorCode.VENUE_NOT_FOUND);
             }
             else
             {
                 if (venue.VenueStatus != request.VenueApprovalStatus
                     && (request.VenueApprovalStatus == VenueApprovalStatus.Approved
-                        || request.VenueApprovalStatus == VenueApprovalStatus.Rejected)
-                    || venue.VenueStatus == VenueApprovalStatus.Approved)
+                        || request.VenueApprovalStatus == VenueApprovalStatus.Rejected))
                 {
                     throw new LoyaltyValidationException("Not possible to change venue's status", null, ErrorCode.NOT_POSSIBLE_TO_APPROVE_VENUE);
                 }
@@ -64,7 +62,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.Latitude = request.Location?.Latitude ?? 0.0f;
                 venue.Longitude = request.Location?.Longitude ?? 0.0f;
                 venue.VenueStatus = request.VenueApprovalStatus;
-                venue.SocialNetworks = new SocialNetworks()
+                venue.SocialNetworks = new SocialNetworks
                 {
                     Vkontakte = request.SocialNetworks?.Vkontakte,
                     Facebook = request.SocialNetworks?.Facebook,
