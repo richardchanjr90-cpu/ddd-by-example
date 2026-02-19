@@ -22,6 +22,8 @@ namespace Loyalty.Common.Shared.Constants
 
         public const string FAILED_APPROVE_NOT_PUBLISHED_VENUE = "FAILED_APPROVE_NOT_PUBLISHED_VENUE";
 
+        public const string FAILED_REJECT_NOT_PUBLISHED_VENUE = "FAILED_REJECT_NOT_PUBLISHED_VENUE";
+
         public const string SECOND_OWNER_NOT_ALLOWED = "SECOND_OWNER_NOT_ALLOWED";
 
         public const string IMPOSSIBLE_TO_CREATE_WITH_ROLE = "INCORRECT_AMOUNT_OF_POINTS";

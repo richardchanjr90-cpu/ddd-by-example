@@ -36,8 +36,8 @@ namespace Loyalty.Application.ViewModels.Validators
                 .WithMessage("End date should be at least 1 day greater then current date.");
 
             RuleFor(x => x.EndedDate)
-                .LessThanOrEqualTo(DateTime.Today.AddYears(10))
-                .WithMessage("You can't create a program with Finish date more than 10 years.");
+                .LessThanOrEqualTo(DateTime.Today.AddYears(99))
+                .WithMessage("You can't create a program with Finish date more than 99 years.");
         }
     }
 }

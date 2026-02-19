@@ -130,5 +130,16 @@ namespace Loyalty.Application.Venue
             var commandResult = await Mediator.Send(command);
             return commandResult;
         }
+
+        public async Task<ICommandResult> Reject(long id)
+        {
+            var command = new RejectVenuePatchCommand()
+            {
+                Id = id
+            };
+
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
     }
 }
