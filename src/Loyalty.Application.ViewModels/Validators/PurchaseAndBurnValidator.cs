@@ -4,17 +4,14 @@ using Loyalty.Application.ViewModels.Purchase;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
-    public class PurchaseAndBurnValidator : AbstractValidator<PurchaseAndBurnViewModel>
+    public class PurchaseValidator : AbstractValidator<PurchaseViewModel>
     {
-        public PurchaseAndBurnValidator()
+        public PurchaseValidator()
         {
             RuleFor(x => x.LoyaltyProductGroupId)
                 .GreaterThan(0);
 
-            RuleFor(x => x.Burn)
-                .GreaterThan(0);
-
-            RuleFor(x => x.Purchase)
+            RuleFor(x => x.Value)
                 .GreaterThan(0);
         }
     }

@@ -10,6 +10,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Application.Venue
 {

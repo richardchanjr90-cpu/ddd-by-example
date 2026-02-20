@@ -4,21 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
+using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
-    public class BurnPurchaseCommandHandler : BaseHandler, IBurnPurchaseCommandHandler
+    public class BurnPurchaseCommandHandler : BaseHandler, IRequestHandler<BurnPurchaseCommand, INotificationResult>
     {
         private readonly IMediator mediator;
 
@@ -28,7 +26,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
+        public async Task<INotificationResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
         {
             var purchases = await Context.Purchases
                 .IgnoreQueryFilters()
@@ -55,26 +53,20 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             Context.Purchases.Add(purchase);
 
-            var result = new CommandResult
+            var notification = new NotificationResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = purchases.Select(x => x.Id).ToList()
             };
 
-            if (result.Success)
+            notification.OnSucceededNotifications.Add(new BurnPurchaseNotification
             {
-                await mediator.Publish(
-                    new BurnPurchaseNotification
-                    {
-                        VenueId = request.VenueId,
-                        UserId = request.UserId,
-                        LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                        Total = request.Amount
-                    },
-                    cancellationToken);
-            }
+                VenueId = request.VenueId,
+                UserId = request.UserId,
+                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+                Total = request.Amount
+            });
 
-            return result;
+            return notification;
         }
     }
 }

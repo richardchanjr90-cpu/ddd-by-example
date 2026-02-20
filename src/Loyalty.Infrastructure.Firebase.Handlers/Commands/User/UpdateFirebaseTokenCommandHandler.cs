@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
 using Loyalty.Shared.Contracts.Constants;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
 {

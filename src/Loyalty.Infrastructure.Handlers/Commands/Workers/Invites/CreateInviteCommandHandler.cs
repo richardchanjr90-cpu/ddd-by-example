@@ -10,6 +10,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Infrastructure.DataAccess;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites

@@ -36,13 +36,13 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
                 {
                     responseResult.CommandResult = new CommandResult();
                     responseResult.CommandResult.Success = await context.SaveChangesAsync(cancellationToken) > 0;
-                    responseResult.CommandResult.Result = entities.Select(x => x.Id);
+                    responseResult.Result = entities.Select(x => x.Id);
                 }
                 catch (Exception ex)
                 {
                     responseResult.CommandResult.Success = false;
-                    responseResult.CommandResult.Message = ex.Message;
-                    responseResult.CommandResult.Result = ex;
+                    responseResult.Message = ex.Message;
+                    responseResult.Result = ex;
                 }
 
                 if (responseResult.CommandResult.Success)

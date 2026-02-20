@@ -10,6 +10,7 @@ using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 

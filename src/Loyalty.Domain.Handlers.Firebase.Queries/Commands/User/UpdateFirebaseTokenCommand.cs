@@ -2,6 +2,7 @@
 using AzureExtensions.FunctionToken;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Firebase.Queries.Commands.User
 {

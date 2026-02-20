@@ -7,10 +7,11 @@ using FluentValidation.TestHelper;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using MediatR;
+using MediatR.Extensions.UnitOfWork;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Application.Venue
 {
@@ -48,10 +49,10 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
         {
-            var testResult = new PurchaseValidator()
-                .TestValidate(model);
+            new PurchaseValidator()
+                .ValidateAndThrow(model);
 
-            var result = await Mediator.Send(new CreatePurchaseCommand
+            var result = await Mediator.SendThenPublish(new CreatePurchaseCommand
             {
                 WorkerId = userId,
                 UserId = model.UserId,
@@ -64,23 +65,39 @@ namespace Loyalty.Application.Venue
             return result;
         }
 
-        public async Task<ICommandResult> PurchaseAndCreate(PurchaseViewModel model, long venueId, string userId)
+        public async Task<ICommandResult> CreateAndBurn(PurchaseAndBurnViewModel model, long venueId, string userId)
         {
-            new PurchaseValidator()
+            new PurchaseAndBurnValidator()
                 .ValidateAndThrow(model);
 
-            var result = await Mediator.Send(new CreateAndBurnCommand
+            var command1 = new CreatePurchaseCommand
             {
-            });
+                WorkerId = userId,
+                UserId = model.UserId,
+                ProductId = model.ProductId,
+                VenueId = venueId,
+                Value = model.Purchase,
+                LoyaltyProductGroupId = model.LoyaltyProductGroupId
+            };
 
-            return result.CommandResult;
+            var command2 = new BurnPurchaseCommand
+            {
+                WorkerId = userId,
+                UserId = model.UserId,
+                VenueId = venueId,
+                Amount = model.Burn,
+                LoyaltyProductGroupId = model.LoyaltyProductGroupId
+            };
+
+            var result = await Mediator.RunAllScopedThenPublish(command1, command2);
+            return result;
         }
 
         public async Task<object> Burn(PurchaseViewModel model, long venueId, string userId)
         {
             new PurchaseValidator().ValidateAndThrow(model);
 
-            var result = await Mediator.Send(new BurnPurchaseCommand
+            var result = await Mediator.SendThenPublish(new BurnPurchaseCommand
             {
                 WorkerId = userId,
                 UserId = model.UserId,

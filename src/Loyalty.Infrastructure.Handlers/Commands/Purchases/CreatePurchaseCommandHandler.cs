@@ -1,25 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
+using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
-    public class CreatePurchaseCommandHandler : BaseHandler, ICreatePurchaseCommandHandler
+    public class CreatePurchaseCommandHandler : BaseHandler, IRequestHandler<CreatePurchaseCommand, INotificationResult>
     {
         private readonly IMediator mediator;
 
@@ -32,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(
+        public async Task<INotificationResult> Handle(
             CreatePurchaseCommand request,
             CancellationToken cancellationToken)
         {
@@ -67,22 +64,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             Context.Purchases.Add(purchase);
 
-            var result = new CommandResult();
-            result.Success = await Context.SaveChangesAsync(cancellationToken) > 0;
-            result.Result = purchase.Id;
+            var result = new NotificationResult { Success = await Context.SaveChangesAsync(cancellationToken) > 0 };
 
-            if (result.Success)
+            var notification = new CreatePurchaseNotification
             {
-                var notification = new CreatePurchaseNotification
-                {
-                    VenueId = request.VenueId,
-                    UserId = purchase.UserId,
-                    LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-                    Total = purchase.Value
-                };
+                VenueId = request.VenueId,
+                UserId = purchase.UserId,
+                LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
+                Total = purchase.Value
+            };
 
-                await mediator.Publish(notification, cancellationToken);
-            }
+            result.OnSucceededNotifications.Add(notification);
 
             return result;
         }

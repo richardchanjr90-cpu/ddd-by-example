@@ -11,7 +11,7 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
-                .MaximumLength(200);
+                .MaximumLength(200); 
 
             RuleFor(x => x.Type)
                 .Must(x => (VenueType)x != VenueType.Single)

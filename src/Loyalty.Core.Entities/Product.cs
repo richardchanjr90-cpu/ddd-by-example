@@ -14,8 +14,7 @@ namespace Loyalty.Core.Entities
         [MaxLength(200)]
         public string Name { get; set; }
 
-        [Required]
-        public ProductIconType Icon { get; set; }
+        public ProductIconType? Icon { get; set; }
 
         public bool IsArchived { get; set; }
 

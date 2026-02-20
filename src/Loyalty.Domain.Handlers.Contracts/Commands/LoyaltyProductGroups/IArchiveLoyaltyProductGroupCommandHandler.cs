@@ -1,6 +1,7 @@
 ﻿using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups
 {

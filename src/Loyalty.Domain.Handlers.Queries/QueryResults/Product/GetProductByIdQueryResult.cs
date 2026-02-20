@@ -8,7 +8,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Product
 
         public string Name { get; set; }
 
-        public ProductIconType Icon { get; set; }
+        public ProductIconType? Icon { get; set; }
 
         public long ProductGroupId { get; set; }
     }

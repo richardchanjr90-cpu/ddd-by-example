@@ -5,6 +5,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 {

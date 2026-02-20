@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Rules
 {

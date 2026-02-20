@@ -11,6 +11,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers

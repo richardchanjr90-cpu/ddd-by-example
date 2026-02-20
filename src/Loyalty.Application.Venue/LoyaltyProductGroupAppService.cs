@@ -16,6 +16,7 @@ using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using System.Text.Json.Serialization;
 using Loyalty.Core.Entities.Base;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Application.Venue
 {

@@ -10,8 +10,8 @@ namespace Loyalty.Application.ViewModels.Validators
     {
         public ProductValidator()
         {
-            RuleFor(x => x.Icon)
-                .GreaterThanOrEqualTo(0);
+            //RuleFor(x => x.Icon)
+            //    .GreaterThanOrEqualTo(0);
 
             RuleFor(x => x.Name)
                 .MaximumLength(200)

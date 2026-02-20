@@ -1,10 +1,10 @@
 ﻿using System;
-using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
 {
-    public class BurnPurchaseCommand : IRequest<ICommandResult>
+    public class BurnPurchaseCommand : IRequest<INotificationResult>
     {
         public long LoyaltyProductGroupId { get; set; }
 

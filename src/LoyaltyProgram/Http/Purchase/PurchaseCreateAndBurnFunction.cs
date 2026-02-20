@@ -5,10 +5,9 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -16,11 +15,11 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Purchase
 {
-    public class PurchaseBurnAndCreateFunction
+    public class PurchaseCreateAndBurnFunction
     {
         private readonly PurchaseAppService service;
 
-        public PurchaseBurnAndCreateFunction(PurchaseAppService service)
+        public PurchaseCreateAndBurnFunction(PurchaseAppService service)
         {
             this.service = service;
         }
@@ -28,19 +27,19 @@ namespace LoyaltyProgram.Http.Purchase
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("PurchaseBurnAndCreateFunction")]
+        [FunctionName("PurchaseCreateAndBurnFunction")]
         public async Task<IActionResult> Run(
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues/{venueId}/purchases/apply")]
-            [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
+            [RequestBodyType(typeof(PurchaseAndBurnViewModel), "PurchaseAndBurnViewModel")] PurchaseAndBurnViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(PurchaseBurnPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(PurchaseCreateAndBurnFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
+                return new OkObjectResult(await service.CreateAndBurn(model, venueId, token.Principal.GetUserId()));
             });
         }
     }

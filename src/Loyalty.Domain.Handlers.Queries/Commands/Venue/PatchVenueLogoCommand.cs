@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 {

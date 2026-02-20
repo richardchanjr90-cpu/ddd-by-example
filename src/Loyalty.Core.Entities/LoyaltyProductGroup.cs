@@ -26,7 +26,6 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<Purchase> Purchases { get; set; }
 
-        [Required]
         [MaxLength(2000)]
         public string Description { get; set; }
 

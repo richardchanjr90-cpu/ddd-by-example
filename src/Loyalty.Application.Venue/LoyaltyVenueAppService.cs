@@ -8,10 +8,10 @@ using Loyalty.Application.ViewModels.Validators.Venue;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Application.Venue

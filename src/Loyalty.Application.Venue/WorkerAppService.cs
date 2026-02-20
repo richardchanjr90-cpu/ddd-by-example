@@ -18,6 +18,7 @@ using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Application.Venue

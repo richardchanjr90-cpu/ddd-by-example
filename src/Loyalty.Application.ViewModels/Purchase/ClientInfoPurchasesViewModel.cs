@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Text.Json.Serialization;
 using Loyalty.Application.ViewModels.ClientInfo;
 
 namespace Loyalty.Application.ViewModels.Purchase

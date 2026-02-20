@@ -24,7 +24,7 @@ namespace Loyalty.Application.ViewModels.Validators
                     var number = Int64.Parse(phoneString);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 isValid = false;
             }

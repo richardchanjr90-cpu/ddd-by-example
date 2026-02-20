@@ -1,4 +1,4 @@
-﻿using Loyalty.Domain.Contracts.Interfaces;
+﻿using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Contracts
 {
