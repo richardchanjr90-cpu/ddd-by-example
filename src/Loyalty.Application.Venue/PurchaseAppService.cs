@@ -47,14 +47,14 @@ namespace Loyalty.Application.Venue
             };
         }
 
-        public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string userId)
+        public async Task<ICommandResult> Purchase(PurchaseViewModel model, long venueId, string workerId)
         {
             new PurchaseValidator()
                 .ValidateAndThrow(model);
 
             var result = await Mediator.SendThenPublish(new CreatePurchaseCommand
             {
-                WorkerId = userId,
+                WorkerId = workerId,
                 UserId = model.UserId,
                 ProductId = model.ProductId,
                 VenueId = venueId,
@@ -62,17 +62,20 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return result;
+            return new CommandResult()
+            {
+                Success = result.Success
+            };
         }
 
-        public async Task<ICommandResult> CreateAndBurn(PurchaseAndBurnViewModel model, long venueId, string userId)
+        public async Task<ICommandResult> CreateAndBurn(PurchaseAndBurnViewModel model, long venueId,string workerId)
         {
             new PurchaseAndBurnValidator()
                 .ValidateAndThrow(model);
 
             var command1 = new CreatePurchaseCommand
             {
-                WorkerId = userId,
+                WorkerId = workerId,
                 UserId = model.UserId,
                 ProductId = model.ProductId,
                 VenueId = venueId,
@@ -82,7 +85,7 @@ namespace Loyalty.Application.Venue
 
             var command2 = new BurnPurchaseCommand
             {
-                WorkerId = userId,
+                WorkerId = workerId,
                 UserId = model.UserId,
                 VenueId = venueId,
                 Amount = model.Burn,
@@ -90,23 +93,30 @@ namespace Loyalty.Application.Venue
             };
 
             var result = await Mediator.RunAllScopedThenPublish(command1, command2);
-            return result;
+
+            return new CommandResult()
+            {
+                Success = result.Success
+            };
         }
 
-        public async Task<object> Burn(PurchaseViewModel model, long venueId, string userId)
+        public async Task<ICommandResult> Burn(PurchaseViewModel model, long venueId, string workerId)
         {
             new PurchaseValidator().ValidateAndThrow(model);
 
             var result = await Mediator.SendThenPublish(new BurnPurchaseCommand
             {
-                WorkerId = userId,
+                WorkerId = workerId,
                 UserId = model.UserId,
                 VenueId = venueId,
                 Amount = model.Value,
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return result;
+            return new CommandResult()
+            {
+                Success = result.Success
+            };
         }
     }
 }

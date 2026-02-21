@@ -20,7 +20,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
             var dapperConnection = connectionString;
 
-            services.AddScoped(x => new SqlConnection(dapperConnection));
+            services.AddTransient(x => new SqlConnection(dapperConnection));
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContextPool<LoyaltyDbContext>(

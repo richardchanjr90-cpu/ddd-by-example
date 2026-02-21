@@ -12,6 +12,8 @@ namespace Loyalty.Common.Shared.Constants
 
         public const string INCORRECT_LOYALTY_GROUP = "INCORRECT_LOYALTY_GROUP";
 
+        public const string INCORRECT_LOYALTY_PROGRAM = "INCORRECT_LOYALTY_PROGRAM";
+
         public const string INCORRECT_PRODUCT_GROUP = "INCORRECT_PRODUCT_GROUP";
 
         public const string INCORRECT_AMOUNT_OF_POINTS = "INCORRECT_AMOUNT_OF_POINTS";
@@ -34,6 +36,10 @@ namespace Loyalty.Common.Shared.Constants
 
         public const string NOT_POSSIBLE_TO_APPROVE_VENUE = "NOT_POSSIBLE_TO_APPROVE_VENUE";
 
+        public const string NOT_POSSIBLE_TO_PUBLISH_VENUE = "NOT_POSSIBLE_TO_PUBLISH_VENUE";
+
         public const string USER_DOES_NOT_EXIST = "USER_DOES_NOT_EXIST";
+
+        public const string INVALID_CLAIMS = "INVALID_CLAIMS";
     }
 }

@@ -41,7 +41,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Burn(model, venueId, token.Principal.GetUserId()));
+                return new OkObjectResult(await service.Burn(model, venueId,token.Principal.GetUserId()));
             });
         }
     }

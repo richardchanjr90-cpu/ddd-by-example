@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureExtensions.FunctionToken;
 using FluentValidation;
+using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -17,9 +21,12 @@ using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
+using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.Extensions.Options;
+using CommandResult = MediatR.Extensions.UnitOfWork.Results.CommandResult;
 
 namespace Loyalty.Application.Venue
 {
@@ -73,6 +80,64 @@ namespace Loyalty.Application.Venue
 
             var commandResult = await Mediator.Send(command);
             return commandResult;
+        }
+
+        public async Task<ICommandResult> StartSignup(SignupViewModel model, FunctionTokenResult token)
+        {
+            void SetupVenueIdClaimsToHaveAccessToVenue(FunctionTokenResult token, GetInviteByPhoneQueryResult worker)
+            {
+                foreach (var id in worker.VenueIds)
+                {
+                    token.Principal.AddVenues(id);
+                }
+            }
+
+            var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
+            var userId = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            ICommandResult result = new CommandResult() { Success = true };
+            ICommandResult result2 = new CommandResult();
+
+            var worker = await GetByPhone(phone);
+
+            if (worker != null)
+            {
+                var workerModel = new WorkerViewModel
+                {
+                    WorkerId = userId,
+                    Email = model.Email,
+                    Name = model.Name,
+                    LastName = model.Surname,
+                    Id = worker.Id,
+                    PositionName = worker.PositionName,
+                    Phone = worker.Phone
+                };
+
+                SetupVenueIdClaimsToHaveAccessToVenue(token, worker);
+
+                result = await CompleteSignup(workerModel);
+            }
+
+            var ids = worker?.VenueIds.Select(x => x.ToString()).ToCommaSeparatedStringOrNull();
+            var role = worker?.Role ?? VenueUserRole.Owner;
+
+            if (result.Success)
+            {
+                result2 = await Mediator.Send(new SetupFirebaseTokenCommand
+                {
+                    Email = model.Email,
+                    City = model.City,
+                    Surname = model.Surname,
+                    Name = model.Name,
+                    Token = token,
+                    Role = role,
+                    VenueIds = ids
+                });
+            }
+
+            return new CommandResult()
+            {
+                Success = result.Success && result2.Success
+            };
         }
 
         public async Task<ICommandResult> CompleteSignup(WorkerViewModel model)

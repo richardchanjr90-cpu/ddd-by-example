@@ -1,8 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.SqlClient;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
+using Dapper;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
@@ -13,65 +18,112 @@ using MediatR.Extensions.UnitOfWork.Interface;
 using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using CommandResult = Loyalty.Domain.Contracts.CommandResult;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
-    public class CreatePurchaseCommandHandler : BaseHandler, IRequestHandler<CreatePurchaseCommand, INotificationResult>
+    public class CreatePurchaseCommandHandler : BaseDapperHandler, IRequestHandler<CreatePurchaseCommand, INotificationResult>
     {
-        private readonly IMediator mediator;
+        private readonly SqlConnection connection;
 
-        public CreatePurchaseCommandHandler(
-            ILoyaltyTenantDbContext context,
-            IMediator mediator,
-            IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public CreatePurchaseCommandHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
-            this.mediator = mediator;
+            this.connection = connection;
         }
+
+        private const string SelectProductsSql = @"SELECT COUNT(p.[Id])
+                                                  FROM [loyalty].[Product] p
+                                                  JOIN [loyalty].[ProductGroup] pg ON p.ProductGroupId = pg.Id
+                                                  WHERE p.Id = @id AND pg.VenueId in @ids";
+
+        private const string SelectLoyaltyProductGroupsSql = @"SELECT COUNT(lpg.[Id])
+                                                          FROM [loyalty].[LoyaltyProductGroup] lpg
+                                                          JOIN  [loyalty].LoyaltyProgram lp ON lp.Id = lpg.LoyaltyProgramId
+                                                          WHERE lpg.Id = @lpgId AND lp.VenueId IN @ids";
+
+        private const string InsertSQL = @"INSERT INTO [loyalty].[Purchase]
+                                           ([CreatedBy],
+                                            [ModifiedBy],
+                                            [Modified],
+                                            [Created],
+                                            [LoyaltyProductGroupId],
+                                            [ProductId],
+                                            [UserId],                                 
+                                            [InternalPurchaseMadeBySystem],
+                                            [Value],
+                                            [VenueId]) 
+                                                        Values (
+                                                        @CreatedBy,
+                                                        @ModifiedBy,
+                                                        @Modified,
+                                                        @Created,
+                                                        @LoyaltyProductGroupId,
+                                                        @ProductId,
+                                                        @UserId,
+                                                        @InternalPurchaseMadeBySystem,
+                                                        @Value,
+                                                        @VenueId)";
 
         public async Task<INotificationResult> Handle(
             CreatePurchaseCommand request,
             CancellationToken cancellationToken)
         {
+            connection.Open();
+            var ids = Principal.GetVenueIds();
             if (request.ProductId != null)
             {
-                var product = await Context.Products.Where(x => x.Id == request.ProductId)
-                    .SingleOrDefaultAsync(cancellationToken);
-
-                if (product == null)
+                var id = request.ProductId;
+                var number = connection.ExecuteScalar<int>(SelectProductsSql, new
                 {
-                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.", null, ErrorCode.INCORRECT_PRODUCT);
+                    id,
+                    ids
+                });
+
+                if (number == 0)
+                {
+                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.",
+                        null, ErrorCode.INCORRECT_PRODUCT);
                 }
             }
 
-            var loyaltyGroup = await Context.LoyaltyProductGroups
-                .Where(x => x.Id == request.LoyaltyProductGroupId)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (loyaltyGroup == null)
+            var lpgId = request.LoyaltyProductGroupId;
+            var lpgNumber = connection.ExecuteScalar<int>(SelectLoyaltyProductGroupsSql, new
             {
-                throw new LoyaltyValidationException("LoyaltyProductGroup does not belong to this venue or does not exist.", null, ErrorCode.INCORRECT_LOYALTY_GROUP);
+                lpgId,
+                ids
+            });
+
+            if (lpgNumber == 0)
+            {
+                throw new LoyaltyValidationException(
+                    "LoyaltyProductGroup does not belong to this venue or does not exist.", null,
+                    ErrorCode.INCORRECT_LOYALTY_GROUP);
             }
 
-            var purchase = new Purchase
+            var date = DateTime.Now;
+            var affectedRows = connection.Execute(InsertSQL, new
             {
-                Value = request.Value,
-                UserId = request.UserId,
+                CreatedBy = Principal.GetUserId(),
+                ModifiedBy = Principal.GetUserId(),
+                Modified = date,
+                Created = date,
+                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+                InternalPurchaseMadeBySystem = 0,
                 ProductId = request.ProductId,
+                UserId = request.UserId,
+                Value = request.Value,
                 VenueId = request.VenueId,
-                LoyaltyProductGroupId = request.LoyaltyProductGroupId
-            };
+            });
 
-            Context.Purchases.Add(purchase);
-
-            var result = new NotificationResult { Success = await Context.SaveChangesAsync(cancellationToken) > 0 };
+            INotificationResult result = new NotificationResult() { Success = affectedRows > 0 };
 
             var notification = new CreatePurchaseNotification
             {
                 VenueId = request.VenueId,
-                UserId = purchase.UserId,
-                LoyaltyProductGroupId = purchase.LoyaltyProductGroupId,
-                Total = purchase.Value
+                UserId = request.UserId,
+                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+                Total = request.Value
             };
 
             result.OnSucceededNotifications.Add(notification);

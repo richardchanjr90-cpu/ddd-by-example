@@ -46,11 +46,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 					LEFT JOIN (SELECT LoyaltyProductGroupId, 
 					COALESCE(SUM([Value]), 0) as total 
 					FROM loyalty.Purchase
-					WHERE BurnDate IS NULL AND UserId = @UserId
+					WHERE UserId = @UserId
 					GROUP BY LoyaltyProductGroupId) as total ON total.LoyaltyProductGroupId = lpg.Id			
-                    WHERE -- pur.UserId = @UserId AND 
-                    lp.VenueId = @VenueId
-					AND lp.IsArchived = 0 ";
+                    WHERE lp.VenueId = @VenueId AND lp.IsArchived = 0 ";
 
             var programs = connection.Query(getPrograms, new
             {

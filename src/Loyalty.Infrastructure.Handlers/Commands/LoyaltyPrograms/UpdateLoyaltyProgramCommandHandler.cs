@@ -41,17 +41,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
             if (program == null)
             {
-                program = new LoyaltyProgram
-                {
-                    Id = request.Id,
-                    VenueId = request.VenueId,
-                    Name = request.Name,
-                    StartDate = request.StartedDate,
-                    EndDate = request.EndedDate,
-                    Description = request.Description
-                };
-
-                Context.LoyaltyPrograms.Add(program);
+                throw new LoyaltyValidationException("Does not exist", null, ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
             else
             {

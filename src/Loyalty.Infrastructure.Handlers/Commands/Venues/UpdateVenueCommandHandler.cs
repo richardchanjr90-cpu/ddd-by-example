@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,6 +49,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                         || request.VenueApprovalStatus == VenueApprovalStatus.Rejected))
                 {
                     throw new LoyaltyValidationException("Not possible to change venue's status", null, ErrorCode.NOT_POSSIBLE_TO_APPROVE_VENUE);
+                }
+
+                if (request.VenueApprovalStatus >= VenueApprovalStatus.Published && (
+                        String.IsNullOrEmpty(venue.Images) || 
+                        String.IsNullOrEmpty(venue.LogoUrl)))
+                {
+                    throw new LoyaltyValidationException("Not possible to change venue's status", null, ErrorCode.NOT_POSSIBLE_TO_PUBLISH_VENUE);
                 }
 
                 venue.CategoryType = request.CategoryType;

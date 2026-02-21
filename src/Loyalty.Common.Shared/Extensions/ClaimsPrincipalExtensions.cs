@@ -91,7 +91,7 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static ClaimsPrincipal AddVenues(this ClaimsPrincipal principal, long venueId)
         {
-            ClaimsIdentity identity = new ClaimsIdentity();
+            var identity = new ClaimsIdentity();
             identity.AddClaim(new Claim(ClaimConstants.NEW_VENUE_CLAIM, venueId.ToString()));
             principal.AddIdentity(identity);
             return principal;
