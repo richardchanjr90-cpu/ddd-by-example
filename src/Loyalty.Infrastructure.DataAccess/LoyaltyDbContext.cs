@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Infrastructure.DataAccess.EntityConfigurations;
 using Microsoft.Data.SqlClient;

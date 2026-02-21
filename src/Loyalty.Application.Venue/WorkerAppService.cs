@@ -84,6 +84,9 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> StartSignup(SignupViewModel model, FunctionTokenResult token)
         {
+
+            new SignupViewModelValidator().ValidateAndThrow(model);
+
             void SetupVenueIdClaimsToHaveAccessToVenue(FunctionTokenResult token, GetInviteByPhoneQueryResult worker)
             {
                 foreach (var id in worker.VenueIds)

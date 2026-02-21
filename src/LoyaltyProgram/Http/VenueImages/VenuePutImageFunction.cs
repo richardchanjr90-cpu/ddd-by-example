@@ -59,6 +59,7 @@ namespace LoyaltyProgram.Http.VenueImages
                 token.Principal.IsInRoleAndThrow(id);
 
                 var image = await imageService.ConvertImage(req, id, Guid.Parse(index));
+                imageService.ValidateImage(image);
 
                 if (image != null)
                 {

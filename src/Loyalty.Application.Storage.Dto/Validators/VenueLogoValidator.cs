@@ -1,16 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Net.Mime;
 using FluentValidation;
 using Loyalty.Common.Shared.Settings;
 using SkiaSharp;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
-    public class VenueLogoValidator : AbstractValidator<VenueNewBlobImageDto>
+    public class VenueNewImageValidator : AbstractValidator<VenueNewBlobImageDto>
     {
         private readonly ImageSettings settings;
 
-        public VenueLogoValidator(ImageSettings settings)
+        public VenueNewImageValidator(ImageSettings settings)
         {
             this.settings = settings;
 
@@ -30,7 +31,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.Image)
                 .Must(ValidateWidthAndHeight)
-                .WithMessage("Image must be between 400x400 and 2560x1440px.");
+                .WithMessage("Image must be between 800x600 and 2560x1440px.");
         }
 
         private bool IsImageValid(byte[] arrayImage)
@@ -65,8 +66,8 @@ namespace Loyalty.Application.Storage.Dto.Validators
                     {
                         isValid = image.Width <= settings.MaxGalleryImageWidth;
                         isValid = isValid && image.Height <= settings.MaxGalleryImageHeight;
-                        isValid = isValid && image.Height >= settings.MinLogoImageHeight;
-                        isValid = isValid && image.Width >= settings.MinLogoImageWidth;
+                        isValid = isValid && image.Height >= settings.MinGalleryImageHeight;
+                        isValid = isValid && image.Width >= settings.MinGalleryImageWidth;
                     }
                 }
             }

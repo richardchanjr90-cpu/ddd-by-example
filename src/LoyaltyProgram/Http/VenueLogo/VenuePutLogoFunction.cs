@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
@@ -56,15 +57,22 @@ namespace LoyaltyProgram.Http.VenueLogo
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 token.Principal.IsInRoleAndThrow(id);
-
+                var newGuid = Guid.NewGuid();
                 var image = await imageService.GetImageOrNullAsync(req);
+
+                imageService.ValidateLogo(new VenueNewBlobImageDto
+                {
+                    Image = image,
+                    VenueId = id,
+                    Index = newGuid
+                });
 
                 if (image != null)
                 {
                     using (var stream = new MemoryStream())
                     using (var smStream = new MemoryStream())
                     {
-                        var newGuid = Guid.NewGuid();
+
                         var blob = await imageService.GetBlobForImageAsync(container, $"logo-{newGuid}.jpg");
                         var smBlob = await imageService.GetBlobForImageAsync(container, $"logo-{newGuid}-sm.jpg");
 

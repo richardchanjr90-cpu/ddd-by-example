@@ -1,17 +1,18 @@
-﻿using FluentValidation;
-using Loyalty.Application.ViewModels.UserProfile;
+﻿using System;
+using FluentValidation;
+using Loyalty.Application.ViewModels.Signup;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
-    public class UserProfileUpdateValidator : AbstractValidator<UserProfileViewModel>
+    public class SignupViewModelValidator: AbstractValidator<SignupViewModel>
     {
-        public UserProfileUpdateValidator()
+        public SignupViewModelValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .MaximumLength(50);
 
-            RuleFor(x => x.LastName)
+            RuleFor(x => x.Surname)
                 .NotEmpty()
                 .MaximumLength(50);
 
@@ -19,7 +20,7 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .EmailAddress();
 
-            RuleFor(x => x.PositionName)
+            RuleFor(x => x.City)
                 .MaximumLength(100);
         }
     }

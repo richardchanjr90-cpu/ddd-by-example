@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 using FirebaseAdmin.Auth;
 using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
@@ -24,12 +26,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class CreateVenueCommandHandler : BaseHandler, ICreateVenueCommandHandler
     {
+        private const int MaxVenueNumberPerPersonLimit = 10;
+
         private readonly IMediator mediator;
         private readonly IHttpContextAccessor accessor;
 
         public CreateVenueCommandHandler(
-            ILoyaltyTenantDbContext context, 
-            IMediator mediator, 
+            ILoyaltyTenantDbContext context,
+            IMediator mediator,
             IHttpContextAccessor accessor)
             : base(context, accessor)
         {
@@ -39,48 +43,45 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
-            Venue venue = null;
-            try
+            Venue venue;
+            var strategy = Context.Database.CreateExecutionStrategy();
+
+            return await strategy.ExecuteAsync(async () =>
             {
-                //todo: add in transaction
-                venue = CreateVenue(request);
-                var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
-                Principal.AddVenues(venue.Id);
-
-                var worker = await Context.Workers
-                    .IgnoreQueryFilters()
-                    .Include(x => x.Venues)
-                    .ThenInclude(x => x.Venue)
-                    .Where(x => x.WorkerId == Principal.GetUserId())
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                worker = CreateWorker(worker, venue);
-
-                saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
-
-                var result = new CommandResult
+                var result = new CommandResult();
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    Success = saved,
-                    Result = venue.Id
-                };
+                    venue = CreateVenue(request);
+                    var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
+                    Principal.AddVenues(venue.Id);
+
+                    var worker = await Context.Workers
+                        .IgnoreQueryFilters()
+                        .Include(x => x.Venues)
+                        .ThenInclude(x => x.Venue)
+                        .Where(x => x.WorkerId == Principal.GetUserId())
+                        .FirstOrDefaultAsync(cancellationToken);
+
+                    worker = CreateWorker(worker, venue);
+
+                    saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
+
+                    result = new CommandResult
+                    {
+                        Success = saved,
+                        Result = venue.Id
+                    };
+                    await AddClaimsAboutNewVenue(worker);
+                    scope.Complete();
+                }
 
                 if (result.Success)
                 {
                     await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-                    await AddClaimsAboutNewVenue(worker);
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
-                if (venue != null)
-                {
-                    Context.Venues.Remove(venue);
-                    Context.SaveChanges();
                 }
 
-                throw;
-            }
+                return result;
+            });
         }
 
         private Venue CreateVenue(CreateVenueCommand request)
@@ -122,6 +123,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             var claims = user.CustomClaims.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var ids = worker.Venues.Select(x => x.VenueId).Select(x => x.ToString());
+
+            if (worker.Venues.Select(x => x.VenueId).Count() >= MaxVenueNumberPerPersonLimit)
+            {
+                throw new LoyaltyValidationException(
+                    $"Limit of {MaxVenueNumberPerPersonLimit} venues reached.", null, ErrorCode.LIMIT_REACHED);
+            }
+
             claims[ClaimConstants.VENUE_CLAIM] = ids.ToCommaSeparatedStringOrNull();
             await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(Principal.GetUserId(), claims);
         }

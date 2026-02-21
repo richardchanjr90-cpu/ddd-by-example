@@ -61,6 +61,7 @@ namespace LoyaltyProgram.Http.VenueLogo
 
                 var items = await imageService.GetCount(container);
                 var image = await imageService.ConvertImage(req, id, Guid.NewGuid());
+                imageService.ValidateLogo(image);
 
                 if (items >= 1)
                 {

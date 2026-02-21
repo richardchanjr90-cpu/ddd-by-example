@@ -6,6 +6,8 @@ namespace Loyalty.Common.Shared.Constants
 {
     public static class ErrorCode
     {
+        public const string LIMIT_REACHED = "LIMIT_REACHED";
+
         public const string DUPLICATED_ENTITY = "DUPLICATED_ENTITY";
 
         public const string INCORRECT_PRODUCT = "INCORRECT_PRODUCT";

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using FluentValidation;
-using Loyalty.Application.ViewModels.Location;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
 
 namespace Loyalty.Application.ViewModels.Validators

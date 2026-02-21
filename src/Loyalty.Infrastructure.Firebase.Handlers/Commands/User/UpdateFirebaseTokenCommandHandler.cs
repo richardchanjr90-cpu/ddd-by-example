@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
@@ -27,8 +28,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
 
             var additionalClaims = new Dictionary<string, object>
             {
-                { CustomClaimsConstants.Firstname, request.Name },
-                { CustomClaimsConstants.Lastname, request.Surname },
+                { CustomClaimsConstants.Firstname, Regex.Escape(request.Name) },
+                { CustomClaimsConstants.Lastname, Regex.Escape(request.Surname) },
                 { ClaimTypes.Email, request.Email },
             };
 

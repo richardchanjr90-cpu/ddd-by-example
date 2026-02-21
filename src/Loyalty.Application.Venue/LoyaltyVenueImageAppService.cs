@@ -43,10 +43,19 @@ namespace Loyalty.Application.Venue
                 Index = index
             };
 
-            new VenueNewImageValidator(settings.Value)
-                .ValidateAndThrow(venueImage);
-
             return venueImage;
+        }
+
+        public void ValidateImage(VenueNewBlobImageDto image)
+        {
+            new VenueNewImageValidator(settings.Value)
+                .ValidateAndThrow(image);
+        }
+
+        public void ValidateLogo(VenueNewBlobImageDto image)
+        {
+            new VenueLogoValidator(settings.Value)
+                .ValidateAndThrow(image);
         }
 
         public async Task<byte[]> GetImageOrNullAsync(HttpRequestMessage request)
