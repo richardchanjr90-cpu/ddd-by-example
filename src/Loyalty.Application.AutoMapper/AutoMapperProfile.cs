@@ -52,6 +52,7 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
 
             CreateMap<GetClientInfoFirebaseQueryResult, ClientInfoViewModel>();
+            CreateMap<GetVenueWorkerResult, VenueWorkerViewModel>();
         }
 
         private void MapLoyaltyPrograms()
@@ -96,7 +97,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             CreateMap<InviteViewModel, UpdateInviteCommand>();
 
-            CreateMap<WorkerViewModel, UpdateWorkerCommand>();
+            CreateMap<CreateWorkerViewModel, UpdateWorkerCommand>();
         }
 
         private void MapVenue()

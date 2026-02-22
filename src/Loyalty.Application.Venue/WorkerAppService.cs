@@ -47,7 +47,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<FullUserProfileViewModel> GetProfile(string userId)
         {
-            var result = await Mediator.Send(new GetUserProfileByIdQuery()
+            var result = await Mediator.Send(new GetUserProfileByIdQuery
             {
                 UserId = userId
             });
@@ -84,14 +84,13 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> StartSignup(SignupViewModel model, FunctionTokenResult token)
         {
-
             new SignupViewModelValidator().ValidateAndThrow(model);
 
             void SetupVenueIdClaimsToHaveAccessToVenue(FunctionTokenResult token, GetInviteByPhoneQueryResult worker)
             {
-                foreach (var id in worker.VenueIds)
+                foreach (var venue in worker.Venues)
                 {
-                    token.Principal.AddVenues(id);
+                    token.Principal.AddVenues(venue.VenueId);
                 }
             }
 
@@ -101,17 +100,21 @@ namespace Loyalty.Application.Venue
             ICommandResult result2 = new CommandResult();
 
             var worker = await GetByPhone(phone);
-
+            GetVenueWorkerResult venueWorker = null;
             if (worker != null)
             {
-                var workerModel = new WorkerViewModel
+                venueWorker = worker.Venues.Single();
+
+                var workerModel = new CreateWorkerViewModel
                 {
                     WorkerId = userId,
                     Email = model.Email,
                     Name = model.Name,
                     LastName = model.Surname,
                     Id = worker.Id,
-                    PositionName = worker.PositionName,
+                    PositionName = venueWorker.PositionName,
+                    Role = (int) venueWorker.Role,
+                    VenueId = venueWorker.VenueId,
                     Phone = worker.Phone
                 };
 
@@ -120,8 +123,8 @@ namespace Loyalty.Application.Venue
                 result = await CompleteSignup(workerModel);
             }
 
-            var ids = worker?.VenueIds.Select(x => x.ToString()).ToCommaSeparatedStringOrNull();
-            var role = worker?.Role ?? VenueUserRole.Owner;
+            var ids = worker?.Venues.Select(x => x.VenueId.ToString()).ToCommaSeparatedStringOrNull();
+            var role = venueWorker?.Role ?? VenueUserRole.Owner;
 
             if (result.Success)
             {
@@ -143,9 +146,9 @@ namespace Loyalty.Application.Venue
             };
         }
 
-        public async Task<ICommandResult> CompleteSignup(WorkerViewModel model)
+        public async Task<ICommandResult> CompleteSignup(CreateWorkerViewModel model)
         {
-            new WorkerUpdateValidator().ValidateAndThrow(model);
+            new WorkerCreateValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateWorkerCommand>(model);
 

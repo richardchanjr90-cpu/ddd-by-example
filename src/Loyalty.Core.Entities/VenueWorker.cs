@@ -19,6 +19,8 @@ namespace Loyalty.Core.Entities
 
         public VenueUserRole Role { get; set; }
 
+        public string PositionName { get; set; }
+
         public override long TenantId => VenueId;
     }
 }

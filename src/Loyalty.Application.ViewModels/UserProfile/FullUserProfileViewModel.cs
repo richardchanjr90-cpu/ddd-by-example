@@ -16,9 +16,6 @@ namespace Loyalty.Application.ViewModels.UserProfile
         [JsonPropertyName("phone")]
         public string Phone { get; set; }
 
-        [JsonPropertyName("positionName")]
-        public string PositionName { get; set; }
-
         [JsonPropertyName("photoUri")]
         public string PhotoUri { get; set; }
     }

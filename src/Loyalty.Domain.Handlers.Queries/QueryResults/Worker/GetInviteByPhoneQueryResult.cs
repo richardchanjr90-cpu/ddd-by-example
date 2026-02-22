@@ -8,14 +8,10 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Worker
     {
         public long Id { get; set; }
 
-        public List<long> VenueIds { get; set; } = new List<long>();
-
-        public VenueUserRole Role { get; set; }
+        public List<GetVenueWorkerResult> Venues { get; set; } = new List<GetVenueWorkerResult>();
 
         public string Phone { get; set; }
 
         public string Name { get; set; }
-
-        public string PositionName { get; set; }
     }
 }

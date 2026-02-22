@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
-using Loyalty.Infrastructure.Handlers.Queries.Workers;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {
@@ -19,15 +18,18 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             var result = new GetWorkerByIdQueryResult
             {
                 Id = item.Id,
-                VenueIds = item.Venues.Select(x => x.VenueId).ToList(),
+                Venues = item.Venues.Select(x => new GetVenueWorkerResult()
+                {
+                    PositionName = x.PositionName,
+                    VenueId = x.VenueId,
+                    Role = x.Role
+                }).ToList(),
                 Name = item.Name,
                 Email = item.Email,
                 LastName = item.LastName,
                 Phone = item.Phone,
                 PhotoUri = item.PhotoUri,
-                Role = item.Venues.Select(x => x.Role).First(),
                 WorkerId = item.WorkerId,
-                PositionName = item.PositionName
             };
             return result;
         }
@@ -42,11 +44,14 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             var result = new GetInviteByPhoneQueryResult
             {
                 Id = item.Id,
-                VenueIds = item?.Venues.Select(x => x.VenueId).ToList(),
+                Venues = item.Venues.Select(x => new GetVenueWorkerResult()
+                {
+                    PositionName = x.PositionName,
+                    VenueId = x.VenueId,
+                    Role = x.Role
+                }).ToList(),
                 Name = item.Name,
                 Phone = item.Phone,
-                PositionName = item.PositionName,
-                Role = item.Venues.Select(x => x.Role).First(),
             };
             return result;
         }

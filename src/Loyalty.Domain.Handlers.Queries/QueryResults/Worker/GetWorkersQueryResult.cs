@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Worker
 {

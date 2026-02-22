@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
@@ -13,6 +14,7 @@ using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
@@ -27,9 +29,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
         {
             var worker = Context.Workers
+                .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
                 .AsEnumerable()
                 .FirstOrDefault();
+
+            if (worker == null)
+            {
+                throw new ArgumentNullException(nameof(worker));
+            }
 
             if (request.Role == VenueUserRole.Owner)
             {
@@ -42,8 +50,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             worker.Phone = request.Phone;
             worker.Email = request.Email;
             worker.PhotoUri = request.PhotoUri;
-            worker.PositionName = request.PositionName;
-            worker.IsArchived = false;
+
+            var venueWorker = worker.Venues.Single(x => x.VenueId == request.VenueId);
+            venueWorker.PositionName = request.PositionName;
+            venueWorker.Role = request.Role;
 
             return new CommandResult
             {

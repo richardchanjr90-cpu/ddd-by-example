@@ -42,7 +42,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 
                 var id = worker?.Id;
 
-                var venuewWorkers = connection.Query<VenueWorker>(getIds, new
+                var venueWorkers = connection.Query<VenueWorker>(getIds, new
                 {
                     id
                 }).ToList();
@@ -52,7 +52,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                 if (worker != null)
                 {
                     worker.Venues = new List<VenueWorker>();
-                    foreach (var vw in venuewWorkers)
+                    foreach (var vw in venueWorkers)
                     {
                         worker.Venues.Add(vw);
                     }

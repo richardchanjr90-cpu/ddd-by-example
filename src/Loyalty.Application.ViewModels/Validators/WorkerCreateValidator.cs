@@ -7,9 +7,9 @@ using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
-    public class WorkerUpdateValidator : AbstractValidator<WorkerViewModel>
+    public class WorkerCreateValidator : AbstractValidator<CreateWorkerViewModel>
     {
-        public WorkerUpdateValidator()
+        public WorkerCreateValidator()
         {
             RuleFor(x => x.Name)
                 .NotEmpty()
@@ -33,9 +33,14 @@ namespace Loyalty.Application.ViewModels.Validators
                 .MaximumLength(200)
                 .NotEmpty();
 
-            RuleForEach(x => x.Venues)
-                .SetValidator(new VenueWorkerValidator())
-                .When(x => x.Venues != null);
+            RuleFor(x => x.PositionName)
+                .NotEmpty();
+
+            RuleFor(x => x.VenueId)
+                .GreaterThan(0);
+
+            RuleFor(x => x.Role).LessThanOrEqualTo((int)VenueUserRole.Owner)
+                .WithMessage("Must be in range of Enum values");
         }
     }
 }

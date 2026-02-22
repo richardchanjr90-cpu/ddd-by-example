@@ -98,10 +98,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 //todo: rework
                 worker = new Worker
                 {
-                    PositionName = "Владелец",
                     WorkerId = Principal.GetUserId(),
                     Phone = Principal.GetPhone(),
                     Name = Principal.GetName(),
+                    Email = Principal.GetEmailOrNull(),
                     LastName = Principal.GetSurname(),
                 };
             }
@@ -110,6 +110,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             {
                 Venue = venue,
                 Worker = worker,
+                PositionName = "Владелец",
                 Role = VenueUserRole.Owner
             };
 

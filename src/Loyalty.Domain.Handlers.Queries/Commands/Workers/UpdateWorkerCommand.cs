@@ -11,7 +11,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public long Id { get; set; }
 
-        public List<long> VenueIds { get; set; } = new List<long>();
+        public long VenueId { get; set; }
 
         public string WorkerId { get; set; }
 

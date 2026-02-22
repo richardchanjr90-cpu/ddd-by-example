@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Text.Json.Serialization;
 
 namespace Loyalty.Application.ViewModels.Worker
 {
-    public class WorkerViewModel
+    public class CreateWorkerViewModel
     {
         [JsonPropertyName("id")]
         public long Id { get; set; }
 
-        [JsonPropertyName("venues")]
-        public List<VenueWorkerViewModel> Venues { get; set; } = new List<VenueWorkerViewModel>();
+        [JsonPropertyName("venueId")]
+        public long VenueId { get; set; }
+
+        [JsonPropertyName("positionName")]
+        public string PositionName { get; set; }
+
+        [JsonPropertyName("role")]
+        public int Role { get; set; }
 
         [JsonPropertyName("workerId")]
         public string WorkerId { get; set; }

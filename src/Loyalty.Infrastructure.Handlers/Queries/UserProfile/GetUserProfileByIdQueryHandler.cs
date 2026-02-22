@@ -33,7 +33,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
                 LastName = worker.LastName,
                 Name = worker.Name,
                 Phone = worker.Phone,
-                PositionName = worker.PositionName,
             };
 
             return result;

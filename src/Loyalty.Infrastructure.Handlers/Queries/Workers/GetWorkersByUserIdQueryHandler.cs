@@ -41,7 +41,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
             }
 
             var getItems =
-                @"SELECT w.*, vw.[Role] as [Role], vw.VenueId as VenueId FROM loyalty.Worker w 
+                @"SELECT w.*, vw.[Role] as [Role], vw.VenueId as VenueId, vw.PositionName as PositionName FROM loyalty.Worker w 
                     join loyalty.VenueWorker vw on w.Id = vw.WorkerId
                     WHERE 
                     vw.VenueId in @ids AND
@@ -64,8 +64,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                     t.Name,
                     t.LastName,
                     t.Email,
-                    t.PhotoUri,
-                    t.PositionName
+                    t.PhotoUri
                 }).ToList();
 
             var items = groupedCustomerList.Select(g => new GetWorkerByIdQueryResult
@@ -77,9 +76,12 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                     LastName = g.Key.LastName,
                     Email = g.Key.Email,
                     PhotoUri = g.Key.PhotoUri,
-                    PositionName = g.Key.PositionName,
-                    VenueIds = g.Select(o => (long)o.VenueId).ToList(),
-                    Role = g.Select(o => (VenueUserRole)o.Role).FirstOrDefault()
+                    Venues = g.Select(o => new GetVenueWorkerResult()
+                    {
+                        VenueId = o.VenueId,
+                        Role = (VenueUserRole) o.Role,
+                        PositionName = o.PositionName
+                    }).ToList()
                 })
                 .ToList();
 

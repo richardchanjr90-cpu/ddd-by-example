@@ -35,6 +35,12 @@ namespace Loyalty.Common.Shared.Extensions
             return claim;
         }
 
+        public static string GetEmailOrNull(this ClaimsPrincipal principal)
+        {
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            return claim;
+        }
+
         public static string GetSurname(this ClaimsPrincipal principal)
         {
             var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Lastname).Value;

@@ -3,10 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Infrastructure.DataAccess;
@@ -38,11 +36,25 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             }
 
             worker.Name = request.Name;
-            worker.Phone = request.Phone;
-            worker.PositionName = request.PositionName;
+            var venueWorkerNew = worker.Venues.FirstOrDefault(x => x.VenueId == request.VenueId);
 
-            var venueWorker = worker.Venues.Single(x => x.VenueId == request.VenueId);
-            venueWorker.Role = request.Role;
+            if (venueWorkerNew == null)
+            {
+                var venueWorker = new VenueWorker
+                {
+                    VenueId = request.VenueId, 
+                    Worker = worker, 
+                    Role = request.Role,
+                    PositionName = request.PositionName,
+                };
+
+                Context.VenueWorkers.Add(venueWorker);
+            }
+            else
+            {
+                venueWorkerNew.Role = request.Role;
+                venueWorkerNew.PositionName = request.PositionName;
+            }
 
             return new CommandResult
             {
