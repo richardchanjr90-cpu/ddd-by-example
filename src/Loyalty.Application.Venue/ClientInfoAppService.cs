@@ -27,7 +27,8 @@ namespace Loyalty.Application.Venue
             var result = await Mediator.Send(new GetClientInfoFirebaseQuery
             {
                 UserId = userId,
-                GoogleAuthKey = googleOptions.Value.AuthKey
+                GoogleAuthKey = googleOptions.Value.AuthKey,
+                JsonInBase64 = googleOptions.Value.ClientJsonBase64
             });
 
             return mapper.Map<ClientInfoViewModel>(result);

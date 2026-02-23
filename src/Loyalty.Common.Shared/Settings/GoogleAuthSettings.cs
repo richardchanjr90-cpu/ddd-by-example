@@ -9,5 +9,7 @@
         public string JsonUri { get; set; }
 
         public string AuthKey { get; set; }
+
+        public string ClientJsonBase64 { get; set; }
     }
 }

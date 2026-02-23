@@ -33,8 +33,8 @@ namespace Loyalty.Application.ViewModels.Validators
                 .MaximumLength(200)
                 .NotEmpty();
 
-            RuleFor(x => x.PositionName)
-                .NotEmpty();
+            //RuleFor(x => x.PositionName)
+            //    .NotEmpty();
 
             RuleFor(x => x.VenueId)
                 .GreaterThan(0);

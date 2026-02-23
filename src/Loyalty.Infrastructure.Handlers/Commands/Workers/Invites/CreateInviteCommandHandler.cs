@@ -33,7 +33,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             var dbWorker = await Context.Workers
                 .Include(x => x.Venues)
                 .Where(x => x.Phone == request.Phone)
-                .SingleAsync(cancellationToken);
+                .FirstOrDefaultAsync(cancellationToken);
 
             var worker = new Worker
             {

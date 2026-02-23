@@ -8,5 +8,7 @@ namespace Loyalty.Domain.Handlers.Firebase.Queries.Queries
         public string UserId { get; set; }
 
         public string GoogleAuthKey { get; set; }
+
+        public string JsonInBase64 { get; set; }
     }
 }
