@@ -23,5 +23,8 @@ namespace Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms
 
         [JsonPropertyName("isPublished")]
         public bool IsPublished { get; set; }
+
+        [JsonPropertyName("url")]
+        public string Url { get; set; }
     }
 }

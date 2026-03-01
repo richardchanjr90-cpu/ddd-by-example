@@ -51,7 +51,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
             if (program.IsPublished)
             {
-                throw new LoyaltyValidationException("Impossible to change after program was published.",null, ErrorCode.IS_PUBLISHED);
+                throw new LoyaltyValidationException("Impossible to change after program was published.", null, ErrorCode.IS_PUBLISHED);
             }
 
             if (group == null)

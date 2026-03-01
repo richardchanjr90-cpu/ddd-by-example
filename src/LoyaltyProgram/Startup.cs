@@ -2,6 +2,7 @@
 using System.Reflection;
 using AzureExtensions.FunctionToken.Extensions;
 using AzureExtensions.FunctionToken.FunctionBinding.Options;
+using AzureFunctions.Extensions.NotificationHubs.Extensions;
 using AzureFunctions.Extensions.Swashbuckle;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Infrastructure.IoC.DI;
@@ -39,6 +40,7 @@ namespace LoyaltyProgram
                 GoogleServiceAccountJsonUri = new Uri(config[$"{nameof(GoogleAuthSettings)}:{nameof(GoogleAuthSettings.JsonUri)}"])
             });
 
+            builder.AddNotificationHubs();
             builder.AddSwashBuckle(Assembly.GetExecutingAssembly());
         }
     }

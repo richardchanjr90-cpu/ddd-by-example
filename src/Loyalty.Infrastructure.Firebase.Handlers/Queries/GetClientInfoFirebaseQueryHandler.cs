@@ -20,7 +20,7 @@ using ErrorCode = Loyalty.Common.Shared.Constants.ErrorCode;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
 {
-    public class GetClientInfoFirebaseQueryHandler : 
+    public class GetClientInfoFirebaseQueryHandler :
         BaseFirebaseHandler,
         IRequestHandler<GetClientInfoFirebaseQuery, GetClientInfoFirebaseQueryResult>
     {
@@ -28,7 +28,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
             "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=";
 
         public async Task<GetClientInfoFirebaseQueryResult> Handle(
-            GetClientInfoFirebaseQuery request, 
+            GetClientInfoFirebaseQuery request,
             CancellationToken cancellationToken)
         {
             string credentials = Encoding.UTF8.GetString(Convert.FromBase64String(request.JsonInBase64));
@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                 Credential = GoogleCredential.FromJson(credentials)
             };
 
-            var client = FirebaseApp.GetInstance("client") ?? FirebaseApp.Create(appOptions,"client");
+            var client = FirebaseApp.GetInstance("client") ?? FirebaseApp.Create(appOptions, "client");
             var otherAuth = FirebaseAuth.GetAuth(client);
 
             var token = await GetAuthTokenAsync(request.UserId, request.GoogleAuthKey, otherAuth);
@@ -79,7 +79,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
 
             var response = await client2.PostAsync(new Uri($"{VerifyCustomTokenUrl}{key}"), content);
             var idTokenModel = await response.Content.ReadAsStringAsync();
-            var model = (JsonElement) JsonSerializer.Deserialize<object>(idTokenModel);
+            var model = (JsonElement)JsonSerializer.Deserialize<object>(idTokenModel);
             return model.GetProperty("idToken").ToString();
         }
 

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using FluentValidation;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
-using Loyalty.Application.ViewModels.LoyaltyProgram;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
@@ -15,9 +12,8 @@ namespace Loyalty.Application.ViewModels.Validators
                 .MaximumLength(200)
                 .NotEmpty();
 
-            //RuleFor(x => x.Description)
-            //    .NotEmpty()
-            //    .MaximumLength(2000);
+            RuleFor(x => x.Description)
+                .MaximumLength(2000);
 
             RuleFor(x => x.LoyaltyProgramId)
                 .GreaterThanOrEqualTo(1);

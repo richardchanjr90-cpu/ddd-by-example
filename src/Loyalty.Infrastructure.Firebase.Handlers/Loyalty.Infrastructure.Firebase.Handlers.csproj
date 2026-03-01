@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />
     <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +15,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>

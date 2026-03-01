@@ -37,34 +37,34 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
             }).ToList();
 
             var venuesList = venues.Select(dynamicVenue => new Venue
-                {
-                    Id = dynamicVenue.Id,
-                    CreatedBy = dynamicVenue.CreatedBy,
-                    ModifiedBy = dynamicVenue.ModifiedBy,
-                    Modified = dynamicVenue.Modified,
-                    Created = dynamicVenue.Created,
-                    Name = dynamicVenue.Name,
-                    OwnerId = dynamicVenue.OwnerId,
-                    Description = dynamicVenue.Description,
-                    ParentId = dynamicVenue.ParentId,
-                    City = dynamicVenue.City,
-                    Address = dynamicVenue.Address,
-                    Latitude = dynamicVenue.Latitude,
-                    Longitude = dynamicVenue.Longitude,
-                    Type = (VenueType) dynamicVenue.Type,
-                    CategoryType = (VenueCategoryType) dynamicVenue.CategoryType,
-                    LogoUrl = dynamicVenue.LogoUrl,
-                    FullDescription = dynamicVenue.FullDescription,
-                    Phones = dynamicVenue.Phones,
-                    WebSites = dynamicVenue.WebSites,
-                    WorkingHours = dynamicVenue.WorkingHours,
-                    Images = dynamicVenue.Images,
-                    IsArchived = dynamicVenue.IsArchived,
-                    VenueStatus = (VenueApprovalStatus) dynamicVenue.VenueStatus,
-                    SocialNetworks = dynamicVenue.SocialNetworks != null ? 
-                        JsonSerializer.Deserialize<SocialNetworks>(dynamicVenue.SocialNetworks) 
+            {
+                Id = dynamicVenue.Id,
+                CreatedBy = dynamicVenue.CreatedBy,
+                ModifiedBy = dynamicVenue.ModifiedBy,
+                Modified = dynamicVenue.Modified,
+                Created = dynamicVenue.Created,
+                Name = dynamicVenue.Name,
+                OwnerId = dynamicVenue.OwnerId,
+                Description = dynamicVenue.Description,
+                ParentId = dynamicVenue.ParentId,
+                City = dynamicVenue.City,
+                Address = dynamicVenue.Address,
+                Latitude = dynamicVenue.Latitude,
+                Longitude = dynamicVenue.Longitude,
+                Type = (VenueType)dynamicVenue.Type,
+                CategoryType = (VenueCategoryType)dynamicVenue.CategoryType,
+                LogoUrl = dynamicVenue.LogoUrl,
+                FullDescription = dynamicVenue.FullDescription,
+                Phones = dynamicVenue.Phones,
+                WebSites = dynamicVenue.WebSites,
+                WorkingHours = dynamicVenue.WorkingHours,
+                Images = dynamicVenue.Images,
+                IsArchived = dynamicVenue.IsArchived,
+                VenueStatus = (VenueApprovalStatus)dynamicVenue.VenueStatus,
+                SocialNetworks = dynamicVenue.SocialNetworks != null ?
+                        JsonSerializer.Deserialize<SocialNetworks>(dynamicVenue.SocialNetworks)
                         : null
-                })
+            })
                 .ToList();
 
             var result = new GetVenuesQueryResult

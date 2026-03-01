@@ -68,21 +68,21 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                 }).ToList();
 
             var items = groupedCustomerList.Select(g => new GetWorkerByIdQueryResult
+            {
+                Id = g.Key.Id,
+                WorkerId = g.Key.WorkerId,
+                Phone = g.Key.Phone,
+                Name = g.Key.Name,
+                LastName = g.Key.LastName,
+                Email = g.Key.Email,
+                PhotoUri = g.Key.PhotoUri,
+                Venues = g.Select(o => new GetVenueWorkerResult()
                 {
-                    Id = g.Key.Id,
-                    WorkerId = g.Key.WorkerId,
-                    Phone = g.Key.Phone,
-                    Name = g.Key.Name,
-                    LastName = g.Key.LastName,
-                    Email = g.Key.Email,
-                    PhotoUri = g.Key.PhotoUri,
-                    Venues = g.Select(o => new GetVenueWorkerResult()
-                    {
-                        VenueId = o.VenueId,
-                        Role = (VenueUserRole) o.Role,
-                        PositionName = o.PositionName
-                    }).ToList()
-                })
+                    VenueId = o.VenueId,
+                    Role = (VenueUserRole)o.Role,
+                    PositionName = o.PositionName
+                }).ToList()
+            })
                 .ToList();
 
             return new GetWorkersByUserIdQueryResult

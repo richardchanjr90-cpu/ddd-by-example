@@ -24,9 +24,9 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
 
             builder.Property(e => e.SocialNetworks).HasConversion(
                 v => JsonSerializer.Serialize(v,
-                    new JsonSerializerOptions() { IgnoreNullValues = true}),
+                    new JsonSerializerOptions() { IgnoreNullValues = true }),
                 v => JsonSerializer.Deserialize<SocialNetworks>(v,
-                    new JsonSerializerOptions() { IgnoreNullValues = true}));
+                    new JsonSerializerOptions() { IgnoreNullValues = true }));
         }
     }
 }

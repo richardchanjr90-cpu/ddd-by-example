@@ -1,5 +1,4 @@
-﻿
-using Loyalty.Shared.Contracts.Enums;
+﻿using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.Rules
 {

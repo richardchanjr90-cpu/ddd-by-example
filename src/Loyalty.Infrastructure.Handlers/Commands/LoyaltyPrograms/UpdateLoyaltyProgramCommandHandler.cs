@@ -3,10 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
@@ -41,7 +38,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
             if (program == null)
             {
-                throw new LoyaltyValidationException("Does not exist", null, ErrorCode.INCORRECT_LOYALTY_PROGRAM);
+                throw new LoyaltyValidationException("Does not exist.", null, ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
             else
             {
@@ -57,7 +54,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
                 if (request.IsPublished && program.LoyaltyProductGroups?.Count == 0)
                 {
-                    throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.",null, ErrorCode.FAILED_TO_PUBLISH);
+                    throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.", null, ErrorCode.FAILED_TO_PUBLISH);
                 }
                 program.IsPublished = request.IsPublished;
             }
@@ -75,6 +72,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     {
                         Id = program.Id,
                         Name = program.Name,
+                        Url = program.Url.ToString(),
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
                         IsPublished = program.IsPublished

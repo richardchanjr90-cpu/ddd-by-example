@@ -72,7 +72,6 @@ namespace LoyaltyProgram.Http.VenueLogo
                     using (var stream = new MemoryStream())
                     using (var smStream = new MemoryStream())
                     {
-
                         var blob = await imageService.GetBlobForImageAsync(container, $"logo-{newGuid}.jpg");
                         var smBlob = await imageService.GetBlobForImageAsync(container, $"logo-{newGuid}-sm.jpg");
 
@@ -86,8 +85,6 @@ namespace LoyaltyProgram.Http.VenueLogo
 
                         await blob.UploadFromStreamAsync(stream);
                         await smBlob.UploadFromStreamAsync(smStream);
-
-                        await blob.UploadFromStreamAsync(stream);
 
                         await service.PatchLogo(
                             id, 

@@ -16,7 +16,6 @@ using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {

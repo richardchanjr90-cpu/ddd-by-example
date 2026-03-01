@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />    
-    <PackageReference Include="AzureExtensions.Swashbuckle" Version="2.0.1" />
+    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />
+    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.0.2" />
+    <PackageReference Include="AzureFunctions.Extensions.NotificationHubs" Version="1.0.0" />
     <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.1.0" />

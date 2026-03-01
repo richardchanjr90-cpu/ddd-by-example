@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Extensions;
@@ -33,13 +34,26 @@ namespace LoyaltyProgram.Http.Purchase
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/purchases")]
             [RequestBodyType(typeof(PurchaseAndBurnViewModel), "PurchaseAndBurnViewModel")] PurchaseAndBurnViewModel model,
             [FunctionToken] FunctionTokenResult token,
+            [Queue("purchase-notification", Connection = "QueueConnectionString")] ICollector<PurchaseNotificationDto> queueItems,
             ILogger log)
         {
             log.LogInformation($"{nameof(PurchaseCreateAndBurnFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.CreateAndBurn(model, venueId, token.Principal.GetUserId()));
+                var result = await service.CreateAndBurn(model, venueId, token.Principal.GetUserId());
+
+                if (result.Success)
+                {
+                    var message = $"Вам было начислено {model.Purchase} баллов.";
+                    queueItems.Add(new PurchaseNotificationDto()
+                    {
+                        Message = message,
+                        UserId = model.UserId
+                    });
+                }
+
+                return new OkObjectResult(result);
             });
         }
     }

@@ -28,7 +28,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static GroupPurchaseResult ToResult(this Purchase item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var results = new GroupPurchaseResult
             {

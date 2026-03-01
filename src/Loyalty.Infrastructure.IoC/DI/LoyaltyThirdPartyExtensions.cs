@@ -29,7 +29,6 @@ namespace Loyalty.Infrastructure.IoC.DI
             {
                 var serviceProvider = services.BuildServiceProvider();
                 var mapper = serviceProvider.GetRequiredService<IMapper>();
-
                 mapper.ConfigurationProvider.AssertConfigurationIsValid();
             }
         }

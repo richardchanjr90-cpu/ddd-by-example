@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
@@ -18,7 +17,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
         {
         }
 
-        public async Task<GetUserProfileByIdQueryResult> Handle(GetUserProfileByIdQuery request,
+        public async Task<GetUserProfileByIdQueryResult> Handle(
+            GetUserProfileByIdQuery request,
             CancellationToken cancellationToken)
         {
             var worker = await Context.Workers

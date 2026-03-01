@@ -58,7 +58,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static Product ToEntity(this CreateProductCommand item)
         {
-            if (item == null) throw new ArgumentNullException(nameof(item));
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
 
             var result = new Product
             {
@@ -72,7 +75,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<Product> ToEntities(this List<CreateProductCommand> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             var results = new List<Product>();
             items.ForEach(x => results.Add(x.ToEntity()));
@@ -82,7 +88,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
 
         public static List<Product> ToEntities(this List<UpdateProductCommand> items)
         {
-            if (items == null) throw new ArgumentNullException(nameof(items));
+            if (items == null) 
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
 
             var results = new List<Product>();
             items.ForEach(x => results.Add(x.ToEntity()));

@@ -142,27 +142,24 @@ namespace Loyalty.Application.Venue
         {
             using (var inputStream = new SKManagedStream(new MemoryStream(image)))
             {
-                using (var 
-                    original = SKBitmap.Decode(inputStream))
+                using var original = SKBitmap.Decode(inputStream);
+                float imageRatio = 1;
+
+                if (width != null)
                 {
-                    float imageRatio = 1;
-
-                    if (width != null)
-                    {
-                        imageRatio = original.Width / width.Value;
-                    }
-
-                    var info = new SKImageInfo((int)(original.Width / imageRatio), (int)(original.Height / imageRatio));
-                    var resized = original.Resize(info, SKFilterQuality.Medium);
-
-                    using (var result = SKImage.FromBitmap(resized))
-                    {
-                        result.Encode(SKEncodedImageFormat.Jpeg, 80)
-                            .SaveTo(blobStream);
-                    }
-
-                    blobStream.Position = 0;
+                    imageRatio = original.Width / width.Value;
                 }
+
+                var info = new SKImageInfo((int)(original.Width / imageRatio), (int)(original.Height / imageRatio));
+                var resized = original.Resize(info, SKFilterQuality.Medium);
+
+                using (var result = SKImage.FromBitmap(resized))
+                {
+                    result.Encode(SKEncodedImageFormat.Jpeg, 80)
+                        .SaveTo(blobStream);
+                }
+
+                blobStream.Position = 0;
             }
 
             return blobStream;

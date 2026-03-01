@@ -35,7 +35,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 Name = request.Name,
                 StartDate = request.StartedDate,
                 EndDate = request.EndedDate,
-                Description = request.Description
+                Description = request.Description,
+                Url = request.Url
             };
 
             Context.LoyaltyPrograms.Add(program);
@@ -56,7 +57,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         Name = program.Name,
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
-                        IsPublished = program.IsPublished
+                        IsPublished = program.IsPublished,
+                        Url = program.Url.ToString()
                     },
                     cancellationToken);
             }

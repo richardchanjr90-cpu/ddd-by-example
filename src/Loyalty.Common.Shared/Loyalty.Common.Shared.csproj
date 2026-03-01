@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="MediatR" Version="8.0.0">
+    <PackageReference Include="MediatR" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.1">

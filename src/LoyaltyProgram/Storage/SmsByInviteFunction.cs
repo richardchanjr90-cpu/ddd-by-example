@@ -32,7 +32,7 @@ namespace LoyaltyProgram.Storage
 
             var alphaResponse = await Client.GetAsync(new Uri(alphaUri));
             var alpha = await alphaResponse.Content.ReadAsStringAsync();
-            var alphaId = (JsonElement) JsonSerializer.Deserialize<object>(alpha);
+            var alphaId = (JsonElement)JsonSerializer.Deserialize<object>(alpha);
 
             var uri = "http://app.sms.by/api/v1/sendQuickSms?" +
                       $"token={token}&" +

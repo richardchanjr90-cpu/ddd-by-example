@@ -1,5 +1,4 @@
 ﻿using System;
-using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 
@@ -18,5 +17,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms
         public long VenueId { get; set; }
 
         public string UserId { get; set; }
+
+        public Uri Url { get; set; }
     }
 }
