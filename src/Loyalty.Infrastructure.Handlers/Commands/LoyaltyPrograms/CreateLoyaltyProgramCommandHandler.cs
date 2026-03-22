@@ -55,7 +55,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         Name = program.Name,
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
+<<<<<<< Updated upstream
                         IsPublished = program.IsPublished
+=======
+                        IsPublished = program.IsPublished,
+                        Url = program.Url?.ToString()
+>>>>>>> Stashed changes
                     },
                     cancellationToken);
             }

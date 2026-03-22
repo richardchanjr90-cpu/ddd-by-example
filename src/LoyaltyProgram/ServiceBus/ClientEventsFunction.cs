@@ -21,7 +21,7 @@ namespace LoyaltyProgram.ServiceBus
 
         [FunctionName("ClientEventsFunction")]
         public void Run(
-            [ServiceBusTrigger("clientevents", Connection = "ServiceBusConnectionString")]
+            [ServiceBusTrigger("%ServiceBusClientsTopicName%", "venues", Connection = "ServiceBusConnectionString")]
             Message message,
             ILogger log)
         {
@@ -34,7 +34,8 @@ namespace LoyaltyProgram.ServiceBus
                     break;
 
                 default:
-                    throw new NotSupportedException($"Not supported {message}");
+                    log.LogInformation($"No handle for: {message}");
+                    break;
             }
         }
 

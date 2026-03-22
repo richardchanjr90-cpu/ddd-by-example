@@ -10,6 +10,7 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
+using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
@@ -34,29 +35,73 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
+<<<<<<< Updated upstream
             Venue venue = null;
             try
+=======
+            Venue venue;
+            Worker worker = null;
+            var strategy = Context.Database.CreateExecutionStrategy();
+
+            return await strategy.ExecuteAsync(async () =>
+>>>>>>> Stashed changes
             {
                 venue = CreateVenue(request);
                 var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
                 Principal.AddVenues(venue.Id);
 
+<<<<<<< Updated upstream
                 var worker = await Context.Workers
                     .IgnoreQueryFilters()
                     .Include(x => x.Venues)
                     .ThenInclude(x => x.Venue)
                     .Where(x => x.WorkerId == Principal.GetUserId())
                     .FirstOrDefaultAsync(cancellationToken);
+=======
+                    worker = await Context.Workers
+                        .IgnoreQueryFilters()
+                        .Include(x => x.Venues)
+                        .ThenInclude(x => x.Venue)
+                        .Where(x => x.WorkerId == Principal.GetUserId())
+                        .FirstOrDefaultAsync(cancellationToken);
+>>>>>>> Stashed changes
 
                 worker = CreateWorker(worker, venue);
 
                 saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
 
+<<<<<<< Updated upstream
                 var result = new CommandResult
                 {
                     Success = saved,
                     Result = venue.Id
                 };
+=======
+                    result = new CommandResult
+                    {
+                        Success = saved,
+                        Result = venue.Id
+                    };
+
+                    await AddClaimsAboutNewVenue(worker);
+                    scope.Complete();
+                }
+>>>>>>> Stashed changes
+
+                if (result.Success && worker != null)
+                {
+                    await mediator.Publish(
+                        new UpdatedWorkerNotification
+                        {
+                            WorkerId = worker.WorkerId,
+                            LastName = worker.LastName,
+                            Name = worker.Name,
+                            PhotoUri = worker.PhotoUri,
+                            Role = VenueUserRole.Owner,
+                            VenueId = venue.Id
+                        },
+                        cancellationToken);
+                }
 
                 if (result.Success)
                 {
@@ -115,6 +160,16 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             var claims = user.CustomClaims.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
             var ids = worker.Venues.Select(x => x.VenueId).Select(x => x.ToString());
+<<<<<<< Updated upstream
+=======
+
+            if (worker.Venues.Select(x => x.VenueId).Count() > MaxVenueNumberPerPersonLimit)
+            {
+                throw new LoyaltyValidationException(
+                    $"Limit of {MaxVenueNumberPerPersonLimit} venues reached.", null, ErrorCode.LIMIT_REACHED);
+            }
+
+>>>>>>> Stashed changes
             claims[ClaimConstants.VENUE_CLAIM] = ids.ToCommaSeparatedStringOrNull();
             await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(Principal.GetUserId(), claims);
         }

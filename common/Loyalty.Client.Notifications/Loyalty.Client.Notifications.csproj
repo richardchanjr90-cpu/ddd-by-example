@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>Loyalty.Client.Notifications</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://loyaltyprogramdev.blob.core.windows.net/zalik-logo/7cf0ddc3-6daa-4e40-ab70-b3310aa849c4.jpg</PackageIconUrl>
+    <Copyright>Zalik</Copyright>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.7" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="System.Text.Json" Version="4.7.0" />
+  </ItemGroup>
+</Project>

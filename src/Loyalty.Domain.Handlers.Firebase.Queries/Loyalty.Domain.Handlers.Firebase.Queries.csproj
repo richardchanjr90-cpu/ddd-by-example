@@ -6,8 +6,13 @@
 
 
   <ItemGroup>
+<<<<<<< Updated upstream
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.5" />
     <PackageReference Include="MediatR" Version="8.0.0" />
+=======
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.7" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+>>>>>>> Stashed changes
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />
     <PackageReference Include="FirebaseAdmin" Version="1.9.1" />
   </ItemGroup>

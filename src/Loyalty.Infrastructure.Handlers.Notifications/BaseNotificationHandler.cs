@@ -4,11 +4,11 @@ namespace Loyalty.Infrastructure.Handlers.Notifications
 {
     public abstract class BaseNotificationHandler
     {
-        protected BaseNotificationHandler(IQueueClient client)
+        protected BaseNotificationHandler(ITopicClient client)
         {
             Client = client;
         }
 
-        public IQueueClient Client { get; }
+        public ITopicClient Client { get; }
     }
 }

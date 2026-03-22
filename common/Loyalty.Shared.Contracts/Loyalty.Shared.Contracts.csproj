@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageIconUrl>https://loyaltyprogramdev.blob.core.windows.net/zalik-logo/7cf0ddc3-6daa-4e40-ab70-b3310aa849c4.jpg</PackageIconUrl>
+    <Copyright>Zalik</Copyright>
+    <Version>1.0.7</Version>
+  </PropertyGroup>
+</Project>

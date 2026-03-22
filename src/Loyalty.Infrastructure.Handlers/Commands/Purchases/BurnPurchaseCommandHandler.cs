@@ -57,8 +57,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             var result = new CommandResult
             {
+<<<<<<< Updated upstream
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = purchases.Select(x => x.Id).ToList()
+=======
+                VenueId = request.VenueId,
+                UserId = request.UserId,
+                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+                Total = request.Amount,
+                When = date,
+                WorkerId = request.WorkerId
+>>>>>>> Stashed changes
             };
 
             if (result.Success)

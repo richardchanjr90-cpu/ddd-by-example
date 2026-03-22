@@ -1,13 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
+<<<<<<< Updated upstream
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />    
     <PackageReference Include="AzureExtensions.Swashbuckle" Version="2.0.1" />
     <PackageReference Include="FirebaseAdmin" Version="1.9.1" />
+=======
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.11" />
+    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.1.0-beta" />
+    <PackageReference Include="AzureFunctions.Extensions.NotificationHubs" Version="1.0.0" />
+    <PackageReference Include="FirebaseAdmin" Version="1.9.2" />
+>>>>>>> Stashed changes
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.1.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.10" />

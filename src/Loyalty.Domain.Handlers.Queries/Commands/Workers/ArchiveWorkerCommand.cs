@@ -1,6 +1,11 @@
+<<<<<<< Updated upstream
 ﻿using System;
 using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
+=======
+﻿using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
+>>>>>>> Stashed changes
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
 {

@@ -84,6 +84,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     {
                         Id = program.Id,
                         Name = program.Name,
+<<<<<<< Updated upstream
+=======
+                        Url = program.Url?.ToString(),
+>>>>>>> Stashed changes
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
                         IsPublished = program.IsPublished

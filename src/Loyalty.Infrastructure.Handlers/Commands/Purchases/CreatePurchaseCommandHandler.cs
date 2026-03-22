@@ -11,6 +11,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
+using Loyalty.Domain.Handlers.Notifications.Visit;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
@@ -59,6 +60,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             var purchase = new Purchase
             {
                 Value = request.Value,
+<<<<<<< Updated upstream
                 UserId = request.UserId,
                 ProductId = request.ProductId,
                 VenueId = request.VenueId,
@@ -66,6 +68,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             };
 
             Context.Purchases.Add(purchase);
+=======
+                VenueId = request.VenueId
+            });
+
+            var result = new NotificationResult { Success = affectedRows > 0 };
+>>>>>>> Stashed changes
 
             var result = new CommandResult();
             result.Success = await Context.SaveChangesAsync(cancellationToken) > 0;
@@ -73,6 +81,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             if (result.Success)
             {
+<<<<<<< Updated upstream
                 var notification = new CreatePurchaseNotification
                 {
                     VenueId = request.VenueId,
@@ -83,6 +92,25 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
                 await mediator.Publish(notification, cancellationToken);
             }
+=======
+                VenueId = request.VenueId,
+                UserId = request.UserId,
+                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
+                Total = request.Value,
+                When = date,
+                WorkerId = request.WorkerId
+            };
+
+            var visit = new CreateVisitNotification
+            {
+                VenueId = request.VenueId,
+                UserId = request.UserId,
+                When = date
+            };
+
+            result.OnSucceededNotifications.Add(notification);
+            result.OnSucceededNotifications.Add(visit);
+>>>>>>> Stashed changes
 
             return result;
         }

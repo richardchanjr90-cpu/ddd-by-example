@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureExtensions.FunctionToken;
+using FirebaseAdmin;
 using FluentValidation;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
+<<<<<<< Updated upstream
+=======
+using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Common.Shared.Extensions;
+>>>>>>> Stashed changes
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
@@ -19,6 +25,11 @@ using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using MediatR;
 using Microsoft.Extensions.Options;
+<<<<<<< Updated upstream
+=======
+using CommandResult = MediatR.Extensions.UnitOfWork.Results.CommandResult;
+using ErrorCode = Loyalty.Common.Shared.Constants.ErrorCode;
+>>>>>>> Stashed changes
 
 namespace Loyalty.Application.Venue
 {
@@ -28,8 +39,8 @@ namespace Loyalty.Application.Venue
         private readonly IOptions<ImageStorageSettings> imageStorageSettings;
 
         public WorkerAppService(
-            IMediator mediator, 
-            IMapper mapper, 
+            IMediator mediator,
+            IMapper mapper,
             IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
@@ -76,7 +87,82 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> CompleteSignup(WorkerViewModel model)
         {
+<<<<<<< Updated upstream
             new WorkerUpdateValidator().ValidateAndThrow(model);
+=======
+            new SignupViewModelValidator().ValidateAndThrow(model);
+
+            void SetupVenueIdClaimsToHaveAccessToVenue(FunctionTokenResult token, GetInviteByPhoneQueryResult worker)
+            {
+                foreach (var venue in worker.Venues)
+                {
+                    token.Principal.AddVenues(venue.VenueId);
+                }
+            }
+
+            var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
+            var userId = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            ICommandResult result = new CommandResult { Success = true };
+            ICommandResult result2 = new CommandResult();
+
+            var worker = await GetByPhone(phone);
+            GetVenueWorkerResult venueWorker = null;
+            if (worker != null)
+            {
+                try
+                {
+                    venueWorker = worker.Venues.Single();
+                }
+                catch (Exception ex)
+                {
+                    throw new LoyaltyValidationException("User already exist in the database", ex, ErrorCode.DUPLICATED_ENTITY);
+                }
+
+                var workerModel = new CreateWorkerViewModel
+                {
+                    WorkerId = userId,
+                    Email = model.Email,
+                    Name = model.Name,
+                    LastName = model.Surname,
+                    Id = worker.Id,
+                    PositionName = venueWorker.PositionName,
+                    Role = (int)venueWorker.Role,
+                    VenueId = venueWorker.VenueId,
+                    Phone = worker.Phone
+                };
+
+                SetupVenueIdClaimsToHaveAccessToVenue(token, worker);
+
+                result = await CompleteSignup(workerModel);
+            }
+
+            var ids = worker?.Venues.Select(x => x.VenueId.ToString()).ToCommaSeparatedStringOrNull();
+            var role = venueWorker?.Role ?? VenueUserRole.Owner;
+
+            if (result.Success)
+            {
+                result2 = await Mediator.Send(new SetupFirebaseTokenCommand
+                {
+                    Email = model.Email,
+                    City = model.City,
+                    Surname = model.Surname,
+                    Name = model.Name,
+                    Token = token,
+                    Role = role,
+                    VenueIds = ids
+                });
+            }
+
+            return new CommandResult()
+            {
+                Success = result.Success && result2.Success
+            };
+        }
+
+        public async Task<ICommandResult> CompleteSignup(CreateWorkerViewModel model)
+        {
+            new WorkerCreateValidator().ValidateAndThrow(model);
+>>>>>>> Stashed changes
 
             var command = mapper.Map<UpdateWorkerCommand>(model);
 
@@ -95,7 +181,7 @@ namespace Loyalty.Application.Venue
             ICommandResult result2 = null;
 
             if (commandResult.Success)
-            { 
+            {
                 result2 = await Mediator.Send(new UpdateFirebaseTokenCommand
                 {
                     Email = model.Email,
@@ -114,18 +200,6 @@ namespace Loyalty.Application.Venue
             var command = new ArchiveWorkerCommand
             {
                 Id = id,
-                UserId = userId
-            };
-
-            var commandResult = await Mediator.Send(command);
-            return commandResult;
-        }
-
-        public async Task<ICommandResult> ArchiveById(string uid, string userId)
-        {
-            var command = new ArchiveWorkerByUidCommand()
-            {
-                WorkerId = uid,
                 UserId = userId
             };
 

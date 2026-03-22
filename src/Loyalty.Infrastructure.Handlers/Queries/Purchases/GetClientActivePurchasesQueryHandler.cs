@@ -20,7 +20,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
             this.connection = connection;
         }
 
-        public async Task<GetActivePurchasesResult> Handle(GetClientActivePurchasesQuery request,
+        public async Task<GetActivePurchasesResult> Handle(
+            GetClientActivePurchasesQuery request,
             CancellationToken cancellationToken)
         {
             var getPrograms =

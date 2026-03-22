@@ -51,6 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Application.Storage
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Db", "Db", "{0C247FF1-9D9F-4141-A3D7-5E179ABDE186}"
 EndProject
+<<<<<<< Updated upstream
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sb", "Sb", "{B1E046C4-7087-479C-9748-D426C25B6F0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Notifications", "Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj", "{ED357AA3-7FAD-48CA-89DE-B0D1520E692D}"
@@ -66,6 +67,15 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Firebase", "Firebase", "{A66F47EE-33CE-4A8A-B336-7CF75AB94665}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Handlers.Firebase.Queries", "Loyalty.Domain.Handlers.Firebase.Queries\Loyalty.Domain.Handlers.Firebase.Queries.csproj", "{5AEB3301-DCF2-43B3-A447-24F4AF66F9FB}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Handlers.Notifications", "Loyalty.Infrastructure.Handlers.Notifications\Loyalty.Infrastructure.Handlers.Notifications.csproj", "{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Firebase.Handlers", "Loyalty.Infrastructure.Firebase.Handlers\Loyalty.Infrastructure.Firebase.Handlers.csproj", "{925FCE26-1086-4099-9EFE-520F1864A657}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Firebase", "Firebase", "{A66F47EE-33CE-4A8A-B336-7CF75AB94665}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Firebase.Queries", "Loyalty.Domain.Handlers.Firebase.Queries\Loyalty.Domain.Handlers.Firebase.Queries.csproj", "{5AEB3301-DCF2-43B3-A447-24F4AF66F9FB}"
+>>>>>>> Stashed changes
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -187,6 +197,7 @@ Global
 		{5C01B690-3A2F-4BC3-8D51-B36D6658CC24}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5C01B690-3A2F-4BC3-8D51-B36D6658CC24}.Release|x64.ActiveCfg = Release|Any CPU
 		{5C01B690-3A2F-4BC3-8D51-B36D6658CC24}.Release|x64.Build.0 = Release|Any CPU
+<<<<<<< Updated upstream
 		{ED357AA3-7FAD-48CA-89DE-B0D1520E692D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED357AA3-7FAD-48CA-89DE-B0D1520E692D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED357AA3-7FAD-48CA-89DE-B0D1520E692D}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -203,6 +214,8 @@ Global
 		{45055C95-1DFD-4BCD-B1AE-F0AFD0A93D56}.Release|Any CPU.Build.0 = Release|Any CPU
 		{45055C95-1DFD-4BCD-B1AE-F0AFD0A93D56}.Release|x64.ActiveCfg = Release|Any CPU
 		{45055C95-1DFD-4BCD-B1AE-F0AFD0A93D56}.Release|x64.Build.0 = Release|Any CPU
+=======
+>>>>>>> Stashed changes
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -211,14 +224,6 @@ Global
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}.Release|x64.ActiveCfg = Release|Any CPU
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9}.Release|x64.Build.0 = Release|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Debug|x64.Build.0 = Debug|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Release|x64.ActiveCfg = Release|Any CPU
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D}.Release|x64.Build.0 = Release|Any CPU
 		{925FCE26-1086-4099-9EFE-520F1864A657}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{925FCE26-1086-4099-9EFE-520F1864A657}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{925FCE26-1086-4099-9EFE-520F1864A657}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -263,11 +268,13 @@ Global
 		{B405EE67-7C0D-416D-AC7C-29A37E350528} = {35349DA7-5230-4D08-9994-E72E62557D0E}
 		{5C01B690-3A2F-4BC3-8D51-B36D6658CC24} = {51418814-5480-43C8-AD08-E748119E2545}
 		{0C247FF1-9D9F-4141-A3D7-5E179ABDE186} = {2F0A21D6-7418-4ABB-BB67-33AE887342FF}
+<<<<<<< Updated upstream
 		{B1E046C4-7087-479C-9748-D426C25B6F0D} = {2F0A21D6-7418-4ABB-BB67-33AE887342FF}
 		{ED357AA3-7FAD-48CA-89DE-B0D1520E692D} = {B1E046C4-7087-479C-9748-D426C25B6F0D}
 		{45055C95-1DFD-4BCD-B1AE-F0AFD0A93D56} = {B1E046C4-7087-479C-9748-D426C25B6F0D}
+=======
+>>>>>>> Stashed changes
 		{6D9FF2F2-73C0-48FD-A3BF-66157E478FC9} = {35349DA7-5230-4D08-9994-E72E62557D0E}
-		{65563C7B-B6EF-4FE2-B932-6B36AE26CA0D} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
 		{925FCE26-1086-4099-9EFE-520F1864A657} = {35349DA7-5230-4D08-9994-E72E62557D0E}
 		{A66F47EE-33CE-4A8A-B336-7CF75AB94665} = {2F0A21D6-7418-4ABB-BB67-33AE887342FF}
 		{5AEB3301-DCF2-43B3-A447-24F4AF66F9FB} = {A66F47EE-33CE-4A8A-B336-7CF75AB94665}
