@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Entities;
-using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Purchases;
+using Loyalty.Domain.Handlers.Notifications.Visit;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using MediatR.Extensions.UnitOfWork.Results;
@@ -111,20 +107,30 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 ProductId = request.ProductId,
                 UserId = request.UserId,
                 Value = request.Value,
-                VenueId = request.VenueId,
+                VenueId = request.VenueId
             });
 
-            INotificationResult result = new NotificationResult() { Success = affectedRows > 0 };
+            var result = new NotificationResult { Success = affectedRows > 0 };
 
             var notification = new CreatePurchaseNotification
             {
                 VenueId = request.VenueId,
                 UserId = request.UserId,
                 LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                Total = request.Value
+                Total = request.Value,
+                When = date,
+                WorkerId = request.WorkerId
+            };
+
+            var visit = new CreateVisitNotification
+            {
+                VenueId = request.VenueId,
+                UserId = request.UserId,
+                When = date
             };
 
             result.OnSucceededNotifications.Add(notification);
+            result.OnSucceededNotifications.Add(visit);
 
             return result;
         }

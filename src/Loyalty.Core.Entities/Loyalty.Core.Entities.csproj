@@ -17,7 +17,7 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <AdditionalFiles Include="..\stylecop.json" />
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.6" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.7" />
   </ItemGroup>
 
   <PropertyGroup>

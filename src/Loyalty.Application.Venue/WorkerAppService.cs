@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureExtensions.FunctionToken;
+using FirebaseAdmin;
 using FluentValidation;
 using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
@@ -27,6 +29,7 @@ using MediatR.Extensions.UnitOfWork.Interface;
 using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.Extensions.Options;
 using CommandResult = MediatR.Extensions.UnitOfWork.Results.CommandResult;
+using ErrorCode = Loyalty.Common.Shared.Constants.ErrorCode;
 
 namespace Loyalty.Application.Venue
 {
@@ -36,8 +39,8 @@ namespace Loyalty.Application.Venue
         private readonly IOptions<ImageStorageSettings> imageStorageSettings;
 
         public WorkerAppService(
-            IMediator mediator, 
-            IMapper mapper, 
+            IMediator mediator,
+            IMapper mapper,
             IOptions<ImageStorageSettings> imageStorageSettings)
             : base(mediator)
         {
@@ -96,14 +99,21 @@ namespace Loyalty.Application.Venue
 
             var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
             var userId = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            ICommandResult result = new CommandResult() { Success = true };
+            ICommandResult result = new CommandResult { Success = true };
             ICommandResult result2 = new CommandResult();
 
             var worker = await GetByPhone(phone);
             GetVenueWorkerResult venueWorker = null;
             if (worker != null)
             {
-                venueWorker = worker.Venues.Single();
+                try
+                {
+                    venueWorker = worker.Venues.Single();
+                }
+                catch (Exception ex)
+                {
+                    throw new LoyaltyValidationException("User already exist in the database", ex, ErrorCode.DUPLICATED_ENTITY);
+                }
 
                 var workerModel = new CreateWorkerViewModel
                 {
@@ -113,7 +123,7 @@ namespace Loyalty.Application.Venue
                     LastName = model.Surname,
                     Id = worker.Id,
                     PositionName = venueWorker.PositionName,
-                    Role = (int) venueWorker.Role,
+                    Role = (int)venueWorker.Role,
                     VenueId = venueWorker.VenueId,
                     Phone = worker.Phone
                 };
@@ -167,7 +177,7 @@ namespace Loyalty.Application.Venue
             ICommandResult result2 = null;
 
             if (commandResult.Success)
-            { 
+            {
                 result2 = await Mediator.Send(new UpdateFirebaseTokenCommand
                 {
                     Email = model.Email,
@@ -186,18 +196,6 @@ namespace Loyalty.Application.Venue
             var command = new ArchiveWorkerCommand
             {
                 Id = id,
-                UserId = userId
-            };
-
-            var commandResult = await Mediator.Send(command);
-            return commandResult;
-        }
-
-        public async Task<ICommandResult> ArchiveById(string uid, string userId)
-        {
-            var command = new ArchiveWorkerByUidCommand()
-            {
-                WorkerId = uid,
                 UserId = userId
             };
 

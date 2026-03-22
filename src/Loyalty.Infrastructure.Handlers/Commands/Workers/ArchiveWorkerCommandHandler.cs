@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
+using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
@@ -20,11 +19,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         : BaseDapperHandler, IArchiveWorkerCommandHandler
     {
         private readonly SqlConnection connection;
+        private readonly IMediator mediator;
 
-        public ArchiveWorkerCommandHandler(SqlConnection connection, IHttpContextAccessor accessor)
+        public ArchiveWorkerCommandHandler(SqlConnection connection, IHttpContextAccessor accessor, IMediator mediator)
             : base(connection, accessor)
         {
             this.connection = connection;
+            this.mediator = mediator;
         }
 
         public Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
@@ -32,10 +33,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             var ids = Principal.GetVenueIds();
             var id = request.Id;
 
-            ICommandResult result = null;
             var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
             var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
 
+            ICommandResult result = null;
             using (var scope = new TransactionScope())
             {
                 connection.Open();
@@ -68,6 +69,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     };
                 }
 
+                //todo: implement archivation notification
                 return Task.FromResult(result);
             }
         }

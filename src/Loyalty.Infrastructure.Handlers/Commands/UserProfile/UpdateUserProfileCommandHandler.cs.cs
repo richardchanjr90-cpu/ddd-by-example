@@ -6,6 +6,7 @@ using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
@@ -18,9 +19,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
     public class UpdateUserProfileCommandHandler
         : BaseHandler, IRequestHandler<UpdateUserProfileCommand, ICommandResult>
     {
-        public UpdateUserProfileCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+        private readonly IMediator mediator;
+
+        public UpdateUserProfileCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
             : base(context, accessor)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
@@ -47,11 +51,25 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
             worker.LastName = request.LastName;
             worker.Email = request.Email;
 
-            return new CommandResult
+            var commandResult = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = worker.Id
             };
+
+            if (commandResult.Success)
+            {
+                await mediator.Publish(
+                    new UpdateWorkerProfileNotification
+                    {
+                        WorkerId = worker.WorkerId,
+                        LastName = worker.LastName,
+                        Name = worker.Name
+                    },
+                    cancellationToken);
+            }
+
+            return commandResult;
         }
     }
 }

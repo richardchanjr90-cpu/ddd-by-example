@@ -29,8 +29,8 @@ namespace LoyaltyProgram.Http.Purchase
         [FunctionName("PurchaseGetActiveFunction")]
         public async Task<IActionResult> Run(
             long venueId,
-            string guid,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{guid}")]
+            string uuid,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/purchases/users/{uuid}")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
@@ -39,7 +39,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.GetActivePurchases(guid, venueId));
+                return new OkObjectResult(await service.GetActivePurchases(uuid, venueId));
             });
         }
     }

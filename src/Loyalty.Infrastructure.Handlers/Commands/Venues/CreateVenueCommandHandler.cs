@@ -12,6 +12,7 @@ using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
+using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
@@ -44,6 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
             Venue venue;
+            Worker worker = null;
             var strategy = Context.Database.CreateExecutionStrategy();
 
             return await strategy.ExecuteAsync(async () =>
@@ -55,7 +57,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
                     Principal.AddVenues(venue.Id);
 
-                    var worker = await Context.Workers
+                    worker = await Context.Workers
                         .IgnoreQueryFilters()
                         .Include(x => x.Venues)
                         .ThenInclude(x => x.Venue)
@@ -71,8 +73,24 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                         Success = saved,
                         Result = venue.Id
                     };
+
                     await AddClaimsAboutNewVenue(worker);
                     scope.Complete();
+                }
+
+                if (result.Success && worker != null)
+                {
+                    await mediator.Publish(
+                        new UpdatedWorkerNotification
+                        {
+                            WorkerId = worker.WorkerId,
+                            LastName = worker.LastName,
+                            Name = worker.Name,
+                            PhotoUri = worker.PhotoUri,
+                            Role = VenueUserRole.Owner,
+                            VenueId = venue.Id
+                        },
+                        cancellationToken);
                 }
 
                 if (result.Success)
@@ -125,7 +143,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             var ids = worker.Venues.Select(x => x.VenueId).Select(x => x.ToString());
 
-            if (worker.Venues.Select(x => x.VenueId).Count() >= MaxVenueNumberPerPersonLimit)
+            if (worker.Venues.Select(x => x.VenueId).Count() > MaxVenueNumberPerPersonLimit)
             {
                 throw new LoyaltyValidationException(
                     $"Limit of {MaxVenueNumberPerPersonLimit} venues reached.", null, ErrorCode.LIMIT_REACHED);

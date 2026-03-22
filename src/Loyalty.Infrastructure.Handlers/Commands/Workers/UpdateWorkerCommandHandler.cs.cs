@@ -4,10 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Shared.Contracts.Enums;
@@ -21,9 +19,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
     public class UpdateWorkerCommandHandler
         : BaseHandler, IRequestHandler<UpdateWorkerCommand, ICommandResult>
     {
-        public UpdateWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+        private readonly IMediator mediator;
+
+        public UpdateWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
             : base(context, accessor)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
@@ -55,11 +56,28 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             venueWorker.PositionName = request.PositionName;
             venueWorker.Role = request.Role;
 
-            return new CommandResult
+            var commandResult = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = worker.Id
             };
+
+            if (commandResult.Success)
+            {
+                await mediator.Publish(
+                    new UpdatedWorkerNotification
+                    {
+                       WorkerId = worker.WorkerId,
+                       LastName = worker.LastName,
+                       Name = worker.Name,
+                       PhotoUri = worker.PhotoUri,
+                       Role = venueWorker.Role,
+                       VenueId = request.VenueId
+                    },
+                    cancellationToken);
+            }
+
+            return commandResult;
         }
     }
 }

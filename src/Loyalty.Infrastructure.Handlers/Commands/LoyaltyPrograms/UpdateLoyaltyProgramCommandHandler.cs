@@ -72,7 +72,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                     {
                         Id = program.Id,
                         Name = program.Name,
-                        Url = program.Url.ToString(),
+                        Url = program.Url?.ToString(),
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
                         IsPublished = program.IsPublished

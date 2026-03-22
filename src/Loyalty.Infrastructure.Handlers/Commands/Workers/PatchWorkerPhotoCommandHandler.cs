@@ -1,15 +1,12 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
+using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Shared.Contracts.Enums;
+using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +16,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
     public class PatchWorkerPhotoCommandHandler
         : BaseHandler, IPatchWorkerPhotoCommandHandler
     {
-        public PatchWorkerPhotoCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
+        private readonly IMediator mediator;
+
+        public PatchWorkerPhotoCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
             : base(context, accessor)
         {
+            this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(PatchWorkerPhotoCommand request, CancellationToken cancellationToken)
@@ -36,11 +36,23 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 worker.PhotoUri = request.PhotoUri;
             }
 
-            return new CommandResult
+            var commandResult = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = worker?.Id
             };
+
+            if (commandResult.Success && worker != null)
+            {
+                await mediator.Publish(
+                    new PatchWorkerNotification
+                    {
+                        WorkerId = worker.WorkerId,
+                        PhotoUri = worker.PhotoUri,
+                    },
+                    cancellationToken);
+            }
+            return commandResult;
         }
     }
 }

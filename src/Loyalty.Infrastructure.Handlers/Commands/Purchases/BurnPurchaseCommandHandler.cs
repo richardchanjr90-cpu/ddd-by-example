@@ -91,7 +91,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 VenueId = request.VenueId,
                 UserId = request.UserId,
                 LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                Total = request.Amount
+                Total = request.Amount,
+                When = date,
+                WorkerId = request.WorkerId
             };
 
             result.OnSucceededNotifications.Add(notification);
