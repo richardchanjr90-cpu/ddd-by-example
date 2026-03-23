@@ -7,15 +7,12 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Purchase
