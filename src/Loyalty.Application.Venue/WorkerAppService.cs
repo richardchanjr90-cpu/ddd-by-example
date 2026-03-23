@@ -159,7 +159,7 @@ namespace Loyalty.Application.Venue
         public async Task<ICommandResult> CompleteSignup(CreateWorkerViewModel model)
         {
             new WorkerCreateValidator().ValidateAndThrow(model);
-
+            
             var command = mapper.Map<UpdateWorkerCommand>(model);
 
             var commandResult = await Mediator.Send(command);

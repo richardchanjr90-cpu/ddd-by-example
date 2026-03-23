@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -7,10 +6,8 @@ using FirebaseAdmin.Auth;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
@@ -21,7 +18,6 @@ using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
@@ -49,6 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             var strategy = Context.Database.CreateExecutionStrategy();
 
             return await strategy.ExecuteAsync(async () =>
+
             {
                 var result = new CommandResult();
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -58,11 +55,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     Principal.AddVenues(venue.Id);
 
                     worker = await Context.Workers
-                        .IgnoreQueryFilters()
-                        .Include(x => x.Venues)
-                        .ThenInclude(x => x.Venue)
-                        .Where(x => x.WorkerId == Principal.GetUserId())
-                        .FirstOrDefaultAsync(cancellationToken);
+                    .IgnoreQueryFilters()
+                    .Include(x => x.Venues)
+                    .ThenInclude(x => x.Venue)
+                    .Where(x => x.WorkerId == Principal.GetUserId())
+                    .FirstOrDefaultAsync(cancellationToken);
 
                     worker = CreateWorker(worker, venue);
 
