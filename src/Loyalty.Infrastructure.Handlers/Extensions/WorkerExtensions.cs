@@ -56,6 +56,28 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             return result;
         }
 
+        public static GetInviteByEmailQueryResult ToWorkerResult(this Worker item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var result = new GetInviteByEmailQueryResult
+            {
+                Id = item.Id,
+                Venues = item.Venues.Select(x => new GetVenueWorkerResult()
+                {
+                    PositionName = x.PositionName,
+                    VenueId = x.VenueId,
+                    Role = x.Role
+                }).ToList(),
+                Name = item.Name,
+                Phone = item.Phone,
+            };
+            return result;
+        }
+
         public static List<GetWorkerByIdQueryResult> ToResults(this List<Worker> items)
         {
             if (items == null)

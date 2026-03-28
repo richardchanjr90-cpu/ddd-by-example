@@ -115,6 +115,16 @@ namespace Loyalty.Application.Venue
                     throw new LoyaltyValidationException("User already exist in the database", ex, ErrorCode.DUPLICATED_ENTITY);
                 }
 
+                if (!String.IsNullOrEmpty(model.Email))
+                {
+                    var user = await GetByEmail(model.Email);
+
+                    if (user != null)
+                    {
+                        throw new LoyaltyValidationException("Email is duplicated",null, ErrorCode.EMAIL_EXISTS);
+                    }
+                }
+
                 var workerModel = new CreateWorkerViewModel
                 {
                     WorkerId = userId,
@@ -208,6 +218,16 @@ namespace Loyalty.Application.Venue
             var result = await Mediator.Send(new GetWorkerByPhoneQuery
             {
                 Phone = phone
+            });
+
+            return result;
+        }
+
+        public async Task<GetInviteByEmailQueryResult> GetByEmail(string email)
+        {
+            var result = await Mediator.Send(new GetWorkerByEmailQuery
+            {
+                Email = email
             });
 
             return result;
