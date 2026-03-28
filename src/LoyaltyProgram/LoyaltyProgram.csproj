@@ -3,24 +3,26 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
-    <PublishReadyToRun>true</PublishReadyToRun>
-    <RuntimeIdentifiers>win10-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.12" />
     <PackageReference Include="AzureFunctions.Extensions.NotificationHubs" Version="1.0.0" />
     <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.1.2-beta" />
-    <PackageReference Include="FirebaseAdmin" Version="1.10.0" />
+    <PackageReference Include="FirebaseAdmin" Version="1.11.0" />
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.1.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.10" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.11" />
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.6" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
