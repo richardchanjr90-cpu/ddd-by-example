@@ -55,7 +55,7 @@ namespace LoyaltyProgram.Http.UserProfile
 
                    var image = await imageService.GetImageOrNullAsync(req);
 
-                   new VenuePhotoValidator(settings.Value)
+                   new WorkerPhotoValidator(settings.Value)
                        .ValidateAndThrow(image);
 
                    using (var stream = new MemoryStream())

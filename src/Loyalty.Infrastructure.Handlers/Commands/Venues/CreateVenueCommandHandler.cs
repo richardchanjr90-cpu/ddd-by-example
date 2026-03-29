@@ -51,7 +51,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 {
                     venue = CreateVenue(request);
                     var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
-
                     Principal.AddVenues(venue.Id);
 
                     worker = await Context.Workers

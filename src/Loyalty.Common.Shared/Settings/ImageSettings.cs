@@ -10,8 +10,8 @@
         public int MdImageWidth { get; set; } = 800;
         public int SmImageWidth { get; set; } = 400;
 
-        public int MaxPhotoImageHeight { get; set; } = 2560;
-        public int MaxPhotoImageWidth { get; set; } = 2560;
+        public int MaxPhotoImageHeight { get; set; } = 1200;
+        public int MaxPhotoImageWidth { get; set; } = 1200;
         public int MinPhotoImageHeight { get; set; } = 400;
         public int MinPhotoImageWidth { get; set; } = 400;
 

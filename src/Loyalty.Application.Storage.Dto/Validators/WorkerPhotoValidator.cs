@@ -6,11 +6,11 @@ using SkiaSharp;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
-    public class VenuePhotoValidator : AbstractValidator<byte []>
+    public class WorkerPhotoValidator : AbstractValidator<byte []>
     {
         private readonly ImageSettings settings;
 
-        public VenuePhotoValidator(ImageSettings settings)
+        public WorkerPhotoValidator(ImageSettings settings)
         {
             this.settings = settings;
 
@@ -27,7 +27,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x)
                 .Must(ValidateWidthAndHeight)
-                .WithMessage("Image must be between 800x600 and 2560x1440px.");
+                .WithMessage("Image must be between 400x400 and 1200x1200px.");
         }
 
         private bool IsImageValid(byte[] arrayImage)
@@ -60,10 +60,10 @@ namespace Loyalty.Application.Storage.Dto.Validators
                 {
                     using (var image = SKBitmap.Decode(imageStream))
                     {
-                        isValid = image.Width <= settings.MaxGalleryImageWidth;
-                        isValid = isValid && image.Height <= settings.MaxGalleryImageHeight;
-                        isValid = isValid && image.Height >= settings.MinGalleryImageHeight;
-                        isValid = isValid && image.Width >= settings.MinGalleryImageWidth;
+                        isValid = image.Width <= settings.MaxPhotoImageWidth;
+                        isValid = isValid && image.Height <= settings.MaxPhotoImageHeight;
+                        isValid = isValid && image.Height >= settings.MinPhotoImageHeight;
+                        isValid = isValid && image.Width >= settings.MinPhotoImageWidth;
                     }
                 }
             }
