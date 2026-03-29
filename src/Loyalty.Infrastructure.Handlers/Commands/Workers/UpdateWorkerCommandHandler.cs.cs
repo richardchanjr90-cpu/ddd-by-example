@@ -30,6 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
         {
             var worker = Context.Workers
+                .IgnoreQueryFilters()
                 .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
                 .AsEnumerable()

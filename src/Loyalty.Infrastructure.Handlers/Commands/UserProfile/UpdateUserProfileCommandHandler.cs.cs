@@ -30,6 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
         public async Task<ICommandResult> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
+                .IgnoreQueryFilters()
                 .Include(x => x.Venues)
                 .Where(x => x.WorkerId == request.WorkerId)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -37,6 +38,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
             if (!request.Email.Equals(worker.Email))
             {
                 var emailUser = await Context.Workers
+                    .IgnoreQueryFilters()
                     .Include(x => x.Venues)
                     .Where(x => x.Email == request.Email)
                     .FirstOrDefaultAsync(cancellationToken);

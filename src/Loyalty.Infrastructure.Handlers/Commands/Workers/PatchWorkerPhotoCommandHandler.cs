@@ -27,6 +27,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         public async Task<ICommandResult> Handle(PatchWorkerPhotoCommand request, CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
+                .IgnoreQueryFilters()
                 .Include(x => x.Venues)
                 .Where(x => x.WorkerId == request.UserId)
                 .FirstOrDefaultAsync(cancellationToken);

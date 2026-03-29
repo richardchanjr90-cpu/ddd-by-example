@@ -5,7 +5,6 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.UserProfile;
-using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
