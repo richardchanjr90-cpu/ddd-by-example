@@ -1,11 +1,13 @@
 ﻿using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 
-namespace Loyalty.Domain.Handlers.Queries.Commands.UserProfile
+namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
 {
-    public class UpdateUserProfileCommand : IRequest<ICommandResult>
+    public class CreateWorkerWithoutVenueCommand : IRequest<ICommandResult>
     {
         public string WorkerId { get; set; }
+
+        public string Phone { get; set; }
 
         public string Name { get; set; }
 

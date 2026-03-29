@@ -41,17 +41,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
             Venue venue;
-            Worker worker = null;
+            Worker worker;
             var strategy = Context.Database.CreateExecutionStrategy();
 
             return await strategy.ExecuteAsync(async () =>
-
             {
-                var result = new CommandResult();
+                CommandResult result;
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     venue = CreateVenue(request);
                     var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
+
                     Principal.AddVenues(venue.Id);
 
                     worker = await Context.Workers
@@ -61,8 +61,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     .Where(x => x.WorkerId == Principal.GetUserId())
                     .FirstOrDefaultAsync(cancellationToken);
 
-                    worker = CreateWorker(worker, venue);
-
+                    worker = UpdateWorker(worker, venue);
                     saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
 
                     result = new CommandResult
@@ -106,21 +105,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             return venue;
         }
 
-        private Worker CreateWorker(Worker worker, Venue venue)
+        private Worker UpdateWorker(Worker worker, Venue venue)
         {
-            if (worker == null)
-            {
-                //todo: rework
-                worker = new Worker
-                {
-                    WorkerId = Principal.GetUserId(),
-                    Phone = Principal.GetPhone(),
-                    Name = Principal.GetName(),
-                    Email = Principal.GetEmailOrNull(),
-                    LastName = Principal.GetSurname(),
-                };
-            }
-
             var venueWorker = new VenueWorker
             {
                 Venue = venue,

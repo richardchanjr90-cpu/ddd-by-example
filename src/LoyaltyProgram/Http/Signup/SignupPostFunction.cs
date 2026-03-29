@@ -16,9 +16,9 @@ namespace LoyaltyProgram.Http.Signup
 {
     public class SignupPostFunction
     {
-        private readonly WorkerAppService service;
+        private readonly SignupAppService service;
 
-        public SignupPostFunction(WorkerAppService service)
+        public SignupPostFunction(SignupAppService service)
         {
             this.service = service;
         }

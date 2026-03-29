@@ -1,35 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using AzureExtensions.FunctionToken;
-using FirebaseAdmin;
 using FluentValidation;
-using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
-using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
-using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.Extensions.Options;
-using CommandResult = MediatR.Extensions.UnitOfWork.Results.CommandResult;
-using ErrorCode = Loyalty.Common.Shared.Constants.ErrorCode;
 
 namespace Loyalty.Application.Venue
 {
@@ -85,97 +73,6 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<ICommandResult> StartSignup(SignupViewModel model, FunctionTokenResult token)
-        {
-            new SignupViewModelValidator().ValidateAndThrow(model);
-
-            void SetupVenueIdClaimsToHaveAccessToVenue(FunctionTokenResult token, GetInviteByPhoneQueryResult worker)
-            {
-                foreach (var venue in worker.Venues)
-                {
-                    token.Principal.AddVenues(venue.VenueId);
-                }
-            }
-
-            var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
-            var userId = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            ICommandResult result = new CommandResult { Success = true };
-            ICommandResult result2 = new CommandResult();
-
-            var worker = await GetByPhone(phone);
-            GetVenueWorkerResult venueWorker = null;
-            if (worker != null)
-            {
-                try
-                {
-                    venueWorker = worker.Venues.Single();
-                }
-                catch (Exception ex)
-                {
-                    throw new LoyaltyValidationException("User already exist in the database", ex, ErrorCode.DUPLICATED_ENTITY);
-                }
-
-                var workerModel = new CreateWorkerViewModel
-                {
-                    WorkerId = userId,
-                    Email = model.Email,
-                    Name = model.Name,
-                    LastName = model.Surname,
-                    Id = worker.Id,
-                    PositionName = venueWorker.PositionName,
-                    Role = (int)venueWorker.Role,
-                    VenueId = venueWorker.VenueId,
-                    Phone = worker.Phone
-                };
-
-                SetupVenueIdClaimsToHaveAccessToVenue(token, worker);
-
-                result = await CompleteSignup(workerModel);
-            }
-
-            var ids = worker?.Venues.Select(x => x.VenueId.ToString()).ToCommaSeparatedStringOrNull();
-            var role = venueWorker?.Role ?? VenueUserRole.Owner;
-
-            if (worker == null && !String.IsNullOrEmpty(model.Email))
-            {
-                var user = await GetByEmail(model.Email);
-
-                if (user != null)
-                {
-                    throw new LoyaltyValidationException("Email is duplicated",null, ErrorCode.EMAIL_EXISTS);
-                }
-            }
-
-            if (result.Success)
-            {
-                result2 = await Mediator.Send(new SetupFirebaseTokenCommand
-                {
-                    Email = model.Email,
-                    City = model.City,
-                    Surname = model.Surname,
-                    Name = model.Name,
-                    Token = token,
-                    Role = role,
-                    VenueIds = ids
-                });
-            }
-
-            return new CommandResult()
-            {
-                Success = result.Success && result2.Success
-            };
-        }
-
-        public async Task<ICommandResult> CompleteSignup(CreateWorkerViewModel model)
-        {
-            new WorkerCreateValidator().ValidateAndThrow(model);
-            
-            var command = mapper.Map<UpdateWorkerCommand>(model);
-
-            var commandResult = await Mediator.Send(command);
-            return commandResult;
-        }
-
         public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, FunctionTokenResult token, string userId)
         {
             new UserProfileUpdateValidator().ValidateAndThrow(model);
@@ -211,26 +108,6 @@ namespace Loyalty.Application.Venue
 
             var commandResult = await Mediator.Send(command);
             return commandResult;
-        }
-
-        public async Task<GetInviteByPhoneQueryResult> GetByPhone(string phone)
-        {
-            var result = await Mediator.Send(new GetWorkerByPhoneQuery
-            {
-                Phone = phone
-            });
-
-            return result;
-        }
-
-        public async Task<GetInviteByEmailQueryResult> GetByEmail(string email)
-        {
-            var result = await Mediator.Send(new GetWorkerByEmailQuery
-            {
-                Email = email
-            });
-
-            return result;
         }
 
         public async Task<ICommandResult> PatchPhoto(string logo, string userId)

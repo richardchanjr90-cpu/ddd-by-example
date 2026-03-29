@@ -22,6 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
             CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
+                .IgnoreQueryFilters()
                 .Include(x => x.Venues)
                 .Where(x => x.WorkerId == request.UserId)
                 .SingleAsync(cancellationToken);
