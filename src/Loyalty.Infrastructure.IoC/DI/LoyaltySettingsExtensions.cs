@@ -1,4 +1,5 @@
 ﻿using Loyalty.Common.Shared.Settings;
+using Loyalty.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +19,10 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             services.Configure<GoogleAuthSettings>(
                 options => config.GetSection(nameof(GoogleAuthSettings))
+                    .Bind(options));
+
+            services.Configure<VenueSettings>(
+                options => config.GetSection(nameof(VenueSettings))
                     .Bind(options));
         }
     }

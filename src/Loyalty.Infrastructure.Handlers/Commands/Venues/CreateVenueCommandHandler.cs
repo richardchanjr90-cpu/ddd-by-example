@@ -6,6 +6,7 @@ using FirebaseAdmin.Auth;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
@@ -18,23 +19,25 @@ using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class CreateVenueCommandHandler : BaseHandler, ICreateVenueCommandHandler
     {
-        private const int MaxVenueNumberPerPersonLimit = 10;
-
         private readonly IMediator mediator;
+        private readonly IOptions<VenueSettings> venueOptions;
         private readonly IHttpContextAccessor accessor;
 
         public CreateVenueCommandHandler(
             ILoyaltyTenantDbContext context,
             IMediator mediator,
+            IOptions<VenueSettings> venueOptions,
             IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
+            this.venueOptions = venueOptions;
             this.accessor = accessor;
         }
 
@@ -125,10 +128,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             var ids = worker.Venues.Select(x => x.VenueId).Select(x => x.ToString());
 
-            if (worker.Venues.Select(x => x.VenueId).Count() > MaxVenueNumberPerPersonLimit)
+            if (worker.Venues.Select(x => x.VenueId).Count() > venueOptions.Value.MaxVenueNumber)
             {
                 throw new LoyaltyValidationException(
-                    $"Limit of {MaxVenueNumberPerPersonLimit} venues reached.", null, ErrorCode.LIMIT_REACHED);
+                    $"Limit of {venueOptions.Value.MaxVenueNumber} venues reached.", null, ErrorCode.LIMIT_REACHED);
             }
 
             claims[ClaimConstants.VENUE_CLAIM] = ids.ToCommaSeparatedStringOrNull();
