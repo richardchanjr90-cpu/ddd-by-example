@@ -41,9 +41,11 @@ namespace LoyaltyProgram
             });
 
             builder.AddNotificationHubs();
+
             builder.AddSwashBuckle(
                 Assembly.GetExecutingAssembly(),
-                opt => opt.OverridenPathToSwaggerJson = new Uri("https://loyaltyprorgam-dev.azure-api.net/swagger/json"));
+                opt => opt.OverridenPathToSwaggerJson = 
+                    new Uri(config[$"{nameof(SwaggerSettings)}:{nameof(SwaggerSettings.SwaggerJsonUri)}"]));
         }
     }
 }
