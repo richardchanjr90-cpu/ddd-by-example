@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
             GetWorkerByEmailQuery request, 
             CancellationToken cancellationToken)
         {
-            var phone = request.Email;
+            var email = request.Email;
 
             using (var transaction = new TransactionScope())
             {
@@ -38,7 +38,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 
                 var worker = connection.QuerySingleOrDefault<Worker>(getItems, new
                 {
-                    phone
+                    email
                 });
 
                 var id = worker?.Id;

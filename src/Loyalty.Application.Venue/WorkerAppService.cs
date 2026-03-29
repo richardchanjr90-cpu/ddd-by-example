@@ -115,16 +115,6 @@ namespace Loyalty.Application.Venue
                     throw new LoyaltyValidationException("User already exist in the database", ex, ErrorCode.DUPLICATED_ENTITY);
                 }
 
-                if (!String.IsNullOrEmpty(model.Email))
-                {
-                    var user = await GetByEmail(model.Email);
-
-                    if (user != null)
-                    {
-                        throw new LoyaltyValidationException("Email is duplicated",null, ErrorCode.EMAIL_EXISTS);
-                    }
-                }
-
                 var workerModel = new CreateWorkerViewModel
                 {
                     WorkerId = userId,
@@ -145,6 +135,16 @@ namespace Loyalty.Application.Venue
 
             var ids = worker?.Venues.Select(x => x.VenueId.ToString()).ToCommaSeparatedStringOrNull();
             var role = venueWorker?.Role ?? VenueUserRole.Owner;
+
+            if (worker == null && !String.IsNullOrEmpty(model.Email))
+            {
+                var user = await GetByEmail(model.Email);
+
+                if (user != null)
+                {
+                    throw new LoyaltyValidationException("Email is duplicated",null, ErrorCode.EMAIL_EXISTS);
+                }
+            }
 
             if (result.Success)
             {
