@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,12 +17,8 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.6" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="SkiaSharp" Version="1.68.1.1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-  </PropertyGroup>
   
   <ItemGroup>
     <None Update="host.json">

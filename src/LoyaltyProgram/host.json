@@ -20,6 +20,7 @@
       "routePrefix": "api"
     }
   },
+
   "healthMonitor": {
     "enabled": true,
     "healthCheckInterval": "00:00:10",

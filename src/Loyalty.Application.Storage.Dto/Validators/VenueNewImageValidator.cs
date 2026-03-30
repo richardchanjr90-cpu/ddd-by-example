@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using FluentValidation;
 using Loyalty.Common.Shared.Settings;
-using SkiaSharp;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
@@ -39,7 +39,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             try
             {
-                using (var inputStream = new SKManagedStream(new MemoryStream(arrayImage)))
+                using (var inputStream = Image.FromStream(new MemoryStream(arrayImage)))
                 {
                     //
                 }
@@ -59,16 +59,12 @@ namespace Loyalty.Application.Storage.Dto.Validators
             bool isValid;
             try
             {
-                using (var imageStream = new SKManagedStream(new MemoryStream(arrayImage)))
-                {
-                    using (var image = SKBitmap.Decode(imageStream))
-                    {
-                        isValid = image.Width <= settings.MaxGalleryImageWidth;
-                        isValid = isValid && image.Height <= settings.MaxGalleryImageHeight;
-                        isValid = isValid && image.Height >= settings.MinLogoImageHeight;
-                        isValid = isValid && image.Width >= settings.MinLogoImageWidth;
-                    }
-                }
+                using var image = Image.FromStream(new MemoryStream(arrayImage));
+
+                isValid = image.Width <= settings.MaxGalleryImageWidth;
+                isValid = isValid && image.Height <= settings.MaxGalleryImageHeight;
+                isValid = isValid && image.Height >= settings.MinLogoImageHeight;
+                isValid = isValid && image.Width >= settings.MinLogoImageWidth;
             }
             catch (Exception)
             {

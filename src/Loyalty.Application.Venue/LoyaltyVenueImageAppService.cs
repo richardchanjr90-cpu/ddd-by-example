@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -13,7 +15,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage.Blob;
-using SkiaSharp;
 
 namespace Loyalty.Application.Venue
 {
@@ -140,9 +141,8 @@ namespace Loyalty.Application.Venue
 
         public Stream SaveImageOfWidthToStream(Stream blobStream, byte[] image, float? width = null)
         {
-            using (var inputStream = new SKManagedStream(new MemoryStream(image)))
+            using (var original = Image.FromStream(new MemoryStream(image)))
             {
-                using var original = SKBitmap.Decode(inputStream);
                 float imageRatio = 1;
 
                 if (width != null)
@@ -150,15 +150,12 @@ namespace Loyalty.Application.Venue
                     imageRatio = original.Width / width.Value;
                 }
 
-                var info = new SKImageInfo((int)(original.Width / imageRatio), (int)(original.Height / imageRatio));
-                var resized = original.Resize(info, SKFilterQuality.Medium);
+                int resizedWidth = (int) (original.Width / imageRatio);
+                int resizedHeight = (int) (original.Height / imageRatio);
 
-                using (var result = SKImage.FromBitmap(resized))
-                {
-                    result.Encode(SKEncodedImageFormat.Jpeg, 80)
-                        .SaveTo(blobStream);
-                }
+                var bitmap = new Bitmap(original, new Size(resizedWidth, resizedHeight));
 
+                bitmap.Save(blobStream, ImageFormat.Jpeg);
                 blobStream.Position = 0;
             }
 
