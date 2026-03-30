@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +15,7 @@ using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using MediatR.Extensions.UnitOfWork.Results;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {

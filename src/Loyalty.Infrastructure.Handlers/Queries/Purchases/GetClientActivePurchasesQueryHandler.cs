@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
@@ -7,6 +6,7 @@ using Loyalty.Domain.Handlers.Contracts.Queries.Purchases;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 {

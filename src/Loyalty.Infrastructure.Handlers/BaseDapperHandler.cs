@@ -1,7 +1,7 @@
 ﻿using System.Data;
-using System.Data.SqlClient;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers
 {

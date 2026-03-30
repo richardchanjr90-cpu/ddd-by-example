@@ -1,5 +1,4 @@
-﻿using System.Data.SqlClient;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -12,6 +11,7 @@ using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {

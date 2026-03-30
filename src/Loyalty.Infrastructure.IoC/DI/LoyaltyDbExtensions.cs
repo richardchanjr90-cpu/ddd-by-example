@@ -1,8 +1,7 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using Loyalty.Common.Shared.Settings;
+﻿using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Infrastructure.DataAccess;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,11 +1,10 @@
-using System;
-using System.Data.SqlClient;
 using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
 using LoyaltyClient.Domain.Handlers.Notifications;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.ServiceBus

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text.Json;
 using System.Threading;
@@ -14,6 +13,7 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
