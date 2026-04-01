@@ -43,9 +43,7 @@ namespace LoyaltyProgram
             builder.AddNotificationHubs();
 
             builder.AddSwashBuckle(
-                Assembly.GetExecutingAssembly(),
-                opt => opt.OverridenPathToSwaggerJson = 
-                    new Uri(config[$"{nameof(SwaggerSettings)}:{nameof(SwaggerSettings.SwaggerJsonUri)}"]));
+                Assembly.GetExecutingAssembly());
         }
     }
 }

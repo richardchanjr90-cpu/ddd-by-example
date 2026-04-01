@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
+using Loyalty.Core.Entities.Orders;
 using Loyalty.Core.Entities.Schema;
 using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Shared.Contracts.Enums;
@@ -60,6 +61,8 @@ namespace Loyalty.Core.Entities
         public virtual ICollection<VenueWorker> Workers { get; set; }
 
         public virtual ICollection<ProductGroup> ProductGroups { get; set; }
+
+        public virtual ICollection<VenueMenu> Menus { get; set; }
 
         public bool IsArchived { get; set; }
 

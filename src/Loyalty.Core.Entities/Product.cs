@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
@@ -15,6 +16,14 @@ namespace Loyalty.Core.Entities
         public string Name { get; set; }
 
         public ProductIconType? Icon { get; set; }
+
+        public Uri ImageUri { get; set; }
+
+        public decimal Price { get; set; }
+
+        public bool IsAvailable { get; set; }
+
+        public string ExternalUid { get; set; }
 
         public bool IsArchived { get; set; }
 

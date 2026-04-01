@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.12" />
     <PackageReference Include="AzureFunctions.Extensions.NotificationHubs" Version="1.0.0" />
-    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.1.2-beta" />
+    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.1.5-beta" />
     <PackageReference Include="FirebaseAdmin" Version="1.11.0" />
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.1.1" />
@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Http\Order\" />
     <Folder Include="ServiceBus\" />
   </ItemGroup>
 
@@ -58,6 +59,6 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 </Project>

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Orders;
 using Loyalty.Infrastructure.DataAccess.EntityConfigurations;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,14 @@ namespace Loyalty.Infrastructure.DataAccess
         public DbSet<Worker> Workers { get; set; }
 
         public DbSet<UserCode> UserCodes { get; set; }
+
+        public DbSet<VenueMenu> Menus { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItem { get; set; }
+
+        public DbSet<VenueMenuProductGroup> VenueMenuProductGroups { get; set; }
 
         public override int SaveChanges()
         {
@@ -124,6 +133,8 @@ namespace Loyalty.Infrastructure.DataAccess
                 .IsUnique();
 
             modelBuilder.ApplyConfiguration(new VenueConfiguration());
+            modelBuilder.ApplyConfiguration(new VenueMenuConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
         }
     }
 }

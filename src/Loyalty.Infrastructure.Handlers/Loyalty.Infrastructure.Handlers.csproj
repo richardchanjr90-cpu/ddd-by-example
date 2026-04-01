@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.32" />
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.7" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.9" />
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
