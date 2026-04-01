@@ -23,6 +23,7 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
+using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
@@ -80,6 +81,8 @@ namespace Loyalty.Application.AutoMapper
 
             CreateMap<UpdateProductViewModel, UpdateProductCommand>()
                 .ForMember(x => x.ProductGroupId, opt => opt.Ignore());
+
+            CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
 
             CreateMap<GetProductViewModel, CreateProductCommand>()
                 .ForMember(x => x.ProductGroupId, opt => opt.Ignore())

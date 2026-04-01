@@ -30,7 +30,7 @@ namespace LoyaltyProgram.Http.Order
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("OrderStatusPatchFunction")]
         public async Task<IActionResult> Run(
-            long groupId,
+            long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/orders")]
             [RequestBodyType(typeof(PatchProductViewModel), "PatchProductViewModel")] PatchProductViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
