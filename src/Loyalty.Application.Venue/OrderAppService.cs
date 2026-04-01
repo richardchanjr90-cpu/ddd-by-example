@@ -34,7 +34,7 @@ namespace Loyalty.Application.Venue
 
         public async Task<List<GetOrderByVenueIdQueryResult>> GetAll(long venueId)
         {
-            var result = await Mediator.Send(new GetAllOrdersByVenueIdQuery()
+            var result = await Mediator.Send(new GetAllOrdersByVenueIdQuery
             {
                 VenueId = venueId
             });

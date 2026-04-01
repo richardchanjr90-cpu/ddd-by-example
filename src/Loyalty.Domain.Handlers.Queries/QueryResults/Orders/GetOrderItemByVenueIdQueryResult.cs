@@ -10,6 +10,6 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Orders
 
         public string ProductName { get; set; }
 
-        public string ImageUrl { get; set; }
+        public Uri ImageUrl { get; set; }
     }
 }

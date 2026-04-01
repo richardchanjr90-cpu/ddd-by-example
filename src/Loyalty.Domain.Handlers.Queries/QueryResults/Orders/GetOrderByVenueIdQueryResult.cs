@@ -13,8 +13,6 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Orders
 
         public long VenueId { get; set; }
 
-        public long MenuId { get; set; }
-
         public DateTime PlacedDate { get; set; }
 
         public string CustomerId { get; set; }

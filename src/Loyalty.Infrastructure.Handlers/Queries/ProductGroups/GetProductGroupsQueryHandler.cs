@@ -19,7 +19,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
         {
         }
 
-        public async Task<GetProductGroupsQueryResult> Handle(GetProductGroupsQuery request,
+        public async Task<GetProductGroupsQueryResult> Handle(
+            GetProductGroupsQuery request,
             CancellationToken cancellationToken)
         {
             var items = await (from lp in Context.ProductGroups.Include(x => x.Products)

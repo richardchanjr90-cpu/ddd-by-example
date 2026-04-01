@@ -1,24 +1,49 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Schema;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Orders
 {
     [Table("OrderItem", Schema = SchemaName.Loyalty)]
     public class OrderItem : TenantEntity
     {
+        public OrderItem(
+            long id,
+            int amount,
+            long productId,
+            long orderId)
+        {
+            Id = id;
+            Amount = amount;
+            ProductId = productId;
+            OrderId = orderId;
+        }
+
+        private OrderItem()
+        {
+        }
+
         public override long TenantId => Order.TenantId;
 
-        public int Amount { get; set; }
+        public int Amount { get; private set; }
 
         [ForeignKey(nameof(Product))]
-        public long ProductId { get; set; }
+        public long ProductId { get; private set; }
 
-        public Product Product { get; set; }
+        public Product Product { get; private set; }
 
-        public Order Order { get; set; }
+        public Order Order { get; private set; }
 
         [ForeignKey(nameof(Order))]
-        public long OrderId { get; set; }
+        public long OrderId { get; private set; }
+
+        public void SetProduct(Product product)
+        {
+            Product = product;
+            ProductId = product.Id;
+        }
     }
 }

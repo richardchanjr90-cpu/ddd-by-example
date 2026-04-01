@@ -1,5 +1,6 @@
 ﻿using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess
@@ -25,5 +26,9 @@ namespace Loyalty.Infrastructure.DataAccess
         DbSet<Worker> Workers { get; set; }
 
         DbSet<UserCode> UserCodes { get; set; }
+
+        DbSet<Order> Orders { get; set; }
+
+        DbSet<OrderItem> OrderItems { get; set; }
     }
 }

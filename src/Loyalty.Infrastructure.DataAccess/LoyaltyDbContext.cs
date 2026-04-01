@@ -39,7 +39,7 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<Order> Orders { get; set; }
 
-        public DbSet<OrderItem> OrderItem { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         public override int SaveChanges()
         {

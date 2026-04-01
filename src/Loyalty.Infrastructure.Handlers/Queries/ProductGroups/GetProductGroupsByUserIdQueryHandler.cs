@@ -25,20 +25,20 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
             this.connection = connection;
         }
 
-        public async Task<GetProductGroupsByUserIdQueryResult> Handle(GetProductGroupsByUserIdQuery request,
+        public async Task<GetProductGroupsByUserIdQueryResult> Handle(
+            GetProductGroupsByUserIdQuery request,
             CancellationToken cancellationToken)
         {
-            var groups = new List<ProductGroup>();
+            List<ProductGroup> groups;
             var userId = request.UserId;
 
-            var getItems =
-                @"SELECT pg.* FROM 
+            const string getItems = @"SELECT pg.* FROM 
                     loyalty.ProductGroup pg 
                     JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId
                     JOIN loyalty.Worker w ON vw.WorkerId = w.Id
                     WHERE w.WorkerId = @userId AND w.IsArchived = 0 AND pg.IsArchived = 0";
 
-            var getProducts = @"SELECT * FROM loyalty.Product WHERE ProductGroupId in @productIds AND IsArchived = 0";
+            const string getProducts = @"SELECT * FROM loyalty.Product WHERE ProductGroupId in @productIds AND IsArchived = 0";
             using (var transaction = new TransactionScope())
             {
                 groups = connection.Query<ProductGroup>(getItems, new

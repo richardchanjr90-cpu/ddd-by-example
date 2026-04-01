@@ -47,5 +47,7 @@ namespace Loyalty.Common.Shared.Constants
         public const string PRODUCT_PRICE_INVALID = "PRODUCT_PRICE_INVALID";
 
         public const string PRODUCT_INVALID_STATE = "PRODUCT_INVALID_STATE";
+
+        public const string ORDER_INVALID_STATE = "PRODUCT_INVALID_STATE";
     }
 }
