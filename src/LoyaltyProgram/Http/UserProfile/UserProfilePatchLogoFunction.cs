@@ -7,6 +7,7 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using FluentValidation;
 using Loyalty.Application.Storage.Dto.Validators;
+using Loyalty.Application.Storage.Dto.Validators.Interface;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
@@ -55,7 +56,7 @@ namespace LoyaltyProgram.Http.UserProfile
 
                    var image = await imageService.GetImageOrNullAsync(req);
 
-                   new WorkerPhotoValidator(settings.Value)
+                   new WorkerPhotoValidator(settings.Value, new ImageValidator())
                        .ValidateAndThrow(image);
 
                    using (var stream = new MemoryStream())

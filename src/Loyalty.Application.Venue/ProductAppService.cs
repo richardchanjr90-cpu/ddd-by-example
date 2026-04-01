@@ -62,10 +62,20 @@ namespace Loyalty.Application.Venue
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Patch(PatchProductViewModel model, long groupId)
+        public async Task<ICommandResult> Patch(PatchProductViewModel model)
         {
             var command = mapper.Map<PatchProductCommand>(model);
             return await Mediator.Send(command);
+        }
+
+        public async Task<ICommandResult> PatchImages(long id, string imageUrl, string smallImageUrl)
+        {
+            return await Mediator.Send(new PatchProductImageCommand
+            {
+                Id = id,
+                ImageUri = imageUrl,
+                ImageUriSmall = smallImageUrl
+            });
         }
 
         public async Task<ICommandResult> Archive(long id, string userId)

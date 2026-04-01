@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,11 +7,9 @@ using System.Web.Http;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;

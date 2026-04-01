@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using FluentValidation;
+using Loyalty.Application.Storage.Dto.Validators.Interface;
 using Loyalty.Common.Shared.Settings;
 
 namespace Loyalty.Application.Storage.Dto.Validators
@@ -9,10 +10,12 @@ namespace Loyalty.Application.Storage.Dto.Validators
     public class WorkerPhotoValidator : AbstractValidator<byte[]>
     {
         private readonly ImageSettings settings;
+        private readonly ImageValidator validator;
 
-        public WorkerPhotoValidator(ImageSettings settings)
+        public WorkerPhotoValidator(ImageSettings settings, ImageValidator validator)
         {
             this.settings = settings;
+            this.validator = validator;
 
             RuleFor(x => x)
                 .NotNull()
@@ -20,65 +23,22 @@ namespace Loyalty.Application.Storage.Dto.Validators
                 .WithMessage("Image should be loaded.");
 
             RuleFor(x => x)
-                .Must(SizeIsLessThan1MbPlusSmallOverhead)
+                .Must(x=> validator.SizeIsLessThan1MbPlusSmallOverhead(x ,settings.MaxImageSizeInBytes))
                 .WithMessage("Image must be up to 1 MB.")
-                .Must(IsImageValid)
+                .Must(validator.IsImageValid)
                 .WithMessage("Image must be in PNG or JPG format.");
 
             RuleFor(x => x)
                 .Must(ValidateWidthAndHeight)
                 .WithMessage("Image must be between 400x400 and 1200x1200px.");
         }
-
-        private bool IsImageValid(byte[] arrayImage)
-        {
-            var isValid = false;
-
-            try
-            {
-                using var image = Image.FromStream(new MemoryStream(arrayImage));
-                {
-                    //
-                }
-                isValid = true;
-            }
-            catch (Exception ex)
-            {
-                isValid = false;
-                //Just validation; 
-            }
-
-            return isValid;
-        }
-
         private bool ValidateWidthAndHeight(byte[] arrayImage)
         {
-            bool isValid;
-            try
-            {
-                using var image = Image.FromStream(new MemoryStream(arrayImage));
-                {
-                    isValid = image.Width <= settings.MaxPhotoImageWidth;
-                    isValid = isValid && image.Height <= settings.MaxPhotoImageHeight;
-                    isValid = isValid && image.Height >= settings.MinPhotoImageHeight;
-                    isValid = isValid && image.Width >= settings.MinPhotoImageWidth;
-                }
-            }
-            catch (Exception)
-            {
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        private bool SizeIsLessThan1MbPlusSmallOverhead(byte[] array)
-        {
-            var isValid = false;
-
-            if (array != null) isValid = array.Length <= settings.MaxImageSizeInBytes;
-
-            return isValid;
+            return validator.ValidateWidthAndHeight(arrayImage,
+                settings.MaxPhotoImageWidth,
+                settings.MaxPhotoImageHeight,
+                settings.MinPhotoImageWidth,
+                settings.MinPhotoImageHeight);
         }
     }
 }
