@@ -66,7 +66,6 @@ namespace Loyalty.Application.Venue
         {
             var command = mapper.Map<PatchProductCommand>(model);
             return await Mediator.Send(command);
-
         }
 
         public async Task<ICommandResult> Archive(long id, string userId)

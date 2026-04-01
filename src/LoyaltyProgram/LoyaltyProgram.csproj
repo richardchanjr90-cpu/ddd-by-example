@@ -50,7 +50,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Http\Order\" />
     <Folder Include="ServiceBus\" />
   </ItemGroup>
 

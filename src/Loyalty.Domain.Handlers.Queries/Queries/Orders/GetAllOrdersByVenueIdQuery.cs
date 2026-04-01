@@ -6,5 +6,6 @@ namespace Loyalty.Domain.Handlers.Queries.Queries.Orders
 {
     public class GetAllOrdersByVenueIdQuery : IRequest<GetOrdersByVenueIdQueryResult>
     {
+        public long VenueId { get; set; }
     }
 }

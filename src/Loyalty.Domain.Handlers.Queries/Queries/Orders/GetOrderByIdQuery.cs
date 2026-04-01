@@ -4,7 +4,8 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Queries.Orders
 {
-    public class GetActiveOrdersByVenueIdQuery : IRequest<GetOrdersByVenueIdQueryResult>
+    public class GetOrderByIdQuery : IRequest<GetOrderByVenueIdQueryResult>
     {
+        public long Id { get; set; }
     }
 }

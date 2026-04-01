@@ -23,7 +23,6 @@ using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
-using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;

@@ -9,16 +9,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Orders
 {
-    public class GetActiveOrdersByVenueIdQueryHandler      
-        : BaseHandler, IRequestHandler<GetActiveOrdersByVenueIdQuery, GetOrdersByVenueIdQueryResult>
+    public class GetOrderByIdQueryHandler      
+        : BaseHandler, IRequestHandler<GetOrderByIdQuery, GetOrderByVenueIdQueryResult>
     {
-        public GetActiveOrdersByVenueIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor) 
+        public GetOrderByIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor) 
             : base(context, accessor)
         {
         }
 
-        public Task<GetOrdersByVenueIdQueryResult> Handle(
-            GetActiveOrdersByVenueIdQuery request, 
+        public Task<GetOrderByVenueIdQueryResult> Handle(
+            GetOrderByIdQuery request, 
             CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
