@@ -76,8 +76,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
                 if (number == 0)
                 {
-                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.",
-                        null, ErrorCode.INCORRECT_PRODUCT);
+                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.", ErrorCode.INCORRECT_PRODUCT);
                 }
             }
 
@@ -91,7 +90,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             if (lpgNumber == 0)
             {
                 throw new LoyaltyValidationException(
-                    "LoyaltyProductGroup does not belong to this venue or does not exist.", null,
+                    "LoyaltyProductGroup does not belong to this venue or does not exist.",
                     ErrorCode.INCORRECT_LOYALTY_GROUP);
             }
 

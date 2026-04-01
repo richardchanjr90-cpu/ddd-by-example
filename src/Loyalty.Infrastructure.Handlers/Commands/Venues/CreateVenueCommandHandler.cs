@@ -9,7 +9,6 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
@@ -23,7 +22,7 @@ using Microsoft.Extensions.Options;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class CreateVenueCommandHandler : BaseHandler, ICreateVenueCommandHandler
+    public class CreateVenueCommandHandler : BaseHandler, IRequestHandler<CreateVenueCommand, ICommandResult>
     {
         private readonly IMediator mediator;
         private readonly IOptions<VenueSettings> venueOptions;
@@ -131,7 +130,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             if (worker.Venues.Select(x => x.VenueId).Count() > venueOptions.Value.MaxVenueNumber)
             {
                 throw new LoyaltyValidationException(
-                    $"Limit of {venueOptions.Value.MaxVenueNumber} venues reached.", null, ErrorCode.LIMIT_REACHED);
+                    $"Limit of {venueOptions.Value.MaxVenueNumber} venues reached.", ErrorCode.LIMIT_REACHED);
             }
 
             claims[ClaimConstants.VENUE_CLAIM] = ids.ToCommaSeparatedStringOrNull();

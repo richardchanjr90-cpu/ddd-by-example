@@ -37,13 +37,9 @@ namespace Loyalty.Infrastructure.DataAccess
 
         public DbSet<UserCode> UserCodes { get; set; }
 
-        public DbSet<VenueMenu> Menus { get; set; }
-
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderItem> OrderItem { get; set; }
-
-        public DbSet<VenueMenuProductGroup> VenueMenuProductGroups { get; set; }
 
         public override int SaveChanges()
         {
@@ -133,7 +129,6 @@ namespace Loyalty.Infrastructure.DataAccess
                 .IsUnique();
 
             modelBuilder.ApplyConfiguration(new VenueConfiguration());
-            modelBuilder.ApplyConfiguration(new VenueMenuConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
         }
     }

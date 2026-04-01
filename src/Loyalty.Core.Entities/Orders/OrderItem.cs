@@ -5,7 +5,7 @@ using Loyalty.Core.Entities.Schema;
 namespace Loyalty.Core.Entities.Orders
 {
     [Table("OrderItem", Schema = SchemaName.Loyalty)]
-    public class OrderItem : AuditableEntity
+    public class OrderItem : TenantEntity
     {
         public override long TenantId => Order.TenantId;
 

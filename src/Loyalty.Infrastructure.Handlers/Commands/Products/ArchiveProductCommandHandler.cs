@@ -28,10 +28,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (product != null)
-            {
-                product.IsArchived = true;
-            }
+            product?.Archive();
 
             return new CommandResult
             {

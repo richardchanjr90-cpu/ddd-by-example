@@ -43,7 +43,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
             if (request.Role == VenueUserRole.Owner)
             {
-                throw new LoyaltyValidationException("Impossible to create a second owner.", null, ErrorCode.SECOND_OWNER_NOT_ALLOWED);
+                throw new LoyaltyValidationException("Impossible to create a second owner.", ErrorCode.SECOND_OWNER_NOT_ALLOWED);
             }
 
             worker.WorkerId = request.WorkerId;

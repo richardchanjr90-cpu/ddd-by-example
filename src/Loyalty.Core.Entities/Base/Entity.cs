@@ -7,6 +7,6 @@ namespace Loyalty.Core.Entities.Base
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public virtual long Id { get; set; }
     }
 }

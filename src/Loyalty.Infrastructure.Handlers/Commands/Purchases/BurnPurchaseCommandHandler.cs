@@ -66,7 +66,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
             if (amount < request.Amount)
             {
-                throw new LoyaltyValidationException("Amount of points is lower than requested", null, ErrorCode.INCORRECT_AMOUNT_OF_POINTS);
+                throw new LoyaltyValidationException("Amount of points is lower than requested", ErrorCode.INCORRECT_AMOUNT_OF_POINTS);
             }
 
             var date = DateTime.Now;

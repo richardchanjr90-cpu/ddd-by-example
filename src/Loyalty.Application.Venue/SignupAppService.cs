@@ -84,7 +84,7 @@ namespace Loyalty.Application.Venue
 
                 if (user != null)
                 {
-                    throw new LoyaltyValidationException("Email is duplicated", null, ErrorCode.EMAIL_EXISTS);
+                    throw new LoyaltyValidationException("Email is duplicated", ErrorCode.EMAIL_EXISTS);
                 }
             }
         }

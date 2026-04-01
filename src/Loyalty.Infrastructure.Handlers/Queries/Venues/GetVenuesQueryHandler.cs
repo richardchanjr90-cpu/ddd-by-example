@@ -7,17 +7,18 @@ using Dapper;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.ValueObject;
-using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
-    public class GetVenuesQueryHandler : BaseDapperHandler, IGetVenuesQueryHandler
+    public class GetVenuesQueryHandler 
+        : BaseDapperHandler, IRequestHandler<GetVenuesQuery, GetVenuesQueryResult>
     {
         private readonly SqlConnection connection;
 

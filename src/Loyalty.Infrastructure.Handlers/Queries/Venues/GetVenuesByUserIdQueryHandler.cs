@@ -2,20 +2,19 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Settings;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Contracts.Queries.Venues;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
-    public class GetVenuesByUserIdQueryHandler : BaseHandler, IGetVenuesByUserIdQueryHandler
+    public class GetVenuesByUserIdQueryHandler 
+        : BaseHandler, IRequestHandler<GetVenuesByUserIdQuery, GetVenuesByUserIdQueryResult>
     {
         public GetVenuesByUserIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)

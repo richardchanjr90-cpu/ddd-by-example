@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
-using Loyalty.Core.Entities.Orders;
 using Loyalty.Core.Entities.Schema;
 using Loyalty.Shared.Contracts.Enums;
 
@@ -22,20 +21,12 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<Product> Products { get; set; }
 
-        public virtual ICollection<VenueMenuProductGroup> Menus { get; set; }
-
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
 
         [Required]
         public ProductGroupIconType Icon { get; set; }
-
-        public Uri ImageUri { get; set; }
-
-        public string ExternalUid { get; set; }
-
-        public bool IsAvailable { get; set; }
 
         public bool IsArchived { get; set; }
 

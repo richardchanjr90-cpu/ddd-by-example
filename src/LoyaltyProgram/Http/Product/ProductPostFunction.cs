@@ -5,8 +5,6 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
-using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -33,7 +31,7 @@ namespace LoyaltyProgram.Http.Product
         public async Task<IActionResult> Run(
             long groupId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productGroups/{groupId}/products")]
-            [RequestBodyType(typeof(ProductViewModel), "ProductViewModel")] ProductViewModel model,
+            [RequestBodyType(typeof(CreateProductViewModel), "CreateProductViewModel")] CreateProductViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {

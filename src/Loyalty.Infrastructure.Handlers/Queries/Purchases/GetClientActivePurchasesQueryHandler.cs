@@ -2,15 +2,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
-using Loyalty.Domain.Handlers.Contracts.Queries.Purchases;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 {
-    public class GetClientActivePurchasesQueryHandler : BaseDapperHandler, IGetClientActivePurchasesQueryHandler
+    public class GetClientActivePurchasesQueryHandler 
+        : BaseDapperHandler, IRequestHandler<GetClientActivePurchasesQuery, GetActivePurchasesResult>
     {
         private readonly SqlConnection connection;
 

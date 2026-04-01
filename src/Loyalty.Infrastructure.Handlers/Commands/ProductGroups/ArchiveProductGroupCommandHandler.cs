@@ -3,9 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Infrastructure.DataAccess;
@@ -23,7 +21,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
         {
         }
 
-        public async Task<ICommandResult> Handle(ArchiveProductGroupCommand request,
+        public async Task<ICommandResult> Handle(
+            ArchiveProductGroupCommand request,
             CancellationToken cancellationToken)
         {
             var group = await Context.ProductGroups
@@ -36,7 +35,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
             {
                 if (group.LoyaltyProductGroups.Any(x => x.ProductGroupId == group.Id && !x.IsArchived))
                 {
-                    throw new LoyaltyValidationException("Cannot delete product group that is assigned to a loyalty group.", null, ErrorCode.INCORRECT_PRODUCT_GROUP);
+                    throw new LoyaltyValidationException("Cannot delete product group that is assigned to a loyalty group.", ErrorCode.INCORRECT_PRODUCT_GROUP);
                 }
 
                 group.IsArchived = true;
@@ -45,7 +44,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                 {
                     foreach (var product in group.Products)
                     {
-                        product.IsArchived = true;
+                        product.Archive();
                     }
                 }
             }

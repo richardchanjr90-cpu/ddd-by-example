@@ -164,9 +164,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             modelBuilder.Entity("Loyalty.Core.Entities.Orders.Order", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
@@ -176,12 +174,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CustomerId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("MenuId")
-                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -203,8 +195,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MenuId");
-
                     b.ToTable("Order","loyalty");
                 });
 
@@ -217,18 +207,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("OrderId")
                         .HasColumnType("bigint");
@@ -243,53 +221,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem","loyalty");
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Orders.VenueMenu", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("VenueId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VenueId");
-
-                    b.ToTable("VenueMenu","loyalty");
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Orders.VenueMenuProductGroup", b =>
-                {
-                    b.Property<long>("MenuId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProductGroupId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("MenuId", "ProductGroupId");
-
-                    b.HasIndex("ProductGroupId");
-
-                    b.ToTable("VenueMenuProductGroup","loyalty");
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.Product", b =>
@@ -317,7 +248,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("IsAvailableForOrder")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Modified")
@@ -359,19 +290,13 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExternalUid")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Icon")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImageUri")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAvailable")
+                    b.Property<bool>("IsAvailableForOrder")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Modified")
@@ -672,15 +597,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.Orders.Order", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.Orders.VenueMenu", "Menu")
-                        .WithMany("Orders")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Loyalty.Core.Entities.Orders.OrderItem", b =>
                 {
                     b.HasOne("Loyalty.Core.Entities.Orders.Order", "Order")
@@ -692,30 +608,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Orders.VenueMenu", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.Venue", "Venue")
-                        .WithMany("Menus")
-                        .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Orders.VenueMenuProductGroup", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.ProductGroup", "ProductGroup")
-                        .WithMany("Menus")
-                        .HasForeignKey("MenuId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Loyalty.Core.Entities.Orders.VenueMenu", "Menu")
-                        .WithMany("ProductGroups")
-                        .HasForeignKey("ProductGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

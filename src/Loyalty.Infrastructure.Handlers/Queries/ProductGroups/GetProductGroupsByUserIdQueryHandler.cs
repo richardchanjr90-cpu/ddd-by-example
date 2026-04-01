@@ -4,20 +4,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Contracts.Queries.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Infrastructure.Handlers.Extensions;
-using Loyalty.Shared.Contracts.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
 {
-    public class GetProductGroupsByUserIdQueryHandler : BaseDapperHandler, IGetProductGroupsByUserIdQueryHandler
+    public class GetProductGroupsByUserIdQueryHandler 
+        : BaseDapperHandler, IRequestHandler<GetProductGroupsByUserIdQuery, GetProductGroupsByUserIdQueryResult>
     {
         private readonly SqlConnection connection;
 

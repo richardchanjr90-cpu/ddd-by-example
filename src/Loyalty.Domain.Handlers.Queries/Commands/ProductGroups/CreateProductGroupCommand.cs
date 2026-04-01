@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
@@ -17,6 +16,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.ProductGroups
 
         public ProductGroupIconType Icon { get; set; }
 
-        public List<UpdateProductCommand> Products { get; set; } = new List<UpdateProductCommand>();
+        public List<CreateProductCommand> Products { get; set; } = new List<CreateProductCommand>();
     }
 }

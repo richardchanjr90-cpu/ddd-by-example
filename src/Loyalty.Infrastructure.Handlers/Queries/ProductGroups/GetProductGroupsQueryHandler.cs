@@ -1,18 +1,18 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Queries.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
 {
-    public class GetProductGroupsQueryHandler : BaseHandler, IGetProductGroupsQueryHandler
+    public class GetProductGroupsQueryHandler 
+        : BaseHandler, IRequestHandler<GetProductGroupsQuery, GetProductGroupsQueryResult>
     {
         public GetProductGroupsQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)

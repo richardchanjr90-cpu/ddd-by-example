@@ -15,12 +15,18 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 throw new ArgumentNullException(nameof(item));
             }
 
+            if (item.Products == null)
+            {
+                throw new ArgumentNullException(nameof(item.Products));
+            }
+
             var result = new GetProductGroupByIdQueryResult
             {
                 Id = item.Id,
                 Icon = item.Icon,
                 Name = item.Name,
                 VenueId = item.VenueId,
+                IsAvailableForOrder = item.Products.All(x => x.IsAvailableForOrder),
                 Products = item.Products?.ToList().ToResults()
             };
 

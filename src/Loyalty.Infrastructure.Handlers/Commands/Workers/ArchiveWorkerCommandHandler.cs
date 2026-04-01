@@ -5,8 +5,6 @@ using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
-using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -16,7 +14,7 @@ using Microsoft.Data.SqlClient;
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class ArchiveWorkerCommandHandler
-        : BaseDapperHandler, IArchiveWorkerCommandHandler
+        : BaseDapperHandler, IRequestHandler<ArchiveWorkerCommand, ICommandResult>
     {
         private readonly SqlConnection connection;
         private readonly IMediator mediator;

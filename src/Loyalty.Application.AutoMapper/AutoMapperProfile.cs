@@ -52,7 +52,6 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
 
             CreateMap<GetClientInfoFirebaseQueryResult, ClientInfoViewModel>();
-            CreateMap<GetVenueWorkerResult, VenueWorkerViewModel>();
         }
 
         private void MapLoyaltyPrograms()
@@ -75,18 +74,29 @@ namespace Loyalty.Application.AutoMapper
 
         private void MapProductsAndGroups()
         {
-            CreateMap<GetProductByIdQueryResult, ProductViewModel>();
-            CreateMap<ProductViewModel, CreateProductCommand>()
+            CreateMap<GetProductByIdQueryResult, GetProductViewModel>();
+
+            CreateMap<CreateProductViewModel, CreateProductCommand>()
+                .ForMember(x => x.ProductGroupId, opt => opt.Ignore());
+
+            CreateMap<UpdateProductViewModel, UpdateProductCommand>()
+                .ForMember(x => x.ProductGroupId, opt => opt.Ignore());
+
+            CreateMap<GetProductViewModel, CreateProductCommand>()
                 .ForMember(x => x.ProductGroupId, opt => opt.Ignore())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
 
-            CreateMap<ProductViewModel, UpdateProductCommand>()
-                .ForMember(x => x.ProductGroupId, opt => opt.Ignore());
-
-            CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
             CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
+
             CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
+
+            CreateMap<PatchProductViewModel, PatchProductCommand>();
+            CreateMap<ProductGroupPatchViewModel, PatchProductGroupCommand>();
+
+            CreateMap<GetProductViewModel, UpdateProductCommand>()
+                .ForMember(x => x.ProductGroupId, opt => opt.Ignore())
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
         }
 
         private void MapWorker()
@@ -96,7 +106,7 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<InviteViewModel, CreateInviteCommand>()
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
             CreateMap<InviteViewModel, UpdateInviteCommand>();
-
+            CreateMap<GetVenueWorkerResult, VenueWorkerViewModel>();
             CreateMap<CreateWorkerViewModel, UpdateWorkerCommand>();
         }
 

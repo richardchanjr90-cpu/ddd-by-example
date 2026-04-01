@@ -6,9 +6,9 @@ using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Infrastructure.DataAccess;
+using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
 {
     public class CreateInviteCommandHandler
-        : BaseHandler, ICreateInviteCommandHandler
+        : BaseHandler, IRequestHandler<CreateInviteCommand, ICommandResult>
     {
         public CreateInviteCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
@@ -27,7 +27,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
         {
             if (request.Role >= Principal.GetRole())
             {
-                throw new LoyaltyValidationException("Impossible to invite a user with the role that is >= current user's.", null, ErrorCode.IMPOSSIBLE_TO_CREATE_WITH_ROLE);
+                throw new LoyaltyValidationException("Impossible to invite a user with the role that is >= current user's.",
+                    ErrorCode.IMPOSSIBLE_TO_CREATE_WITH_ROLE);
             }
 
             var dbWorker = await Context.Workers
@@ -45,7 +46,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             {
                 if (dbWorker.Venues.Any(x => x.VenueId == request.VenueId))
                 {
-                    throw new LoyaltyValidationException("Already invited to this venue", null, ErrorCode.DUPLICATED_ENTITY);
+                    throw new LoyaltyValidationException("Already invited to this venue", ErrorCode.DUPLICATED_ENTITY);
                 }
                 worker = dbWorker;
             }

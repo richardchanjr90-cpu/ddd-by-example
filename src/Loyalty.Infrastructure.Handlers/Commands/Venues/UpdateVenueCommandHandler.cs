@@ -10,7 +10,6 @@ using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
@@ -22,7 +21,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class UpdateVenueCommandHandler : BaseHandler, IUpdateVenueCommandHandler
+    public class UpdateVenueCommandHandler : BaseHandler, IRequestHandler<UpdateVenueCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
@@ -40,7 +39,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (venue == null)
             {
-                throw new LoyaltyValidationException("Venue not found.", null, ErrorCode.VENUE_NOT_FOUND);
+                throw new LoyaltyValidationException("Venue not found.", ErrorCode.VENUE_NOT_FOUND);
             }
             else
             {
@@ -48,14 +47,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     && (request.VenueApprovalStatus == VenueApprovalStatus.Approved
                         || request.VenueApprovalStatus == VenueApprovalStatus.Rejected))
                 {
-                    throw new LoyaltyValidationException("Not possible to change venue's status", null, ErrorCode.NOT_POSSIBLE_TO_APPROVE_VENUE);
+                    throw new LoyaltyValidationException("Not possible to change venue's status", ErrorCode.NOT_POSSIBLE_TO_APPROVE_VENUE);
                 }
 
                 if (request.VenueApprovalStatus >= VenueApprovalStatus.Published && (
                         String.IsNullOrEmpty(venue.Images) || 
                         String.IsNullOrEmpty(venue.LogoUrl)))
                 {
-                    throw new LoyaltyValidationException("Not possible to change venue's status", null, ErrorCode.NOT_POSSIBLE_TO_PUBLISH_VENUE);
+                    throw new LoyaltyValidationException("Not possible to change venue's status", ErrorCode.NOT_POSSIBLE_TO_PUBLISH_VENUE);
                 }
 
                 venue.CategoryType = request.CategoryType;

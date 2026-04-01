@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
@@ -18,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class PatchVenueLogoCommandHandler : BaseHandler, IPatchVenueLogoCommandHandler
+    public class PatchVenueLogoCommandHandler : BaseHandler, IRequestHandler<PatchVenueLogoCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 

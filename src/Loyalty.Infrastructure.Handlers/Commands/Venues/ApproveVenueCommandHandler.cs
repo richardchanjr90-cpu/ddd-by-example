@@ -10,7 +10,6 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
@@ -23,7 +22,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class ApproveVenueCommandHandler : BaseHandler, IApproveVenueCommandHandler
+    public class ApproveVenueCommandHandler : BaseHandler, IRequestHandler<ApproveVenuePatchCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
@@ -41,7 +40,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (venue.VenueStatus == VenueApprovalStatus.Saved)
             {
-                throw new LoyaltyValidationException("Venue is not Published, so it can't be approved.", null, ErrorCode.FAILED_APPROVE_NOT_PUBLISHED_VENUE);
+                throw new LoyaltyValidationException("Venue is not Published, so it can't be approved.", ErrorCode.FAILED_APPROVE_NOT_PUBLISHED_VENUE);
             }
 
             var wasApproved = venue.VenueStatus == VenueApprovalStatus.Approved;

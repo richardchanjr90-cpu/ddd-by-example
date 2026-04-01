@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Schema;
@@ -10,6 +11,10 @@ namespace Loyalty.Core.Entities.Orders
     [Table("Order", Schema = SchemaName.Loyalty)]
     public class Order : AuditableEntity
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public override long Id { get; set; }
+
         public override long TenantId => VenueId;
 
         public virtual ICollection<OrderItem> OrderItems { get; set; }
@@ -17,14 +22,7 @@ namespace Loyalty.Core.Entities.Orders
         [ForeignKey(nameof(Venue))]
         public long VenueId { get; set; }
 
-        [ForeignKey(nameof(VenueMenu))]
-        public long MenuId { get; set; }
-
-        public VenueMenu Menu { get; set; }
-
         public DateTime PlacedDate { get; set; }
-
-        public string CustomerId { get; set; }
 
         public OrderStatus Status { get; set; }
 

@@ -44,12 +44,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 
             if (productGroup == null)
             {
-                throw new LoyaltyValidationException("No product group with provided id was found.", null, ErrorCode.INCORRECT_PRODUCT_GROUP);
+                throw new LoyaltyValidationException("No product group with provided id was found.", ErrorCode.INCORRECT_PRODUCT_GROUP);
             }
 
             if (loyaltyProgram.VenueId != productGroup.VenueId)
             {
-                throw new LoyaltyValidationException("Product Group and Program belong to different venues.", null, ErrorCode.INCORRECT_PRODUCT_GROUP);
+                throw new LoyaltyValidationException("Product Group and Program belong to different venues.", ErrorCode.INCORRECT_PRODUCT_GROUP);
             }
 
             var group = new LoyaltyProductGroup

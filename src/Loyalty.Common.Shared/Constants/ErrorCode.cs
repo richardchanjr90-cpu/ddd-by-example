@@ -43,5 +43,9 @@ namespace Loyalty.Common.Shared.Constants
         public const string USER_DOES_NOT_EXIST = "USER_DOES_NOT_EXIST";
 
         public const string INVALID_CLAIMS = "INVALID_CLAIMS";
+
+        public const string PRODUCT_PRICE_INVALID = "PRODUCT_PRICE_INVALID";
+
+        public const string PRODUCT_INVALID_STATE = "PRODUCT_INVALID_STATE";
     }
 }

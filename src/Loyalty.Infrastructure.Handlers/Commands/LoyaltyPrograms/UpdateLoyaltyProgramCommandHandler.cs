@@ -38,13 +38,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
             if (program == null)
             {
-                throw new LoyaltyValidationException("Does not exist.", null, ErrorCode.INCORRECT_LOYALTY_PROGRAM);
+                throw new LoyaltyValidationException("Does not exist.", ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
             else
             {
                 if (program.IsPublished)
                 {
-                    throw new LoyaltyValidationException("You can't change already published program.", null, ErrorCode.IS_PUBLISHED);
+                    throw new LoyaltyValidationException("You can't change already published program.", ErrorCode.IS_PUBLISHED);
                 }
 
                 program.Name = request.Name;
@@ -54,7 +54,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 
                 if (request.IsPublished && program.LoyaltyProductGroups?.Count == 0)
                 {
-                    throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.", null, ErrorCode.FAILED_TO_PUBLISH);
+                    throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.", ErrorCode.FAILED_TO_PUBLISH);
                 }
                 program.IsPublished = request.IsPublished;
             }

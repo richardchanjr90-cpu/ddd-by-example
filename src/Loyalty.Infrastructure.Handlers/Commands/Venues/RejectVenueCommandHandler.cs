@@ -10,7 +10,6 @@ using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
@@ -42,7 +41,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (venue.VenueStatus == VenueApprovalStatus.Saved)
             {
-                throw new LoyaltyValidationException("Venue is not Published, so it can't be rejected.", null, ErrorCode.FAILED_REJECT_NOT_PUBLISHED_VENUE);
+                throw new LoyaltyValidationException("Venue is not Published, so it can't be rejected.", ErrorCode.FAILED_REJECT_NOT_PUBLISHED_VENUE);
             }
 
             venue.VenueStatus = VenueApprovalStatus.Rejected;

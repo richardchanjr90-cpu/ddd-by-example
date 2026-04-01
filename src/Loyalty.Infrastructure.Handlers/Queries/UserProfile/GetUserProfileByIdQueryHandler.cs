@@ -1,16 +1,17 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
 using Loyalty.Infrastructure.DataAccess;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
 {
-    public class GetUserProfileByIdQueryHandler : BaseHandler, IGetUserProfileByIdQueryHandler
+    public class GetUserProfileByIdQueryHandler 
+        : BaseHandler, IRequestHandler<GetUserProfileByIdQuery, GetUserProfileByIdQueryResult>
     {
         public GetUserProfileByIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)

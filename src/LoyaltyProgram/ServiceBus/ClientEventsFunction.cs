@@ -1,7 +1,8 @@
 using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
-using LoyaltyClient.Domain.Handlers.Notifications;
+using LoyaltyClient.Domain.Handlers.Notifications.Code;
+using LoyaltyClient.Domain.Handlers.Notifications.Orders;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Data.SqlClient;
@@ -32,6 +33,10 @@ namespace LoyaltyProgram.ServiceBus
                     ProcessClientCode(message.Deserialize<CodeGeneratedNotification>());
                     break;
 
+                case nameof(CreateOrderNotification):
+                    CreateOrder(message.Deserialize<CreateOrderNotification>());
+                    break;
+
                 default:
                     log.LogInformation($"No handle for: {message}");
                     break;
@@ -56,6 +61,46 @@ namespace LoyaltyProgram.ServiceBus
             {
                 connection.Open();
                 var isSuccess = connection.Execute(mergeSql, deserialize);
+                scope.Complete();
+            }
+        }
+
+        private void CreateOrder(CreateOrderNotification deserialize)
+        {
+            var inserOrderSql = @"INSERT INTO loyalty.[Order] 
+                                   (Id, 
+                                    CreatedBy, 
+                                    ModifiedBy,
+                                    Created,
+                                    Modified, 
+                                    VenueId, 
+                                    PlacedDate, 
+                                    [Status], 
+                                    PickUpTime, 
+                                    Comment) 
+                            VALUES (@Id, 
+                                    @UserId, 
+                                    @UserId, 
+                                    GETDATE(), 
+                                    GETDATE(), 
+                                    @VenueId, 
+                                    @PlacedDate,
+                                    @Status, 
+                                    @PickUpTime, 
+                                    @Comment) ";
+
+            var insertOrderItemsSql = @"INSERT INTO loyalty.[OrderItem] (Id, ProductId, OrderId, Amount)
+                                        VALUES (@Id, @ProductId, @OrderId, @Amount)";
+
+            var orderItems = deserialize.OrderItems;
+
+            using (var scope = new TransactionScope())
+            {
+                connection.Open();
+
+                var isSuccess = connection.Execute(inserOrderSql, deserialize);
+                var isSuccess2 = connection.Execute(insertOrderItemsSql, orderItems);
+
                 scope.Complete();
             }
         }

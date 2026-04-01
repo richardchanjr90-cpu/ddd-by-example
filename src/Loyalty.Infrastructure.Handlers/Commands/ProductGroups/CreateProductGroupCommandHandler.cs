@@ -1,9 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Infrastructure.DataAccess;
@@ -26,10 +24,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
             {
                 VenueId = request.VenueId,
                 Icon = request.Icon,
-                Name = request.Name
+                Name = request.Name,
             };
 
-            Context.ProductGroups.Add(group);
+            await Context.ProductGroups.AddAsync(group, cancellationToken);
 
             return new CommandResult
             {

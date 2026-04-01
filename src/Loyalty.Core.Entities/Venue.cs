@@ -62,8 +62,6 @@ namespace Loyalty.Core.Entities
 
         public virtual ICollection<ProductGroup> ProductGroups { get; set; }
 
-        public virtual ICollection<VenueMenu> Menus { get; set; }
-
         public bool IsArchived { get; set; }
 
         public VenueApprovalStatus VenueStatus { get; set; }

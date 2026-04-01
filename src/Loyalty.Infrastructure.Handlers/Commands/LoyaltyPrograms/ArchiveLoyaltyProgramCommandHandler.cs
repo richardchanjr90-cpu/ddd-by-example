@@ -17,7 +17,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 {
     public class ArchiveLoyaltyProgramCommandHandler
-        : BaseHandler, IArchiveLoyaltyProgramCommandHandler
+        : BaseHandler, IRequestHandler<ArchiveLoyaltyProgramCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 

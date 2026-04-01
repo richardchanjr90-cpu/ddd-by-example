@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;

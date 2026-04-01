@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Infrastructure.DataAccess;
@@ -14,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class PatchWorkerPhotoCommandHandler
-        : BaseHandler, IPatchWorkerPhotoCommandHandler
+        : BaseHandler, IRequestHandler<PatchWorkerPhotoCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 

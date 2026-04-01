@@ -2,15 +2,16 @@
 using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Contracts.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Code;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Code
 {
-    public class GetUserInfoByCodeQueryHandler : BaseDapperHandler, IGetUserInfoByCodeQueryHandler
+    public class GetUserInfoByCodeQueryHandler 
+        : BaseDapperHandler, IRequestHandler<GetUserInfoByCodeQuery, GetUserInfoByCodeQueryResult>
     {
         private readonly SqlConnection connection;
 

@@ -56,7 +56,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
             {
                 if (request.Role != VenueUserRole.Owner)
                 {
-                    throw new LoyaltyValidationException("Internal Error. Should have at least 1 venue.", null, ErrorCode.INVALID_CLAIMS);
+                    throw new LoyaltyValidationException("Internal Error. Should have at least 1 venue.", ErrorCode.INVALID_CLAIMS);
                 }
             }
             

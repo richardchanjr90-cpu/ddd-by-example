@@ -5,10 +5,10 @@ using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Entities;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Shared.Contracts.Enums;
+using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
 {
     public class UpdateInviteCommandHandler
-        : BaseHandler, IUpdateInviteCommandHandler
+        : BaseHandler, IRequestHandler<UpdateInviteCommand, ICommandResult>
     {
         public UpdateInviteCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
@@ -32,7 +32,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
 
             if (request.Role == VenueUserRole.Owner)
             {
-                throw new LoyaltyValidationException("Impossible to create a second owner.", null, ErrorCode.SECOND_OWNER_NOT_ALLOWED);
+                throw new LoyaltyValidationException("Impossible to create a second owner.", ErrorCode.SECOND_OWNER_NOT_ALLOWED);
             }
 
             worker.Name = request.Name;

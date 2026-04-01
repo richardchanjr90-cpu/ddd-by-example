@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Infrastructure.Handlers.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 {
-    public class GetWorkerByPhoneQueryHandler : BaseDapperHandler, IGetWorkerByPhoneQueryHandler
+    public class GetWorkerByPhoneQueryHandler : BaseDapperHandler, IRequestHandler<GetWorkerByPhoneQuery, GetInviteByPhoneQueryResult>
     {
         private readonly SqlConnection connection;
 

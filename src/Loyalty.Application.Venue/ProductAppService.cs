@@ -24,42 +24,49 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<ProductViewModel> Get(long id)
+        public async Task<GetProductViewModel> Get(long id)
         {
             var result = await Mediator.Send(new GetProductByIdQuery
             {
                 Id = id
             });
 
-            return mapper.Map<ProductViewModel>(result);
+            return mapper.Map<GetProductViewModel>(result);
         }
 
-        public async Task<List<ProductViewModel>> GetAll(long groupId)
+        public async Task<List<GetProductViewModel>> GetAll(long groupId)
         {
             var result = await Mediator.Send(new GetProductsQuery
             {
                 ProductGroupId = groupId
             });
 
-            return mapper.Map<List<ProductViewModel>>(result.Result);
+            return mapper.Map<List<GetProductViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(ProductViewModel model, long groupId)
+        public async Task<ICommandResult> Create(CreateProductViewModel model, long groupId)
         {
-            new ProductValidator().ValidateAndThrow(model);
+            new CreateProductValidator().ValidateAndThrow(model);
             var command = mapper.Map<CreateProductCommand>(model);
             command.ProductGroupId = groupId;
-            var result = await Mediator.Send(command);
-            return result;
+
+            return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(ProductViewModel model, long groupId)
+        public async Task<ICommandResult> Update(UpdateProductViewModel model, long groupId)
         {
-            new ProductValidator().ValidateAndThrow(model);
+            new UpdateProductValidator().ValidateAndThrow(model);
             var command = mapper.Map<UpdateProductCommand>(model);
             command.ProductGroupId = groupId;
-            var commandResult = await Mediator.Send(command);
-            return commandResult;
+
+            return await Mediator.Send(command);
+        }
+
+        public async Task<ICommandResult> Patch(PatchProductViewModel model, long groupId)
+        {
+            var command = mapper.Map<PatchProductCommand>(model);
+            return await Mediator.Send(command);
+
         }
 
         public async Task<ICommandResult> Archive(long id, string userId)

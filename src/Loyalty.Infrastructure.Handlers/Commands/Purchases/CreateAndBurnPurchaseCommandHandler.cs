@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Purchases;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
     public class CreateAndBurnPurchaseCommandHandler
-        : BaseHandler, ICreateAndBurnPurchaseCommandHandler
+        : BaseHandler, IRequestHandler<CreateAndBurnCommand, ICommandNotificationResult>
     {
         private readonly IMediator mediator;
 

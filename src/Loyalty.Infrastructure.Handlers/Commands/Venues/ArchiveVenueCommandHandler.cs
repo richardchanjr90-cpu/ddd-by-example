@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.Venues;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
@@ -17,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class ArchiveVenueCommandHandler : BaseHandler, IArchiveVenueCommandHandler
+    public class ArchiveVenueCommandHandler : BaseHandler, IRequestHandler<ArchiveVenueCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
@@ -58,18 +57,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
                     foreach (var product in group.Products)
                     {
-                        product.IsArchived = true;
+                        product?.Archive();
                     }
                 }
-
-                //todo: review it again.
-                //foreach (var worker in venue.Workers)
-                //{
-                //    if (worker.Role != VenueUserRole.Owner)
-                //    {
-                //        worker.IsArchived = true;
-                //    }
-                //}
             }
 
             var result = new CommandResult
