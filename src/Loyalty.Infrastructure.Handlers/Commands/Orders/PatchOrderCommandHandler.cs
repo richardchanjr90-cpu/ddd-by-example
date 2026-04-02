@@ -14,12 +14,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Orders
 {
-    public class PatchOrderCommandHandler       
+    public class PatchOrderCommandHandler
         : BaseHandler, IRequestHandler<PatchOrderCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
-        public PatchOrderCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor) 
+        public PatchOrderCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
@@ -29,17 +29,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
         {
             var order = await Context.Orders
                 .Where(x => x.Id == request.OrderId)
-                .SingleAsync(cancellationToken: cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
-            order.AddStatus(request.Status);
+            order?.AddStatus(request.Status);
 
             var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = order.Id
+                Result = order?.Id
             };
 
-            if (result.Success)
+            if (order != null && result.Success)
             {
                 await mediator.Publish(
                     new UpdateOrderNotification

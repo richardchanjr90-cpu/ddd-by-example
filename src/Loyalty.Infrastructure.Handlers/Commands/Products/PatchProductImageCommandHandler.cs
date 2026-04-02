@@ -31,15 +31,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            product.SetImage(request.ImageUri);
+            product?.SetImage(request.ImageUri);
             
             var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = product.Id
+                Result = product?.Id
             };
 
-            if (result.Success)
+            if (product != null && result.Success)
             {
                 await mediator.Publish(
                     new PatchProductImageNotification

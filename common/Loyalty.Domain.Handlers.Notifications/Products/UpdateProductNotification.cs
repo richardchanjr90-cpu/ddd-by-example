@@ -9,6 +9,8 @@ namespace Loyalty.Domain.Handlers.Notifications.Products
         public long Id { get; set; }
 
         public ProductGroupIconType GroupIcon { get; set; }
+        
+        public string GroupName { get; set; }
 
         public string ImageUri { get; set; }
 

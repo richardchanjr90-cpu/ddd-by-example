@@ -32,20 +32,20 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
 
             if (request.IsAvailableForOrder)
             {
-                product.ShowToCustomer();
+                product?.ShowToCustomer();
             }
             else
             {
-                product.HideFromCustomer();
+                product?.HideFromCustomer();
             }
 
             var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = product.Id
+                Result = product?.Id
             };
 
-            if (result.Success)
+            if (product != null && result.Success)
             {
                 await mediator.Publish(
                     new PatchProductNotification
