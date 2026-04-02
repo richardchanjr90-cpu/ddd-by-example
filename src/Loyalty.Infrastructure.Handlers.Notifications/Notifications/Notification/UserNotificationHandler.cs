@@ -9,13 +9,13 @@ using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Notification
 {
-    public class NotificationHandler<T>
+    public class UserNotificationHandler<T>
         : BaseNotificationHandler, INotificationHandler<T>
-        where T : IIntegrationEventsNotification
+        where T : IUserEventsNotification
     {
         private readonly ITopicClient client;
 
-        public NotificationHandler(IIntegrationTopicClient client) 
+        public UserNotificationHandler(IUserTopicClient client) 
             : base(client.Client)
         {
             this.client = client.Client;

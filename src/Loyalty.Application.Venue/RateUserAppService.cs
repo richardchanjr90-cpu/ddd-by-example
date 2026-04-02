@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Application.ViewModels.Rate;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Rate;
-using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using MediatR;
-using MediatR.Extensions.UnitOfWork;
 using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Application.Venue
@@ -23,7 +17,7 @@ namespace Loyalty.Application.Venue
         {
         }
 
-        public async Task<ICommandResult> Purchase(RateViewModel model)
+        public async Task<ICommandResult> Rate(RateViewModel model)
         {
             new RateValidator()
                 .ValidateAndThrow(model);

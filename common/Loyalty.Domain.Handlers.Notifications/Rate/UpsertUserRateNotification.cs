@@ -5,7 +5,7 @@ using Loyalty.Domain.Handlers.Notifications.Base;
 
 namespace Loyalty.Domain.Handlers.Notifications.Rate
 {
-    public class UpsertUserRateNotification: IIntegrationEventsNotification
+    public class UpsertUserRateNotification: IUserEventsNotification
     {
         public string UserId { get; set; }
 

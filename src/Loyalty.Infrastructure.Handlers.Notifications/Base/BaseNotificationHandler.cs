@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 
-namespace Loyalty.Infrastructure.Handlers.Notifications
+namespace Loyalty.Infrastructure.Handlers.Notifications.Base
 {
     public abstract class BaseNotificationHandler
     {

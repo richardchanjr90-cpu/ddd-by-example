@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Http.Rate
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var result = await service.Purchase(model);
+                var result = await service.Rate(model);
                 return new OkObjectResult(result);
             });
         }

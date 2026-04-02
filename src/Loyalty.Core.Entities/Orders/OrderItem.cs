@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Schema;
-using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Orders
 {
@@ -39,11 +37,5 @@ namespace Loyalty.Core.Entities.Orders
 
         [ForeignKey(nameof(Order))]
         public long OrderId { get; private set; }
-
-        public void SetProduct(Product product)
-        {
-            Product = product;
-            ProductId = product.Id;
-        }
     }
 }

@@ -5,5 +5,7 @@
         public string ConnectionString { get; set; }
 
         public string BusinessActivitiesQueueName { get; set; }
+
+        public string UserTopicName { get; set; }
     }
 }
