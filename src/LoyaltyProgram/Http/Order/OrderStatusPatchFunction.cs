@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.Orders;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
@@ -32,7 +33,7 @@ namespace LoyaltyProgram.Http.Order
         public async Task<IActionResult> Run(
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/orders")]
-            [RequestBodyType(typeof(PatchProductViewModel), "PatchProductViewModel")] PatchProductViewModel model,
+            [RequestBodyType(typeof(PatchOrderStatusViewModel), "PatchOrderStatusViewModel")] PatchOrderStatusViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager), nameof(VenueUserRole.Worker))] FunctionTokenResult token,
             ILogger log)
         {
@@ -40,7 +41,7 @@ namespace LoyaltyProgram.Http.Order
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.PatchStatus(model));
+                return new OkObjectResult(await service.PatchStatus(model, venueId));
             });
         }
     }

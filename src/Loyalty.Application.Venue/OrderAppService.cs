@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Loyalty.Application.ViewModels.Orders;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
@@ -42,10 +43,14 @@ namespace Loyalty.Application.Venue
             return result.Orders;
         }
 
-        public async Task<ICommandResult> PatchStatus(PatchProductViewModel model)
+        public async Task<ICommandResult> PatchStatus(PatchOrderStatusViewModel model, long venueId)
         {
-            var command = mapper.Map<PatchOrderCommand>(model);
-            return await Mediator.Send(command);
+            return await Mediator.Send(new PatchOrderCommand()
+            {
+                Status = model.Status,
+                OrderId = model.OrderId,
+                VenueId = venueId
+            });
         }
     }
 }
