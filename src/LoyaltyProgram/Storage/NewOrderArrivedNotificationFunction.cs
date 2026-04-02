@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AzureFunctions.Extensions.NotificationHubs.Output;
 using Loyalty.Application.Storage.Dto;
 using Microsoft.Azure.WebJobs;

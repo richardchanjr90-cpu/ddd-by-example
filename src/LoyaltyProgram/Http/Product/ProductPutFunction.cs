@@ -30,7 +30,7 @@ namespace LoyaltyProgram.Http.Product
         [FunctionName("ProductPutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "products")]
-            [RequestBodyType(typeof(UpdateProductViewModel), "ProductViewModel")] UpdateProductViewModel model,
+            [RequestBodyType(typeof(UpdateProductViewModel), "UpdateProductViewModel")] UpdateProductViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {
