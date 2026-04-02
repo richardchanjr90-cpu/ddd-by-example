@@ -1,9 +1,10 @@
 ﻿using System;
 using Loyalty.Shared.Contracts.Enums;
+using LoyaltyClient.Domain.Handlers.Notifications.Base;
 
 namespace LoyaltyClient.Domain.Handlers.Notifications.Orders
 {
-    public class PatchOrderNotification
+    public class PatchOrderNotification : IClientVenueNotification
     {
         public long Id { get; set; }
 

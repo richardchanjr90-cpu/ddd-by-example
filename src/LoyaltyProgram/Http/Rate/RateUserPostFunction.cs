@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.Purchase;
-using LoyaltyProgram.Http.Purchase;
+using Loyalty.Application.ViewModels.Rate;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -30,11 +29,11 @@ namespace LoyaltyProgram.Http.Rate
         public async Task<IActionResult> Run(
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "rates/{userId}")]
-            [RequestBodyType(typeof(PurchaseViewModel), "PurchaseViewModel")] PurchaseViewModel model,
+            [RequestBodyType(typeof(RateViewModel), "RateViewModel")] RateViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(PurchasePostFunction)} was triggered.");
+            log.LogInformation($"{nameof(RateUserPostFunction)} was triggered.");
             throw new NotImplementedException();
         }
     }
