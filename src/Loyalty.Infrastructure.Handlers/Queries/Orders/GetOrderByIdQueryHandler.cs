@@ -30,7 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            return order.ToResult();
+            return order?.ToResult();
         }
     }
 }

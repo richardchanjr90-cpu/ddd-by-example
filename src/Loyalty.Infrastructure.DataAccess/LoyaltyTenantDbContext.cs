@@ -60,7 +60,7 @@ namespace Loyalty.Infrastructure.DataAccess
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.Group.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
             modelBuilder.Entity<Product>().HasQueryFilter(e => TenantIds.Contains(e.ProductGroup.VenueId) && !e.IsArchived);
-            modelBuilder.Entity<Order>().HasQueryFilter(e => TenantIds.Contains(e.TenantId));
+            modelBuilder.Entity<Order>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
         }
 
         protected void AddAuditInfo()
