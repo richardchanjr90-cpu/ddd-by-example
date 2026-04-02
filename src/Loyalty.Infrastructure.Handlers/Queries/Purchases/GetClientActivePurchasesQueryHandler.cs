@@ -49,7 +49,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 					FROM loyalty.Purchase
 					WHERE UserId = @UserId
 					GROUP BY LoyaltyProductGroupId) as total ON total.LoyaltyProductGroupId = lpg.Id			
-                    WHERE lp.VenueId = @VenueId AND lp.IsArchived = 0 ";
+                    WHERE lp.VenueId = @VenueId AND lp.IsArchived = 0 AND lp.IsPublished = 1 ";
 
             var programs = connection.Query(getPrograms, new
             {

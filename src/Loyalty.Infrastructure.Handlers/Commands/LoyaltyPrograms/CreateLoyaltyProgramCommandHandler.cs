@@ -33,8 +33,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
             {
                 VenueId = request.VenueId,
                 Name = request.Name,
-                StartDate = request.StartedDate,
-                EndDate = request.EndedDate,
+                StartDate = request.StartedDate.ToUniversalTime(),
+                EndDate = request.EndedDate?.ToUniversalTime(),
                 Description = request.Description,
                 Url = request.Url
             };
