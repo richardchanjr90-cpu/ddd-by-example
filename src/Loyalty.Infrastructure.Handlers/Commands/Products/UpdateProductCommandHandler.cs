@@ -38,8 +38,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 request.Name, 
                 request.Icon, 
                 request.Price, 
-                request.ExternalUid,
-                request.ProductGroupId);
+                request.ExternalUid);
 
             var result = new CommandResult
             {

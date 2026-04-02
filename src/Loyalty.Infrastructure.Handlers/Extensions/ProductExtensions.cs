@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
@@ -19,6 +18,10 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 Id = item.Id,
                 Name = item.Name,
+                Price = item.Price,
+                IsAvailableForOrder = item.IsAvailableForOrder,
+                ImageUri = item.ImageUri?.ToString(),
+                ExternalUid = item.ExternalUid,
                 Icon = item.Icon,
                 ProductGroupId = item.ProductGroupId
             };

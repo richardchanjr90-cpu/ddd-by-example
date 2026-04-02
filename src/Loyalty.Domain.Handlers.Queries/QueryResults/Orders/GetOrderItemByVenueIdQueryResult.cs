@@ -15,6 +15,6 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Orders
         public string ProductName { get; set; }
 
         [JsonPropertyName("imageUrl")]
-        public Uri ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

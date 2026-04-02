@@ -16,7 +16,7 @@ namespace Loyalty.Core.Entities
         public Product(
             string name,
             ProductIconType? icon,
-            Uri imageUri,
+            string imageUri,
             decimal price,
             string externalUid,
             bool isArchived,
@@ -51,7 +51,7 @@ namespace Loyalty.Core.Entities
 
         public ProductIconType? Icon { get; private set; }
 
-        public Uri ImageUri { get; private set; }
+        public string ImageUri { get; private set; }
 
         public decimal Price { get; private set; }
 
@@ -71,14 +71,12 @@ namespace Loyalty.Core.Entities
             string name,
             ProductIconType? icon,
             decimal price,
-            string externalUid,
-            long productGroupId)
+            string externalUid)
         {
             Name = name;
             Icon = icon;
             Price = price;
             ExternalUid = externalUid;
-            ProductGroupId = productGroupId;
 
             CheckPrice();
         }
@@ -116,7 +114,7 @@ namespace Loyalty.Core.Entities
 
             if (!String.IsNullOrEmpty(imageUrl))
             {
-                ImageUri = new Uri(imageUrl);
+                ImageUri = imageUrl;
             }
         }
 

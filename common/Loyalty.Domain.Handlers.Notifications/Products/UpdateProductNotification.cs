@@ -10,7 +10,7 @@ namespace Loyalty.Domain.Handlers.Notifications.Products
 
         public ProductGroupIconType GroupIcon { get; set; }
 
-        public Uri ImageUri { get; set; }
+        public string ImageUri { get; set; }
 
         public decimal Price { get; set; }
 

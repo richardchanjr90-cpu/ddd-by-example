@@ -29,8 +29,7 @@ namespace LoyaltyProgram.Http.Product
         [FunctionName("ProductGetFunction")]
         public async Task<IActionResult> Run(
             long id,
-            long groupId,
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "productGroups/{groupId}/products/{id}")]
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products/{id}")]
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)

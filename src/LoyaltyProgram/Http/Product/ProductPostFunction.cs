@@ -29,8 +29,7 @@ namespace LoyaltyProgram.Http.Product
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("ProductPostFunction")]
         public async Task<IActionResult> Run(
-            long groupId,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productGroups/{groupId}/products")]
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "products")]
             [RequestBodyType(typeof(CreateProductViewModel), "CreateProductViewModel")] CreateProductViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
@@ -39,7 +38,7 @@ namespace LoyaltyProgram.Http.Product
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.Create(model, groupId));
+                return new OkObjectResult(await service.Create(model));
             });
         }
     }

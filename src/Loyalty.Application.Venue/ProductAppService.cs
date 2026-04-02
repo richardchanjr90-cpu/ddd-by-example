@@ -44,20 +44,18 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<GetProductViewModel>>(result.Result);
         }
 
-        public async Task<ICommandResult> Create(CreateProductViewModel model, long groupId)
+        public async Task<ICommandResult> Create(CreateProductViewModel model)
         {
             new CreateProductValidator().ValidateAndThrow(model);
             var command = mapper.Map<CreateProductCommand>(model);
-            command.ProductGroupId = groupId;
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(UpdateProductViewModel model, long groupId)
+        public async Task<ICommandResult> Update(UpdateProductViewModel model)
         {
             new UpdateProductValidator().ValidateAndThrow(model);
             var command = mapper.Map<UpdateProductCommand>(model);
-            command.ProductGroupId = groupId;
 
             return await Mediator.Send(command);
         }

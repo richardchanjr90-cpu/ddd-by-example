@@ -4,6 +4,9 @@ namespace Loyalty.Application.ViewModels.Product
 {
     public class CreateProductViewModel
     {
+        [JsonPropertyName("productGroupId")]
+        public long ProductGroupId { get; set; }
+
         [JsonPropertyName("price")]
         public decimal Price { get; set; }
 

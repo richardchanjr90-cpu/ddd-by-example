@@ -15,10 +15,9 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 throw new ArgumentNullException(nameof(item));
             }
 
-            if (item.Products == null)
-            {
-                throw new ArgumentNullException(nameof(item.Products));
-            }
+            bool isGroupSelected = item.Products != null && 
+                                   item.Products.Count > 0 
+                                   && item.Products.All(x => x.IsAvailableForOrder);
 
             var result = new GetProductGroupByIdQueryResult
             {
@@ -26,7 +25,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Icon = item.Icon,
                 Name = item.Name,
                 VenueId = item.VenueId,
-                IsAvailableForOrder = item.Products.All(x => x.IsAvailableForOrder),
+                IsAvailableForOrder = isGroupSelected, 
                 Products = item.Products?.ToList().ToResults()
             };
 

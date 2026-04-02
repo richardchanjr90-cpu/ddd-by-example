@@ -31,7 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
         {
             List<ProductGroup> groups;
             var userId = request.UserId;
-
+            //todo: rewrite to single query
             const string getItems = @"SELECT pg.* FROM 
                     loyalty.ProductGroup pg 
                     JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId

@@ -12,8 +12,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Products
 
         public ProductIconType? Icon { get; set; }
 
-        public long ProductGroupId { get; set; }
-
         public decimal Price { get; set; }
 
         public string ExternalUid { get; set; }
