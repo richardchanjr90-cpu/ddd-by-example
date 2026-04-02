@@ -1,5 +1,8 @@
+using System;
+using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
+using Loyalty.Application.Storage.Dto;
 using Loyalty.Common.Shared.Extensions;
 using LoyaltyClient.Domain.Handlers.Notifications.Code;
 using LoyaltyClient.Domain.Handlers.Notifications.Orders;
@@ -20,9 +23,10 @@ namespace LoyaltyProgram.ServiceBus
         }
 
         [FunctionName("ClientEventsFunction")]
-        public void Run(
-            [ServiceBusTrigger("%ServiceBusClientsTopicName%", "venues", Connection = "ServiceBusConnectionString")]
-            Message message,
+        public async Task Run(
+            [ServiceBusTrigger("%ServiceBusClientsTopicName%", "venues", Connection = "ServiceBusConnectionString")] Message message,
+            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<NewOrderDto> newOrders,
+            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<OrderUpdatedDto> orders,
             ILogger log)
         {
             log.LogInformation($"{nameof(ClientEventsFunction)} was triggered.");
@@ -30,11 +34,15 @@ namespace LoyaltyProgram.ServiceBus
             switch (message.ContentType)
             {
                 case nameof(CodeGeneratedNotification):
-                    ProcessClientCode(message.Deserialize<CodeGeneratedNotification>());
+                    await ProcessClientCode(message.Deserialize<CodeGeneratedNotification>());
                     break;
 
                 case nameof(CreateOrderNotification):
-                    CreateOrder(message.Deserialize<CreateOrderNotification>());
+                    await CreateOrder(message.Deserialize<CreateOrderNotification>(), newOrders);
+                    break;
+
+                case nameof(PatchOrderNotification):
+                    await PatchOrder(message.Deserialize<PatchOrderNotification>(), orders);
                     break;
 
                 default:
@@ -43,7 +51,7 @@ namespace LoyaltyProgram.ServiceBus
             }
         }
 
-        private void ProcessClientCode(CodeGeneratedNotification deserialize)
+        private async Task ProcessClientCode(CodeGeneratedNotification deserialize)
         {
             var mergeSql = @"MERGE [loyalty].UserCode
                                 USING ( 
@@ -57,17 +65,17 @@ namespace LoyaltyProgram.ServiceBus
                                    VALUES (foo.userId, foo.codeValue, foo.expirationDate)
                                 ; --A MERGE statement must be terminated by a semi-colon (;).";
 
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 connection.Open();
-                var isSuccess = connection.Execute(mergeSql, deserialize);
+                var isSuccess = await connection.ExecuteAsync(mergeSql, deserialize);
                 scope.Complete();
             }
         }
 
-        private void CreateOrder(CreateOrderNotification deserialize)
+        private async Task CreateOrder(CreateOrderNotification deserialize, ICollector<NewOrderDto> newOrders)
         {
-            var inserOrderSql = @"INSERT INTO loyalty.[Order] 
+            const string inserOrderSql = @"INSERT INTO loyalty.[Order] 
                                    (Id, 
                                     CreatedBy, 
                                     ModifiedBy,
@@ -88,18 +96,51 @@ namespace LoyaltyProgram.ServiceBus
                                     @Status, 
                                     @PickUpTime, 
                                     @Comment) ";
-
-            var insertOrderItemsSql = @"INSERT INTO loyalty.[OrderItem] (Id, ProductId, OrderId, Amount)
+            const string insertOrderItemsSql = @"INSERT INTO loyalty.[OrderItem] (Id, ProductId, OrderId, Amount)
                                         VALUES (@Id, @ProductId, @OrderId, @Amount)";
 
             var orderItems = deserialize.OrderItems;
 
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 connection.Open();
 
-                var isSuccess = connection.Execute(inserOrderSql, deserialize);
-                var isSuccess2 = connection.Execute(insertOrderItemsSql, orderItems);
+                var isSuccess = await connection.ExecuteAsync(inserOrderSql, deserialize);
+                var isSuccess2 = await connection.ExecuteAsync(insertOrderItemsSql, orderItems);
+
+                if (isSuccess > 0 && isSuccess2 > 0)
+                {
+                    newOrders.Add(new NewOrderDto
+                    {
+                        Date = DateTime.Now,
+                        VenueId = deserialize.VenueId
+                    });
+                }
+
+                scope.Complete();
+            }
+        }
+
+        private async Task PatchOrder(PatchOrderNotification deserialize, ICollector<OrderUpdatedDto> orders)
+        {
+            var updateOrderSql = "UPDATE loyalty.[Order] SET [Status] = @Status WHERE Id = @Id";
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                connection.Open();
+
+                var isSuccess = await connection.ExecuteAsync(updateOrderSql, deserialize);
+
+                if (isSuccess > 0)
+                {
+                    orders.Add(new OrderUpdatedDto
+                    {
+                        Id = deserialize.Id,
+                        VenueId = deserialize.VenueId,
+                        UserId = deserialize.UserId,
+                        UpdatedStatus = deserialize.UpdatedStatus
+                    });
+                }
 
                 scope.Complete();
             }
