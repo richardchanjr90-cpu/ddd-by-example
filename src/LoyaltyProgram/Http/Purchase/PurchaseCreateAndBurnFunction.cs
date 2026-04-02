@@ -41,6 +41,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
+                token.Principal.IsInRoleAndThrow(venueId);
                 var result = await service.CreateAndBurn(model, venueId, token.Principal.GetUserId());
 
                 if (result.Success)
