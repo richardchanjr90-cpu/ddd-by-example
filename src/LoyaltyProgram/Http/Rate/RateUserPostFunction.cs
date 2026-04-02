@@ -5,6 +5,7 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Rate;
+using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -15,9 +16,9 @@ namespace LoyaltyProgram.Http.Rate
 {
     public class RateUserPostFunction
     {
-        private readonly PurchaseAppService service;
+        private readonly RateUserAppService service;
 
-        public RateUserPostFunction(PurchaseAppService service)
+        public RateUserPostFunction(RateUserAppService service)
         {
             this.service = service;
         }
@@ -34,7 +35,12 @@ namespace LoyaltyProgram.Http.Rate
             ILogger log)
         {
             log.LogInformation($"{nameof(RateUserPostFunction)} was triggered.");
-            throw new NotImplementedException();
+
+            return await HandlerWrapper.WrapAsync(log, token, async () =>
+            {
+                var result = await service.Purchase(model);
+                return new OkObjectResult(result);
+            });
         }
     }
 }
