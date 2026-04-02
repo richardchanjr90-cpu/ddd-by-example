@@ -58,10 +58,10 @@ namespace LoyaltyProgram.Http.Product
                 var newGuid = Guid.NewGuid();
                 var image = await imageService.GetImageOrNullAsync(req);
 
-                imageService.ValidateProductPhoto(image);
-
-                if (image != null)
+                if (image != null && image.Length != 0)
                 {
+                    imageService.ValidateProductPhoto(image);
+
                     using (var stream = new MemoryStream())
                     using (var smStream = new MemoryStream())
                     {
@@ -83,6 +83,12 @@ namespace LoyaltyProgram.Http.Product
                             id, 
                             blob.Uri.ToString());
                     }
+                }
+                else
+                {
+                    await service.PatchImages(
+                        id,
+                        null);
                 }
 
                 return new NoContentResult();

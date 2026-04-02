@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
@@ -47,7 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     JOIN loyalty.LoyaltyGroupRule lgr ON lgr.LoyaltyProductGroupId = lpg.Id
                     LEFT JOIN loyalty.ProductGroup pg ON pg.Id = lpg.ProductGroupId
 					LEFT JOIN loyalty.Purchase pur ON pur.LoyaltyProductGroupId = lpg.Id
-                    LEFT JOIN loyalty.Product pr ON pr.Id = pur.ProductId
+                    LEFT JOIN loyalty.Product pr ON pr.ProductGroupId = pg.Id
 					LEFT JOIN (SELECT LoyaltyProductGroupId, 
 					COALESCE(SUM([Value]), 0) as total 
 					FROM loyalty.Purchase
@@ -84,11 +85,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             LoyaltyProductGroupId = z.LgroupId,
                             Products = programs
                                 .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
-                                .DefaultIfEmpty(null)
+                                //.DefaultIfEmpty(null)
                                 .Select(d => new ProductPurchaseResult
                                 {
-                                    Price = d?.Price,
-                                    Icon = d?.Icon,
+                                    Price = d.Price,
+                                    Icon = (ProductIconType) d?.Icon,
                                     ImageUrl = d?.ImageUri,
                                     Name = d?.ProductName,
                                     Id = d?.ProductId
