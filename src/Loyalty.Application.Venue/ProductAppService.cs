@@ -68,13 +68,12 @@ namespace Loyalty.Application.Venue
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> PatchImages(long id, string imageUrl, string smallImageUrl)
+        public async Task<ICommandResult> PatchImages(long id, string imageUrl)
         {
             return await Mediator.Send(new PatchProductImageCommand
             {
                 Id = id,
-                ImageUri = imageUrl,
-                ImageUriSmall = smallImageUrl
+                ImageUri = imageUrl
             });
         }
 

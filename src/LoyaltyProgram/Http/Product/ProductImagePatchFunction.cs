@@ -5,17 +5,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using FluentValidation;
-using Loyalty.Application.Storage.Dto;
-using Loyalty.Application.Storage.Dto.Validators;
-using Loyalty.Application.Storage.Dto.Validators.Interface;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
-using Loyalty.Domain.Contracts;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
-using LoyaltyProgram.Http.UserProfile;
 using LoyaltyProgram.Http.VenueImages;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +17,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.Product
@@ -88,8 +81,7 @@ namespace LoyaltyProgram.Http.Product
 
                         await service.PatchImages(
                             id, 
-                            blob.Uri.ToString(), 
-                            smBlob.Uri.ToString());
+                            blob.Uri.ToString());
                     }
                 }
 

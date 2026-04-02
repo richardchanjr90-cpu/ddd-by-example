@@ -106,6 +106,20 @@ namespace Loyalty.Core.Entities
             }
         }
 
+        public void SetImage(string imageUrl)
+        {
+            if (IsAvailableForOrder && String.IsNullOrEmpty(imageUrl))
+            {
+                HideFromCustomer();
+                ImageUri = null;
+            }
+
+            if (!String.IsNullOrEmpty(imageUrl))
+            {
+                ImageUri = new Uri(imageUrl);
+            }
+        }
+
         public void HideFromCustomer()
         {
             IsAvailableForOrder = false;

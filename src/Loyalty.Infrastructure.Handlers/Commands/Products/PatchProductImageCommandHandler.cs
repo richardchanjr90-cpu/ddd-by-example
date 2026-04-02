@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Contracts;
@@ -13,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
 {
     public class PatchProductImageCommandHandler
-        : BaseHandler,  IRequestHandler<PatchProductCommand, ICommandResult>
+        : BaseHandler,  IRequestHandler<PatchProductImageCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
@@ -23,22 +24,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(PatchProductCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(PatchProductImageCommand request, CancellationToken cancellationToken)
         {
             var product = await Context.Products
                 .Include(x => x.ProductGroup)
                 .Where(x => x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
-            if (request.IsAvailableForOrder)
-            {
-                product.ShowToCustomer();
-            }
-            else
-            {
-                product.HideFromCustomer();
-            }
-
+            product.SetImage(request.ImageUri);
+            
             var result = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
@@ -48,10 +42,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
             if (result.Success)
             {
                 await mediator.Publish(
-                    new PatchProductNotification
+                    new PatchProductImageNotification
                     {
                         Id = product.Id,
-                        IsAvailableForOrder = product.IsAvailableForOrder,
+                        ImageUri = request.ImageUri != null ? new Uri(request.ImageUri) : null,
                     }, cancellationToken);
             }
 

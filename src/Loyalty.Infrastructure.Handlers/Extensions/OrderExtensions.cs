@@ -42,6 +42,50 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             return result;
         }
 
+        public static GetOrderByUserIdQueryResult ToUserResult(this Order item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            if (item.OrderItems == null)
+            {
+                throw new ArgumentNullException(nameof(item.OrderItems));
+            }
+
+            var result = new GetOrderByUserIdQueryResult
+            {
+                PlacedDate = item.PlacedDate,
+                Status = item.Status,
+                Comment = item.Comment,
+                Id = item.Id,
+                PickUpTime = item.PickUpTime,
+                OrderItems = item.OrderItems.Select(x => new GetOrderItemByVenueIdQueryResult
+                {
+                    ProductId = x.ProductId,
+                    Amount = x.Amount,
+                    ImageUrl = x.Product.ImageUri,
+                    ProductName = x.Product.Name
+                }).ToList()
+            };
+
+            return result;
+        }
+
+        public static List<GetOrderByUserIdQueryResult> ToUserResults(this List<Order> items)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            var results = new List<GetOrderByUserIdQueryResult>();
+            items.ForEach(x => results.Add(x.ToUserResult()));
+
+            return results;
+        }
+
         public static List<GetOrderByVenueIdQueryResult> ToResults(this List<Order> items)
         {
             if (items == null)

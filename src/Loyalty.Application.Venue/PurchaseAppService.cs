@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using FluentValidation.TestHelper;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
+using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using MediatR;
 using MediatR.Extensions.UnitOfWork;
@@ -29,21 +28,28 @@ namespace Loyalty.Application.Venue
 
         public async Task<ClientInfoPurchasesViewModel> GetActivePurchases(string userId, long venueId)
         {
-            var result = await Mediator.Send(new GetClientActivePurchasesQuery
+            var purchases = await Mediator.Send(new GetClientActivePurchasesQuery
             {
                 UserId = userId,
                 VenueId = venueId
             });
 
-            var purchases = mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
+            var orders = await Mediator.Send(new GetOrdersByUserIdQuery
+            {
+                UserId = userId,
+                VenueId = venueId
+            });
+
+            var result = mapper.Map<List<ActivePurchasesViewModel>>(purchases.Result);
 
             var clientInfo = await clientService.Get(userId);
-            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases);
+            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(result);
 
-            return new ClientInfoPurchasesViewModel()
+            return new ClientInfoPurchasesViewModel
             {
                 ActivePurchases = purchasesModels,
-                ClientInfo = clientInfo
+                ClientInfo = clientInfo,
+                Orders =  orders.Orders
             };
         }
 

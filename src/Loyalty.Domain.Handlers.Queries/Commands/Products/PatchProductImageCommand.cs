@@ -8,7 +8,5 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Products
         public long Id { get; set; }
 
         public string ImageUri { get; set; }
-
-        public string ImageUriSmall { get; set; }
     }
 }

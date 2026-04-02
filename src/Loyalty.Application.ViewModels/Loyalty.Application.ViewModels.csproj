@@ -12,4 +12,8 @@
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
+  </ItemGroup>
+
 </Project>

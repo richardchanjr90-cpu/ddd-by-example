@@ -5,6 +5,7 @@ using AutoMapper;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
+using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using MediatR;
 
@@ -44,13 +45,20 @@ namespace Loyalty.Application.Venue
                     VenueId = venueId
                 });
 
+                var orders = await Mediator.Send(new GetOrdersByUserIdQuery
+                {
+                    UserId = item.UserId,
+                    VenueId = venueId
+                });
+
                 var clientInfo = await clientService.Get(item.UserId);
                 var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases.Result);
 
-                clientPurchases = new ClientInfoPurchasesViewModel()
+                clientPurchases = new ClientInfoPurchasesViewModel
                 {
                     ActivePurchases = purchasesModels,
-                    ClientInfo = clientInfo
+                    ClientInfo = clientInfo,
+                    Orders = orders.Orders
                 };
             }
 

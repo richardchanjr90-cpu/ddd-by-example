@@ -35,6 +35,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     lpg.[Name] as LgroupName,
                     pr.Id as ProductId,
                     pr.[Name] as ProductName,
+                    pr.[Icon] as Icon,
+                    pr.[ImageUri] as ImageUri,
+                    pr.[Price] as Price,
                     lgr.[Rule] as [Rule],
                     lgr.RuleType as RuleType,
                     lgr.RuleVersion as RuleVersion,
@@ -54,7 +57,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 
             var programs = connection.Query(getPrograms, new
             {
-                request.VenueId, request.UserId
+                request.VenueId, 
+                request.UserId
             }).ToList();
 
             var programsDistinct = programs
@@ -78,14 +82,17 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             RuleType = z.RuleType,
                             GroupName = z.LgroupName,
                             LoyaltyProductGroupId = z.LgroupId,
-                            //Products = programs
-                            //    .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
-                            //    .DefaultIfEmpty(null)
-                            //    .Select(d => new ProductPurchaseResult
-                            //    {
-                            //        Name = d?.ProductName,
-                            //        Id = d?.ProductId
-                            //    }).ToList()
+                            Products = programs
+                                .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
+                                .DefaultIfEmpty(null)
+                                .Select(d => new ProductPurchaseResult
+                                {
+                                    Price = d?.Price,
+                                    Icon = d?.Icon,
+                                    ImageUrl = d?.ImageUri,
+                                    Name = d?.ProductName,
+                                    Id = d?.ProductId
+                                }).ToList()
                         }).ToList()
                 })
                 .ToList();
