@@ -36,21 +36,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             }
 
             worker.Name = request.Name;
-            var venueWorkerNew = worker.Venues.FirstOrDefault(x => x.VenueId == request.VenueId);
 
-            if (venueWorkerNew == null)
-            {
-                var venueWorker = new VenueWorker
-                {
-                    VenueId = request.VenueId, 
-                    Worker = worker, 
-                    Role = request.Role,
-                    PositionName = request.PositionName,
-                };
+            var venueWorkerNew = worker.Venues
+                .FirstOrDefault(x => x.VenueId == request.VenueId);
 
-                Context.VenueWorkers.Add(venueWorker);
-            }
-            else
+            if (venueWorkerNew != null)
             {
                 venueWorkerNew.Role = request.Role;
                 venueWorkerNew.PositionName = request.PositionName;

@@ -6,7 +6,6 @@ using Dapper;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
-using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -28,7 +27,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             this.mediator = mediator;
         }
 
-        public Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
         {
             var ids = Principal.GetVenueIds();
             var id = request.Id;
@@ -37,10 +36,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
 
             ICommandResult result = null;
-            using (var scope = new TransactionScope())
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                connection.Open();
-                var number = connection.Execute(deleteSql, new
+                await connection.OpenAsync(cancellationToken);
+                var number = await connection.ExecuteAsync(deleteSql, new
                 {
                     id,
                     ids
@@ -48,7 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
                 if (number > 0)
                 {
-                    var number2 = connection.Execute(updateSql, new
+                    var number2 = await connection.ExecuteAsync(updateSql, new
                     {
                         id
                     });

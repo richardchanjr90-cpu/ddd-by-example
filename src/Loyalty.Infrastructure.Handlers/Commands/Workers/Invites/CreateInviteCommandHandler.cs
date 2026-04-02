@@ -30,7 +30,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
                 throw new LoyaltyValidationException("Impossible to invite a user with the role that is >= current user's.", null, ErrorCode.IMPOSSIBLE_TO_CREATE_WITH_ROLE);
             }
 
-            var dbWorker = await Context.Workers
+            var dbWorker = await Context.Workers.
+                IgnoreQueryFilters()
                 .Include(x => x.Venues)
                 .Where(x => x.Phone == request.Phone)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -47,6 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
                 {
                     throw new LoyaltyValidationException("Already invited to this venue", null, ErrorCode.DUPLICATED_ENTITY);
                 }
+
                 worker = dbWorker;
             }
 
@@ -58,7 +60,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
                 PositionName = request.PositionName,
             };
 
-            Context.VenueWorkers.Add(venueWorker);
+            await Context.VenueWorkers.AddAsync(venueWorker, cancellationToken);
 
             return new CommandResult
             {
