@@ -52,13 +52,11 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
         }
 
-        public async Task<List<UpdateVenueViewModel>> GetByUser()
+        public async Task<List<UpdateVenueViewModel>> GetAllVenuesForAdmin()
         {
-            var query = new GetVenuesByUserIdQuery
-            {
-            };
-
+            var query = new GetVenuesForAdminQuery();
             var result = await Mediator.Send(query);
+
             return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
         }
 

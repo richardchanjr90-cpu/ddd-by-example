@@ -35,6 +35,13 @@ namespace Loyalty.Common.Shared.Extensions
             return claim;
         }
 
+        public static bool IsAdmin(this ClaimsPrincipal principal)
+        {
+            var phone = principal?.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
+            var allowedPhones = Environment.GetEnvironmentVariable("AdminPhones");
+            return !String.IsNullOrEmpty(allowedPhones) && !String.IsNullOrEmpty(phone) && allowedPhones.Contains(phone);
+        }
+
         public static string GetEmailOrNull(this ClaimsPrincipal principal)
         {
             var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;

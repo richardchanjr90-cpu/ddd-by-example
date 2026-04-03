@@ -4,8 +4,7 @@ using MediatR;
 
 namespace Loyalty.Domain.Handlers.Queries.Queries.Venue
 {
-    public class GetVenuesByUserIdQuery : IRequest<GetVenuesByUserIdQueryResult>
+    public class GetVenuesForAdminQuery : IRequest<GetVenuesByUserIdQueryResult>
     {
-        public string UserId { get; set; }
     }
 }

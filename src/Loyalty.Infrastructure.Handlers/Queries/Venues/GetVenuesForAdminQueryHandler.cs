@@ -15,22 +15,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
-    public class GetVenuesByUserIdQueryHandler : BaseHandler, IGetVenuesByUserIdQueryHandler
+    public class GetVenuesForAdminQueryHandler : BaseHandler, IGetVenuesByUserIdQueryHandler
     {
-        public GetVenuesByUserIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor)
+        public GetVenuesForAdminQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
         }
 
-        public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesByUserIdQuery request,
+        public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesForAdminQuery request,
             CancellationToken cancellationToken)
         {
-            var result = await Context.Venues.FirstOrDefaultAsync(cancellationToken);
+            var result = await Context.Venues
+                .IgnoreQueryFilters()
+                .ToListAsync(cancellationToken);
 
             var results = new List<Venue>();
             if (result != null)
             {
-                results.Add(result);
+                results.AddRange(result);
             }
 
             return new GetVenuesByUserIdQueryResult

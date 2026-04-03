@@ -2,12 +2,11 @@
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
-using AzureExtensions.FunctionToken.FunctionBinding.Enums;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
+using LoyaltyProgram.Http.Venue;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +14,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Venue
+namespace LoyaltyProgram.Http.Admin
 {
     public class VenueApprovePatchFunction
     {
@@ -31,18 +30,25 @@ namespace LoyaltyProgram.Http.Venue
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueApprovePatchFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/approve/")]
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "control/admins/venues/{id}/approve/")]
             HttpRequest req,
             long id,
-            [FunctionToken(AuthLevel.AllowAnonymous)] FunctionTokenResult token,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                req.ValidateSecret();
-                return new OkObjectResult(await service.Approve(id));
+                var isAdmin = token.Principal.IsAdmin();
+
+                if (isAdmin)
+                {
+                    req.ValidateSecret();
+                    return new OkObjectResult(await service.Approve(id));
+                }
+
+                return new NoContentResult();
             });
         }
     }

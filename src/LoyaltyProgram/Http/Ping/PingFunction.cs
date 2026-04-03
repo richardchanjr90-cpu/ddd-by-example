@@ -1,8 +1,6 @@
-using System;
-using System.Net;
+using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
-using LoyaltyProgram.Http.Venue;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -27,9 +25,9 @@ namespace LoyaltyProgram.Http.Ping
         {
             log.LogInformation($"{nameof(PingFunction)} was triggered.");
 
-            var result = await service.GetByUser();
+            var result = await service.GetAllVenuesForAdmin();
 
-            return new OkObjectResult(result);
+            return new OkObjectResult(result.FirstOrDefault());
         }
     }
 }

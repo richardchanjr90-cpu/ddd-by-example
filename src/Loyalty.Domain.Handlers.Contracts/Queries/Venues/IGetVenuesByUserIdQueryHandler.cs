@@ -5,7 +5,7 @@ using MediatR;
 namespace Loyalty.Domain.Handlers.Contracts.Queries.Venues
 {
     public interface
-        IGetVenuesByUserIdQueryHandler : IRequestHandler<GetVenuesByUserIdQuery, GetVenuesByUserIdQueryResult>
+        IGetVenuesByUserIdQueryHandler : IRequestHandler<GetVenuesForAdminQuery, GetVenuesByUserIdQueryResult>
     {
     }
 }
