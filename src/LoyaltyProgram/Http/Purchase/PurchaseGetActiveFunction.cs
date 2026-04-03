@@ -5,6 +5,7 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,7 @@ namespace LoyaltyProgram.Http.Purchase
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
+                token.Principal.IsInRoleAndThrow(venueId);
                 return new OkObjectResult(await service.GetActivePurchases(uuid, venueId));
             });
         }

@@ -98,11 +98,12 @@ namespace Loyalty.Application.Venue
             return result2 ?? commandResult;
         }
 
-        public async Task<ICommandResult> Archive(long id, string userId)
+        public async Task<ICommandResult> Archive(long venueId, long id, string userId)
         {
             var command = new ArchiveWorkerCommand
             {
                 Id = id,
+                VenueId = venueId,
                 UserId = userId
             };
 

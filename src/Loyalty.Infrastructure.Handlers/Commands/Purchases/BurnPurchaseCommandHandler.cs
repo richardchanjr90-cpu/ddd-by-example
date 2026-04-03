@@ -57,7 +57,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 
         public async Task<INotificationResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
         {
-            connection.Open();
+            await connection.OpenAsync(cancellationToken);
             var amount = connection.ExecuteScalar<int>(SelectProductsSql, new
             {
                 lpgId = request.LoyaltyProductGroupId,
@@ -69,8 +69,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 throw new LoyaltyValidationException("Amount of points is lower than requested", ErrorCode.INCORRECT_AMOUNT_OF_POINTS);
             }
 
-            var date = DateTime.Now;
-            var affectedRows = connection.Execute(InsertSQL, new
+            var date = DateTime.Now.ToUniversalTime();
+            var affectedRows = await connection.ExecuteAsync(InsertSQL, new
             {
                 CreatedBy = Principal.GetUserId(),
                 ModifiedBy = Principal.GetUserId(),

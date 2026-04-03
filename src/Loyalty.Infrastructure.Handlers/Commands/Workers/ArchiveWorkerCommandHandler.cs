@@ -5,6 +5,7 @@ using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
+using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -26,31 +27,29 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             this.mediator = mediator;
         }
 
-        public Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
         {
-            var ids = Principal.GetVenueIds();
-            var id = request.Id;
+            var role = Principal.GetRole();
+            var venueId = request.VenueId;
 
-            var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
-            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
+            var id = request.Id;
+            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId = @venueId AND [Role] < @role";
 
             ICommandResult result = null;
-            using (var scope = new TransactionScope())
+
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                connection.Open();
-                var number = connection.Execute(deleteSql, new
+                await connection.OpenAsync(cancellationToken);
+
+                var number = await connection.ExecuteAsync(deleteSql, new
                 {
                     id,
-                    ids
+                    venueId,
+                    role
                 });
 
                 if (number > 0)
                 {
-                    var number2 = connection.Execute(updateSql, new
-                    {
-                        id
-                    });
-
                     scope.Complete();
 
                     result = new CommandResult
@@ -67,8 +66,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     };
                 }
 
-                //todo: implement archivation notification
-                return Task.FromResult(result);
+                return result;
             }
         }
     }
