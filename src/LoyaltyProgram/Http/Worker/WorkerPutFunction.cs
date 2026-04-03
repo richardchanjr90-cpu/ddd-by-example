@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
-using AzureExtensions.FunctionToken.FunctionBinding.Enums;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -15,13 +14,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Venue
+namespace LoyaltyProgram.Http.Worker
 {
-    public class VenueApprovePatchFunction
+    public class WorkerPutFunction
     {
-        private readonly LoyaltyVenueAppService service;
+        private readonly WorkerAppService service;
 
-        public VenueApprovePatchFunction(LoyaltyVenueAppService service)
+        public WorkerPutFunction(WorkerAppService service)
         {
             this.service = service;
         }
@@ -29,20 +28,22 @@ namespace LoyaltyProgram.Http.Venue
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("VenueApprovePatchFunction")]
+        [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/approve/")]
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
+            [RequestBodyType(typeof(InviteViewModel), "InviteViewModel")] InviteViewModel model,
             HttpRequest req,
-            long id,
-            [FunctionToken(AuthLevel.AllowAnonymous)] FunctionTokenResult token,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
+            log.LogInformation($"{nameof(WorkerPutFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                req.ValidateSecret();
-                return new OkObjectResult(await service.Approve(id));
+                model = await req.Cast<InviteViewModel>();
+                var result = await service.UpdateInvited(model);
+
+                return new OkObjectResult(result);
             });
         }
     }

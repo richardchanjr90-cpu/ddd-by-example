@@ -5,7 +5,6 @@ using System.Transactions;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;

@@ -31,18 +31,25 @@ namespace LoyaltyProgram.Http.Venue
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueRejectPatchFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{id}/reject/")]
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "control/admins/venues/{id}/reject/")]
             HttpRequest req,
             long id,
-            [FunctionToken(AuthLevel.AllowAnonymous)] FunctionTokenResult token,
+            [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
             log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                req.ValidateSecret();
-                return new OkObjectResult(await service.Reject(id));
+                var isAdmin = token.Principal.IsAdmin();
+
+                if (isAdmin)
+                {
+                    req.ValidateSecret();
+                    return new OkObjectResult(await service.Reject(id));
+                }
+
+                return new NoContentResult();
             });
         }
     }

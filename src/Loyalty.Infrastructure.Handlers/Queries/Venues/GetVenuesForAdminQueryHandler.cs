@@ -14,14 +14,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
     public class GetVenuesByUserIdQueryHandler 
-        : BaseHandler, IRequestHandler<GetVenuesByUserIdQuery, GetVenuesByUserIdQueryResult>
+        : BaseHandler, IRequestHandler<GetVenuesForAdminQuery, GetVenuesByUserIdQueryResult>
     {
         public GetVenuesByUserIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
         }
 
-        public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesByUserIdQuery request,
+        public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesForAdminQuery request,
             CancellationToken cancellationToken)
         {
             var result = await Context.Venues.FirstOrDefaultAsync(cancellationToken);
