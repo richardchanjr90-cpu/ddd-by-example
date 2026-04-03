@@ -7,6 +7,8 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public string UserId { get; set; }
 
+        public long VenueId { get; set; }
+
         public long Id { get; set; }
     }
 }

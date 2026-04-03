@@ -29,30 +29,33 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
         public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
         {
-            var ids = Principal.GetVenueIds();
+            var role = Principal.GetRole();
+            var venueId = request.VenueId;
+
             var id = request.Id;
 
-            var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
-            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId in @ids";
+            //var updateSql = "UPDATE loyalty.Worker SET [IsArchived] = 1 WHERE Id = @id";
+            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId = @venueId AND [Role] < @role";
 
             ICommandResult result = null;
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await connection.OpenAsync(cancellationToken);
+
                 var number = await connection.ExecuteAsync(deleteSql, new
                 {
                     id,
-                    ids
+                    venueId,
+                    role
                 });
 
                 if (number > 0)
                 {
-                    var number2 = await connection.ExecuteAsync(updateSql, new
-                    {
-                        id
-                    });
-
+                    //var number2 = await connection.ExecuteAsync(updateSql, new
+                    //{
+                    //    id
+                    //});
                     scope.Complete();
 
                     result = new CommandResult
@@ -69,8 +72,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     };
                 }
 
-                //todo: implement archivation notification
-                return Task.FromResult(result);
+                return result;
             }
         }
     }
