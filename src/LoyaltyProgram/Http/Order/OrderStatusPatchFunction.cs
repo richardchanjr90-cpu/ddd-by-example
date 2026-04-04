@@ -37,7 +37,7 @@ namespace LoyaltyProgram.Http.Order
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager), nameof(VenueUserRole.Worker))] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(ProductPutFunction)} was triggered.");
+            log.LogInformation($"{nameof(OrderStatusPatchFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
