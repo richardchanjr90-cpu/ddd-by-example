@@ -23,7 +23,7 @@ namespace LoyaltyProgram.Http.Order
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetProductViewModel[]))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetAllOrdersByVenueIdQuery[]))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("OrderGetAllFunction")]

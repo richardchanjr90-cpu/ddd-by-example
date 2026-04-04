@@ -5,6 +5,7 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace LoyaltyProgram.Http.Order
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetProductViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetOrderByVenueIdQueryResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("OrderGetFunction")]
