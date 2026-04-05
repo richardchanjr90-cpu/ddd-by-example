@@ -122,6 +122,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
         private async Task AddClaimsAboutNewVenue(Worker worker)
         {
+            //todo: move to a firebase handler.
             var user = await FirebaseAuth.DefaultInstance.GetUserAsync(Principal.GetUserId());
             var claims = user.CustomClaims.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 

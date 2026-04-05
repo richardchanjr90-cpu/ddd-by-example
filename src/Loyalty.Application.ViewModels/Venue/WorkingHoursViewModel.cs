@@ -6,7 +6,7 @@ namespace Loyalty.Application.ViewModels.Venue
     public class WorkingHoursViewModel
     {
         [JsonPropertyName("day")]
-        public string Day { get; set; }
+        public int Day { get; set; }
 
         [JsonPropertyName("from")]
         public int? From { get; set; }

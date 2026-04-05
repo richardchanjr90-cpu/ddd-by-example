@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Loyalty.Application.ViewModels.ClientInfo;
 using Loyalty.Application.ViewModels.Location;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
-using Loyalty.Application.ViewModels.Orders;
 using Loyalty.Application.ViewModels.Product;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Purchase;
@@ -14,7 +14,6 @@ using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
-using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
@@ -114,7 +113,8 @@ namespace Loyalty.Application.AutoMapper
         private void MapVenue()
         {
             CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
-            CreateMap<WorkingHoursViewModel, GetVenueWorkingHoursQueryResult>();
+            CreateMap<WorkingHoursViewModel, WorkingHoursCommand>();
+
             CreateMap<LocationViewModel, CreateLocationCommand>();
             CreateMap<LocationViewModel, UpdateLocationCommand>();
 

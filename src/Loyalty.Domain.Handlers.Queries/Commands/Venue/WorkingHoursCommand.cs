@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
+namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 {
-    public class GetVenueWorkingHoursQueryResult
+    public class WorkingHoursCommand
     {
         public DayOfWeek Day { get; set; }
 

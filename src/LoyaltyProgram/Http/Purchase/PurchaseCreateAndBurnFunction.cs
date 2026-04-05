@@ -47,6 +47,7 @@ namespace LoyaltyProgram.Http.Purchase
                 if (result.Success)
                 {
                     var message = $"Вам было начислено {model.Purchase} баллов.";
+
                     queueItems.Add(new PurchaseNotificationDto()
                     {
                         Message = message,
