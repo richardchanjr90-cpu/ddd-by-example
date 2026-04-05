@@ -8,6 +8,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 
@@ -47,7 +48,7 @@ namespace Loyalty.Application.Venue
         {
             return await Mediator.Send(new PatchOrderCommand()
             {
-                Status = model.Status,
+                Status = (OrderStatus)model.Status,
                 OrderId = model.OrderId,
                 VenueId = venueId
             });

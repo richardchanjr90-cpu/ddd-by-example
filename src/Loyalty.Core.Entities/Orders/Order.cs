@@ -67,7 +67,7 @@ namespace Loyalty.Core.Entities.Orders
                 throw new LoyaltyValidationException("Invalid status", ErrorCode.ORDER_INVALID_STATE);
             }
 
-            Status |= newStatus;
+            Status = newStatus;
         }
     }
 }

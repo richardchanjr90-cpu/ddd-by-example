@@ -9,6 +9,6 @@ namespace Loyalty.Application.ViewModels.Orders
         public long OrderId { get; set; }
 
         [JsonPropertyName("status")]
-        public OrderStatus Status { get; set; }
+        public int Status { get; set; }
     }
 }
