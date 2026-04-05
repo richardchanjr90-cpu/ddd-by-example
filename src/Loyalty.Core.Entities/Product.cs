@@ -27,6 +27,7 @@ namespace Loyalty.Core.Entities
             Icon = icon;
             ImageUri = imageUri;
             Price = price;
+            Description = description;
             ExternalUid = externalUid;
             IsArchived = isArchived;
             ProductGroupId = productGroupId;
@@ -74,9 +75,11 @@ namespace Loyalty.Core.Entities
         public void UpdateProduct(
             string name,
             ProductIconType? icon,
+            string description,
             decimal price,
             string externalUid)
         {
+            Description = description;
             Name = name;
             Icon = icon;
             Price = price;

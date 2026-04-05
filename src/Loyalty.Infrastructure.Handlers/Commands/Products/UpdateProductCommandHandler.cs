@@ -37,6 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
             product?.UpdateProduct(
                 request.Name, 
                 request.Icon, 
+                request.Description,
                 request.Price, 
                 request.ExternalUid);
 
