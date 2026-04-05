@@ -21,12 +21,13 @@ namespace LoyaltyProgram.Storage
 
             string message = String.Empty;
 
-            if (data.UpdatedStatus == OrderStatus.DeclinedByCustomer)
+            if (data.UpdatedStatus == OrderStatus.DeclinedByCustomer
+            || data.UpdatedStatus == OrderStatus.ForceDeclinedByCustomer)
             {
                 message = "Клиент отменил свой заказ.";
             }
 
-            if (data.VenueId > 0)
+            if (data.VenueId > 0 && !String.IsNullOrEmpty(message))
             {
                 await output.AddAsync(new HubsMessage(message, Android, "platform:android", $"venueId:{data.VenueId}"));
                 await output.AddAsync(new HubsMessage(message, Apple, "platform:apple", $"venueId:{data.VenueId}"));
