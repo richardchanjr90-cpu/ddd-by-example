@@ -22,6 +22,9 @@ namespace Loyalty.Application.ViewModels.Product
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
         [JsonPropertyName("icon")]
         public int Icon { get; set; }
     }

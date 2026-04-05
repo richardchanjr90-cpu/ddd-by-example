@@ -26,6 +26,9 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Product
         [JsonPropertyName("externalUid")]
         public string ExternalUid { get; set; }
 
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
         [JsonPropertyName("imageUri")]
         public string ImageUri { get; set; }
     }

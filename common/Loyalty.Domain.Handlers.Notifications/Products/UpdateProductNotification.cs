@@ -12,12 +12,10 @@ namespace Loyalty.Domain.Handlers.Notifications.Products
         
         public string GroupName { get; set; }
 
-        public string ImageUri { get; set; }
-
         public decimal Price { get; set; }
 
-        public bool IsAvailable { get; set; }
-
         public string Name { get; set; }
+
+        public string Description { get; set; }
     }
 }

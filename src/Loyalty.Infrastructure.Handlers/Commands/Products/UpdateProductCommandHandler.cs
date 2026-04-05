@@ -52,11 +52,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                     new UpdateProductNotification
                     {
                         Price = product.Price,
-                        ImageUri = product.ImageUri,
                         Id = product.Id,
-                        IsAvailable = product.IsAvailableForOrder,
+                        Description = product.Description,
                         Name = product.Name,
-                        GroupIcon = product.ProductGroup.Icon
+                        GroupIcon = product.ProductGroup.Icon,
+                        GroupName = product.ProductGroup.Name
                     }, cancellationToken);
             }
 

@@ -41,6 +41,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                     request.Icon, 
                     request.Price, 
                     request.ExternalUid,
+                    request.Description,
                     request.ProductGroupId);
 
                 group.Products.Add(product);
@@ -60,7 +61,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                         Price = product.Price,
                         Id = product.Id,
                         Name = product.Name,
-                        GroupIcon = product.ProductGroup.Icon
+                        Description = product.Description,
+                        GroupIcon = product.ProductGroup.Icon,
+                        GroupName = product.ProductGroup.Name,
+                        VenueId = product.ProductGroup.VenueId
                     }, cancellationToken);
             }
 

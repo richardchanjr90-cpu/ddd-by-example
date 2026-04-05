@@ -15,5 +15,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Products
         public decimal Price { get; set; }
 
         public string ExternalUid { get; set; }
+
+        public string Description { get; set; }
     }
 }

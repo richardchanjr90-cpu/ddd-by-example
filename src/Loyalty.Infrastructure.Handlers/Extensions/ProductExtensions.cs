@@ -22,6 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 IsAvailableForOrder = item.IsAvailableForOrder,
                 ImageUri = item.ImageUri?.ToString(),
                 ExternalUid = item.ExternalUid,
+                Description = item.Description,
                 Icon = item.Icon,
                 ProductGroupId = item.ProductGroupId
             };

@@ -19,6 +19,7 @@ namespace Loyalty.Core.Entities
             string imageUri,
             decimal price,
             string externalUid,
+            string description,
             bool isArchived,
             long productGroupId)
         {
@@ -36,8 +37,9 @@ namespace Loyalty.Core.Entities
             ProductIconType? icon,
             decimal price,
             string externalUid,
+            string description,
             long productGroupId)
-            : this(name, icon, null, price, externalUid, false, productGroupId)
+            : this(name, icon, null, price, externalUid, description,false, productGroupId)
         {
         }
 
@@ -58,6 +60,8 @@ namespace Loyalty.Core.Entities
         public bool IsAvailableForOrder { get; private set; }
 
         public string ExternalUid { get; private set; }
+
+        public string Description { get; private set; }
 
         public bool IsArchived { get; private set; }
 
