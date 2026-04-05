@@ -123,7 +123,7 @@ namespace LoyaltyProgram.ServiceBus
 
         private async Task PatchOrder(PatchOrderNotification deserialize, ICollector<OrderUpdatedDto> orders)
         {
-            var updateOrderSql = "UPDATE loyalty.[Order] SET [Status] = @Status WHERE Id = @Id";
+            var updateOrderSql = "UPDATE loyalty.[Order] SET [Status] = @UpdatedStatus WHERE Id = @Id";
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
