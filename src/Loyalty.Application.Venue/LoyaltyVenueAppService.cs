@@ -62,18 +62,32 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(CreateVenueViewModel model, ClaimsPrincipal principal)
         {
-            new CreateVenueValidator().ValidateAndThrow(model);
+            new CreateVenueValidator()
+                .ValidateAndThrow(model);
 
             var command = mapper.Map<CreateVenueCommand>(model);
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(UpdateVenueViewModel model)
+        public async Task<ICommandResult> AcceptOrders(long venueId)
         {
-            new UpdateVenueValidator().ValidateAndThrow(model);
+            var commandResult = await Mediator.Send(new PatchOrderAcceptanceCommand
+            {
+                Accept = true,
+                VenueId = venueId
+            });
 
-            var command = mapper.Map<UpdateVenueCommand>(model);
-            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> DeclineOrders(long venueId)
+        {
+            var commandResult = await Mediator.Send(new PatchOrderAcceptanceCommand
+            {
+                Accept = false,
+                VenueId = venueId
+            });
+
             return commandResult;
         }
 
@@ -137,6 +151,16 @@ namespace Loyalty.Application.Venue
             };
 
             var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> Update(UpdateVenueViewModel model)
+        {
+            new UpdateVenueValidator().ValidateAndThrow(model);
+
+            var command = mapper.Map<UpdateVenueCommand>(model);
+            var commandResult = await Mediator.Send(command);
+
             return commandResult;
         }
     }

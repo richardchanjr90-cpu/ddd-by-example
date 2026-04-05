@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
-using Loyalty.Core.Entities.Orders;
 using Loyalty.Core.Entities.Schema;
 using Loyalty.Core.Entities.ValueObject;
 using Loyalty.Shared.Contracts.Enums;
@@ -54,6 +53,8 @@ namespace Loyalty.Core.Entities
 
         public string WorkingHours { get; set; }
 
+        public bool AcceptsOrders { get; set; }
+
         public string Images { get; set; }
 
         public virtual ICollection<LoyaltyProgram> LoyaltyPrograms { get; set; }
@@ -69,5 +70,15 @@ namespace Loyalty.Core.Entities
         public SocialNetworks SocialNetworks { get; set; }
 
         public override long TenantId => Id;
+
+        public void AcceptNewOrders()
+        {
+            AcceptsOrders = true;
+        }
+
+        public void RejectNewOrders()
+        {
+            AcceptsOrders = false;
+        }
     }
 }

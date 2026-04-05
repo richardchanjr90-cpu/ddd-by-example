@@ -4,9 +4,12 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
+using Loyalty.Application.ViewModels.Venue;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
-using LoyaltyProgram.Http.Venue;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +17,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Admin
+namespace LoyaltyProgram.Http.Venue
 {
-    public class VenueRejectPatchFunction
+    public class VenuePatchOrdersAcceptFunction
     {
         private readonly LoyaltyVenueAppService service;
 
-        public VenueRejectPatchFunction(LoyaltyVenueAppService service)
+        public VenuePatchOrdersAcceptFunction(LoyaltyVenueAppService service)
         {
             this.service = service;
         }
@@ -28,27 +31,20 @@ namespace LoyaltyProgram.Http.Admin
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("VenueRejectPatchFunction")]
+        [FunctionName("VenuePatchOrdersAcceptFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "control/admins/venues/{id}/reject/")]
+            long venueId,
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/orders/accept")]
             HttpRequest req,
-            long id,
-            [FunctionToken] FunctionTokenResult token,
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(VenueDeleteFunction)} was triggered.");
+            log.LogInformation($"{nameof(VenuePatchOrdersAcceptFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var isAdmin = token.Principal.IsAdmin();
 
-                if (isAdmin)
-                {
-                    req.ValidateSecret();
-                    return new OkObjectResult(await service.Reject(id));
-                }
-
-                return new NoContentResult();
+                return new OkObjectResult(await service.AcceptOrders(venueId));
             });
         }
     }

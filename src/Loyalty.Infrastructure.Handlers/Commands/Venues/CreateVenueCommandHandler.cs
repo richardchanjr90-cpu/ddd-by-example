@@ -26,7 +26,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
         private readonly IOptions<VenueSettings> venueOptions;
-        private readonly IHttpContextAccessor accessor;
 
         public CreateVenueCommandHandler(
             ILoyaltyTenantDbContext context,
@@ -37,7 +36,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         {
             this.mediator = mediator;
             this.venueOptions = venueOptions;
-            this.accessor = accessor;
         }
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
