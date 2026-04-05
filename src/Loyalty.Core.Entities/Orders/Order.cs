@@ -54,6 +54,10 @@ namespace Loyalty.Core.Entities.Orders
 
         public string Comment { get; private set; }
 
+        public string VenueComment { get; private set; }
+
+        public OrderVenueRate Rate { get; private set; }
+
         public void Add(OrderItem item)
         {
             OrderItems ??= new List<OrderItem>();
@@ -64,10 +68,31 @@ namespace Loyalty.Core.Entities.Orders
         {
             if (newStatus == OrderStatus.DeclinedByCustomer || newStatus == OrderStatus.Placed)
             {
-                throw new LoyaltyValidationException("Invalid status", ErrorCode.ORDER_INVALID_STATE);
+                throw new LoyaltyValidationException("Invalid status.", ErrorCode.ORDER_INVALID_STATE);
+            }
+
+            if (Status == OrderStatus.DeclinedByCustomer || Status == OrderStatus.ForceDeclinedByCustomer)
+            {
+                throw new LoyaltyValidationException("Order is declined. Impossible to change.", ErrorCode.ORDER_INVALID_STATE);
             }
 
             Status = newStatus;
+        }
+
+        public void GiveRateToUser(OrderVenueRate rate, string venueComment)
+        {
+            if (rate == OrderVenueRate.Star && String.IsNullOrEmpty(venueComment))
+            {
+                throw new LoyaltyValidationException("When rate is = 1, comment is required.", ErrorCode.ORDER_INVALID_STATE);
+            }
+
+            if (Status < OrderStatus.Finished)
+            {
+                throw new LoyaltyValidationException("Can't rate order, until Finished.", ErrorCode.ORDER_INVALID_STATE);
+            }
+            
+            VenueComment = venueComment;
+            Rate = rate;
         }
     }
 }

@@ -48,6 +48,6 @@ namespace Loyalty.Common.Shared.Constants
 
         public const string PRODUCT_INVALID_STATE = "PRODUCT_INVALID_STATE";
 
-        public const string ORDER_INVALID_STATE = "PRODUCT_INVALID_STATE";
+        public const string ORDER_INVALID_STATE = "ORDER_INVALID_STATE";
     }
 }

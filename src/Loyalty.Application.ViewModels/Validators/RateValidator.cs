@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Loyalty.Application.ViewModels.Rate;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Application.ViewModels.Validators
 {
@@ -7,18 +8,13 @@ namespace Loyalty.Application.ViewModels.Validators
     {
         public RateValidator()
         {
-            RuleFor(x => x.VenueId)
-                .GreaterThan(0);
-
-            RuleFor(x => x.OrderId)
-                .GreaterThan(0);
-
             RuleFor(x => x.Rate)
                 .GreaterThan(0)
                 .LessThanOrEqualTo(5);
 
-            RuleFor(x => x.UserId)
-                .NotEmpty();
+            RuleFor(x => x.Comment)
+                .NotEmpty()
+                .When(x=> x.Rate == (int)OrderVenueRate.Star);
         }
     }
 }

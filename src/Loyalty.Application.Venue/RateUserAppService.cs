@@ -5,6 +5,8 @@ using Loyalty.Application.ViewModels.Rate;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Rate;
+using Loyalty.Domain.Handlers.Queries.Commands.Orders;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 
@@ -17,19 +19,17 @@ namespace Loyalty.Application.Venue
         {
         }
 
-        public async Task<ICommandResult> Rate(RateViewModel model)
+        public async Task<ICommandResult> Rate(RateViewModel model, long id)
         {
             new RateValidator()
                 .ValidateAndThrow(model);
 
-            await Mediator.Publish(
-                new UpsertUserRateNotification
-                {
-                    VenueId = model.VenueId,
-                    OrderId = model.OrderId,
-                    Rate =  model.Rate,
-                    UserId = model.UserId
-                });
+            return await Mediator.Send(new PatchRateOrderCommand()
+            {
+                Comment =  model.Comment,
+                Rate =  (OrderVenueRate)model.Rate,
+                OrderId = id,
+            });
 
             return new CommandResult
             {

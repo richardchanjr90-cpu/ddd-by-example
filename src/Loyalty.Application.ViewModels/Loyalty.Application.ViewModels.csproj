@@ -9,7 +9,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="3.1.4" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.10" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.11" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,6 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Orders;
+using Loyalty.Domain.Handlers.Notifications.Products;
+using Loyalty.Domain.Handlers.Notifications.Rate;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Infrastructure.DataAccess;
 using MediatR;
@@ -13,24 +15,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Orders
 {
-    public class PatchOrderCommandHandler
-        : BaseHandler, IRequestHandler<PatchOrderCommand, ICommandResult>
+    public class PatchRateOrderCommandHandler
+        : BaseHandler, IRequestHandler<PatchRateOrderCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
-        public PatchOrderCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public PatchRateOrderCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(PatchOrderCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(PatchRateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await Context.Orders
                 .Where(x => x.Id == request.OrderId)
-                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken);
 
-            order?.AddStatus(request.Status);
+            order?.GiveRateToUser(request.Rate, request.Comment);
 
             var result = new CommandResult
             {
@@ -38,14 +40,16 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
                 Result = order?.Id
             };
 
+            //todo: move to domain events.
             if (order != null && result.Success)
             {
                 await mediator.Publish(
-                    new UpdateOrderNotification
+                    new UpsertUserRateNotification
                     {
-                        Id = order.Id,
-                        Status = order.Status,
-                        VenueId = order.VenueId
+                        VenueId = order.VenueId,
+                        OrderId = order.Id,
+                        Rate = (int)request.Rate,
+                        UserId = order.CreatedBy
                     }, cancellationToken);
             }
 

@@ -12,13 +12,13 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace LoyaltyProgram.Http.Rate
+namespace LoyaltyProgram.Http.Order
 {
-    public class RateUserPostFunction
+    public class RateUserPatchFunction
     {
         private readonly RateUserAppService service;
 
-        public RateUserPostFunction(RateUserAppService service)
+        public RateUserPatchFunction(RateUserAppService service)
         {
             this.service = service;
         }
@@ -26,19 +26,19 @@ namespace LoyaltyProgram.Http.Rate
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("RateUserPostFunction")]
+        [FunctionName("RateUserPatchFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "rates/{userId}")]
+            long id,
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "orders/{id}/rates")]
             [RequestBodyType(typeof(RateViewModel), "RateViewModel")] RateViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(RateUserPostFunction)} was triggered.");
+            log.LogInformation($"{nameof(RateUserPatchFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var result = await service.Rate(model);
+                var result = await service.Rate(model, id);
                 return new OkObjectResult(result);
             });
         }
