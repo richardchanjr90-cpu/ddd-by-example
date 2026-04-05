@@ -201,9 +201,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             modelBuilder.Entity("Loyalty.Core.Entities.Orders.OrderItem", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");

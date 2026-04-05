@@ -25,6 +25,6 @@ namespace LoyaltyClient.Domain.Handlers.Notifications.Orders
 
         public string Comment { get; set; }
 
-        public List<CreateOrderItemNotification> OrderItems = new List<CreateOrderItemNotification>();
+        public List<CreateOrderItemNotification> OrderItems { get; set; } = new List<CreateOrderItemNotification>();
     }
 }

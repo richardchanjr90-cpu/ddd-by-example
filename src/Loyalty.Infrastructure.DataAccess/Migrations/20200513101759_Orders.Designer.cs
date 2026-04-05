@@ -10,14 +10,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
     [DbContext(typeof(LoyaltyDbContext))]
-    [Migration("20200504111823_Updated_Orders")]
-    partial class Updated_Orders
+    [Migration("20200513101759_Orders")]
+    partial class Orders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -203,9 +203,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             modelBuilder.Entity("Loyalty.Core.Entities.Orders.OrderItem", b =>
                 {
                     b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
@@ -236,6 +234,9 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ExternalUid")
@@ -292,19 +293,10 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExternalUid")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Icon")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImageUri")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsAvailableForOrder")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("Modified")

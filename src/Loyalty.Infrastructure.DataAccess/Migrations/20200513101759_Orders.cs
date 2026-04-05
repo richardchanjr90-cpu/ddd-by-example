@@ -3,28 +3,15 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Loyalty.Infrastructure.DataAccess.Migrations
 {
-    public partial class Updated_Orders : Migration
+    public partial class Orders : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "ExternalUid",
+                name: "Description",
                 schema: "loyalty",
-                table: "ProductGroup",
+                table: "Product",
                 nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "ImageUri",
-                schema: "loyalty",
-                table: "ProductGroup",
-                nullable: true);
-
-            migrationBuilder.AddColumn<bool>(
-                name: "IsAvailableForOrder",
-                schema: "loyalty",
-                table: "ProductGroup",
-                nullable: false,
-                defaultValue: false);
 
             migrationBuilder.AddColumn<string>(
                 name: "ExternalUid",
@@ -78,8 +65,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(nullable: false),
                     Amount = table.Column<int>(nullable: false),
                     ProductId = table.Column<long>(nullable: false),
                     OrderId = table.Column<long>(nullable: false)
@@ -127,19 +113,9 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty");
 
             migrationBuilder.DropColumn(
-                name: "ExternalUid",
+                name: "Description",
                 schema: "loyalty",
-                table: "ProductGroup");
-
-            migrationBuilder.DropColumn(
-                name: "ImageUri",
-                schema: "loyalty",
-                table: "ProductGroup");
-
-            migrationBuilder.DropColumn(
-                name: "IsAvailableForOrder",
-                schema: "loyalty",
-                table: "ProductGroup");
+                table: "Product");
 
             migrationBuilder.DropColumn(
                 name: "ExternalUid",

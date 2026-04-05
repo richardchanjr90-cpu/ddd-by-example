@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Schema;
@@ -23,6 +24,10 @@ namespace Loyalty.Core.Entities.Orders
         private OrderItem()
         {
         }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public new long Id { get; set; }
 
         public override long TenantId => Order.TenantId;
 
