@@ -45,6 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                 Modified = dynamicVenue.Modified,
                 Created = dynamicVenue.Created,
                 Name = dynamicVenue.Name,
+                AcceptsOrders = dynamicVenue.AcceptsOrders,
                 OwnerId = dynamicVenue.OwnerId,
                 Description = dynamicVenue.Description,
                 ParentId = dynamicVenue.ParentId,

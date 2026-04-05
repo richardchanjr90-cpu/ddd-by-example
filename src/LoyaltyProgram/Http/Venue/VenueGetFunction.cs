@@ -4,9 +4,7 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.LoyaltyProductGroup;
-using Loyalty.Application.ViewModels.Venue;
-using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +23,7 @@ namespace LoyaltyProgram.Http.Venue
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UpdateVenueViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetVenueByIdQueryResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenueGetFunction")]

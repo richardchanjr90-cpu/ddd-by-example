@@ -186,10 +186,11 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             var result = new GetVenueByIdQueryResult
             {
                 Id = item.Id,
-                CategoryType = item.CategoryType,
+                AcceptsOrders = item.AcceptsOrders,
+                CategoryType = (long)item.CategoryType,
                 Description = item.Description,
                 Name = item.Name,
-                Type = item.Type,
+                Type = (int)item.Type,
                 OwnerId = item.OwnerId,
                 Images = item.Images.SplitByCommaAndUnwrap(),
                 Location = item.ToLocation(),
@@ -198,8 +199,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 FullDescription = item.FullDescription,
                 WebSites = item.WebSites.SplitByCommaAndUnwrap(),
                 WorkingHours = JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>(item.WorkingHours),
-                IsArchived = item.IsArchived,
-                VenueApprovalStatus = item.VenueStatus,
+                VenueApprovalStatus = (int) item.VenueStatus,
                 ParentId = item.ParentId,
                 SocialNetworks = new GetSocialNetworksResult()
                 {

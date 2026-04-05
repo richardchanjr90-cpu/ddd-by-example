@@ -10,6 +10,7 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.Extensions.Options;
@@ -32,24 +33,24 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<UpdateVenueViewModel> Get(long id)
+        public async Task<GetVenueByIdQueryResult> Get(long id)
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
                 Id = id
             });
 
-            return mapper.Map<UpdateVenueViewModel>(result);
+            return result;
         }
 
-        public async Task<List<UpdateVenueViewModel>> Get(string userId)
+        public async Task<List<GetVenueByIdQueryResult>> Get(string userId)
         {
             var result = await Mediator.Send(new GetVenuesQuery
             {
                 UserId = userId
             });
 
-            return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
+            return result.Venues;
         }
 
         public async Task<List<UpdateVenueViewModel>> GetAllVenuesForAdmin()
