@@ -3,6 +3,8 @@ using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
+using Loyalty.Application.Storage.Dto;
+using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Orders;
 using Loyalty.Infrastructure.IoC;
@@ -33,13 +35,27 @@ namespace LoyaltyProgram.Http.Order
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/orders")]
             [RequestBodyType(typeof(PatchOrderStatusViewModel), "PatchOrderStatusViewModel")] PatchOrderStatusViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager), nameof(VenueUserRole.Worker))] FunctionTokenResult token,
+            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<OrderChangedDto> queueItems,
             ILogger log)
         {
             log.LogInformation($"{nameof(OrderStatusPatchFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                return new OkObjectResult(await service.PatchStatus(model, venueId));
+                var order = await service.Get(model.OrderId);
+                var result = await service.PatchStatus(model, venueId);
+
+                if (result.Success)
+                {
+                    queueItems.Add(new OrderChangedDto
+                    {
+                        UserId = order.CustomerId,
+                        Id = model.OrderId,
+                        ChangedStatus = (OrderStatus)model.Status
+                    });
+                }
+
+                return new OkObjectResult(result);
             });
         }
     }

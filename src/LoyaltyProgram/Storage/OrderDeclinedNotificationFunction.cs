@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AzureFunctions.Extensions.NotificationHubs.Output;
 using Loyalty.Application.Storage.Dto;
+using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -9,15 +10,15 @@ using static AzureFunctions.Extensions.NotificationHubs.Enum.Platform;
 
 namespace LoyaltyProgram.Storage
 {
-    public static class OrderUpdatedNotificationFunction
+    public static class OrderDeclinedNotificationFunction
     {
-        [FunctionName("OrderUpdatedNotificationFunction")]
+        [FunctionName("OrderDeclinedNotificationFunction")]
         public static async Task Run(
-            [QueueTrigger("neworder-notification", Connection = "QueueConnectionString")] OrderUpdatedDto data,
+            [QueueTrigger("neworder-notification", Connection = "QueueConnectionString")] OrderDeclinedDto data,
             ILogger log,
             [NotificationHubs] IAsyncCollector<HubsMessage> output)
         {
-            log.LogInformation($"{nameof(OrderUpdatedNotificationFunction)} was triggered.");
+            log.LogInformation($"{nameof(OrderDeclinedNotificationFunction)} was triggered.");
 
             string message = String.Empty;
 

@@ -1,9 +1,8 @@
-﻿using System;
-using Loyalty.Shared.Contracts.Enums;
+﻿using Loyalty.Shared.Contracts.Enums;
 
-namespace Loyalty.Application.Storage.Dto
+namespace Loyalty.Application.Storage.Dto.Orders
 {
-    public class OrderUpdatedDto
+    public class OrderDeclinedDto
     {
         public long Id { get; set; }
 

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AzureFunctions.Extensions.NotificationHubs.Output;
 using Loyalty.Application.Storage.Dto;
+using Loyalty.Application.Storage.Dto.Orders;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using static AzureFunctions.Extensions.NotificationHubs.Enum.Platform;

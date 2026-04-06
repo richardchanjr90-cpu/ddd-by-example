@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
 using Loyalty.Application.Storage.Dto;
+using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Common.Shared.Extensions;
 using LoyaltyClient.Domain.Handlers.Notifications.Code;
 using LoyaltyClient.Domain.Handlers.Notifications.Orders;
@@ -26,7 +27,7 @@ namespace LoyaltyProgram.ServiceBus
         public async Task Run(
             [ServiceBusTrigger("%ServiceBusClientsTopicName%", "venues", Connection = "ServiceBusConnectionString")] Message message,
             [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<NewOrderDto> newOrders,
-            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<OrderUpdatedDto> orders,
+            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<OrderDeclinedDto> orders,
             ILogger log)
         {
             log.LogInformation($"{nameof(ClientEventsFunction)} was triggered.");
@@ -121,7 +122,7 @@ namespace LoyaltyProgram.ServiceBus
             }
         }
 
-        private async Task PatchOrder(PatchOrderNotification deserialize, ICollector<OrderUpdatedDto> orders)
+        private async Task PatchOrder(PatchOrderNotification deserialize, ICollector<OrderDeclinedDto> orders)
         {
             var updateOrderSql = "UPDATE loyalty.[Order] SET [Status] = @UpdatedStatus WHERE Id = @Id";
 
@@ -133,7 +134,7 @@ namespace LoyaltyProgram.ServiceBus
 
                 if (isSuccess > 0)
                 {
-                    orders.Add(new OrderUpdatedDto
+                    orders.Add(new OrderDeclinedDto
                     {
                         Id = deserialize.Id,
                         VenueId = deserialize.VenueId,
