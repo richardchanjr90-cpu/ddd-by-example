@@ -13,7 +13,7 @@ namespace LoyaltyProgram.Storage
     {
         [FunctionName("OrderChangedNotificationFunction")]
         public static async Task Run(
-            [QueueTrigger("neworder-notification", Connection = "QueueConnectionString")] OrderChangedDto data,
+            [QueueTrigger("changedorder-notification", Connection = "QueueConnectionString")] OrderChangedDto data,
             ILogger log,
             [NotificationHubs] IAsyncCollector<HubsMessage> output)
         {

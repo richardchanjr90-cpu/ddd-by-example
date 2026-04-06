@@ -27,7 +27,7 @@ namespace LoyaltyProgram.ServiceBus
         public async Task Run(
             [ServiceBusTrigger("%ServiceBusClientsTopicName%", "venues", Connection = "ServiceBusConnectionString")] Message message,
             [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<NewOrderDto> newOrders,
-            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<OrderDeclinedDto> orders,
+            [Queue("declinedorder-notification", Connection = "QueueConnectionString")] ICollector<OrderDeclinedDto> orders,
             ILogger log)
         {
             log.LogInformation($"{nameof(ClientEventsFunction)} was triggered.");

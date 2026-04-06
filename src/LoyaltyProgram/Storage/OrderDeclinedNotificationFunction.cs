@@ -14,7 +14,7 @@ namespace LoyaltyProgram.Storage
     {
         [FunctionName("OrderDeclinedNotificationFunction")]
         public static async Task Run(
-            [QueueTrigger("neworder-notification", Connection = "QueueConnectionString")] OrderDeclinedDto data,
+            [QueueTrigger("declinedorder-notification", Connection = "QueueConnectionString")] OrderDeclinedDto data,
             ILogger log,
             [NotificationHubs] IAsyncCollector<HubsMessage> output)
         {

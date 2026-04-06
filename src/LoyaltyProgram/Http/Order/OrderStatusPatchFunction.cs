@@ -35,7 +35,7 @@ namespace LoyaltyProgram.Http.Order
             [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/orders")]
             [RequestBodyType(typeof(PatchOrderStatusViewModel), "PatchOrderStatusViewModel")] PatchOrderStatusViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager), nameof(VenueUserRole.Worker))] FunctionTokenResult token,
-            [Queue("neworder-notification", Connection = "QueueConnectionString")] ICollector<OrderChangedDto> queueItems,
+            [Queue("changedorder-notification", Connection = "QueueConnectionString")] ICollector<OrderChangedDto> queueItems,
             ILogger log)
         {
             log.LogInformation($"{nameof(OrderStatusPatchFunction)} was triggered.");
