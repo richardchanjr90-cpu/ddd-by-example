@@ -34,6 +34,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 {
                     ProductId = x.ProductId,
                     Amount = x.Amount,
+                    Price = x.Product.Price,
                     ImageUrl = x.Product.ImageUri,
                     ProductName = x.Product.Name
                 }).ToList()
