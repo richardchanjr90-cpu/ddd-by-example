@@ -44,13 +44,12 @@ namespace Loyalty.Application.Venue
             return result.Orders;
         }
 
-        public async Task<ICommandResult> PatchStatus(PatchOrderStatusViewModel model, long venueId)
+        public async Task<ICommandResult> PatchStatus(PatchOrderStatusViewModel model)
         {
             return await Mediator.Send(new PatchOrderCommand()
             {
                 Status = (OrderStatus)model.Status,
                 OrderId = model.OrderId,
-                VenueId = venueId
             });
         }
     }

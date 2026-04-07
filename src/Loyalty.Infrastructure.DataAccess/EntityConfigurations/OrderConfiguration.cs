@@ -1,5 +1,7 @@
 ﻿using System;
 using Loyalty.Core.Entities.Orders;
+using Loyalty.Core.Entities.Orders.Status;
+using Loyalty.Core.Entities.Orders.Status.Abstract;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -13,6 +15,12 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .HasMany(bc => bc.OrderItems)
                 .WithOne(c => c.Order)
                 .HasForeignKey(bc => bc.OrderId);
+
+            builder
+                .Property(e => e.Status)
+                .HasConversion(
+                    v => v.Id,
+                    v => OrderStatusEnumeration.From(v));
         }
     }
 }

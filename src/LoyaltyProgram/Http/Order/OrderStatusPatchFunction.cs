@@ -31,8 +31,7 @@ namespace LoyaltyProgram.Http.Order
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("OrderStatusPatchFunction")]
         public async Task<IActionResult> Run(
-            long venueId,
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "venues/{venueId}/orders")]
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "orders")]
             [RequestBodyType(typeof(PatchOrderStatusViewModel), "PatchOrderStatusViewModel")] PatchOrderStatusViewModel model,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager), nameof(VenueUserRole.Worker))] FunctionTokenResult token,
             [Queue("changedorder-notification", Connection = "QueueConnectionString")] ICollector<OrderChangedDto> queueItems,
@@ -43,7 +42,7 @@ namespace LoyaltyProgram.Http.Order
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 var order = await service.Get(model.OrderId);
-                var result = await service.PatchStatus(model, venueId);
+                var result = await service.PatchStatus(model);
 
                 if (result.Success)
                 {

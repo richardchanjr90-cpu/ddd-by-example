@@ -31,7 +31,6 @@ namespace LoyaltyProgram.Http.Order
         public async Task<IActionResult> Run(
             long venueId,
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "venues/{venueId}/orders")]
-            HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {

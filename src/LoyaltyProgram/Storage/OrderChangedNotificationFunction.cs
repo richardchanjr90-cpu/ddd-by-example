@@ -25,10 +25,11 @@ namespace LoyaltyProgram.Storage
                 OrderStatus.Ready => "Ваш заказ уже готов!",
                 OrderStatus.DeclinedByVenue => "Ваш заказ отменен владельцем заведения.",
                 OrderStatus.Finished => "Заказ закончен!",
+                OrderStatus.NotRedeemed => "Вы не забрали ваш заказ. Заказ закончен.",
                 _ => String.Empty
             };
 
-            if (String.IsNullOrEmpty(data.UserId))
+            if (String.IsNullOrEmpty(data.UserId) && !String.IsNullOrEmpty(message))
             {
                 await output.AddAsync(new HubsMessage(message, Android, "platform:android", $"user:{data.UserId}"));
                 await output.AddAsync(new HubsMessage(message, Apple, "platform:apple", $"user:{data.UserId}"));

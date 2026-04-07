@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Web;
 using AzureFunctions.Extensions.NotificationHubs.Output;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Shared.Contracts.Enums;
 using Microsoft.Azure.WebJobs;
@@ -26,6 +26,11 @@ namespace LoyaltyProgram.Storage
             || data.UpdatedStatus == OrderStatus.ForceDeclinedByCustomer)
             {
                 message = "Клиент отменил свой заказ.";
+            }
+
+            if (!String.IsNullOrEmpty(data.Reason))
+            {
+                message += $" С комментарием: {data.Reason.Trim()}";
             }
 
             if (data.VenueId > 0 && !String.IsNullOrEmpty(message))

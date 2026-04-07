@@ -6,6 +6,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Orders;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -30,7 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
                 .Where(x => x.Id == request.OrderId)
                 .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
-            order?.AddStatus(request.Status);
+            order?.UpdateStatus(request.Status);
 
             var result = new CommandResult
             {
@@ -44,7 +45,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
                     new UpdateOrderNotification
                     {
                         Id = order.Id,
-                        Status = order.Status,
+                        Status = (OrderStatus)order.Status.Id,
                         VenueId = order.VenueId
                     }, cancellationToken);
             }

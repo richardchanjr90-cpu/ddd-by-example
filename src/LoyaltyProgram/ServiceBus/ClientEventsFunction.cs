@@ -124,7 +124,10 @@ namespace LoyaltyProgram.ServiceBus
 
         private async Task PatchOrder(PatchOrderNotification deserialize, ICollector<OrderDeclinedDto> orders)
         {
-            var updateOrderSql = "UPDATE loyalty.[Order] SET [Status] = @UpdatedStatus WHERE Id = @Id";
+            var updateOrderSql = "UPDATE loyalty.[Order] " +
+                                         "SET [Status] = @UpdatedStatus, " +
+                                         "[Comment] = [Comment] + @Comment " +
+                                         "WHERE Id = @Id";
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -137,6 +140,7 @@ namespace LoyaltyProgram.ServiceBus
                     orders.Add(new OrderDeclinedDto
                     {
                         Id = deserialize.Id,
+                        Reason = deserialize.Comment,
                         VenueId = deserialize.VenueId,
                         UserId = deserialize.UserId,
                         UpdatedStatus = deserialize.UpdatedStatus

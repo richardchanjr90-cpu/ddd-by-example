@@ -10,6 +10,7 @@ namespace Loyalty.Shared.Contracts.Enums
         Finished = 4,
         DeclinedByVenue = 5,
         DeclinedByCustomer = 6,
-        ForceDeclinedByCustomer = 7
+        ForceDeclinedByCustomer = 7,
+        NotRedeemed = 8
     }
 }

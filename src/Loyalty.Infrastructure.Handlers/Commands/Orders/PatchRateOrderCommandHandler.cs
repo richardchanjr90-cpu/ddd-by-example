@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.Orders;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Notifications.Rate;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Infrastructure.DataAccess;

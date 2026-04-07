@@ -12,6 +12,8 @@ namespace LoyaltyClient.Domain.Handlers.Notifications.Orders
 
         public string UserId { get; set; }
 
+        public string Comment { get; set; }
+
         public OrderStatus Status { get; set; }
 
         public OrderStatus UpdatedStatus { get; set; }

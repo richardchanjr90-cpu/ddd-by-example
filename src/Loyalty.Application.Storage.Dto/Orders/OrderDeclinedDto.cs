@@ -10,6 +10,8 @@ namespace Loyalty.Application.Storage.Dto.Orders
 
         public string UserId { get; set; }
 
+        public string Reason { get; set; }
+
         public OrderStatus UpdatedStatus { get; set; }
     }
 }
