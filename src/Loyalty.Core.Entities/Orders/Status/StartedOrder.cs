@@ -27,7 +27,7 @@ namespace Loyalty.Core.Entities.Orders.Status
                 throw new LoyaltyValidationException("Impossible to change order to this state.", ErrorCode.ORDER_INVALID_STATE);
             }
 
-            order.UpdateStatus(OrderStatus.Started);
+            order.UpdateStatus(this);
         }
     }
 }
