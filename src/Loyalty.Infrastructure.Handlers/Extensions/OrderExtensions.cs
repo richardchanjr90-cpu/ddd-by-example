@@ -4,6 +4,7 @@ using System.Linq;
 using Loyalty.Core.Entities.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
+using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
 {
@@ -25,7 +26,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 VenueId = item.VenueId,
                 PlacedDate = item.PlacedDate,
-                Status = item.Status,
+                Status = (OrderStatus)item.Status.Id,
                 Comment = item.Comment,
                 CustomerId = item.CreatedBy,
                 Id = item.Id,
@@ -58,7 +59,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             var result = new GetOrderByUserIdQueryResult
             {
                 PlacedDate = item.PlacedDate,
-                Status = item.Status,
+                Status = (OrderStatus)item.Status.Id,
                 Comment = item.Comment,
                 Id = item.Id,
                 PickUpTime = item.PickUpTime,
