@@ -31,7 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
                 .Where(x => x.Id == request.OrderId)
                 .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
-            order?.UpdateStatus(request.Status);
+            order?.UpdateStatus(request.Status, request.VenueComment);
 
             var result = new CommandResult
             {

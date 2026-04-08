@@ -9,5 +9,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Orders
         public long OrderId { get; set; }
 
         public OrderStatus Status { get; set; }
+
+        public string VenueComment { get; set; }
     }
 }

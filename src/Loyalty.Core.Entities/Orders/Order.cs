@@ -65,10 +65,16 @@ namespace Loyalty.Core.Entities.Orders
             Rate = rate;
         }
 
-        public void UpdateStatus(OrderStatus status)
+        public void UpdateStatus(OrderStatus status, string comment)
         {
             var newStatus = OrderStatusEnumeration.From((int)status);
+            VenueComment = comment;
             newStatus.Set(this);
+
+            if (String.IsNullOrEmpty(comment) && status == OrderStatus.DeclinedByVenue)
+            {
+                throw new LoyaltyValidationException("Comment required if declined by Venue", ErrorCode.ORDER_INVALID_STATE);
+            }
         }
 
         internal void UpdateStatus(OrderStatusEnumeration newStatus)

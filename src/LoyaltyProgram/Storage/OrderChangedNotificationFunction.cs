@@ -23,7 +23,7 @@ namespace LoyaltyProgram.Storage
             {
                 OrderStatus.Started => "Ваш заказ начат.",
                 OrderStatus.Ready => "Ваш заказ уже готов!",
-                OrderStatus.DeclinedByVenue => "Ваш заказ отменен владельцем заведения.",
+                OrderStatus.DeclinedByVenue => "Ваш заказ отменен владельцем заведения." + data?.VenueComment,
                 OrderStatus.Finished => "Заказ закончен!",
                 OrderStatus.NotRedeemed => "Вы не забрали ваш заказ. Заказ закончен.",
                 _ => String.Empty

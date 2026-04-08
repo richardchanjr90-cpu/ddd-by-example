@@ -49,6 +49,7 @@ namespace Loyalty.Application.Venue
             return await Mediator.Send(new PatchOrderCommand()
             {
                 Status = (OrderStatus)model.Status,
+                VenueComment = model.VenueComment,
                 OrderId = model.OrderId,
             });
         }

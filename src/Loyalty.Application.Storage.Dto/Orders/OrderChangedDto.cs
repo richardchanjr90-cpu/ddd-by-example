@@ -9,5 +9,7 @@ namespace Loyalty.Application.Storage.Dto.Orders
         public string UserId { get; set; }
 
         public OrderStatus ChangedStatus { get; set; }
+
+        public string VenueComment { get; set; }
     }
 }

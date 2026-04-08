@@ -10,5 +10,8 @@ namespace Loyalty.Application.ViewModels.Orders
 
         [JsonPropertyName("status")]
         public int Status { get; set; }
+
+        [JsonPropertyName("venueComment")]
+        public string VenueComment { get; set; }
     }
 }

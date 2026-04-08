@@ -3,7 +3,6 @@ using System.Net;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Orders;
@@ -50,6 +49,7 @@ namespace LoyaltyProgram.Http.Order
                     {
                         UserId = order.CustomerId,
                         Id = model.OrderId,
+                        VenueComment = model.VenueComment,
                         ChangedStatus = (OrderStatus)model.Status
                     });
                 }
