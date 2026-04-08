@@ -60,6 +60,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                     .Where(x => x.WorkerId == Principal.GetUserId())
                     .FirstOrDefaultAsync(cancellationToken);
 
+                    if (worker == null)
+                    {
+                        throw new LoyaltyValidationException("User does not exist", ErrorCode.USER_DOES_NOT_EXIST);
+                    }
+
                     worker = UpdateWorker(worker, venue);
                     saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
 

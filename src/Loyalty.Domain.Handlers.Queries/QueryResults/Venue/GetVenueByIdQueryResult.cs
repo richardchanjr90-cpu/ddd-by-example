@@ -23,14 +23,14 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
         [JsonPropertyName("ownerId")]
         public string OwnerId { get; set; }
 
-        [JsonPropertyName("phones")]
-        public List<string> Phones { get; set; }
+        [JsonPropertyName("phones")] 
+        public List<string> Phones { get; set; } = new List<string>();
 
         [JsonPropertyName("webSites")]
-        public List<string> WebSites { get; set; }
+        public List<string> WebSites { get; set; } = new List<string>();
 
         [JsonPropertyName("images")]
-        public List<string> Images { get; set; }
+        public List<string> Images { get; set; } = new List<string>();
 
         [JsonPropertyName("workingHours")]
         public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; }            
@@ -52,7 +52,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
         public string LogoUrl { get; set; }
 
         [JsonPropertyName("socialNetworks")]
-        public GetSocialNetworksResult SocialNetworks { get; set; }
+        public GetSocialNetworksResult SocialNetworks { get; set; } 
 
         [JsonPropertyName("venueApprovalStatus")]
         public int VenueApprovalStatus { get; set; }

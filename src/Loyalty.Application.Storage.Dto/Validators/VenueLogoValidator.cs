@@ -7,12 +7,12 @@ using Loyalty.Common.Shared.Settings;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
-    public class VenueNewImageValidator : AbstractValidator<VenueNewBlobImageDto>
+    public class VenueLogoValidator : AbstractValidator<VenueNewBlobImageDto>
     {
         private readonly ImageSettings settings;
         private readonly ImageValidator validator;
 
-        public VenueNewImageValidator(ImageSettings settings, ImageValidator validator)
+        public VenueLogoValidator(ImageSettings settings, ImageValidator validator)
         {
             this.settings = settings;
             this.validator = validator;
