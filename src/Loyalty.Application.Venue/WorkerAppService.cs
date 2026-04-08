@@ -148,8 +148,6 @@ namespace Loyalty.Application.Venue
 
             if (updateUser.Success)
             {
-                await UpdateProfile(model.Email, userId);
-
                 result = await Mediator.Send(new GetVerificationLinkQuery()
                 {
                     Surname =  user.Surname,
@@ -157,6 +155,11 @@ namespace Loyalty.Application.Venue
                     UserId = user.UserId,
                     NewEmail = model.Email
                 });
+
+                if (!String.IsNullOrEmpty(result.Link))
+                {
+                    await UpdateProfile(model.Email, userId);
+                }
             }
 
             return result;

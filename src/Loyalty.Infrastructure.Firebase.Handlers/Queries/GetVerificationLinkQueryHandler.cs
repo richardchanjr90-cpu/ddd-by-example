@@ -42,7 +42,6 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                 {
                     link = await FirebaseAuth.DefaultInstance.GenerateEmailVerificationLinkAsync(
                         request.NewEmail, actionCodeSettings, cancellationToken);
-                    link = HttpUtility.UrlEncode(link);
                 }
             }
             catch (Exception e)
