@@ -9,6 +9,7 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Domain.Contracts;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +66,10 @@ namespace LoyaltyProgram.Http.UserProfile
                     });
                 }
 
-                return new OkObjectResult(result);
+                return new OkObjectResult(new CommandResult()
+                {
+                    Success = true
+                });
             });
         }
     }
