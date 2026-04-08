@@ -4,12 +4,15 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AzureExtensions.FunctionToken;
 using FluentValidation;
+using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
+using Loyalty.Domain.Handlers.Firebase.Queries.Queries;
+using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
@@ -110,6 +113,53 @@ namespace Loyalty.Application.Venue
 
             //todo: do it in a transaction.
             return result2 ?? commandResult;
+        }
+
+        public async Task<ICommandResult> UpdateProfile(string email, string userId)
+        {
+            var commandResult = await Mediator.Send(new UpdateEmailCommand()
+            {
+                WorkerId = userId,
+                Email = email
+            });
+
+            return commandResult;
+        }
+
+        public async Task<GetVerificationLinkQueryResult> SetupEmail(PatchEmailViewModel model, string userId)
+        {
+            new PatchEmailValidator()
+                .ValidateAndThrow(model);
+
+            GetVerificationLinkQueryResult result = null;
+
+            var user = await Mediator.Send(new GetCurrentUserQuery()
+            {
+                UserId = userId
+            });
+
+            var updateUser = await Mediator.Send(new UpdateUserEmailCommand()
+            {
+                CurrentEmail = user.Email,
+                IsEmailVerified = user.IsEmailVerified,
+                NewEmail = model.Email,
+                UserId = user.UserId,
+            });
+
+            if (updateUser.Success)
+            {
+                await UpdateProfile(model.Email, userId);
+
+                result = await Mediator.Send(new GetVerificationLinkQuery()
+                {
+                    Surname =  user.Surname,
+                    Name =  user.Name,
+                    UserId = user.UserId,
+                    NewEmail = model.Email
+                });
+            }
+
+            return result;
         }
 
         public async Task<ICommandResult> Archive(long venueId, long id, string userId)

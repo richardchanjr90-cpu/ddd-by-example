@@ -16,18 +16,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
 {
-    public class UpdateUserProfileCommandHandler
-        : BaseHandler, IRequestHandler<UpdateUserProfileCommand, ICommandResult>
+    public class UpdateEmailCommandHandler
+        : BaseHandler, IRequestHandler<UpdateEmailCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
-        public UpdateUserProfileCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
+        public UpdateEmailCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
             : base(context, accessor)
         {
             this.mediator = mediator;
         }
 
-        public async Task<ICommandResult> Handle(UpdateUserProfileCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
         {
             var worker = await Context.Workers
                 .IgnoreQueryFilters()
@@ -35,26 +35,27 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
                 .Where(x => x.WorkerId == request.WorkerId)
                 .FirstOrDefaultAsync(cancellationToken);
 
-            worker.Name = request.Name;
-            worker.LastName = request.LastName;
+            if (!request.Email.Equals(worker.Email))
+            {
+                var emailUser = await Context.Workers
+                    .IgnoreQueryFilters()
+                    .Include(x => x.Venues)
+                    .Where(x => x.Email == request.Email)
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                if (emailUser != null)
+                {
+                    throw new LoyaltyValidationException("This email is already taken.", ErrorCode.EMAIL_EXISTS);
+                }
+            }
+
+            worker.Email = request.Email;
 
             var commandResult = new CommandResult
             {
                 Success = await Context.SaveChangesAsync(cancellationToken) > 0,
                 Result = worker.Id
             };
-
-            if (commandResult.Success)
-            {
-                await mediator.Publish(
-                    new UpdateWorkerProfileNotification
-                    {
-                        WorkerId = worker.WorkerId,
-                        LastName = worker.LastName,
-                        Name = worker.Name
-                    },
-                    cancellationToken);
-            }
 
             return commandResult;
         }
