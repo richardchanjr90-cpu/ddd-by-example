@@ -104,7 +104,6 @@ namespace Loyalty.Application.Venue
             {
                 result2 = await Mediator.Send(new UpdateFirebaseTokenCommand
                 {
-                    Email = model.Email,
                     Surname = model.LastName,
                     Name = model.Name,
                     Token = token
