@@ -38,7 +38,7 @@ namespace LoyaltyProgram.Http.UserProfile
         [FunctionName("UserProfilePatchEmailFunction")]
         public async Task<IActionResult> Run(
             string email,
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "userprofiles/emails/{email}")]
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "userprofiles/emails/{email}")]
             HttpRequestMessage req,
             ILogger log,
             [Queue("invite-mail", Connection = "QueueConnectionString")] ICollector<EmailInvitationDto> queueItems,

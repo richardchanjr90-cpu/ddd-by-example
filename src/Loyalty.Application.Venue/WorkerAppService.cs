@@ -126,12 +126,10 @@ namespace Loyalty.Application.Venue
             return commandResult;
         }
 
-        public async Task<GetVerificationLinkQueryResult> SetupEmail(PatchEmailViewModel model, string userId)
+        public async Task<ICommandResult> SetupEmail(PatchEmailViewModel model, string userId)
         {
             new PatchEmailValidator()
                 .ValidateAndThrow(model);
-
-            GetVerificationLinkQueryResult result = null;
 
             var user = await Mediator.Send(new GetCurrentUserQuery()
             {
@@ -148,7 +146,7 @@ namespace Loyalty.Application.Venue
 
             if (updateUser.Success)
             {
-                result = await Mediator.Send(new GetVerificationLinkQuery()
+                var result = await Mediator.Send(new GetVerificationLinkQuery()
                 {
                     Surname =  user.Surname,
                     Name =  user.Name,
@@ -162,7 +160,7 @@ namespace Loyalty.Application.Venue
                 }
             }
 
-            return result;
+            return updateUser;
         }
 
         public async Task<ICommandResult> Archive(long venueId, long id, string userId)
