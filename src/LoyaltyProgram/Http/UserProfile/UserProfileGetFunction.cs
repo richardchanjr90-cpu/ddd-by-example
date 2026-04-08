@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +24,7 @@ namespace LoyaltyProgram.Http.UserProfile
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(UserProfileViewModel))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetUserProfileByIdQueryResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("UserProfileGetFunction")]

@@ -31,7 +31,7 @@ namespace LoyaltyProgram.Http.Worker
         [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
-            [RequestBodyType(typeof(InviteViewModel), "InviteViewModel")] InviteViewModel model,
+            [RequestBodyType(typeof(UpdateInviteViewModel), "UpdateWorkerViewModel")] UpdateInviteViewModel model,
             HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
@@ -40,7 +40,7 @@ namespace LoyaltyProgram.Http.Worker
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<InviteViewModel>();
+                model = await req.Cast<UpdateInviteViewModel>();
                 var result = await service.UpdateInvited(model);
 
                 return new OkObjectResult(result);

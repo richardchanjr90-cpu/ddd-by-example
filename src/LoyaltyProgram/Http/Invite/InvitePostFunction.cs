@@ -6,6 +6,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
@@ -50,7 +51,7 @@ namespace LoyaltyProgram.Http.Invite
                     queueItems.Add(new WorkerInviteDto
                     {
                         WorkerPhone = model.Phone,
-                        Inviter = token.Principal.Identity.Name
+                        Inviter = token.Principal.GetName()
                     });
                 }
 

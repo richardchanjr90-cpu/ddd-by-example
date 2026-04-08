@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Shared.Contracts.Constants;
 using Loyalty.Shared.Contracts.Enums;
@@ -51,13 +52,13 @@ namespace Loyalty.Common.Shared.Extensions
         public static string GetSurname(this ClaimsPrincipal principal)
         {
             var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Lastname).Value;
-            return claim;
+            return Regex.Unescape(claim);
         }
 
         public static string GetName(this ClaimsPrincipal principal)
         {
             var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Firstname).Value;
-            return claim;
+            return Regex.Unescape(claim);
         }
 
         public static VenueUserRole GetRole(this ClaimsPrincipal principal)

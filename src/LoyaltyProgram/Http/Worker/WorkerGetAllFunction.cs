@@ -7,6 +7,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace LoyaltyProgram.Http.Worker
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(WorkerViewModel[]))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetWorkerByIdQueryResult[]))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("WorkerGetAllFunction")]

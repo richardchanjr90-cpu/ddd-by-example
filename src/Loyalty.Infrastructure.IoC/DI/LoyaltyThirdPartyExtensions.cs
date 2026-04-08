@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Reflection;
 using AutoMapper;
 using Loyalty.Application.AutoMapper;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Infrastructure.Firebase.Handlers;
 using Loyalty.Infrastructure.Handlers;
-using Loyalty.Infrastructure.Handlers.Notifications;
 using Loyalty.Infrastructure.Handlers.Notifications.Base;
 using Loyalty.Infrastructure.Handlers.Pipelines;
 using MediatR;
@@ -26,7 +25,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandBehavior<,>));
 
-            if (Environment.GetEnvironmentVariable("FUNCTION_ENV") != "stage")
+            if (!EnvironmentExtensions.IsProd())
             {
                 var serviceProvider = services.BuildServiceProvider();
                 var mapper = serviceProvider.GetRequiredService<IMapper>();

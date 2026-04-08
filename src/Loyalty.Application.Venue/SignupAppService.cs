@@ -54,7 +54,12 @@ namespace Loyalty.Application.Venue
             }
 
             var ids = worker?.Venues.Select(x => x.VenueId.ToString()).ToCommaSeparatedStringOrNull();
-            var role = venueWorker?.Role ?? VenueUserRole.Owner;
+
+            var role = VenueUserRole.Owner;
+            if (venueWorker != null)
+            {
+                role = (VenueUserRole)venueWorker.Role;
+            }
 
             if (result.Success)
             {
@@ -112,7 +117,7 @@ namespace Loyalty.Application.Venue
                 LastName = model.Surname,
                 Id = getInviteByPhoneQueryResult.Id,
                 PositionName = venueWorker.PositionName,
-                Role = venueWorker.Role,
+                Role = (VenueUserRole) venueWorker.Role,
                 VenueId = venueWorker.VenueId,
                 Phone = getInviteByPhoneQueryResult.Phone
             };
