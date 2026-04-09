@@ -10,22 +10,22 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Admin
 {
-    public class AdminGetAllVenues
+    public class AdminGetAllVenuesFunction
     {
         private readonly LoyaltyVenueAppService service;
 
-        public AdminGetAllVenues(LoyaltyVenueAppService service)
+        public AdminGetAllVenuesFunction(LoyaltyVenueAppService service)
         {
             this.service = service;
         }
 
         [FunctionName("AdminGetAllVenues")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "control/admins/venues")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "control/admins/venues")] HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
-            log.LogInformation($"{nameof(AdminGetAllVenues)} was triggered.");
+            log.LogInformation($"{nameof(AdminGetAllVenuesFunction)} was triggered.");
             var isAdmin = token.Principal.IsAdmin();
 
             if (isAdmin)
