@@ -18,7 +18,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
         {
         }
 
-        public async Task<GetLoyaltyProgramsQueryResult> Handle(GetLoyaltyProgramsQuery request,
+        public async Task<GetLoyaltyProgramsQueryResult> Handle(
+            GetLoyaltyProgramsQuery request,
             CancellationToken cancellationToken)
         {
             var items = await (from lp in Context.LoyaltyPrograms
@@ -30,6 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                     StartedDate = lp.StartDate,
                     EndedDate = lp.EndDate,
                     Name = lp.Name,
+                    Url = lp.Url,
                     IsPublished = lp.IsPublished
                 }).ToListAsync(cancellationToken);
 

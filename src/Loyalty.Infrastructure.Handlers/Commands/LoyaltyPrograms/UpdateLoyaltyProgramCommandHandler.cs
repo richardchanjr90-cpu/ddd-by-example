@@ -75,7 +75,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         Url = program.Url?.ToString(),
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
-                        IsPublished = program.IsPublished
+                        IsPublished = program.IsPublished,
+                        Description = program.Description
                     }, cancellationToken);
             }
             return result;
