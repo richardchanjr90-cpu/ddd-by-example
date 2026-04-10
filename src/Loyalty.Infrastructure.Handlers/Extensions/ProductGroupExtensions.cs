@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Loyalty.Core.Entities;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
@@ -26,7 +27,7 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 Name = item.Name,
                 VenueId = item.VenueId,
                 IsAvailableForOrder = isGroupSelected, 
-                Products = item.Products?.ToList().ToResults()
+                Products = item.Products?.ToList().ToResults() ?? new List<GetProductByIdQueryResult>()
             };
 
             return result;
