@@ -7,35 +7,31 @@ using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
-using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Aggregates.Workers;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class CreateVenueCommandHandler : BaseHandler, IRequestHandler<CreateVenueCommand, ICommandResult>
+    public class CreateVenueCommandHandler : IRequestHandler<CreateVenueCommand, ICommandResult>
     {
         private readonly IMediator mediator;
         private readonly IOptions<VenueSettings> venueOptions;
 
         public CreateVenueCommandHandler(
-            ILoyaltyTenantDbContext context,
+            IVenueRepository venueRepository,
             IMediator mediator,
             IOptions<VenueSettings> venueOptions,
             IHttpContextAccessor accessor)
-            : base(context, accessor)
         {
             this.mediator = mediator;
             this.venueOptions = venueOptions;
@@ -45,64 +41,59 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         {
             Venue venue;
             Worker worker;
-            var strategy = Context.Database.CreateExecutionStrategy();
+            //var strategy = Context.Database.CreateExecutionStrategy();
 
-            return await strategy.ExecuteAsync(async () =>
+            CommandResult result;
+
+            venue = CreateVenue(request);
+            var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
+            Principal.AddVenues(venue.Id);
+
+            worker = await Context.Workers
+            .IgnoreQueryFilters()
+            .Include(x => x.Venues)
+            .ThenInclude(x => x.Venue)
+            .Where(x => x.WorkerId == Principal.GetUserId())
+            .FirstOrDefaultAsync(cancellationToken);
+
+            if (worker == null)
             {
-                CommandResult result;
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                {
-                    venue = CreateVenue(request);
-                    var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
-                    Principal.AddVenues(venue.Id);
+                throw new LoyaltyValidationException("User does not exist", ErrorCode.USER_DOES_NOT_EXIST);
+            }
 
-                    worker = await Context.Workers
-                    .IgnoreQueryFilters()
-                    .Include(x => x.Venues)
-                    .ThenInclude(x => x.Venue)
-                    .Where(x => x.WorkerId == Principal.GetUserId())
-                    .FirstOrDefaultAsync(cancellationToken);
+            worker = UpdateWorker(worker, venue);
+            saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
 
-                    if (worker == null)
+            result = new CommandResult
+            {
+                Success = saved,
+                Result = venue.Id
+            };
+
+            await AddClaimsAboutNewVenue(worker);
+
+
+            if (result.Success && worker != null)
+            {
+                await mediator.Publish(
+                    new UpdatedWorkerNotification
                     {
-                        throw new LoyaltyValidationException("User does not exist", ErrorCode.USER_DOES_NOT_EXIST);
-                    }
+                        WorkerId = worker.WorkerId,
+                        LastName = worker.LastName,
+                        Name = worker.Name,
+                        PhotoUri = worker.PhotoUri,
+                        Role = VenueUserRole.Owner,
+                        VenueId = venue.Id
+                    },
+                    cancellationToken);
+            }
 
-                    worker = UpdateWorker(worker, venue);
-                    saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
+            if (result.Success)
+            {
+                await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
+            }
 
-                    result = new CommandResult
-                    {
-                        Success = saved,
-                        Result = venue.Id
-                    };
-
-                    await AddClaimsAboutNewVenue(worker);
-                    scope.Complete();
-                }
-
-                if (result.Success && worker != null)
-                {
-                    await mediator.Publish(
-                        new UpdatedWorkerNotification
-                        {
-                            WorkerId = worker.WorkerId,
-                            LastName = worker.LastName,
-                            Name = worker.Name,
-                            PhotoUri = worker.PhotoUri,
-                            Role = VenueUserRole.Owner,
-                            VenueId = venue.Id
-                        },
-                        cancellationToken);
-                }
-
-                if (result.Success)
-                {
-                    await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-                }
-
-                return result;
-            });
+            return result;
         }
 
         private Venue CreateVenue(CreateVenueCommand request)

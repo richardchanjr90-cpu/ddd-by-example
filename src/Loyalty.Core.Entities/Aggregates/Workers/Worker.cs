@@ -1,38 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using Loyalty.Core.Entities.Aggregates.Venues;
-using Loyalty.Core.Entities.Base.Interface;
-using Loyalty.Core.Entities.Schema;
-using Loyalty.Core.Entities.SeedWork;
+﻿using Loyalty.Core.Entities.Base;
+using Loyalty.Core.Entities.SeedWork.Interfaces;
 
 namespace Loyalty.Core.Entities.Aggregates.Workers
 {
-    [Table("Worker", Schema = SchemaName.Loyalty)]
-    public class Worker : Entity, IAuditableEntity, IArchivableEntity
+    public class Worker : AuditableEntity, IAggregateRoot
     {
-        public ICollection<VenueWorker> Venues { get; set; }
+        public Worker(
+            string workerId,
+            string phone,
+            string name,
+            string lastName)
+        {
+            WorkerId = workerId;
+            Phone = phone;
+            Name = name;
+            LastName = lastName;
+        }
 
-        public string WorkerId { get; set; }
+        private Worker()
+        {
+            //ef core
+        }
 
-        public string Phone { get; set; }
+        public string WorkerId { get; private set; }
 
-        public string Name { get; set; }
+        public string Phone { get; private set; }
 
-        public string LastName { get; set; }
+        public string Name { get; private set; }
 
-        public string Email { get; set; }
+        public string LastName { get; private set; }
 
-        public string PhotoUri { get; set; }
+        public string Email { get; private set; }
 
-        public bool IsArchived { get; set; }
+        public string PhotoUri { get; private set; }
 
-        public string CreatedBy { get; set; }
+        public bool IsArchived { get; private set; }
 
-        public string ModifiedBy { get; set; }
+        public Worker Invite(
+                        string phone,
+                        string name,
+                        string lastName)
+        {
+            Phone = phone;
+            Name = name;
+            LastName = lastName;
 
-        public DateTime Modified { get; set; }
+            return this;
+        }
 
-        public DateTime Created { get; set; }
+        public void Update(string name, string lastName)
+        {
+            Name = name;
+            LastName = lastName;
+        }
+
+        public void CompleteInviteWithExternalId(string workerId)
+        {
+            WorkerId = workerId;
+        }
+
+        public void SetEmail(string email)
+        {
+            Email = email;
+        }
+
+        public void Archive()
+        {
+            IsArchived = true;
+        }
     }
 }

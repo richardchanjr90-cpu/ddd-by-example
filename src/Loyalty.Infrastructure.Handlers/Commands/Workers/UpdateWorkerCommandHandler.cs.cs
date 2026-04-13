@@ -4,38 +4,41 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class UpdateWorkerCommandHandler
         : BaseHandler, IRequestHandler<UpdateWorkerCommand, ICommandResult>
     {
+        private readonly IVenueRepository venueRepository;
+        private readonly IWorkerRepository workerRepository;
         private readonly IMediator mediator;
 
-        public UpdateWorkerCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
+        public UpdateWorkerCommandHandler(
+            IVenueRepository venueRepository,
+            IWorkerRepository workerRepository,
+            ILoyaltyTenantDbContext context, 
+            IHttpContextAccessor accessor, 
+            IMediator mediator)
             : base(context, accessor)
         {
+            this.venueRepository = venueRepository;
+            this.workerRepository = workerRepository;
             this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(UpdateWorkerCommand request, CancellationToken cancellationToken)
         {
-            var worker = Context.Workers
-                .IgnoreQueryFilters()
-                .Include(x => x.Venues)
-                .Where(x => x.Id == request.Id)
-                .AsEnumerable()
-                .FirstOrDefault();
+            var worker = await workerRepository.GetAsync(request.Id, cancellationToken);
 
             if (worker == null)
             {
@@ -47,12 +50,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 throw new LoyaltyValidationException("Impossible to create a second owner.", ErrorCode.SECOND_OWNER_NOT_ALLOWED);
             }
 
-            worker.WorkerId = request.WorkerId;
-            worker.Name = request.Name;
-            worker.LastName = request.LastName;
-            worker.Phone = request.Phone;
-            worker.Email = request.Email;
-            worker.PhotoUri = request.PhotoUri;
+            worker.Update(request.Name, request.LastName);
 
             var venueWorker = worker.Venues.Single(x => x.VenueId == request.VenueId);
             venueWorker.PositionName = request.PositionName;

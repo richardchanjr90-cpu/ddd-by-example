@@ -29,6 +29,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IVenueRepository, VenueRepository>();
+            services.AddTransient<IWorkerRepository, WorkerRepository>();
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContextPool<LoyaltyDbContext>(

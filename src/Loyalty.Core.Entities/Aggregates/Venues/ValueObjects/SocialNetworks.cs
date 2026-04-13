@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObject
+namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
 {
     public class SocialNetworks
     {

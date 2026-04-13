@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Entities.Aggregates.Venues.ValueObject;
+using Loyalty.Core.Entities.Aggregates.Venues.ValueObjects;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;

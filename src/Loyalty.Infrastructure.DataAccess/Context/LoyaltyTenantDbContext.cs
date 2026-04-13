@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
 using Loyalty.Core.Entities.Aggregates.Orders;
 using Loyalty.Core.Entities.Aggregates.ProductGroups;
@@ -14,7 +13,6 @@ using Loyalty.Core.Entities.Aggregates.Products;
 using Loyalty.Core.Entities.Aggregates.Purchases;
 using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Aggregates.Workers;
-using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.SeedWork;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
@@ -90,8 +88,8 @@ namespace Loyalty.Infrastructure.DataAccess.Context
                 e.Entity is IAuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
             var ids = (from e in ChangeTracker.Entries()
-                       where e.Entity is TenantEntity && e.State != EntityState.Unchanged && !(e.State == EntityState.Added && e.Entity is Venue)
-                       select ((TenantEntity)e.Entity).TenantId)
+                       where e.Entity is ITenantEntity && e.State != EntityState.Unchanged && !(e.State == EntityState.Added && e.Entity is Venue)
+                       select ((ITenantEntity)e.Entity).TenantId)
                 .Distinct()
                 .ToList();
 

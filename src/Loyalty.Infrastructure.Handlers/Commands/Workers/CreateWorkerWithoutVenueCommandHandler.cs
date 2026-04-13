@@ -1,47 +1,38 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Aggregates.Workers;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class CreateWorkerWithoutVenueCommandHandler
-        : BaseHandler, IRequestHandler<CreateWorkerWithoutVenueCommand, ICommandResult>
+        : IRequestHandler<CreateWorkerWithoutVenueCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IWorkerRepository workerRepository;
 
-        public CreateWorkerWithoutVenueCommandHandler(
-            ILoyaltyTenantDbContext context, 
-            IHttpContextAccessor accessor,
-            IMediator mediator)
-            : base(context, accessor)
+        public CreateWorkerWithoutVenueCommandHandler(IWorkerRepository workerRepository)
+
         {
-            this.mediator = mediator;
+            this.workerRepository = workerRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateWorkerWithoutVenueCommand request, CancellationToken cancellationToken)
         {
-            var worker = new Worker
-            {
-                WorkerId = request.WorkerId,
-                Name = request.Name,
-                LastName = request.LastName,
-                Phone = request.Phone,
-                Email = request.Email
-            };
+            var worker = new Worker(
+                request.WorkerId,
+                request.Name,
+                request.LastName,
+                request.Phone);
 
-            await Context.Workers.AddAsync(worker, cancellationToken);
+            await workerRepository.AddAsync(worker);
 
             var commandResult = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await workerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = worker.Id
             };
 
