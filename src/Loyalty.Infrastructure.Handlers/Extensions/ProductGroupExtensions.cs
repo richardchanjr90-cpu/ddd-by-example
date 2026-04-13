@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
+using Loyalty.Core.Entities.Aggregates.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions
@@ -16,18 +14,16 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
                 throw new ArgumentNullException(nameof(item));
             }
 
-            bool isGroupSelected = item.Products != null && 
-                                   item.Products.Count > 0 
-                                   && item.Products.All(x => x.IsAvailableForOrder);
-
+            //bool isGroupSelected = item.Products != null && 
+            //                       item.Products.Count > 0 
+            //                       && item.Products.All(x => x.IsAvailableForOrder);
             var result = new GetProductGroupByIdQueryResult
             {
                 Id = item.Id,
                 Icon = item.Icon,
                 Name = item.Name,
-                VenueId = item.VenueId,
-                IsAvailableForOrder = isGroupSelected, 
-                Products = item.Products?.ToList().ToResults() ?? new List<GetProductByIdQueryResult>()
+                VenueId = item.VenueId
+                //Products = item.Products?.ToList().ToResults() ?? new List<GetProductByIdQueryResult>()
             };
 
             return result;

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
                 .Include(x => x.OrderItems)
                 .ThenInclude(x => x.Product)
                 .Where(x => x.VenueId == request.VenueId)
+                .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
             return new GetOrdersByVenueIdQueryResult

@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Transactions;
 using Dapper;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.Venues;
+using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Infrastructure.Handlers.Extensions;

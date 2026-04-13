@@ -1,38 +1,27 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Constants;
-using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Products;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
 {
     public class UpdateProductCommandHandler
-        : BaseHandler, IUpdateProductCommandHandler
+        : IRequestHandler<UpdateProductCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IProductRepository productRepository;
 
-        public UpdateProductCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator,  IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public UpdateProductCommandHandler(IProductRepository productRepository)
         {
-            this.mediator = mediator;
+            this.productRepository = productRepository;
         }
 
         public async Task<ICommandResult> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await Context.Products
-                .Include(x => x.ProductGroup)
-                .Where(x => x.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
+            var product = await productRepository.GetAsync(request.Id, cancellationToken);
 
             product?.UpdateProduct(
                 request.Name, 
@@ -41,25 +30,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 request.Price, 
                 request.ExternalUid);
 
+            productRepository.Update(product);
+
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await productRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = product?.Id
             };
-
-            if (product != null && result.Success)
-            {
-                await mediator.Publish(
-                    new UpdateProductNotification
-                    {
-                        Price = product.Price,
-                        Id = product.Id,
-                        Description = product.Description,
-                        Name = product.Name,
-                        GroupIcon = product.ProductGroup.Icon,
-                        GroupName = product.ProductGroup.Name
-                    }, cancellationToken);
-            }
 
             return result;
         }

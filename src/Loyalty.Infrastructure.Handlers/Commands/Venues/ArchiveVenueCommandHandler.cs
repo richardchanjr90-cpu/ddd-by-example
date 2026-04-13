@@ -1,13 +1,11 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -20,7 +18,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
 
-        public ArchiveVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public ArchiveVenueCommandHandler(
+            ILoyaltyTenantDbContext context, 
+            IMediator mediator, 
+            IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
@@ -32,7 +33,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 .Include(x => x.LoyaltyPrograms)
                 .ThenInclude(x => x.LoyaltyProductGroups)
                 .Include(x => x.ProductGroups)
-                .ThenInclude(x => x.Products)
                 .Include(x => x.Workers)
                 .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
@@ -53,12 +53,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
                 foreach (var group in venue.ProductGroups)
                 {
-                    group.IsArchived = true;
-
-                    foreach (var product in group.Products)
-                    {
-                        product?.Archive();
-                    }
+                    group.Archive();
                 }
             }
 

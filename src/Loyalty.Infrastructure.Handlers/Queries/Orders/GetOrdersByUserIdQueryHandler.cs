@@ -4,9 +4,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
-using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
-using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +15,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
     public class GetOrdersByUserIdQueryHandler      
         : BaseHandler, IRequestHandler<GetOrdersByUserIdQuery, GetOrdersByUserIdQueryResult>
     {
-        public GetOrdersByUserIdQueryHandler(ILoyaltyDbContext context, IHttpContextAccessor accessor) 
+        public GetOrdersByUserIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor) 
             : base(context, accessor)
         {
         }
@@ -31,6 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
                 .Where(x => 
                     x.CreatedBy == request.UserId 
                     && x.VenueId == request.VenueId)
+                .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
             return new GetOrdersByUserIdQueryResult()

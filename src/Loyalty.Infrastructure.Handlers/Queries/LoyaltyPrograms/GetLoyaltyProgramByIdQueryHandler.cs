@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                     EndedDate = lp.EndDate,
                     Name = lp.Name,
                     IsPublished = lp.IsPublished
-                }).SingleOrDefaultAsync(cancellationToken);
+                })
+                .AsNoTracking()
+                .SingleOrDefaultAsync(cancellationToken);
 
             return item;
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions

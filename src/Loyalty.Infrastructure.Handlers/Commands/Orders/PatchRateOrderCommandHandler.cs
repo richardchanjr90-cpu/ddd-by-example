@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Rate;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
-using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +17,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
     {
         private readonly IMediator mediator;
 
-        public PatchRateOrderCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public PatchRateOrderCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;

@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
     {
         private readonly IMediator mediator;
 
-        public PatchVenueImagesCommandHandler(ILoyaltyDbContext context, IMediator mediator)
+        public PatchVenueImagesCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator)
             : base(context, null)
         {
             this.mediator = mediator;

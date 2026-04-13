@@ -6,6 +6,7 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace LoyaltyProgram.Http.ProductGroup
             this.service = service;
         }
 
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ProductGroupViewModel[]))]
+        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(GetProductGroupByIdQueryResult[]))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("ProductGroupGetAllFunction")]

@@ -1,68 +1,47 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 {
     public class PatchProductGroupCommandHandler
-        : BaseHandler, IRequestHandler<PatchProductGroupCommand, ICommandResult>
+        :IRequestHandler<PatchProductGroupCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IProductGroupRepository groupRepository;
 
-        public PatchProductGroupCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public PatchProductGroupCommandHandler(IProductGroupRepository groupRepository)
         {
-            this.mediator = mediator;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchProductGroupCommand request, CancellationToken cancellationToken)
         {
-            var group = await Context.ProductGroups
-                .Include(x => x.Products)
-                .Where(x => x.Id == request.Id)
-                .FirstOrDefaultAsync(cancellationToken);
+            var group = await groupRepository
+                .GetAsync(request.Id, cancellationToken);
 
             if (group != null)
             {
-                foreach (var product in group.Products)
+                if (request.IsAvailableForOrder)
                 {
-                    if (request.IsAvailableForOrder)
-                    {
-                        product.ShowToCustomer();
-                    }
-                    else
-                    {
-                        product.HideFromCustomer();
-                    }
+                    group.ShowToCustomer();
+                }
+                else
+                {
+                    group.HideFromCustomer();
                 }
             }
+            groupRepository.Update(group);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await groupRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = group?.Id
             };
-
-            if (group != null && result.Success)
-            {
-                foreach (var product in group.Products)
-                {
-                    await mediator.Publish(
-                        new PatchProductNotification
-                        {
-                            Id = product.Id,
-                            IsAvailableForOrder = product.IsAvailableForOrder,
-                        }, cancellationToken);
-                }
-            }
 
             return result;
         }

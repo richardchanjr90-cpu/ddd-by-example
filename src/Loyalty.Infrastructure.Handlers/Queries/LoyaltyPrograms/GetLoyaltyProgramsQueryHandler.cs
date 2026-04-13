@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                     Name = lp.Name,
                     Url = lp.Url,
                     IsPublished = lp.IsPublished
-                }).ToListAsync(cancellationToken);
+                })
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             return new GetLoyaltyProgramsQueryResult
             {

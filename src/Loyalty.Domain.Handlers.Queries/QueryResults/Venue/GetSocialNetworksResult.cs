@@ -8,7 +8,7 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Venue
         [JsonPropertyName("instagram")]
         public Uri Instagram { get; set; }
 
-        [JsonPropertyName("instagram")]
+        [JsonPropertyName("facebook")]
         public Uri Facebook { get; set; }
        
         [JsonPropertyName("vkontakte")]

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
             var worker = await Context.Workers
                 .Include(x => x.Venues)
                 .Where(x => x.Id == request.Id)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(cancellationToken);
 
             return worker?.ToResult();

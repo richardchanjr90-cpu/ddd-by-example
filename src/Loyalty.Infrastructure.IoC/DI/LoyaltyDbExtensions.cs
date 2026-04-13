@@ -1,6 +1,10 @@
 ﻿using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities.Interfaces.Repository;
+using Loyalty.Infrastructure.Commands.Repository;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +24,11 @@ namespace Loyalty.Infrastructure.IoC.DI
             var dapperConnection = connectionString;
 
             services.AddTransient(x => new SqlConnection(dapperConnection));
+
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
+            services.AddTransient<IVenueRepository, VenueRepository>();
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContextPool<LoyaltyDbContext>(

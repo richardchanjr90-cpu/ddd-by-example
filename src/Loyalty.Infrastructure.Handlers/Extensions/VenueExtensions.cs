@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Entities;
-using Loyalty.Core.Entities.ValueObject;
+using Loyalty.Core.Entities.Aggregates.Venues;
+using Loyalty.Core.Entities.Aggregates.Venues.ValueObject;
 using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Location;
@@ -136,41 +136,6 @@ namespace Loyalty.Infrastructure.Handlers.Extensions
             {
                 Id = item.Id,
                 OwnerId = item.OwnerId
-            };
-
-            return result;
-        }
-
-        public static Venue ToSingle(this UpdateVenueCommand command)
-        {
-            if (command == null)
-            {
-                throw new ArgumentNullException(nameof(command));
-            }
-
-            var result = new Venue
-            {
-                Id = command.Id,
-                CategoryType = command.CategoryType,
-                Description = command.Description,
-                ParentId = command.ParentId,
-                Name = command.Name,
-                Type = command.Type,
-                City = command.Location?.City,
-                Address = command.Location?.Address,
-                Latitude = command.Location?.Latitude ?? 0,
-                Longitude = command.Location?.Longitude ?? 0,
-                FullDescription = command.FullDescription,
-                WebSites = command.WebSites.ToCommaSeparatedStringOrNull(),
-                WorkingHours = JsonSerializer.Serialize(command.WorkingHours),
-                Phones = command.Phones.ToCommaSeparatedStringOrNull(),
-                VenueStatus = command.VenueApprovalStatus,
-                SocialNetworks = new SocialNetworks
-                {
-                    Facebook = command?.SocialNetworks?.Facebook,
-                    Instagram = command?.SocialNetworks?.Instagram,
-                    Vkontakte = command?.SocialNetworks?.Vkontakte,
-                }
             };
 
             return result;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
         {
             var venue = await Context.Venues
                 .Where(x => x.Id == request.Id)
+                .AsNoTracking()
                 .SingleOrDefaultAsync(cancellationToken);
 
             return venue?.ToResult();

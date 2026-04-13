@@ -23,8 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Application.DomainEvents.Handlers\Loyalty.Application.DomainEvents.Handlers.csproj" />
     <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Commands.Repository\Loyalty.Infrastructure.Commands.Repository.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\Loyalty.Application.AutoMapper\Loyalty.Application.AutoMapper.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Firebase.Handlers\Loyalty.Infrastructure.Firebase.Handlers.csproj" />
