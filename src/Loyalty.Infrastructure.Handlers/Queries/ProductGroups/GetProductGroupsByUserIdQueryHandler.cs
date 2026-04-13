@@ -47,7 +47,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
                                     LEFT JOIN loyalty.Product p ON pg.Id = p.ProductGroupId
                                     JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId
                                     JOIN loyalty.Worker w ON vw.WorkerId = w.Id
-                                    WHERE w.WorkerId = @userId AND pg.Id = 1 AND pg.IsArchived = 0 AND p.IsArchived = 0 OR p.IsArchived IS NULL";
+                                    WHERE w.WorkerId = @userId AND pg.IsArchived = 0 AND p.IsArchived = 0 OR p.IsArchived IS NULL";
 
             await using (connection)
             {
