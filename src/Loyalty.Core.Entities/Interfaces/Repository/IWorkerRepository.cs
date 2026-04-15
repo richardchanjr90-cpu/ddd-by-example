@@ -13,8 +13,10 @@ namespace Loyalty.Core.Entities.Interfaces.Repository
 
         Task<Worker> GetByPhoneAsync(string phone, CancellationToken token = default);
 
-        Task<Worker> AddAsync(Worker venue);
+        Task<Worker> GetByEmailAsync(string email, CancellationToken token = default);
 
-        public Worker Update(Worker venue);
+        Task<Worker> AddAsync(Worker worker);
+
+        public Worker Update(Worker worker);
     }
 }

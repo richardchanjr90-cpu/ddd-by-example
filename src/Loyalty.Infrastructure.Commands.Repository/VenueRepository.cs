@@ -33,6 +33,17 @@ namespace Loyalty.Infrastructure.Commands.Repository
             return venue;
         }
 
+        public async Task<Venue> GetWithoutQueryFiltersAsync(long venueId, CancellationToken token = default)
+        {
+            var venue = await context
+                .Venues
+                .IgnoreQueryFilters()
+                .Where(x => x.Id == venueId)
+                .SingleOrDefaultAsync(token);
+
+            return venue;
+        }
+
         public async Task<Venue> AddAsync(Venue venue)
         {
             var result = venue;

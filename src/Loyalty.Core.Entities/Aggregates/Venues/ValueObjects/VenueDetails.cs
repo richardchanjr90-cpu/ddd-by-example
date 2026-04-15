@@ -7,13 +7,23 @@ namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
 {
     public class VenueDetails : ValueObject
     {
+        public VenueDetails(
+            string fullDescription, 
+            string description, 
+            string workingHours)
+        {
+            FullDescription = fullDescription;
+            Description = description;
+            WorkingHours = workingHours;
+        } 
+
         [MaxLength(4000)]
-        public string FullDescription { get; set; }
+        public string FullDescription { get; private set; }
 
         [MaxLength(2000)]
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
-        public string WorkingHours { get; set; }
+        public string WorkingHours { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

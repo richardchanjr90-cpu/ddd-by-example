@@ -9,6 +9,8 @@ namespace Loyalty.Core.Entities.Interfaces.Repository
     {
         Task<Venue> GetAsync(long venueId, CancellationToken token = default);
 
+        Task<Venue> GetWithoutQueryFiltersAsync(long venueId, CancellationToken token = default);
+
         Task<Venue> AddAsync(Venue venue);
 
         public Venue Update(Venue venue);

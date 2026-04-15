@@ -1,57 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class PatchVenueLogoCommandHandler : BaseHandler, IRequestHandler<PatchVenueLogoCommand, ICommandResult>
+    public class PatchVenueLogoCommandHandler : IRequestHandler<PatchVenueLogoCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IVenueRepository venueRepository;
 
-        public PatchVenueLogoCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public PatchVenueLogoCommandHandler(IVenueRepository venueRepository)
         {
-            this.mediator = mediator;
+            this.venueRepository = venueRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchVenueLogoCommand request, CancellationToken cancellationToken)
         {
-            var venue = await Context.Venues
-                .Where(x => x.Id == request.Id)
-                .SingleAsync(cancellationToken);
+            var venue = await venueRepository.GetAsync(request.Id, cancellationToken);
 
-            venue.LogoUrl = request.Logo;
+            venue.ChangeLogo(request.Logo);
+            venueRepository.Update(venue);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = venue.Id
             };
-
-            if (result.Success)
-            {
-                await mediator.Publish(
-                    new PatchVenueLogoNotification
-                    {
-                        Logo = request.SmallLogo,
-                        Id = venue.Id
-                    },
-                    cancellationToken);
-            }
 
             return result;
         }

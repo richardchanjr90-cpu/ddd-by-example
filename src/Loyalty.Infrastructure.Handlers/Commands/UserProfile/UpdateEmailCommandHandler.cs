@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Notifications.Workers;
@@ -18,43 +19,33 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
 {
     public class UpdateEmailCommandHandler
-        : BaseHandler, IRequestHandler<UpdateEmailCommand, ICommandResult>
+        : IRequestHandler<UpdateEmailCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IWorkerRepository workerRepository;
 
-        public UpdateEmailCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor, IMediator mediator)
-            : base(context, accessor)
+        public UpdateEmailCommandHandler(IWorkerRepository workerRepository)
         {
-            this.mediator = mediator;
+            this.workerRepository = workerRepository;
         }
 
         public async Task<ICommandResult> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
         {
-            var worker = await Context.Workers
-                .IgnoreQueryFilters()
-                .Include(x => x.Venues)
-                .Where(x => x.WorkerId == request.WorkerId)
-                .FirstOrDefaultAsync(cancellationToken);
+            var worker = await workerRepository.GetByUidAsync(request.WorkerId, cancellationToken);
 
-            if (!request.Email.Equals(worker.Email))
-            {
-                var emailUser = await Context.Workers
-                    .IgnoreQueryFilters()
-                    .Include(x => x.Venues)
-                    .Where(x => x.Email == request.Email)
-                    .FirstOrDefaultAsync(cancellationToken);
+            //if (!request.Email.Equals(worker.Email))
+            //{
+            //    var emailUser = await workerRepository.GetByPhoneAsync(request.Email, cancellationToken);
 
-                if (emailUser != null)
-                {
-                    throw new LoyaltyValidationException("This email is already taken.", ErrorCode.EMAIL_EXISTS);
-                }
-            }
-
-            worker.Email = request.Email;
+            //    if (emailUser != null)
+            //    {
+            //        throw new LoyaltyValidationException("This email is already taken.", ErrorCode.EMAIL_EXISTS);
+            //    }
+            //}
+            worker.SetEmail(request.Email);
 
             var commandResult = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await workerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = worker.Id
             };
 

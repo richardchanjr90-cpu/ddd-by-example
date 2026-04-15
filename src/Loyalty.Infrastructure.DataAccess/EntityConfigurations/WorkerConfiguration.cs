@@ -28,6 +28,11 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .HasIndex(u => u.WorkerId)
                 .IsUnique()
                 .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
+
+            builder
+                .HasMany(bc => bc.VenueRoles)
+                .WithOne()
+                .HasForeignKey(bc => bc.VenueId);
         }
     }
 }

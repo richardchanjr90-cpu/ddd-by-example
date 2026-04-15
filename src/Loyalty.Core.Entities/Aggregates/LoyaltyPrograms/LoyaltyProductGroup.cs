@@ -8,7 +8,7 @@ using Loyalty.Core.Entities.Base.Interface;
 
 namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
 {
-    public class LoyaltyProductGroup : AuditableEntity, IArchivableEntity
+    public class LoyaltyProductGroup : TenantEntity, IArchivableEntity
     {
         [ForeignKey(nameof(LoyaltyProgram))]
         public long LoyaltyProgramId { get; set; }

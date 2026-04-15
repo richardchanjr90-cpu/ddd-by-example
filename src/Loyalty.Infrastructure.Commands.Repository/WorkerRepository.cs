@@ -41,6 +41,16 @@ namespace Loyalty.Infrastructure.Commands.Repository
             return worker;
         }
 
+        public async Task<Worker> GetByEmailAsync(string email, CancellationToken token = default)
+        {
+            var worker = await context
+                .Workers
+                .Where(x => x.Email == email)
+                .SingleOrDefaultAsync(token);
+
+            return worker;
+        }
+
         public async Task<Worker> GetAsync(long id, CancellationToken token = default)
         {
             var worker = await context

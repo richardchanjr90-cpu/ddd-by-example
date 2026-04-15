@@ -1,10 +1,13 @@
 ﻿using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.Interfaces.Repository;
+using Loyalty.Core.Outbox.Entities.Services;
 using Loyalty.Infrastructure.Commands.Repository;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.Outbox;
+using Loyalty.Infrastructure.Outbox.Outbox;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +33,9 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IVenueRepository, VenueRepository>();
             services.AddTransient<IWorkerRepository, WorkerRepository>();
+
+            services.AddTransient<IIntegrationEventService, LoggingIntegrationEventService>();
+            services.AddTransient<IEventBusService, EventBusPublishingService>();
 
             services.AddEntityFrameworkSqlServer()
                 .AddDbContextPool<LoyaltyDbContext>(

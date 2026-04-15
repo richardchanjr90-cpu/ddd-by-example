@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Core.Outbox.Entities\Loyalty.Core.Outbox.Entities.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Events.DataAccess\Loyalty.Infrastructure.Events.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>

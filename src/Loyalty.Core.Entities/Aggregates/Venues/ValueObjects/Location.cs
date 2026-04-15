@@ -7,15 +7,31 @@ namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
 {
     public class Location : ValueObject
     {
-        [MaxLength(200)]
-        public string City { get; set; }
+        public Location(
+            string city, 
+            string address, 
+            float? latitude,
+            float? longitude)
+        {
+            City = city;
+            Address = address;
+            Latitude = latitude;
+            Longitude = longitude;
+        } 
+
+        private Location()
+        {
+        }
 
         [MaxLength(200)]
-        public string Address { get; set; }
+        public string City { get; private set; }
 
-        public float? Latitude { get; set; }
+        [MaxLength(200)]
+        public string Address { get; private set; }
 
-        public float? Longitude { get; set; }
+        public float? Latitude { get; private set; }
+
+        public float? Longitude { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

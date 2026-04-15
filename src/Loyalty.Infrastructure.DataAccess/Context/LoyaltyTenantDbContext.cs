@@ -74,7 +74,7 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             modelBuilder.Entity<Venue>().HasQueryFilter(e => TenantIds.Contains(e.Id) && !e.IsArchived);
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
-            modelBuilder.Entity<Worker>().HasQueryFilter(e => e.Venues.Any(x => TenantIds.Contains(x.VenueId)) && !e.IsArchived);
+            modelBuilder.Entity<Worker>().HasQueryFilter(e => e.VenueRoles.Any(x => TenantIds.Contains(x.VenueId)) && !e.IsArchived);
             modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.Group.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
             modelBuilder.Entity<Product>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);

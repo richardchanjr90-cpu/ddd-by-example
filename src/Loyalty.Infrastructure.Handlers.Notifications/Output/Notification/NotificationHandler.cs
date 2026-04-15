@@ -7,15 +7,15 @@ using Loyalty.Infrastructure.Handlers.Notifications.Interfaces;
 using MediatR;
 using Microsoft.Azure.ServiceBus;
 
-namespace Loyalty.Infrastructure.Handlers.Notifications.Notifications.Notification
+namespace Loyalty.Infrastructure.Handlers.Notifications.Output.Notification
 {
-    public class UserNotificationHandler<T>
+    public class NotificationHandler<T>
         : BaseNotificationHandler, INotificationHandler<T>
-        where T : IUserEventsNotification
+        where T : IIntegrationEventsNotification
     {
         private readonly ITopicClient client;
 
-        public UserNotificationHandler(IUserTopicClient client) 
+        public NotificationHandler(IIntegrationTopicClient client) 
             : base(client.Client)
         {
             this.client = client.Client;

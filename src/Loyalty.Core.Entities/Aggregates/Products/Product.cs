@@ -1,19 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Entities.Aggregates.ProductGroups;
-using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Base;
-using Loyalty.Core.Entities.Events;
 using Loyalty.Core.Entities.Events.Products;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Aggregates.Products
 {
-    public sealed class Product : AuditableEntity, IAggregateRoot
+    public sealed class Product : TenantEntity, IAggregateRoot
     {
         //public constructor available to developer to create a new book
         public Product(

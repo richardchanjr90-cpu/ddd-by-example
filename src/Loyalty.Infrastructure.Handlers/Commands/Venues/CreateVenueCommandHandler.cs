@@ -1,20 +1,16 @@
 ﻿using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
-using FirebaseAdmin.Auth;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Entities.Aggregates.Venues;
-using Loyalty.Core.Entities.Aggregates.Workers;
+using Loyalty.Core.Entities.Aggregates.Venues.ValueObjects;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.Handlers.Extensions;
-using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -24,115 +20,69 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class CreateVenueCommandHandler : IRequestHandler<CreateVenueCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IVenueRepository venueRepository;
+        private readonly IWorkerRepository workerRepository;
         private readonly IOptions<VenueSettings> venueOptions;
+        private readonly IHttpContextAccessor accessor;
 
         public CreateVenueCommandHandler(
             IVenueRepository venueRepository,
-            IMediator mediator,
+            IWorkerRepository workerRepository,
             IOptions<VenueSettings> venueOptions,
             IHttpContextAccessor accessor)
         {
-            this.mediator = mediator;
+            this.venueRepository = venueRepository;
+            this.workerRepository = workerRepository;
             this.venueOptions = venueOptions;
+            this.accessor = accessor;
         }
 
         public async Task<ICommandResult> Handle(CreateVenueCommand request, CancellationToken cancellationToken)
         {
-            Venue venue;
-            Worker worker;
-            //var strategy = Context.Database.CreateExecutionStrategy();
-
-            CommandResult result;
-
-            venue = CreateVenue(request);
-            var saved = await Context.SaveChangesAsync(cancellationToken) > 0;
-            Principal.AddVenues(venue.Id);
-
-            worker = await Context.Workers
-            .IgnoreQueryFilters()
-            .Include(x => x.Venues)
-            .ThenInclude(x => x.Venue)
-            .Where(x => x.WorkerId == Principal.GetUserId())
-            .FirstOrDefaultAsync(cancellationToken);
+            var userId = accessor.HttpContext.User.GetUserId();
+            var worker = await workerRepository.GetByUidAsync(userId, cancellationToken);
 
             if (worker == null)
             {
                 throw new LoyaltyValidationException("User does not exist", ErrorCode.USER_DOES_NOT_EXIST);
             }
 
-            worker = UpdateWorker(worker, venue);
-            saved = saved && await Context.SaveChangesAsync(cancellationToken) > 0;
+            var description = new VenueDetails(
+                request.FullDescription,
+                request.Description,
+                JsonSerializer.Serialize(request.WorkingHours));
 
-            result = new CommandResult
+            var socialNetworks = new SocialNetworks(
+                request.SocialNetworks?.Instagram,
+                request.SocialNetworks?.Facebook,
+                request.SocialNetworks?.Vkontakte);
+
+            var contactInfo = new ContactInfo(
+                request.Phones.ToCommaSeparatedStringOrNull(),
+                request.WebSites.ToCommaSeparatedStringOrNull(),
+                socialNetworks);
+
+            var location = new Location(
+                request.Location?.City,
+                request.Location?.Address,
+                request.Location?.Latitude ?? 0.0f,
+                request.Location?.Longitude ?? 0.0f);
+
+            var venue = new Venue(
+                request.Name,
+                userId,
+                location, 
+                description, 
+                contactInfo, 
+                request.CategoryType);
+
+            var result = new CommandResult
             {
-                Success = saved,
+                Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = venue.Id
             };
 
-            await AddClaimsAboutNewVenue(worker);
-
-
-            if (result.Success && worker != null)
-            {
-                await mediator.Publish(
-                    new UpdatedWorkerNotification
-                    {
-                        WorkerId = worker.WorkerId,
-                        LastName = worker.LastName,
-                        Name = worker.Name,
-                        PhotoUri = worker.PhotoUri,
-                        Role = VenueUserRole.Owner,
-                        VenueId = venue.Id
-                    },
-                    cancellationToken);
-            }
-
-            if (result.Success)
-            {
-                await mediator.Publish(venue.ToVenueNotification(), cancellationToken);
-            }
-
             return result;
-        }
-
-        private Venue CreateVenue(CreateVenueCommand request)
-        {
-            var venue = request.ToSingle(Principal.GetUserId());
-            Context.Venues.Add(venue);
-            return venue;
-        }
-
-        private Worker UpdateWorker(Worker worker, Venue venue)
-        {
-            var venueWorker = new VenueWorker
-            {
-                Venue = venue,
-                Worker = worker,
-                PositionName = "Владелец",
-                Role = VenueUserRole.Owner
-            };
-
-            Context.VenueWorkers.Add(venueWorker);
-            return worker;
-        }
-
-        private async Task AddClaimsAboutNewVenue(Worker worker)
-        {
-            //todo: move to a firebase handler.
-            var user = await FirebaseAuth.DefaultInstance.GetUserAsync(Principal.GetUserId());
-            var claims = user.CustomClaims.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-
-            var ids = worker.Venues.Select(x => x.VenueId).Select(x => x.ToString());
-
-            if (worker.Venues.Select(x => x.VenueId).Count() > venueOptions.Value.MaxVenueNumber)
-            {
-                throw new LoyaltyValidationException(
-                    $"Limit of {venueOptions.Value.MaxVenueNumber} venues reached.", ErrorCode.LIMIT_REACHED);
-            }
-
-            claims[ClaimConstants.VENUE_CLAIM] = ids.ToCommaSeparatedStringOrNull();
-            await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(Principal.GetUserId(), claims);
         }
     }
 }

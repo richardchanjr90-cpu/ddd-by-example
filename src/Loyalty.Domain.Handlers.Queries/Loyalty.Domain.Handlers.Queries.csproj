@@ -31,7 +31,6 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.14" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

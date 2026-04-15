@@ -25,7 +25,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
         {
             var worker = await Context.Workers
                 .IgnoreQueryFilters()
-                .Include(x => x.Venues)
+                .Include(x => x.VenueRoles)
                 .Where(x => x.WorkerId == request.UserId)
                 .AsNoTracking()
                 .SingleAsync(cancellationToken);

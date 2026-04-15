@@ -9,7 +9,7 @@ using Loyalty.Core.Entities.SeedWork.Interfaces;
 
 namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
 {
-    public class LoyaltyProgram : AuditableEntity, IArchivableEntity, IAggregateRoot
+    public class LoyaltyProgram : TenantEntity, IArchivableEntity, IAggregateRoot
     {
         [Required]
         public string Name { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
@@ -15,13 +16,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class ArchiveVenueCommandHandler : BaseHandler, IRequestHandler<ArchiveVenueCommand, ICommandResult>
-    {
+    {       
         private readonly IMediator mediator;
 
-        public ArchiveVenueCommandHandler(
-            ILoyaltyTenantDbContext context, 
-            IMediator mediator, 
-            IHttpContextAccessor accessor)
+        public ArchiveVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;
@@ -33,14 +31,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 .Include(x => x.LoyaltyPrograms)
                 .ThenInclude(x => x.LoyaltyProductGroups)
                 .Include(x => x.ProductGroups)
-                .Include(x => x.Workers)
                 .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (venue != null)
             {
-                venue.IsArchived = true;
-
+                //venue.IsArchived = true;
                 foreach (var program in venue.LoyaltyPrograms)
                 {
                     program.IsArchived = true;
@@ -65,8 +61,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (result.Success && venue != null)
             {
-                await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
-
+                //await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
                 foreach (var program in venue.LoyaltyPrograms)
                 {
                     await mediator.Publish(

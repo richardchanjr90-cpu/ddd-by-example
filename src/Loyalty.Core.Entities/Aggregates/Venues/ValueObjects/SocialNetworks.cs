@@ -5,13 +5,23 @@ namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
 {
     public class SocialNetworks
     {
+        public SocialNetworks(
+            Uri instagram, 
+            Uri facebook, 
+            Uri vkontakte)
+        {
+            Instagram = instagram;
+            Facebook = facebook;
+            Vkontakte = vkontakte;
+        } 
+
         [JsonPropertyName("instagram")]
-        public Uri Instagram { get; set; }
+        public Uri Instagram { get; private set; }
 
         [JsonPropertyName("facebook")]
-        public Uri Facebook { get; set; }
+        public Uri Facebook { get; private set; }
 
         [JsonPropertyName("vkontakte")]
-        public Uri Vkontakte { get; set; }
+        public Uri Vkontakte { get; private set; }
     }
 }

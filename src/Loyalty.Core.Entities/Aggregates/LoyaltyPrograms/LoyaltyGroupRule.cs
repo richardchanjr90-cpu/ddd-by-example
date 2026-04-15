@@ -5,7 +5,7 @@ using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
 {
-    public class LoyaltyGroupRule : AuditableEntity, IArchivableEntity
+    public class LoyaltyGroupRule : TenantEntity, IArchivableEntity
     {
         [ForeignKey(nameof(LoyaltyProductGroup))]
         public long LoyaltyProductGroupId { get; set; }

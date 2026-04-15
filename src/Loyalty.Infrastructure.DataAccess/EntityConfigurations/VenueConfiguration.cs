@@ -22,7 +22,7 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .WithOne(x => x.OwnerVenue)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(e => e.SocialNetworks).HasConversion(
+            builder.Property(e => e.ContactInfo.SocialNetworks).HasConversion(
                 v => JsonSerializer.Serialize(
                     v,
                     new JsonSerializerOptions()

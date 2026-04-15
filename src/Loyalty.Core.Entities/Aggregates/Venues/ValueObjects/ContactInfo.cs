@@ -1,17 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Loyalty.Core.Entities.SeedWork;
 
 namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
 {
     public class ContactInfo : ValueObject
     {
-        public string Phones { get; set; }
+        public ContactInfo(
+            string phones, 
+            string webSites, 
+            SocialNetworks socialNetworks)
+        {
+            Phones = phones;
+            WebSites = webSites;
+            SocialNetworks = socialNetworks;
+        } 
 
-        public string WebSites { get; set; }
+        public string Phones { get; private set; }
 
-        public SocialNetworks SocialNetworks { get; set; }
+        public string WebSites { get; private set; }
+
+        public SocialNetworks SocialNetworks { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

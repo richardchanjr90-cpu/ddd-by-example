@@ -6,7 +6,7 @@ using Loyalty.Core.Entities.SeedWork.Interfaces;
 
 namespace Loyalty.Core.Entities.Aggregates.Purchases
 {
-    public class Purchase : AuditableEntity, IAggregateRoot
+    public class Purchase : TenantEntity, IAggregateRoot
     {
         public Purchase(
             long loyaltyProductGroupId,

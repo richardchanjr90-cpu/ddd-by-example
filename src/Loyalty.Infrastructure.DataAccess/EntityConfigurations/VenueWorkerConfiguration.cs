@@ -1,4 +1,5 @@
 ﻿using Loyalty.Core.Entities.Aggregates.Venues;
+using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Core.Entities.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,16 +16,6 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
 
             builder
                 .HasKey(bc => new { bc.VenueId, bc.WorkerId });
-
-            builder
-                .HasOne(bc => bc.Venue)
-                .WithMany(b => b.Workers)
-                .HasForeignKey(bc => bc.VenueId);
-
-            builder
-                .HasOne(bc => bc.Worker)
-                .WithMany(c => c.Venues)
-                .HasForeignKey(bc => bc.WorkerId);
 
             builder
                 .HasIndex(p => new { p.VenueId, p.WorkerId })
