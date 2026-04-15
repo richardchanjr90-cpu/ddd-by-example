@@ -35,7 +35,7 @@ namespace Loyalty.Infrastructure.Outbox
         public async Task PersistEventAsync(INotification evt)
         {
             var transaction = loyaltyTenantDbContext.GetCurrentTransaction();
-            await persistentService.SaveEventAsync(evt, transaction);
+            await persistentService.SaveEventAsync(evt);
         }
 
         public async Task PublishEventsAsync(Guid transactionId)

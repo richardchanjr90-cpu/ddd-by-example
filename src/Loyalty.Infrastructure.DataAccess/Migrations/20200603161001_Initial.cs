@@ -18,6 +18,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 name: "productgroupeq",
                 incrementBy: 10);
 
+            migrationBuilder.CreateSequence(
+                name: "venueeq",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "workereq",
+                incrementBy: 10);
+
             migrationBuilder.CreateTable(
                 name: "Order",
                 schema: "loyalty",
@@ -34,7 +42,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     PickUpTime = table.Column<DateTime>(nullable: true),
                     Comment = table.Column<string>(nullable: true),
                     VenueComment = table.Column<string>(nullable: true),
-                    Rate = table.Column<int>(nullable: false)
+                    Rate = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -60,32 +68,33 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     ModifiedBy = table.Column<string>(nullable: true),
                     Modified = table.Column<DateTime>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(maxLength: 200, nullable: false),
                     OwnerId = table.Column<string>(nullable: false),
-                    Description = table.Column<string>(maxLength: 2000, nullable: true),
                     ParentId = table.Column<long>(nullable: true),
-                    City = table.Column<string>(maxLength: 200, nullable: true),
-                    Address = table.Column<string>(maxLength: 200, nullable: true),
-                    Latitude = table.Column<float>(nullable: true),
-                    Longitude = table.Column<float>(nullable: true),
+                    Location_City = table.Column<string>(maxLength: 200, nullable: true),
+                    Location_Address = table.Column<string>(maxLength: 200, nullable: true),
+                    Location_Latitude = table.Column<float>(nullable: true),
+                    Location_Longitude = table.Column<float>(nullable: true),
+                    Details_FullDescription = table.Column<string>(maxLength: 4000, nullable: true),
+                    Details_Description = table.Column<string>(maxLength: 2000, nullable: true),
+                    Details_WorkingHours = table.Column<string>(nullable: true),
+                    ContactInfo_Phones = table.Column<string>(nullable: true),
+                    ContactInfo_WebSites = table.Column<string>(nullable: true),
+                    ContactInfo_Instagram = table.Column<string>(nullable: true),
+                    ContactInfo_Facebook = table.Column<string>(nullable: true),
+                    ContactInfo_Vkontakte = table.Column<string>(nullable: true),
+                    LogoUrl = table.Column<string>(maxLength: 200, nullable: true),
+                    Images = table.Column<string>(nullable: true),
                     Type = table.Column<int>(nullable: false),
                     CategoryType = table.Column<long>(nullable: false),
-                    LogoUrl = table.Column<string>(maxLength: 200, nullable: true),
-                    FullDescription = table.Column<string>(maxLength: 4000, nullable: true),
-                    Phones = table.Column<string>(nullable: true),
-                    WebSites = table.Column<string>(nullable: true),
-                    WorkingHours = table.Column<string>(nullable: true),
-                    AcceptsOrders = table.Column<bool>(nullable: false),
-                    Images = table.Column<string>(nullable: true),
-                    IsArchived = table.Column<bool>(nullable: false),
                     VenueStatus = table.Column<int>(nullable: false),
-                    SocialNetworks = table.Column<string>(nullable: true)
+                    AcceptsOrders = table.Column<bool>(nullable: false),
+                    IsArchived = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -97,19 +106,18 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
                     WorkerId = table.Column<string>(nullable: true),
                     Phone = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
                     PhotoUri = table.Column<string>(nullable: true),
-                    IsArchived = table.Column<bool>(nullable: false),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false)
+                    IsArchived = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -222,15 +230,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_VenueWorker", x => new { x.VenueId, x.WorkerId });
                     table.ForeignKey(
-                        name: "FK_VenueWorker_Venue_VenueId",
+                        name: "FK_VenueWorker_Worker_VenueId",
                         column: x => x.VenueId,
-                        principalSchema: "loyalty",
-                        principalTable: "Venue",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_VenueWorker_Worker_WorkerId",
-                        column: x => x.WorkerId,
                         principalSchema: "loyalty",
                         principalTable: "Worker",
                         principalColumn: "Id",
@@ -436,12 +437,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_VenueWorker_WorkerId",
-                schema: "loyalty",
-                table: "VenueWorker",
-                column: "WorkerId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_VenueWorker_VenueId_WorkerId",
                 schema: "loyalty",
                 table: "VenueWorker",
@@ -528,6 +523,12 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
             migrationBuilder.DropSequence(
                 name: "productgroupeq");
+
+            migrationBuilder.DropSequence(
+                name: "venueeq");
+
+            migrationBuilder.DropSequence(
+                name: "workereq");
         }
     }
 }

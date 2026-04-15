@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Loyalty.Core.Entities.SeedWork;
 
 namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
@@ -12,20 +13,34 @@ namespace Loyalty.Core.Entities.Aggregates.Venues.ValueObjects
         {
             Phones = phones;
             WebSites = webSites;
-            SocialNetworks = socialNetworks;
-        } 
+            Vkontakte = socialNetworks.Vkontakte;
+            Instagram = socialNetworks.Instagram;
+            Facebook = socialNetworks.Facebook;
+        }
+
+        private ContactInfo()
+        {
+        }
 
         public string Phones { get; private set; }
 
         public string WebSites { get; private set; }
 
-        public SocialNetworks SocialNetworks { get; private set; }
+        public Uri Instagram { get; private set; }
+
+        public Uri Facebook { get; private set; }
+
+        public Uri Vkontakte { get; private set; }
+
+        public SocialNetworks SocialNetworks => new SocialNetworks(Instagram, Facebook, Vkontakte);
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Phones;
             yield return WebSites;
-            yield return SocialNetworks;
+            yield return Facebook;
+            yield return Vkontakte;
+            yield return Instagram;
         }
     }
 }

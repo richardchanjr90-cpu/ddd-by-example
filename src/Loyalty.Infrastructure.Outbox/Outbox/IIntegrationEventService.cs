@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Loyalty.Core.Outbox.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Loyalty.Infrastructure.Outbox.Outbox
 {
@@ -11,7 +10,7 @@ namespace Loyalty.Infrastructure.Outbox.Outbox
     {
         Task<List<IntegrationEventLogEntry>> RetrieveNotProcessedEvents(Guid transactionId);
 
-        Task SaveEventAsync(INotification integrationEvent, IDbContextTransaction transaction);
+        Task SaveEventAsync(INotification integrationEvent);
 
         Task MarkEventAsPublishedAsync(Guid eventId);
 

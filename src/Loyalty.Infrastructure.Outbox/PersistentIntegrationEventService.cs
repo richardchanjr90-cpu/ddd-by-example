@@ -4,7 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Core.Outbox.Entities;
 using Loyalty.Core.Outbox.Entities.Enums;
-using Loyalty.Infrastructure.Events.DataAccess.Context;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.Events.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Outbox.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -14,13 +15,15 @@ namespace Loyalty.Infrastructure.Outbox
 {
     public class PersistentIntegrationEventService : IIntegrationEventService
     {
-        private readonly IntegrationEventsContext dbContext;
+        private readonly IIntegrationEventsContext dbContext;
+        private readonly ILoyaltyTenantDbContext tenantDbContext;
 
         public PersistentIntegrationEventService(
-            IntegrationEventsContext dbContext, 
-            IDbContextTransaction transaction)
+            IIntegrationEventsContext dbContext, 
+            ILoyaltyTenantDbContext tenantDbContext)
         {
             this.dbContext = dbContext;
+            this.tenantDbContext = tenantDbContext;
         }
 
         public virtual async Task<List<IntegrationEventLogEntry>> RetrieveNotProcessedEvents(Guid transactionId)
@@ -36,8 +39,10 @@ namespace Loyalty.Infrastructure.Outbox
                 .ToList() ?? new List<IntegrationEventLogEntry>();
         }
 
-        public virtual async Task SaveEventAsync(INotification integrationEvent, IDbContextTransaction transaction)
+        public virtual async Task SaveEventAsync(INotification integrationEvent)
         {
+            var transaction = tenantDbContext.GetCurrentTransaction();
+
             if (transaction == null)
             {
                 throw new ArgumentNullException(nameof(transaction));
@@ -48,7 +53,7 @@ namespace Loyalty.Infrastructure.Outbox
             await dbContext.Database.UseTransactionAsync(transaction.GetDbTransaction());
             await dbContext.IntegrationEvents.AddAsync(eventLogEntry);
 
-            await dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync(default);
         }
 
         public Task MarkEventAsPublishedAsync(Guid eventId)
@@ -71,7 +76,7 @@ namespace Loyalty.Infrastructure.Outbox
 
             dbContext.IntegrationEvents.Update(eventLogEntry);
 
-            return dbContext.SaveChangesAsync();
+            return dbContext.SaveChangesAsync(default);
         }
     }
 }

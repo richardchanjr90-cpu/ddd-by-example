@@ -1,6 +1,11 @@
-﻿namespace Loyalty.Infrastructure.Events.DataAccess.Context.Interface
+﻿using Loyalty.Core.Contracts;
+using Loyalty.Core.Outbox.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace Loyalty.Infrastructure.Events.DataAccess.Context.Interface
 {
-    public interface IIntegrationEventsContext
+    public interface IIntegrationEventsContext : IDbContext
     {
+        public DbSet<IntegrationEventLogEntry> IntegrationEvents { get; set; }
     }
 }

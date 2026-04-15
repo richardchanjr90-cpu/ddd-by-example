@@ -7,6 +7,11 @@ namespace Loyalty.Infrastructure.Events.DataAccess.Context
 {
     public class IntegrationEventsContext : DbContext, IIntegrationEventsContext
     {
+        public IntegrationEventsContext(DbContextOptions<IntegrationEventsContext> options)
+            : base(options)
+        {
+        }
+
         public DbSet<IntegrationEventLogEntry> IntegrationEvents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

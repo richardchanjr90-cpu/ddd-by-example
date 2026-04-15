@@ -1,5 +1,4 @@
-﻿using Loyalty.Core.Entities;
-using Loyalty.Core.Entities.Aggregates.Workers;
+﻿using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Core.Entities.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -33,6 +32,9 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .HasMany(bc => bc.VenueRoles)
                 .WithOne()
                 .HasForeignKey(bc => bc.VenueId);
+
+            builder.Property(o => o.Id)
+                .UseHiLo("workereq");
         }
     }
 }

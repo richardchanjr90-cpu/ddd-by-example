@@ -10,6 +10,11 @@ namespace Loyalty.Infrastructure.Events.DataAccess.EntityConfigurations
         public void Configure(EntityTypeBuilder<IntegrationEventLogEntry> builder)
         {
             builder.ToTable("IntegrationEvents", SchemaName.Schema);
+
+            builder.HasKey(x => x.EventId);
+
+            builder.Property(x => x.EventId)
+                .ValueGeneratedNever();
         }
     }
 }
