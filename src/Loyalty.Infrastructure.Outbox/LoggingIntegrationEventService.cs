@@ -6,16 +6,15 @@ using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Events.DataAccess.Context;
 using Loyalty.Infrastructure.Events.DataAccess.Context.Interface;
 using MediatR;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Loyalty.Infrastructure.Outbox
 {
-    public abstract class LoggingIntegrationEventService : PersistentIntegrationEventService
+    public class LoggingIntegrationEventService : PersistentIntegrationEventService
     {
         private readonly ILogger logger;
 
-        protected LoggingIntegrationEventService(
+        public LoggingIntegrationEventService(
             IIntegrationEventsContext dbContext,
             ILoyaltyTenantDbContext tenantDbContext,
             ILogger logger)

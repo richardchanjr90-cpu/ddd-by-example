@@ -33,7 +33,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                                       ,vw.PositionName
                                       ,vw.Role
                                       FROM loyalty.Worker w 
-                                      JOIN loyalty.VenueWorker vw ON vw.WorkerId = w.Id
+                                      LEFT JOIN loyalty.VenueWorker vw ON vw.WorkerId = w.Id
                                       WHERE w.Phone = @phone";
 
             var phone = request.Phone;

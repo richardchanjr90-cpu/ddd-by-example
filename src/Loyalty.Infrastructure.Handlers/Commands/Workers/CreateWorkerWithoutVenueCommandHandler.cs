@@ -24,9 +24,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         {
             var worker = new Worker(
                 request.WorkerId,
+                request.Phone,
                 request.Name,
-                request.LastName,
-                request.Phone);
+                request.LastName);
 
             await workerRepository.AddAsync(worker);
 

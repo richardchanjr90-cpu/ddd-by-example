@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -41,6 +42,7 @@ namespace LoyaltyProgram.Http.VenueImages
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
         [FunctionName("VenuePutImageFunction")]
+
         public async Task<IActionResult> Run(
             long id,
             string index,
@@ -48,9 +50,9 @@ namespace LoyaltyProgram.Http.VenueImages
             HttpRequestMessage req,
             ILogger log,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
-            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] Stream originalBlob,
-            [Blob("venue-images-{id}/md-image-{index}.jpg", FileAccess.Write)] Stream mediumBlob,
-            [Blob("venue-images-{id}/sm-image-{index}.jpg", FileAccess.Write)] Stream smallBlob)
+            [Blob("venue-images-{id}/original-image-{index}.jpg", FileAccess.Write)] [SwaggerIgnore] Stream originalBlob,
+            [Blob("venue-images-{id}/md-image-{index}.jpg", FileAccess.Write)] [SwaggerIgnore] Stream mediumBlob,
+            [Blob("venue-images-{id}/sm-image-{index}.jpg", FileAccess.Write)] [SwaggerIgnore] Stream smallBlob)
         {
             log.LogInformation($"{nameof(VenuePutImageFunction)} was triggered.");
 

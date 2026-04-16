@@ -12,7 +12,6 @@ using Loyalty.Infrastructure.Outbox;
 using Loyalty.Infrastructure.Outbox.Outbox;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +24,8 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
             services.AddTransient<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
             services.AddTransient<IIntegrationEventsContext, IntegrationEventsContext>();
+
+            services.AddTransient<LoyaltyTenantDbContext>();
 
             services.AddTransient<ITenantProvider, TenantTokenProvider>();
 

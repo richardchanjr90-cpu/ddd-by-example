@@ -16,9 +16,9 @@ using Microsoft.Extensions.DependencyInjection;
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace LoyaltyProgram
 {
-    internal class Startup : IWebJobsStartup
+    internal class Startup : FunctionsStartup
     {
-        public void Configure(IWebJobsBuilder builder)
+        public override void Configure(IFunctionsHostBuilder builder)
         {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
@@ -32,15 +32,6 @@ namespace LoyaltyProgram
             builder.Services.SetupServiceBus(config);
             builder.Services.SetupSettings(config);
             builder.Services.AddHttpContextAccessor();
-
-            builder.AddAzureFunctionsToken(new FireBaseOptions
-            {
-                Audience = config[$"{nameof(GoogleAuthSettings)}:{nameof(GoogleAuthSettings.ProjectName)}"],
-                Issuer = config[$"{nameof(GoogleAuthSettings)}:{nameof(GoogleAuthSettings.Issuer)}"],
-                GoogleServiceAccountJsonUri = new Uri(config[$"{nameof(GoogleAuthSettings)}:{nameof(GoogleAuthSettings.JsonUri)}"])
-            });
-
-            builder.AddNotificationHubs();
 
             builder.AddSwashBuckle(
                 Assembly.GetExecutingAssembly());
