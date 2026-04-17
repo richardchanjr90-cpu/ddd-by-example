@@ -82,7 +82,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                 Phones = ((string)dynamicVenue.Phones)?.SplitByCommaAndUnwrap() ?? new List<string>(),
                 WebSites = ((string)dynamicVenue.WebSites)?.SplitByCommaAndUnwrap() ?? new List<string>(),
                 WorkingHours = dynamicVenue.WorkingHours != null ?
-                    JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>((string)dynamicVenue.WorkingHours, new JsonSerializerOptions()) : new List<GetVenueWorkingHoursQueryResult>(),
+                    JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>((string)dynamicVenue.WorkingHours, new JsonSerializerOptions()) 
+                    : new List<GetVenueWorkingHoursQueryResult>(),
                 Images = ((string)dynamicVenue.Images)?.SplitByCommaAndUnwrap() ?? new List<string>(),
                 SocialNetworks = new GetSocialNetworksResult
                 {
