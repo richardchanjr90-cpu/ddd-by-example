@@ -6,6 +6,8 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -16,11 +18,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Worker
 {
-    public class WorkerPutFunction
+    public class WorkerPutFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly WorkerAppService service;
 
-        public WorkerPutFunction(WorkerAppService service)
+        public WorkerPutFunction(WorkerAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

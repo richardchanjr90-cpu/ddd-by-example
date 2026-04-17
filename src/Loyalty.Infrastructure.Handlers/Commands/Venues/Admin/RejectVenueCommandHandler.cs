@@ -23,6 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues.Admin
             var venue = await venueRepository.GetWithoutQueryFiltersAsync(request.Id, cancellationToken);
 
             venue.Reject();
+
             venueRepository.Update(venue);
 
             var result = new CommandResult

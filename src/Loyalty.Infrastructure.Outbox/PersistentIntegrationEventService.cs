@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Core.Outbox.Entities;
 using Loyalty.Core.Outbox.Entities.Enums;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.Events.DataAccess.Context;
 using Loyalty.Infrastructure.Events.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Outbox.Outbox;
 using MediatR;
@@ -17,13 +19,26 @@ namespace Loyalty.Infrastructure.Outbox
     {
         private readonly IIntegrationEventsContext dbContext;
         private readonly ILoyaltyTenantDbContext tenantDbContext;
+        private Guid transactionId;
 
         public PersistentIntegrationEventService(
-            IIntegrationEventsContext dbContext, 
-            ILoyaltyTenantDbContext tenantDbContext)
+            ILoyaltyTenantDbContext tenantDbContext,
+            DbConnection dbConnection)
         {
-            this.dbContext = dbContext;
+            this.dbContext = new IntegrationEventsContext(
+                new DbContextOptionsBuilder<IntegrationEventsContext>()
+                    .UseSqlServer(tenantDbContext.Database.GetDbConnection())
+                    .Options);
+
             this.tenantDbContext = tenantDbContext;
+
+            var transaction = tenantDbContext.GetCurrentTransaction();
+
+            if (transaction != null)
+            {
+                dbContext.Database.UseTransaction(transaction.GetDbTransaction());
+                transactionId = transaction.TransactionId;
+            }
         }
 
         public virtual async Task<List<IntegrationEventLogEntry>> RetrieveNotProcessedEvents(Guid transactionId)
@@ -41,18 +56,8 @@ namespace Loyalty.Infrastructure.Outbox
 
         public virtual async Task SaveEventAsync(INotification integrationEvent)
         {
-            var transaction = tenantDbContext.GetCurrentTransaction();
-
-            if (transaction == null)
-            {
-                throw new ArgumentNullException(nameof(transaction));
-            }
-
-            var eventLogEntry = new IntegrationEventLogEntry(integrationEvent, transaction.TransactionId);
-
-            await dbContext.Database.UseTransactionAsync(transaction.GetDbTransaction());
+            var eventLogEntry = new IntegrationEventLogEntry(integrationEvent, transactionId);
             await dbContext.IntegrationEvents.AddAsync(eventLogEntry);
-
             await dbContext.SaveChangesAsync(default);
         }
 
@@ -71,7 +76,7 @@ namespace Loyalty.Infrastructure.Outbox
             var eventLogEntry = dbContext.IntegrationEvents.Single(ie => ie.EventId == eventId);
             eventLogEntry.State = status;
 
-            if(status == EventStateEnum.InProgress)
+            if (status == EventStateEnum.InProgress)
                 eventLogEntry.TimesSent++;
 
             dbContext.IntegrationEvents.Update(eventLogEntry);

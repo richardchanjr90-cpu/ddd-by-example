@@ -13,28 +13,24 @@ namespace Loyalty.Infrastructure.Outbox
     public class EventBusPublishingService : IEventBusService
     {
         private readonly IIntegrationEventService persistentService;
-        private readonly IIntegrationEventsContext integrationEventsContext;
         private readonly ILoyaltyTenantDbContext loyaltyTenantDbContext;
         private readonly ILogger logger;
         private readonly IMediator mediator;
 
         public EventBusPublishingService(
             IIntegrationEventService persistentService,
-            IIntegrationEventsContext integrationEventsContext,
             ILoyaltyTenantDbContext loyaltyTenantDbContext,
-            ILogger logger,
+            ILoggerFactory loggerFactory,
             IMediator mediator)
         {
             this.persistentService = persistentService;
-            this.integrationEventsContext = integrationEventsContext;
             this.loyaltyTenantDbContext = loyaltyTenantDbContext;
-            this.logger = logger;
+            this.logger = loggerFactory.CreateLogger<EventBusPublishingService>();
             this.mediator = mediator;
         }
 
         public async Task PersistEventAsync(INotification evt)
         {
-            var transaction = loyaltyTenantDbContext.GetCurrentTransaction();
             await persistentService.SaveEventAsync(evt);
         }
 
@@ -45,20 +41,20 @@ namespace Loyalty.Infrastructure.Outbox
             foreach (var logEvt in pendingLogEvents)
             {
                 logger.LogInformation(
-                    "Publishing integration event: {IntegrationEventId} - ({@IntegrationEvent})", 
-                    logEvt.EventId, 
+                    "Publishing integration event: {IntegrationEventId} - ({@IntegrationEvent})",
+                    logEvt.EventId,
                     logEvt.IntegrationEvent);
 
                 try
                 {
-                    await  mediator.Publish(logEvt.IntegrationEvent);
+                    await mediator.Publish(logEvt.IntegrationEvent);
                     await persistentService.MarkEventAsPublishedAsync(logEvt.EventId);
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(
-                        ex, 
-                        "ERROR publishing integration event: {IntegrationEventId}", 
+                        ex,
+                        "ERROR publishing integration event: {IntegrationEventId}",
                         logEvt.EventId);
 
                     await persistentService.MarkEventAsFailedAsync(logEvt.EventId);

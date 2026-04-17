@@ -10,6 +10,8 @@ using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +22,15 @@ using Microsoft.Extensions.Options;
 
 namespace LoyaltyProgram.Http.UserProfile
 {
-    public class UserProfilePatchEmailFunction
+    public class UserProfilePatchEmailFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly WorkerAppService service;
         private readonly IOptions<EmailSettings> settings;
 
         public UserProfilePatchEmailFunction(
             WorkerAppService service,
-            IOptions<EmailSettings> settings)
+            IOptions<EmailSettings> settings, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
             this.settings = settings;

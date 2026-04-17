@@ -25,6 +25,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 .GetByUidAsync(request.UserId, cancellationToken);
 
             worker.ChangeProfilePhoto(request.PhotoUri); 
+
             workerRepository.Update(worker);
 
             var commandResult = new CommandResult

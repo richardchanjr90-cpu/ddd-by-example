@@ -22,6 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         {
             var venue = await venueRepository.GetAsync(request.Id, cancellationToken);
             venue.ChangePhotos(request.Images.ToCommaSeparatedStringOrNull());
+
             venueRepository.Update(venue);
 
             var result = new CommandResult

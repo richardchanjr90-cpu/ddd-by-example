@@ -5,6 +5,8 @@ using Dapper;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using LoyaltyClient.Domain.Handlers.Notifications.Code;
 using LoyaltyClient.Domain.Handlers.Notifications.Orders;
 using Microsoft.Azure.ServiceBus;
@@ -14,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.ServiceBus
 {
-    public class ClientEventsFunction
+    public class ClientEventsFunction 
     {
         private readonly SqlConnection connection;
 

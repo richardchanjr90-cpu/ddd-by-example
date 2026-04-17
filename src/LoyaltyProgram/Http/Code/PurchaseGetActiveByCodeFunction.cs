@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,11 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Code
 {
-    public class PurchaseGetActiveByCodeFunction
+    public class PurchaseGetActiveByCodeFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly CodeAppService service;
 
-        public PurchaseGetActiveByCodeFunction(CodeAppService service)
+        public PurchaseGetActiveByCodeFunction(CodeAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

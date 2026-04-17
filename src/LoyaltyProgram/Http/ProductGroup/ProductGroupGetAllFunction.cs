@@ -7,6 +7,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +18,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.ProductGroup
 {
-    public class ProductGroupGetAllFunction
+    public class ProductGroupGetAllFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly ProductGroupAppService service;
 
-        public ProductGroupGetAllFunction(ProductGroupAppService service)
+        public ProductGroupGetAllFunction(ProductGroupAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

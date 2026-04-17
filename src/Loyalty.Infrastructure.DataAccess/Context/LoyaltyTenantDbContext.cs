@@ -15,21 +15,23 @@ using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Core.Entities.Base.Interface;
 using Loyalty.Core.Entities.SeedWork;
-using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess.Context
 {
-    public class LoyaltyTenantDbContext : TransactionalContext, ILoyaltyTenantDbContext, IUnitOfWork
+    public class LoyaltyTenantDbContext : TransactionalContext, ILoyaltyTenantDbContext
     {
         private readonly ITenantProvider provider;
         private readonly IMediator mediator;
 
         internal List<long> TenantIds => provider.GetTenants();
 
-        public LoyaltyTenantDbContext(ITenantProvider provider, DbContextOptions<LoyaltyDbContext> options, IMediator mediator)
+        public LoyaltyTenantDbContext(
+            ITenantProvider provider, 
+            DbContextOptions<LoyaltyDbContext> options, 
+            IMediator mediator)
             : base(options)
         {
             this.provider = provider;
@@ -105,11 +107,11 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             {
                 if (entry.State == EntityState.Added)
                 {
-                    ((IAuditableEntity)entry.Entity).CreatedBy = provider.Principal.GetUserId();
+                    //((IAuditableEntity)entry.Entity).CreatedBy = provider.Principal.GetUserId();
                     ((IAuditableEntity)entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                ((IAuditableEntity)entry.Entity).ModifiedBy = provider.Principal.GetUserId();
+                //((IAuditableEntity)entry.Entity).ModifiedBy = provider.Principal.GetUserId();
                 ((IAuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
             }
         }

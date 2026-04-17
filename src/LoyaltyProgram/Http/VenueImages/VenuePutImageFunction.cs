@@ -11,6 +11,8 @@ using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -22,7 +24,7 @@ using Microsoft.Extensions.Options;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public class VenuePutImageFunction
+    public class VenuePutImageFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly IOptions<ImageSettings> imageSettings;
         private readonly LoyaltyVenueAppService service;
@@ -31,7 +33,8 @@ namespace LoyaltyProgram.Http.VenueImages
         public VenuePutImageFunction(
             IOptions<ImageSettings> imageSettings,
             LoyaltyVenueAppService service,
-            LoyaltyVenueImageAppService imageService)
+            LoyaltyVenueImageAppService imageService, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.imageSettings = imageSettings;
             this.service = service;

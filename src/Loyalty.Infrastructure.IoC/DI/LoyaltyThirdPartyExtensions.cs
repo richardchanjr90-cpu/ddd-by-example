@@ -27,6 +27,7 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 
             if (!EnvironmentExtensions.IsProd())
             {

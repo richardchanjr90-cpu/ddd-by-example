@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -10,11 +12,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Admin
 {
-    public class AdminGetAllVenuesFunction
+    public class AdminGetAllVenuesFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyVenueAppService service;
 
-        public AdminGetAllVenuesFunction(LoyaltyVenueAppService service)
+        public AdminGetAllVenuesFunction(LoyaltyVenueAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

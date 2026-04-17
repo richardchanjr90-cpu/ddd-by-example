@@ -8,6 +8,8 @@ using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +19,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Purchase
 {
-    public class PurchasePostFunction
+    public class PurchasePostFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly PurchaseAppService service;
 
-        public PurchasePostFunction(PurchaseAppService service)
+        public PurchasePostFunction(PurchaseAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

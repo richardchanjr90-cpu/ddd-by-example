@@ -7,6 +7,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -18,11 +20,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.ProductGroup
 {
-    public class ProductGroupDeleteFunction
+    public class ProductGroupDeleteFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly ProductGroupAppService service;
 
-        public ProductGroupDeleteFunction(ProductGroupAppService service)
+        public ProductGroupDeleteFunction(ProductGroupAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

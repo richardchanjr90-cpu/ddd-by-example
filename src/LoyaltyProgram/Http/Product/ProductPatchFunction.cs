@@ -5,6 +5,8 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Product;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -15,11 +17,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Product
 {
-    public class ProductPatchFunction
+    public class ProductPatchFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly ProductAppService service;
 
-        public ProductPatchFunction(ProductAppService service)
+        public ProductPatchFunction(ProductAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

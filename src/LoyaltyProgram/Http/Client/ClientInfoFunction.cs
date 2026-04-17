@@ -2,6 +2,8 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +13,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Client
 {
-    public class ClientInfoGetFunction
+    public class ClientInfoGetFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly ClientInfoAppService service;
 
-        public ClientInfoGetFunction(ClientInfoAppService service)
+        public ClientInfoGetFunction(ClientInfoAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

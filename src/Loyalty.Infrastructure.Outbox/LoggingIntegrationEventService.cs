@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Loyalty.Core.Outbox.Entities;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Infrastructure.Events.DataAccess.Context;
-using Loyalty.Infrastructure.Events.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -15,19 +14,19 @@ namespace Loyalty.Infrastructure.Outbox
         private readonly ILogger logger;
 
         public LoggingIntegrationEventService(
-            IIntegrationEventsContext dbContext,
             ILoyaltyTenantDbContext tenantDbContext,
-            ILogger logger)
-            : base(dbContext, tenantDbContext)
+            DbConnection dbConnection,
+            ILoggerFactory loggerFactory)
+            : base(tenantDbContext, dbConnection)
         {
-            this.logger = logger;
+            this.logger = loggerFactory.CreateLogger<LoggingIntegrationEventService>();
         }
 
         public override async Task SaveEventAsync(INotification integrationEvent)
         {
             logger.LogInformation("--- Start {@IntegrationEvent}", integrationEvent);
 
-            await base.SaveEventAsync(integrationEvent);
+             await base.SaveEventAsync(integrationEvent);
 
             logger.LogInformation("--- Finished {@Id}", integrationEvent);
         }

@@ -13,15 +13,15 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
     public class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> logger;
-        private readonly LoyaltyTenantDbContext dbContext;
+        private readonly ILoyaltyTenantDbContext dbContext;
         private readonly IEventBusService eventService;
 
         public TransactionBehaviour(
-            LoyaltyTenantDbContext dbContext,
+            ILoyaltyTenantDbContext dbContext,
             IEventBusService eventService,
             ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
         {
-            this.dbContext = dbContext ?? throw new ArgumentException(nameof(LoyaltyTenantDbContext));
+            this.dbContext = dbContext ?? throw new ArgumentException(nameof(ILoyaltyTenantDbContext));
             this.eventService = eventService ?? throw new ArgumentException(nameof(eventService));
             this.logger = logger ?? throw new ArgumentException(nameof(ILogger));
         }
@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             var response = default(TResponse);
-            var typeName = request.GetType().GetGenericTypeDefinition().Name;
+            var typeName = request.GetType().Name;
 
             try
             {

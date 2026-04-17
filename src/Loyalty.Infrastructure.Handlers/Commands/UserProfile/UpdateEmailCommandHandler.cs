@@ -43,6 +43,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
             //}
             worker.SetEmail(request.Email);
 
+            workerRepository.Update(worker);
+
             var commandResult = new CommandResult
             {
                 Success = await workerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),

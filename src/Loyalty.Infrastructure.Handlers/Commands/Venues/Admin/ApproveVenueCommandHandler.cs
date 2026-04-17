@@ -31,6 +31,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues.Admin
             var venue = await venueRepository.GetWithoutQueryFiltersAsync(request.Id, cancellationToken);
 
             venue.Approve();
+
             venueRepository.Update(venue);
 
             var result = new CommandResult

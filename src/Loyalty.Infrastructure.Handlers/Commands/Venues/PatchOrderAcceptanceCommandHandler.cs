@@ -31,6 +31,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.RejectNewOrders();
             }
 
+            venueRepository.Update(venue);
+
             var result = new CommandResult
             {
                 Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),

@@ -25,6 +25,8 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var worker = await context
                 .Workers
+                .Include(x=>x.VenueRoles)
+                .IgnoreQueryFilters()
                 .Where(x => x.WorkerId == workerId)
                 .SingleOrDefaultAsync(token);
 
@@ -35,6 +37,7 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var worker = await context
                 .Workers
+                .Include(x=>x.VenueRoles)
                 .Where(x => x.Phone == phone)
                 .SingleOrDefaultAsync(token);
 
@@ -46,6 +49,7 @@ namespace Loyalty.Infrastructure.Commands.Repository
             var worker = await context
                 .Workers
                 .Where(x => x.Email == email)
+                .Include(x=>x.VenueRoles)
                 .SingleOrDefaultAsync(token);
 
             return worker;
@@ -55,6 +59,7 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var worker = await context
                 .Workers
+                .Include(x=>x.VenueRoles)
                 .Where(x => x.Id == id)
                 .SingleOrDefaultAsync(token);
 

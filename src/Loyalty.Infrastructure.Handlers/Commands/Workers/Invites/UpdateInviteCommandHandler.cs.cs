@@ -37,6 +37,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
                 changerRole,
                 changerId);
 
+            workerRepository.Update(worker);
+
             return new CommandResult
             {
                 Success = await workerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),

@@ -76,6 +76,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 contactInfo, 
                 request.CategoryType);
 
+            await venueRepository.AddAsync(venue);
+
             var result = new CommandResult
             {
                 Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),

@@ -6,6 +6,8 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Storage.Dto.Orders;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Orders;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -16,11 +18,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Order
 {
-    public class OrderStatusPatchFunction
+    public class OrderStatusPatchFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly OrderAppService service;
 
-        public OrderStatusPatchFunction(OrderAppService service)
+        public OrderStatusPatchFunction(OrderAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }
