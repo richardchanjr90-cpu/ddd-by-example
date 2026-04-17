@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Events.Workers;
 using Loyalty.Core.Outbox.Entities.Services;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using MediatR;
 
 namespace Loyalty.Application.DomainEvents.Handlers.Workers

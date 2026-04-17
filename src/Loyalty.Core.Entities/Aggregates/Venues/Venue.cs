@@ -110,6 +110,7 @@ namespace Loyalty.Core.Entities.Aggregates.Venues
             Details = details;
             ContactInfo = info;
             CategoryType = category;
+            VenueStatus = venueApprovalStatus;
 
             AddDomainEvent(new VenueUpdatedDomainEvent(this));
         }

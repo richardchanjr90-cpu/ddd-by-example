@@ -33,7 +33,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             if (dbWorker != null)
             {
                 dbWorker.Invite(request.VenueId, request.Role, request.PositionName, userRole);
-                workerRepository.Update(worker);
+                workerRepository.Update(dbWorker);
+                worker = dbWorker;
             }
             else
             {

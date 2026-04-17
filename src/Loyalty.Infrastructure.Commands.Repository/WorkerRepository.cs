@@ -37,6 +37,7 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var worker = await context
                 .Workers
+                .IgnoreQueryFilters()
                 .Include(x=>x.VenueRoles)
                 .Where(x => x.Phone == phone)
                 .SingleOrDefaultAsync(token);
