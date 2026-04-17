@@ -15,9 +15,8 @@ namespace Loyalty.Infrastructure.Outbox
 
         public LoggingIntegrationEventService(
             ILoyaltyTenantDbContext tenantDbContext,
-            DbConnection dbConnection,
             ILoggerFactory loggerFactory)
-            : base(tenantDbContext, dbConnection)
+            : base(tenantDbContext)
         {
             this.logger = loggerFactory.CreateLogger<LoggingIntegrationEventService>();
         }

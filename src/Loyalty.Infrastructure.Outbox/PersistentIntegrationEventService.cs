@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Loyalty.Core.Outbox.Entities;
 using Loyalty.Core.Outbox.Entities.Enums;
+using Loyalty.Domain.Handlers.Notifications.Base;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Events.DataAccess.Context;
 using Loyalty.Infrastructure.Events.DataAccess.Context.Interface;
@@ -17,20 +19,17 @@ namespace Loyalty.Infrastructure.Outbox
 {
     public class PersistentIntegrationEventService : IIntegrationEventService
     {
+        private static readonly Lazy<List<Type>> EventTypes = new Lazy<List<Type>>(LoadEventTypes);
         private readonly IIntegrationEventsContext dbContext;
-        private readonly ILoyaltyTenantDbContext tenantDbContext;
         private Guid transactionId;
 
         public PersistentIntegrationEventService(
-            ILoyaltyTenantDbContext tenantDbContext,
-            DbConnection dbConnection)
+            ILoyaltyTenantDbContext tenantDbContext)
         {
             this.dbContext = new IntegrationEventsContext(
                 new DbContextOptionsBuilder<IntegrationEventsContext>()
                     .UseSqlServer(tenantDbContext.Database.GetDbConnection())
                     .Options);
-
-            this.tenantDbContext = tenantDbContext;
 
             var transaction = tenantDbContext.GetCurrentTransaction();
 
@@ -39,6 +38,16 @@ namespace Loyalty.Infrastructure.Outbox
                 dbContext.Database.UseTransaction(transaction.GetDbTransaction());
                 transactionId = transaction.TransactionId;
             }
+        }
+
+        private static List<Type> LoadEventTypes()
+        {
+            var interfaceType = typeof(INotification);
+
+            return typeof(IVenueIntegrationEventsNotification).Assembly
+                .GetTypes()
+                .Where(t => interfaceType.IsAssignableFrom(t) && t.IsClass)
+                .ToList();
         }
 
         public virtual async Task<List<IntegrationEventLogEntry>> RetrieveNotProcessedEvents(Guid transactionId)
@@ -50,7 +59,7 @@ namespace Loyalty.Infrastructure.Outbox
                 .ToListAsync();
 
             return result
-                ?.Select(e => e.DeserializeJsonContent<IntegrationEvent>())
+                ?.Select(e => e.DeserializeJsonContent(EventTypes.Value.Find(t=> t.Name == e.EventTypeShortName)))
                 .ToList() ?? new List<IntegrationEventLogEntry>();
         }
 

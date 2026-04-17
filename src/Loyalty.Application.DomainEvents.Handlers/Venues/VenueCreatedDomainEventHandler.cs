@@ -42,6 +42,8 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
                 .Select(x => x.ToString())
                 .ToList();
 
+            ids.Add(item.Id.ToString());
+
             await eventBusService.PersistEventAsync(new WorkerAddedToVenueNotification
             {
                 VenueId = domainEvent.Venue.Id,

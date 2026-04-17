@@ -28,10 +28,8 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .IsUnique()
                 .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
 
-            builder
-                .HasMany(bc => bc.VenueRoles)
-                .WithOne()
-                .HasForeignKey(bc => bc.VenueId);
+            var navigation = builder.Metadata.FindNavigation(nameof(Worker.VenueRoles));
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
 
             builder.Property(o => o.Id)
                 .UseHiLo("workereq");

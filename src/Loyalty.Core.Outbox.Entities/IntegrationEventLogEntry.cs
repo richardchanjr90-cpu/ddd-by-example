@@ -14,7 +14,7 @@ namespace Loyalty.Core.Outbox.Entities
             EventId = Guid.NewGuid();            
             CreationTime = DateTime.UtcNow;
             EventTypeName = integrationEvent.GetType().FullName;
-            Content = JsonSerializer.Serialize(integrationEvent);
+            Content = JsonSerializer.Serialize(integrationEvent, integrationEvent.GetType());
             State = EventStateEnum.NotPublished;
             TimesSent = 0;
             TransactionId = transactionId.ToString();
@@ -44,10 +44,9 @@ namespace Loyalty.Core.Outbox.Entities
 
         public string TransactionId { get; private set; }
 
-        public IntegrationEventLogEntry DeserializeJsonContent<T>()
-            where T : IntegrationEvent
+        public IntegrationEventLogEntry DeserializeJsonContent(Type type)
         {
-            IntegrationEvent = JsonSerializer.Deserialize<T>(Content);
+            IntegrationEvent = JsonSerializer.Deserialize(Content, type) as INotification;
             return this;
         }
     }

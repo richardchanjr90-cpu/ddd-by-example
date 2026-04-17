@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.47" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Loyalty.Core.Outbox.Entities\Loyalty.Core.Outbox.Entities.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Events.DataAccess\Loyalty.Infrastructure.Events.DataAccess.csproj" />
