@@ -10,7 +10,7 @@ using MediatR.Extensions.UnitOfWork.Interface;
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 {
     public class PatchProductGroupCommandHandler
-        :IRequestHandler<PatchProductGroupCommand, ICommandResult>
+        : IRequestHandler<PatchProductGroupCommand, ICommandResult>
     {
         private readonly IProductGroupRepository groupRepository;
 
@@ -34,8 +34,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
                 {
                     group.HideFromCustomer();
                 }
+                groupRepository.Update(group);
             }
-            groupRepository.Update(group);
 
             var result = new CommandResult
             {

@@ -32,7 +32,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
 
             product?.SetImage(request.ImageUri);
 
-            productRepository.Update(product);
+            if (product != null)
+            {
+                productRepository.Update(product);
+            }
 
             var result = new CommandResult
             {
