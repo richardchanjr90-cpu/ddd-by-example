@@ -35,8 +35,6 @@ namespace Loyalty.Core.Entities.Aggregates.ProductGroups
 
         public Venue OwnerVenue { get; set; }
 
-        public virtual ICollection<LoyaltyProductGroup> LoyaltyProductGroups { get; private set; }
-        
         [Required] 
         [MaxLength(200)] 
         public string Name { get; private set; }
@@ -50,13 +48,12 @@ namespace Loyalty.Core.Entities.Aggregates.ProductGroups
 
         public void Archive()
         {
-            if (LoyaltyProductGroups.Any(x => x.ProductGroupId == Id && !x.IsArchived))
-            {
-                throw new LoyaltyValidationException(
-                    "Cannot delete product group that is assigned to a loyalty group.", 
-                    ErrorCode.INCORRECT_PRODUCT_GROUP);
-            }
-
+            //if (LoyaltyProductGroups.Any(x => x.ProductGroupId == Id && !x.IsArchived))
+            //{
+            //    throw new LoyaltyValidationException(
+            //        "Cannot delete product group that is assigned to a loyalty group.", 
+            //        ErrorCode.INCORRECT_PRODUCT_GROUP);
+            //}
             IsArchived = true;
             AddDomainEvent(new ProductGroupArchivedDomainEvent(this));
         }
