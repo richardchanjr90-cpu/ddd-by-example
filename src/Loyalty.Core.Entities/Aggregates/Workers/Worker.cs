@@ -136,6 +136,7 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
         }
 
         public void Update(
+            string workerId,
             string name, 
             string lastName, 
             long venueId, 
@@ -149,6 +150,7 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
                     ErrorCode.SECOND_OWNER_NOT_ALLOWED);
             }
 
+            WorkerId = workerId;
             Name = name;
             LastName = lastName;
 

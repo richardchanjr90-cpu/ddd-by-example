@@ -102,7 +102,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 Modified = date,
                 Created = date,
                 LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                InternalPurchaseMadeBySystem = 0,
                 ProductId = request.ProductId,
                 UserId = request.UserId,
                 Value = request.Value,

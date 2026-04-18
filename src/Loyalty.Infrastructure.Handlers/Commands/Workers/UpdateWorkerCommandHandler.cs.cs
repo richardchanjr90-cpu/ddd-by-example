@@ -37,6 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             }
 
             worker.Update(
+                request.WorkerId,
                 request.Name, 
                 request.LastName, 
                 request.VenueId, 
