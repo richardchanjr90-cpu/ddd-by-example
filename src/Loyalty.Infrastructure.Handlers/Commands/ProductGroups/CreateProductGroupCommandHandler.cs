@@ -1,37 +1,36 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.ProductGroups;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
-using Loyalty.Infrastructure.DataAccess;
+using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 {
     public class CreateProductGroupCommandHandler
-        : BaseHandler, ICreateProductGroupCommandHandler
+        : IRequestHandler<CreateProductGroupCommand, ICommandResult>
     {
-        public CreateProductGroupCommandHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private readonly IProductGroupRepository groupRepository;
+
+        public CreateProductGroupCommandHandler(IProductGroupRepository groupRepository)
         {
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateProductGroupCommand request, CancellationToken cancellationToken)
         {
-            var group = new ProductGroup
-            {
-                VenueId = request.VenueId,
-                Icon = request.Icon,
-                Name = request.Name,
-            };
+            var group = new ProductGroup(
+                request.VenueId,
+                request.Name,
+                request.Icon);
 
-            await Context.ProductGroups.AddAsync(group, cancellationToken);
+            await groupRepository.AddAsync(group);
 
             return new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await groupRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = group.Id
             };
         }

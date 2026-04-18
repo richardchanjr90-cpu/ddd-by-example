@@ -30,18 +30,22 @@ namespace Loyalty.Application.Venue
         
         public async Task<ICommandResult> StartSignup(SignupViewModel model, FunctionTokenResult token)
         {
-            new SignupViewModelValidator().ValidateAndThrow(model);
+            new SignupViewModelValidator()
+                .ValidateAndThrow(model);
 
-            var phone = token.Principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
-            var userId = token.Principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var phone = token.Principal
+                .Claims
+                .First(x => x.Type == ClaimTypes.MobilePhone).Value;
+
+            var userId = token.Principal
+                .Claims
+                .First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
             ICommandResult result;
             ICommandResult result2 = new CommandResult();
 
             var worker = await GetByPhone(phone);
             GetVenueWorkerResult venueWorker = null;
-
-            await IsUserWithEmailNewOrThrow(model);
 
             if (worker != null)
             {
@@ -53,19 +57,21 @@ namespace Loyalty.Application.Venue
                 result = await SetupOwner(model, userId, phone);
             }
 
-            var ids = worker?.Venues.Select(x => x.VenueId.ToString()).ToCommaSeparatedStringOrNull();
+            var ids = worker?.Venues
+                .Select(x => x.VenueId.ToString())
+                .ToCommaSeparatedStringOrNull();
 
             var role = VenueUserRole.Owner;
+
             if (venueWorker != null)
             {
-                role = (VenueUserRole)venueWorker.Role;
+                role = venueWorker.Role;
             }
 
             if (result.Success)
             {
                 result2 = await Mediator.Send(new SetupFirebaseTokenCommand
                 {
-                    Email = model.Email,
                     City = model.City,
                     Surname = model.Surname,
                     Name = model.Name,
@@ -79,19 +85,6 @@ namespace Loyalty.Application.Venue
             {
                 Success = result.Success && result2.Success
             };
-        }
-
-        private async Task IsUserWithEmailNewOrThrow(SignupViewModel model)
-        {
-            if (String.IsNullOrEmpty(model.Email))
-            {
-                var user = await GetByEmail(model.Email);
-
-                if (user != null)
-                {
-                    throw new LoyaltyValidationException("Email is duplicated", ErrorCode.EMAIL_EXISTS);
-                }
-            }
         }
 
         private async Task<ICommandResult> SetupInvitedWorker(
@@ -112,12 +105,11 @@ namespace Loyalty.Application.Venue
             var workerModel = new UpdateWorkerCommand
             {
                 WorkerId = userId,
-                Email = model.Email,
                 Name = model.Name,
                 LastName = model.Surname,
                 Id = getInviteByPhoneQueryResult.Id,
                 PositionName = venueWorker.PositionName,
-                Role = (VenueUserRole) venueWorker.Role,
+                Role = venueWorker.Role,
                 VenueId = venueWorker.VenueId,
                 Phone = getInviteByPhoneQueryResult.Phone
             };
@@ -130,7 +122,6 @@ namespace Loyalty.Application.Venue
             var createWorkerCommand = new CreateWorkerWithoutVenueCommand
             {
                 WorkerId = userId,
-                Email = model.Email,
                 Name = model.Name,
                 LastName = model.Surname,
                 Phone = phone

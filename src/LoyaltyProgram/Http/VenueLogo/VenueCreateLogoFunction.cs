@@ -10,6 +10,8 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.VenueImages;
@@ -23,7 +25,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.VenueLogo
 {
-    public class VenueCreateLogoFunction
+    public class VenueCreateLogoFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
@@ -32,7 +34,8 @@ namespace LoyaltyProgram.Http.VenueLogo
         public VenueCreateLogoFunction(
             LoyaltyVenueAppService service, 
             LoyaltyVenueImageAppService imageService,
-            IOptions<ImageSettings> imageSettings)
+            IOptions<ImageSettings> imageSettings, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
             this.imageService = imageService;

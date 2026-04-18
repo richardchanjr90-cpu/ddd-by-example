@@ -8,6 +8,7 @@ using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -75,7 +76,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                         Url = program.Url?.ToString(),
                         EndDate = program.EndDate,
                         StartDate = program.StartDate,
-                        IsPublished = program.IsPublished
+                        IsPublished = program.IsPublished,
+                        Description = program.Description
                     }, cancellationToken);
             }
             return result;

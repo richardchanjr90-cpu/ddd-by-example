@@ -98,7 +98,7 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             };
 
-            var result = await Mediator.RunAllScopedThenPublish(command1, command2);
+            var result = await Mediator.Chain(command1, command2);
 
             return new CommandResult()
             {

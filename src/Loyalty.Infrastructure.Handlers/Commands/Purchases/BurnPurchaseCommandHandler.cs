@@ -39,9 +39,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                                             [Created],
                                             [LoyaltyProductGroupId],
                                             [UserId],                                 
-                                            [InternalPurchaseMadeBySystem],
                                             [Value],
-                                            [BurnDate],
                                             [VenueId]) 
                                                         Values (
                                                         @CreatedBy,
@@ -50,9 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                                                         @Created,
                                                         @LoyaltyProductGroupId,
                                                         @UserId,
-                                                        @InternalPurchaseMadeBySystem,
                                                         @Value,
-                                                        @BurnDate,
                                                         @VenueId)";
 
         public async Task<INotificationResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
@@ -77,8 +73,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 Modified = date,
                 Created = date,
                 LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                InternalPurchaseMadeBySystem = 0,
-                BurnDate = date,
                 UserId = request.UserId,
                 Value = -request.Amount,
                 VenueId = request.VenueId,

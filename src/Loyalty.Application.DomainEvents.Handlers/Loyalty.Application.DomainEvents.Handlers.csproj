@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.47" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
+    <ProjectReference Include="..\Loyalty.Core.Outbox.Entities\Loyalty.Core.Outbox.Entities.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Firebase.Queries\Loyalty.Domain.Handlers.Firebase.Queries.csproj" />
+  </ItemGroup>
+
+</Project>

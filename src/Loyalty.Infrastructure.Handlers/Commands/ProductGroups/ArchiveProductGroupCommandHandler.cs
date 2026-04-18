@@ -1,77 +1,39 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Constants;
-using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.ProductGroups;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.ProductGroups
 {
     public class ArchiveProductGroupCommandHandler
-        : BaseHandler, IArchiveProductGroupCommandHandler
+        : IRequestHandler<ArchiveProductGroupCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IProductGroupRepository groupRepository;
 
-        public ArchiveProductGroupCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public ArchiveProductGroupCommandHandler(IProductGroupRepository groupRepository)
         {
-            this.mediator = mediator;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ICommandResult> Handle(
             ArchiveProductGroupCommand request,
             CancellationToken cancellationToken)
         {
-            var group = await Context.ProductGroups
-                .Include(x => x.Products)
-                .Include(x => x.LoyaltyProductGroups)
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var group = await groupRepository
+                .GetAsync(request.Id, cancellationToken);
 
-            if (group != null)
-            {
-                if (group.LoyaltyProductGroups.Any(x => x.ProductGroupId == group.Id && !x.IsArchived))
-                {
-                    throw new LoyaltyValidationException("Cannot delete product group that is assigned to a loyalty group.", ErrorCode.INCORRECT_PRODUCT_GROUP);
-                }
+            group?.Archive();
 
-                group.IsArchived = true;
-
-                if (group.Products != null)
-                {
-                    foreach (var product in group.Products)
-                    {
-                        product.Archive();
-                    }
-                }
-            }
+            groupRepository.Update(group);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await groupRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = group?.Id
             };
-
-            if (group?.Products != null && result.Success)
-            {
-                foreach (var product in group.Products)
-                {
-                    await mediator.Publish(
-                        new ArchiveProductNotification
-                        {
-                            Id = product.Id,
-                            IsArchived = true,
-                        }, cancellationToken);   
-                }
-            }
 
             return result;
         }

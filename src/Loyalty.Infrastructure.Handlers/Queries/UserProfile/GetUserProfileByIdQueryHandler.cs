@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +25,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
         {
             var worker = await Context.Workers
                 .IgnoreQueryFilters()
-                .Include(x => x.Venues)
+                .Include(x => x.VenueRoles)
                 .Where(x => x.WorkerId == request.UserId)
+                .AsNoTracking()
                 .SingleAsync(cancellationToken);
 
             var result = new GetUserProfileByIdQueryResult()

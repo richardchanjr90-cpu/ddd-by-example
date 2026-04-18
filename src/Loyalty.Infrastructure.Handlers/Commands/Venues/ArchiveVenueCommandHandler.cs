@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -17,7 +16,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class ArchiveVenueCommandHandler : BaseHandler, IRequestHandler<ArchiveVenueCommand, ICommandResult>
-    {
+    {       
         private readonly IMediator mediator;
 
         public ArchiveVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
@@ -32,15 +31,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 .Include(x => x.LoyaltyPrograms)
                 .ThenInclude(x => x.LoyaltyProductGroups)
                 .Include(x => x.ProductGroups)
-                .ThenInclude(x => x.Products)
-                .Include(x => x.Workers)
                 .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
                 .SingleOrDefaultAsync(cancellationToken);
 
             if (venue != null)
             {
-                venue.IsArchived = true;
-
+                //venue.IsArchived = true;
                 foreach (var program in venue.LoyaltyPrograms)
                 {
                     program.IsArchived = true;
@@ -53,12 +49,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
                 foreach (var group in venue.ProductGroups)
                 {
-                    group.IsArchived = true;
-
-                    foreach (var product in group.Products)
-                    {
-                        product?.Archive();
-                    }
+                    group.Archive();
                 }
             }
 
@@ -70,8 +61,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 
             if (result.Success && venue != null)
             {
-                await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
-
+                //await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
                 foreach (var program in venue.LoyaltyPrograms)
                 {
                     await mediator.Publish(

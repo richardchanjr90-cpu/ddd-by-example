@@ -32,7 +32,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             var venueId = request.VenueId;
 
             var id = request.Id;
-            var deleteSql = "DELETE FROM loyalty.VenueWorker WHERE WorkerId = @id AND VenueId = @venueId AND [Role] < @role";
+            var deleteSql = "DELETE FROM loyalty.VenueWorker " +
+                            "WHERE WorkerId = @id AND " +
+                            "VenueId = @venueId AND " +
+                            "[Role] < @role";
 
             ICommandResult result = null;
 

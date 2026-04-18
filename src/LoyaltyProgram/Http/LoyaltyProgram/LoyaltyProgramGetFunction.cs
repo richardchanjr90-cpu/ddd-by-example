@@ -7,6 +7,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.LoyaltyProgram;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +18,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.LoyaltyProgram
 {
-    public class LoyaltyProgramGetFunction
+    public class LoyaltyProgramGetFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyProgramAppService service;
 
-        public LoyaltyProgramGetFunction(LoyaltyProgramAppService service)
+        public LoyaltyProgramGetFunction(LoyaltyProgramAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.Products;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions

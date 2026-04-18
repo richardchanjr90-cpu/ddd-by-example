@@ -2,19 +2,18 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
-using Loyalty.Core.Entities;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
-using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
 {
-    public class GetProductGroupsByUserIdQueryHandler 
+    public class GetProductGroupsByUserIdQueryHandler
         : BaseDapperHandler, IRequestHandler<GetProductGroupsByUserIdQuery, GetProductGroupsByUserIdQueryResult>
     {
         private readonly SqlConnection connection;
@@ -29,51 +28,71 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
             GetProductGroupsByUserIdQuery request,
             CancellationToken cancellationToken)
         {
-            List<ProductGroup> groups;
-            var userId = request.UserId;
-            //todo: rewrite to single query
-            const string getItems = @"SELECT pg.* FROM 
-                    loyalty.ProductGroup pg 
-                    JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId
-                    JOIN loyalty.Worker w ON vw.WorkerId = w.Id
-                    WHERE w.WorkerId = @userId AND w.IsArchived = 0 AND pg.IsArchived = 0";
+            var userId = Principal.GetUserId();
 
-            const string getProducts = @"SELECT * FROM loyalty.Product WHERE ProductGroupId in @productIds AND IsArchived = 0";
-            using (var transaction = new TransactionScope())
+            const string selectQuery = @"SELECT pg.[Id]
+                                          ,pg.[VenueId]
+                                          ,pg.[Name]
+                                          ,pg.[Icon]
+                                          ,p.[Id]
+                                          ,p.[Name]
+                                          ,p.[Icon]
+                                          ,p.[ProductGroupId]
+                                          ,p.[Price]
+                                          ,p.[IsAvailableForOrder]
+                                          ,p.[ExternalUid]
+                                          ,p.[Description]
+                                          ,p.[ImageUri]
+                                          FROM loyalty.ProductGroup pg 
+                                    LEFT JOIN loyalty.Product p ON pg.Id = p.ProductGroupId
+                                    JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId
+                                    JOIN loyalty.Worker w ON vw.WorkerId = w.Id
+                                    WHERE w.WorkerId = @userId AND pg.IsArchived = 0 AND p.IsArchived = 0 OR p.IsArchived IS NULL";
+
+            await using (connection)
             {
-                groups = connection.Query<ProductGroup>(getItems, new
-                {
-                    userId
-                }).ToList();
+                await connection.OpenAsync(cancellationToken);
 
-                var productIds = groups.Select(x => x.Id);
+                var dictionary = new Dictionary<long, GetProductGroupByIdQueryResult>();
 
-                var products = connection.Query<Product>(getProducts, new
-                {
-                    productIds
-                }).ToList();
-
-                transaction.Complete();
-
-                if (groups.Count > 0 && products.Count > 0)
-                {
-                    foreach (var group in groups)
-                    {
-                        group.Products = new List<Product>();
-                        var selected = products.Where(x => x.ProductGroupId == group.Id);
-
-                        foreach (var product in selected)
+                var rows = connection.Query<
+                        GetProductGroupByIdQueryResult,
+                        GetProductByIdQueryResult,
+                        GetProductGroupByIdQueryResult>(
+                        selectQuery,
+                        (group, product) =>
                         {
-                            group.Products.Add(product);
-                        }
-                    }
-                }
-            }
+                            if (!dictionary.TryGetValue(group.Id, out var groupEntry))
+                            {
+                                groupEntry = group;
+                                groupEntry.Products = new List<GetProductByIdQueryResult>();
 
-            return new GetProductGroupsByUserIdQueryResult
-            {
-                Result = groups.ToResults()
-            };
+                                group.IsAvailableForOrder = true;
+                                dictionary.Add(group.Id, group);
+                            }
+
+                            groupEntry.IsAvailableForOrder =
+                                groupEntry.IsAvailableForOrder && (product?.IsAvailableForOrder ?? false);
+
+                            if (product != null)
+                            {
+                                groupEntry.Products.Add(product);
+                            }
+
+                            return groupEntry;
+                        }, new
+                        {
+                            userId
+                        },
+                        splitOn: "Id")
+                    .Distinct()
+                    .ToList();
+
+                return new GetProductGroupsByUserIdQueryResult()
+                {
+                    Result = rows
+                };
+            }
         }
     }
 }

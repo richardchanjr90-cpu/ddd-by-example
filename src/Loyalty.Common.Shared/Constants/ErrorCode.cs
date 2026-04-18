@@ -32,6 +32,8 @@ namespace Loyalty.Common.Shared.Constants
 
         public const string INVALID_ROLE = "INVALID_ROLE";
 
+        public const string TOO_MANY_ATTEMPTS_TRY_LATER = "TOO_MANY_ATTEMPTS_TRY_LATER";
+
         public const string IMPOSSIBLE_TO_CREATE_WITH_ROLE = "INCORRECT_AMOUNT_OF_POINTS";
 
         public const string VENUE_NOT_FOUND = "VENUE_NOT_FOUND";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions

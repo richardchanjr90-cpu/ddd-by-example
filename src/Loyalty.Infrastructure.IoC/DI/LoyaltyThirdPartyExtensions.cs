@@ -1,6 +1,8 @@
 ﻿using System;
 using AutoMapper;
 using Loyalty.Application.AutoMapper;
+using Loyalty.Application.DomainEvents.Handlers;
+using Loyalty.Application.DomainEvents.Handlers.ProductGroup;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Infrastructure.Firebase.Handlers;
 using Loyalty.Infrastructure.Handlers;
@@ -19,11 +21,13 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddMediatR(typeof(BaseHandler).Assembly);
             services.AddMediatR(typeof(BaseNotificationHandler).Assembly);
             services.AddMediatR(typeof(BaseFirebaseHandler).Assembly);
+            services.AddMediatR(typeof(ProductGroupArchivedDomainEventHandler).Assembly);
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 
             if (!EnvironmentExtensions.IsProd())
             {

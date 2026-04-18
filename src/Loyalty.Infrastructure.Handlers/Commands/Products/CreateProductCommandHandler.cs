@@ -2,71 +2,48 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.Products;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Products;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
 {
     public class CreateProductCommandHandler
-        : BaseHandler, ICreateProductCommandHandler
+        : IRequestHandler<CreateProductCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IProductGroupRepository productGroupRepository;
+        private readonly IProductRepository productRepository;
 
-        public CreateProductCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public CreateProductCommandHandler(
+            IProductGroupRepository productGroupRepository, 
+            IProductRepository productRepository)
         {
-            this.mediator = mediator;
+            this.productGroupRepository = productGroupRepository;
+            this.productRepository = productRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
-            Product product = null;
+            var group = await productGroupRepository
+                .GetAsync(request.ProductGroupId, cancellationToken);
 
-            var group = await Context.ProductGroups
-                .Include(x => x.Products)
-                .Where(x => x.Id == request.ProductGroupId)
-                .FirstOrDefaultAsync(cancellationToken);
+            var product = new Product(
+                request.Name, 
+                request.Icon, 
+                request.Price,
+                request.Description,
+                group);
 
-            if (group != null)
-            {
-                product = new Product(
-                    request.Name, 
-                    request.Icon, 
-                    request.Price, 
-                    request.ExternalUid,
-                    request.Description,
-                    request.ProductGroupId);
-
-                group.Products.Add(product);
-            }
+            await productRepository.AddAsync(product);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await productRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = product?.Id
             };
-
-            if (result.Success && product != null)
-            {
-                await mediator.Publish(
-                    new CreateProductNotification
-                    {
-                        Price = product.Price,
-                        Id = product.Id,
-                        Name = product.Name,
-                        Description = product.Description,
-                        GroupIcon = product.ProductGroup.Icon,
-                        GroupName = product.ProductGroup.Name,
-                        VenueId = product.ProductGroup.VenueId
-                    }, cancellationToken);
-            }
 
             return result;
         }

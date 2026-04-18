@@ -1,53 +1,37 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.Products;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
 {
-    public class ArchiveProductCommandHandler
-        : BaseHandler, IArchiveProductCommandHandler
+    public class ArchiveProductCommandHandler : IRequestHandler<ArchiveProductCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IProductRepository productRepository;
 
-        public ArchiveProductCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
-        {
-            this.mediator = mediator;
+        public ArchiveProductCommandHandler(
+            IProductRepository productRepository)
+        { 
+            this.productRepository = productRepository;
         }
 
         public async Task<ICommandResult> Handle(ArchiveProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await Context.Products
-                .Include(x => x.ProductGroup)
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var product = await productRepository
+                .GetAsync(request.Id, cancellationToken);
 
             product?.Archive();
 
+            productRepository.Update(product);
+
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await productRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = product?.Id
             };
-
-            if (product != null && result.Success)
-            {
-                await mediator.Publish(
-                    new ArchiveProductNotification
-                    {
-                        Id = product.Id,
-                        IsArchived = true,
-                    }, cancellationToken);
-            }
 
             return result;
         }

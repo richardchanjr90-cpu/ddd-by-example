@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.DataAccess.Context;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -35,7 +36,7 @@ namespace Loyalty.Infrastructure.DataAccess
                 configuration.GetSection($"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}").Value,
                 m => { m.EnableRetryOnFailure(); });
 
-            return new LoyaltyDbContext(optionsBuilder.Options);
+            return new LoyaltyDbContext(optionsBuilder.Options, new EmptyMediator());
         }
     }
 }

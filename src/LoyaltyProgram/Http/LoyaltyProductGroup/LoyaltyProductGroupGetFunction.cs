@@ -6,6 +6,8 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +17,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.LoyaltyProductGroup
 {
-    public class LoyaltyProductGroupGetFunction
+    public class LoyaltyProductGroupGetFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyProductGroupAppService service;
 
-        public LoyaltyProductGroupGetFunction(LoyaltyProductGroupAppService service)
+        public LoyaltyProductGroupGetFunction(LoyaltyProductGroupAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

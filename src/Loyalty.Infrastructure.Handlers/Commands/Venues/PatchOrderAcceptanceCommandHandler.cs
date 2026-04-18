@@ -1,41 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
     public class PatchOrderAcceptanceCommandHandler
-        : BaseHandler, IRequestHandler<PatchOrderAcceptanceCommand, ICommandResult>
+        : IRequestHandler<PatchOrderAcceptanceCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IVenueRepository venueRepository;
 
-        public PatchOrderAcceptanceCommandHandler(
-            ILoyaltyTenantDbContext context,
-            IMediator mediator,
-            IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public PatchOrderAcceptanceCommandHandler(IVenueRepository venueRepository)
         {
-            this.mediator = mediator;
+            this.venueRepository = venueRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchOrderAcceptanceCommand request, CancellationToken cancellationToken)
         {
-            var venue = await Context.Venues
-                .Where(x => x.Id == request.VenueId)
-                .SingleAsync(cancellationToken);
+            var venue = await venueRepository.GetAsync(request.VenueId, cancellationToken);
 
             if (request.Accept)
             {
@@ -46,22 +31,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
                 venue.RejectNewOrders();
             }
 
+            venueRepository.Update(venue);
+
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = venue.Id
             };
-
-            if (result.Success)
-            {
-                await mediator.Publish(
-                    new PatchOrderAcceptanceNotification
-                    {
-                        VenueId = venue.Id,
-                        Accept = venue.AcceptsOrders
-                    },
-                    cancellationToken);
-            }
 
             return result;
         }

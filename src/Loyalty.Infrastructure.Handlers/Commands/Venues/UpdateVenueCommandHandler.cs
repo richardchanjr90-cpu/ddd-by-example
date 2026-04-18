@@ -1,42 +1,37 @@
 ﻿using System;
-using System.Linq;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Entities.ValueObject;
+using Loyalty.Core.Entities.Aggregates.Venues.ValueObjects;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class UpdateVenueCommandHandler : BaseHandler, IRequestHandler<UpdateVenueCommand, ICommandResult>
+    public class UpdateVenueCommandHandler : IRequestHandler<UpdateVenueCommand, ICommandResult>
     {
+        private readonly IVenueRepository venueRepository;
         private readonly IMediator mediator;
 
         public UpdateVenueCommandHandler(
-            ILoyaltyTenantDbContext context,
-            IMediator mediator,
-            IHttpContextAccessor accessor)
-            : base(context, accessor)
+            IVenueRepository venueRepository,
+            IMediator mediator)
         {
+            this.venueRepository = venueRepository;
             this.mediator = mediator;
         }
 
         public async Task<ICommandResult> Handle(UpdateVenueCommand request, CancellationToken cancellationToken)
         {
-            var venue = await Context.Venues
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var venue = await venueRepository.GetAsync(request.Id, cancellationToken);
 
             if (venue == null)
             {
@@ -46,55 +41,43 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
             }
             else
             {
-                if (venue.VenueStatus != request.VenueApprovalStatus
-                    && (request.VenueApprovalStatus == VenueApprovalStatus.Approved
-                        || request.VenueApprovalStatus == VenueApprovalStatus.Rejected))
-                {
-                    throw new LoyaltyValidationException(
-                        "Not possible to change venue's status",
-                        ErrorCode.NOT_POSSIBLE_TO_APPROVE_VENUE);
-                }
+                var description = new VenueDetails(
+                    request.FullDescription,
+                    request.Description,
+                    JsonSerializer.Serialize(request.WorkingHours));
 
-                if (request.VenueApprovalStatus >= VenueApprovalStatus.Published && (
-                        String.IsNullOrEmpty(venue.Images) ||
-                        String.IsNullOrEmpty(venue.LogoUrl)))
-                {
-                    throw new LoyaltyValidationException(
-                        "Not possible to change venue's status",
-                        ErrorCode.NOT_POSSIBLE_TO_PUBLISH_VENUE);
-                }
+                var socialNetworks = new SocialNetworks(
+                    request.SocialNetworks?.Instagram,
+                    request.SocialNetworks?.Facebook,
+                    request.SocialNetworks?.Vkontakte);
 
-                venue.CategoryType = request.CategoryType;
-                venue.Description = request.Description;
-                venue.Name = request.Name;
-                venue.Type = request.Type;
-                venue.FullDescription = request.FullDescription;
-                venue.WebSites = request.WebSites.ToCommaSeparatedStringOrNull();
-                venue.WorkingHours = JsonSerializer.Serialize(request.WorkingHours);
-                venue.Phones = request.Phones.ToCommaSeparatedStringOrNull();
-                venue.Address = request.Location?.Address;
-                venue.City = request.Location?.City;
-                venue.Latitude = request.Location?.Latitude ?? 0.0f;
-                venue.Longitude = request.Location?.Longitude ?? 0.0f;
-                venue.VenueStatus = request.VenueApprovalStatus;
-                venue.SocialNetworks = new SocialNetworks
-                {
-                    Vkontakte = request.SocialNetworks?.Vkontakte,
-                    Facebook = request.SocialNetworks?.Facebook,
-                    Instagram = request.SocialNetworks?.Instagram,
-                };
+                var contactInfo = new ContactInfo(
+                    request.Phones.ToCommaSeparatedStringOrNull(),
+                    request.WebSites.ToCommaSeparatedStringOrNull(),
+                    socialNetworks);
+
+                var location = new Location(
+                    request.Location?.City,
+                    request.Location?.Address,
+                    request.Location?.Latitude ?? 0.0f,
+                    request.Location?.Longitude ?? 0.0f);
+
+                venue.UpdateVenue(
+                    request.Name, 
+                    location, 
+                    description, 
+                    contactInfo, 
+                    request.CategoryType,
+                    request.VenueApprovalStatus);
             }
+
+            venueRepository.Update(venue);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = venue.Id
             };
-
-            if (result.Success)
-            {
-                await mediator.Publish(venue.ToUpdateNotification(), cancellationToken);
-            }
 
             return result;
         }

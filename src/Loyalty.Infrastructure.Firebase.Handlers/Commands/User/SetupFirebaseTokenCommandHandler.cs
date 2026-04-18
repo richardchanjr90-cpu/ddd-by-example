@@ -37,7 +37,6 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
                 { ClaimTypes.Role, request.Role },
                 { CustomClaimsConstants.Firstname, Regex.Escape(request.Name) },
                 { CustomClaimsConstants.Lastname, Regex.Escape(request.Surname) },
-                { ClaimTypes.Email, request.Email },
                 { CustomClaimsConstants.City, Regex.Escape(request.City) }
             };
 

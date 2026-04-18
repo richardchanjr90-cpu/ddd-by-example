@@ -5,6 +5,7 @@ using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Rules;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +24,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
             CancellationToken cancellationToken)
         {
             var item = Context.LoyaltyProductGroups.Include(x => x.Group)
-                .ThenInclude(x => x.Products)
+               // .ThenInclude(x => x.Products)
                 .Include(x => x.Rules)
                 .Where(x => x.Id == request.Id && x.LoyaltyProgramId == request.ProgramId)
                 .ToList()

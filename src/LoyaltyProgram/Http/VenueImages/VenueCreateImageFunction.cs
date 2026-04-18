@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web.Http;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -10,6 +11,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -22,7 +25,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public class VenueCreateImageFunction
+    public class VenueCreateImageFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly IOptions<ImageSettings> imageSettings;
         private readonly LoyaltyVenueAppService service;
@@ -31,7 +34,8 @@ namespace LoyaltyProgram.Http.VenueImages
         public VenueCreateImageFunction(
             IOptions<ImageSettings> imageSettings,
             LoyaltyVenueAppService service,
-            LoyaltyVenueImageAppService imageService)
+            LoyaltyVenueImageAppService imageService, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.imageSettings = imageSettings;
             this.service = service;
@@ -47,11 +51,11 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/details/images")]
             HttpRequestMessage req,
             ILogger log,
-            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
-            [Blob("venue-images-{id}", FileAccess.Write)] CloudBlobContainer container)
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] [SwaggerIgnore] FunctionTokenResult token,
+            [Blob("venue-images-{id}", FileAccess.Write)] [SwaggerIgnore] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueCreateImageFunction)} was triggered.");
-
+           // using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 token.Principal.IsInRoleAndThrow(id);

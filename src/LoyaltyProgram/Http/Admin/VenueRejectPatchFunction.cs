@@ -5,6 +5,8 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using LoyaltyProgram.Http.Venue;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -16,11 +18,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Admin
 {
-    public class VenueRejectPatchFunction
+    public class VenueRejectPatchFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyVenueAppService service;
 
-        public VenueRejectPatchFunction(LoyaltyVenueAppService service)
+        public VenueRejectPatchFunction(LoyaltyVenueAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

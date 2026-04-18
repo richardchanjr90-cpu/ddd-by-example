@@ -6,6 +6,8 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Venue;
 using Loyalty.Common.Shared.Extensions;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -17,11 +19,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Venue
 {
-    public class VenuePostFunction
+    public class VenuePostFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyVenueAppService service;
 
-        public VenuePostFunction(LoyaltyVenueAppService service)
+        public VenuePostFunction(LoyaltyVenueAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

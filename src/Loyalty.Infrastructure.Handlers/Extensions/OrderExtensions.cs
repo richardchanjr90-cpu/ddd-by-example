@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Loyalty.Core.Entities.Orders;
+using Loyalty.Core.Entities.Aggregates.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using Loyalty.Shared.Contracts.Enums;

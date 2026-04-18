@@ -22,8 +22,6 @@ namespace Loyalty.Domain.Handlers.Firebase.Queries.Commands.User
 
         public string Surname { get; set; }
 
-        public string Email { get; set; }
-
         public string City { get; set; }
 
         public VenueUserRole Role { get; set; }

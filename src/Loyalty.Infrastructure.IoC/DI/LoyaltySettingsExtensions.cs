@@ -27,6 +27,10 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.Configure<SmsSettings>(
                 options => config.GetSection(nameof(SmsSettings))
                     .Bind(options));
+
+            services.Configure<EmailSettings>(
+                options => config.GetSection(nameof(EmailSettings))
+                    .Bind(options));
         }
     }
 }

@@ -6,6 +6,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Orders;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -19,7 +20,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Orders
     {
         private readonly IMediator mediator;
 
-        public PatchOrderCommandHandler(ILoyaltyDbContext context, IMediator mediator, IHttpContextAccessor accessor)
+        public PatchOrderCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
             : base(context, accessor)
         {
             this.mediator = mediator;

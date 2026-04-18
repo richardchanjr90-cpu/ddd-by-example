@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
-using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +23,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Products
         {
             var items = await (from lp in Context.Products
                 where lp.ProductGroupId == request.ProductGroupId
-                select lp).ToListAsync(cancellationToken);
+                select lp)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             return new GetProductsQueryResult
             {

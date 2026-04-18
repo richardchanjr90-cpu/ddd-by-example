@@ -9,6 +9,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -20,12 +22,13 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.VenueImages
 {
-    public class VenueDeleteImageFunction
+    public class VenueDeleteImageFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyVenueAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
 
-        public VenueDeleteImageFunction(LoyaltyVenueImageAppService imageService, LoyaltyVenueAppService service)
+        public VenueDeleteImageFunction(LoyaltyVenueImageAppService imageService, LoyaltyVenueAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.imageService = imageService;
             this.service = service;

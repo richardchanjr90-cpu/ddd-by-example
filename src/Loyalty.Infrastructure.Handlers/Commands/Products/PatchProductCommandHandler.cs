@@ -1,34 +1,30 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
 {
     public class PatchProductCommandHandler
-        : BaseHandler,  IRequestHandler<PatchProductCommand, ICommandResult>
+        : IRequestHandler<PatchProductCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IProductRepository productRepository;
 
-        public PatchProductCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator,  IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public PatchProductCommandHandler(IProductRepository productRepository)
         {
-            this.mediator = mediator;
+            this.productRepository = productRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await Context.Products
-                .Include(x => x.ProductGroup)
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var product = await productRepository
+                .GetAsync(request.Id, cancellationToken);
 
             if (request.IsAvailableForOrder)
             {
@@ -39,21 +35,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Products
                 product?.HideFromCustomer();
             }
 
+            productRepository.Update(product);
+
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await productRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = product?.Id
             };
-
-            if (product != null && result.Success)
-            {
-                await mediator.Publish(
-                    new PatchProductNotification
-                    {
-                        Id = product.Id,
-                        IsAvailableForOrder = product.IsAvailableForOrder,
-                    }, cancellationToken);
-            }
 
             return result;
         }

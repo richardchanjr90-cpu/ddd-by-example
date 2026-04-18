@@ -10,9 +10,6 @@ namespace Loyalty.Application.ViewModels.UserProfile
         [JsonPropertyName("lastName")]
         public string LastName { get; set; }
 
-        [JsonPropertyName("email")]
-        public string Email { get; set; }
-
         [JsonPropertyName("positionName")]
         public string PositionName { get; set; }
     }

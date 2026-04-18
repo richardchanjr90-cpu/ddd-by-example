@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Loyalty.Core.Entities;
+using Loyalty.Core.Entities.Aggregates.Purchases;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
 
 namespace Loyalty.Infrastructure.Handlers.Extensions

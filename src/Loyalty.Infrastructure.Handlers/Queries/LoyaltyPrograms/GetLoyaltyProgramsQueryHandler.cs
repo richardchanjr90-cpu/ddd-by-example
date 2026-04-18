@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
 using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
         {
         }
 
-        public async Task<GetLoyaltyProgramsQueryResult> Handle(GetLoyaltyProgramsQuery request,
+        public async Task<GetLoyaltyProgramsQueryResult> Handle(
+            GetLoyaltyProgramsQuery request,
             CancellationToken cancellationToken)
         {
             var items = await (from lp in Context.LoyaltyPrograms
@@ -30,8 +32,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                     StartedDate = lp.StartDate,
                     EndedDate = lp.EndDate,
                     Name = lp.Name,
+                    Url = lp.Url,
                     IsPublished = lp.IsPublished
-                }).ToListAsync(cancellationToken);
+                })
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
 
             return new GetLoyaltyProgramsQueryResult
             {

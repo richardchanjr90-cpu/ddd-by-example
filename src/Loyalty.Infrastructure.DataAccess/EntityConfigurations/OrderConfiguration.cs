@@ -1,7 +1,6 @@
-﻿using System;
-using Loyalty.Core.Entities.Orders;
-using Loyalty.Core.Entities.Orders.Status;
-using Loyalty.Core.Entities.Orders.Status.Abstract;
+﻿using Loyalty.Core.Entities.Aggregates.Orders;
+using Loyalty.Core.Entities.Aggregates.Orders.Status.Abstract;
+using Loyalty.Core.Entities.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,6 +20,17 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .HasConversion(
                     v => v.Id,
                     v => OrderStatusEnumeration.From(v));
+
+            builder
+                .Property(x => x.Status)
+                .IsRequired();
+
+            builder
+                .Property(x => x.Rate)
+                .IsRequired(false);
+
+            builder.Ignore(b => b.DomainEvents);
+            builder.ToTable("Order", SchemaName.Loyalty);
         }
     }
 }
