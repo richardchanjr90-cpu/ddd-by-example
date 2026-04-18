@@ -75,7 +75,8 @@ namespace Loyalty.Application.AutoMapper
 
         private void MapProductsAndGroups()
         {
-            CreateMap<GetProductByIdQueryResult, GetProductViewModel>();
+            CreateMap<GetProductByIdQueryResult, GetProductViewModel>()
+                .ForSourceMember(x => x.IsArchived, opt => opt.DoNotValidate());
 
             CreateMap<CreateProductViewModel, CreateProductCommand>();
 

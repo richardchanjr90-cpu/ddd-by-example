@@ -44,11 +44,12 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
                                           ,p.[ExternalUid]
                                           ,p.[Description]
                                           ,p.[ImageUri]
+                                          ,p.[IsArchived]
                                           FROM loyalty.ProductGroup pg 
                                     LEFT JOIN loyalty.Product p ON pg.Id = p.ProductGroupId
                                     JOIN loyalty.VenueWorker vw ON vw.VenueId = pg.VenueId
                                     JOIN loyalty.Worker w ON vw.WorkerId = w.Id
-                                    WHERE w.WorkerId = @userId AND pg.Id = 1 AND pg.IsArchived = 0 AND p.IsArchived = 0 OR p.IsArchived IS NULL";
+                                    WHERE w.WorkerId = @userId AND pg.Id = 1 AND pg.IsArchived = 0";
             await using (connection)
             {
                 await connection.OpenAsync(cancellationToken);
@@ -74,7 +75,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.ProductGroups
                             groupEntry.IsAvailableForOrder =
                                 groupEntry.IsAvailableForOrder && (product?.IsAvailableForOrder ?? false);
 
-                            if (product != null)
+                            if (product != null && !product.IsArchived)
                             {
                                 groupEntry.Products.Add(product);
                             }

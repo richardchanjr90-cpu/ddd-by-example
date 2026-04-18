@@ -31,5 +31,8 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Product
 
         [JsonPropertyName("imageUri")]
         public string ImageUri { get; set; }
+
+        [JsonPropertyName("isArchived")]
+        public bool IsArchived { get; set; }
     }
 }
