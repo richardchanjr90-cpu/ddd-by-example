@@ -11,9 +11,9 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues.Admin
     public class RejectVenueCommandHandler : 
         IRequestHandler<RejectVenuePatchCommand, ICommandResult>
     {
-        private readonly IVenueRepository venueRepository;
+        private readonly IVenueAdminRepository venueRepository;
 
-        public RejectVenueCommandHandler(IVenueRepository venueRepository)
+        public RejectVenueCommandHandler(IVenueAdminRepository venueRepository)
         {
             this.venueRepository = venueRepository;
         }

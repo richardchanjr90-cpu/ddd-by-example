@@ -21,7 +21,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess.Context
 {
-    public class LoyaltyTenantDbContext : TransactionalContext, ILoyaltyTenantDbContext
+    public class LoyaltyTenantDbContext : LoyaltyDbContext, ILoyaltyTenantDbContext
     {
         private readonly ITenantProvider provider;
         private readonly IMediator mediator;
@@ -32,7 +32,7 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             ITenantProvider provider, 
             DbContextOptions<LoyaltyDbContext> options, 
             IMediator mediator)
-            : base(options)
+            : base(options, mediator)
         {
             this.provider = provider;
             this.mediator = mediator;
@@ -48,14 +48,6 @@ namespace Loyalty.Infrastructure.DataAccess.Context
         {
             AddAuditInfo();
             return await base.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
-        {
-            await mediator.DispatchDomainEventsAsync(this);
-            var result = await SaveChangesAsync(cancellationToken);
-
-            return true;
         }
 
         public virtual IEnumerable<Entity> GetModifiedOrAddedEntitiesBeforeSaveChanges()

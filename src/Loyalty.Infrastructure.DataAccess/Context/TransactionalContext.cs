@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Loyalty.Infrastructure.DataAccess.Context
 {
-    public abstract class TransactionalContext : LoyaltyDbContext
+    public abstract class TransactionalContext : DbContext
     {
         protected TransactionalContext(DbContextOptions<LoyaltyDbContext> options)
         : base(options)

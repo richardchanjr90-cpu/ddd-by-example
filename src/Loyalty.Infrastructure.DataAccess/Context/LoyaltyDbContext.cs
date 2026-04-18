@@ -12,16 +12,21 @@ using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.DataAccess.EntityConfigurations;
+using MediatR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess.Context
 {
-    public class LoyaltyDbContext : DbContext, ILoyaltyDbContext
+    public class LoyaltyDbContext : TransactionalContext, ILoyaltyDbContext
     {
-        public LoyaltyDbContext(DbContextOptions<LoyaltyDbContext> options)
+        private readonly IMediator mediator;
+
+        public LoyaltyDbContext(DbContextOptions<LoyaltyDbContext> options,
+            IMediator mediator)
             : base(options)
         {
+            this.mediator = mediator;
         }
 
         public DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
@@ -58,6 +63,14 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             {
                 throw new LoyaltyValidationException("Duplicated entity", ex, ErrorCode.DUPLICATED_ENTITY);
             }
+        }
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await mediator.DispatchDomainEventsAsync(this);
+            var result = await SaveChangesAsync(cancellationToken);
+
+            return true;
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)

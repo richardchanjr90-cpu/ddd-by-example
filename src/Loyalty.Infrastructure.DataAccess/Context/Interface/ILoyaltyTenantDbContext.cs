@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.SeedWork;
-using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Loyalty.Infrastructure.DataAccess.Context.Interface
 {
-    public interface ILoyaltyTenantDbContext : ILoyaltyDbContext, IUnitOfWork
+    public interface ILoyaltyTenantDbContext : ILoyaltyDbContext
     {
         IEnumerable<Entity> GetModifiedOrAddedEntitiesBeforeSaveChanges();
 

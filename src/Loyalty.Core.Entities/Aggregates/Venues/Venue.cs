@@ -170,16 +170,6 @@ namespace Loyalty.Core.Entities.Aggregates.Venues
             AddDomainEvent(new VenueImagesUpdatedDomainEvent(this));
         }
 
-        public void AcceptOrders()
-        {
-            AcceptsOrders = true;
-        }
-
-        public void DeclineOrders()
-        {
-            AcceptsOrders = false;
-        }
-
         public void Archive()
         {
             IsArchived = true;

@@ -51,8 +51,8 @@ namespace LoyaltyProgram.Http.VenueImages
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "venues/{id}/details/images")]
             HttpRequestMessage req,
             ILogger log,
-            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
-            [Blob("venue-images-{id}", FileAccess.Write)] CloudBlobContainer container)
+            [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] [SwaggerIgnore] FunctionTokenResult token,
+            [Blob("venue-images-{id}", FileAccess.Write)] [SwaggerIgnore] CloudBlobContainer container)
         {
             log.LogInformation($"{nameof(VenueCreateImageFunction)} was triggered.");
            // using var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);

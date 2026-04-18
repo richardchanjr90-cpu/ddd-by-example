@@ -5,11 +5,9 @@ using Loyalty.Core.Entities.SeedWork.Interfaces;
 
 namespace Loyalty.Core.Entities.Interfaces.Repository
 {
-    public interface IVenueRepository : IRepository<Venue>
+    public interface IVenueAdminRepository : IRepository<Venue>
     {
-        Task<Venue> GetAsync(long venueId, CancellationToken token = default);
-
-        Task<Venue> AddAsync(Venue venue);
+        Task<Venue> GetWithoutQueryFiltersAsync(long venueId, CancellationToken token = default);
 
         public Venue Update(Venue venue);
     }

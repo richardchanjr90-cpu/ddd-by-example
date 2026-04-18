@@ -18,25 +18,25 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues.Admin
 {
     public class ApproveVenueCommandHandler : IRequestHandler<ApproveVenuePatchCommand, ICommandResult>
     {
-        private readonly IVenueRepository venueRepository;
+        private readonly IVenueAdminRepository venueAdminRepository;
 
         public ApproveVenueCommandHandler(
-            IVenueRepository venueRepository)
+            IVenueAdminRepository venueAdminRepository)
         {
-            this.venueRepository = venueRepository;
+            this.venueAdminRepository = venueAdminRepository;
         }
 
         public async Task<ICommandResult> Handle(ApproveVenuePatchCommand request, CancellationToken cancellationToken)
         {
-            var venue = await venueRepository.GetWithoutQueryFiltersAsync(request.Id, cancellationToken);
+            var venue = await venueAdminRepository.GetWithoutQueryFiltersAsync(request.Id, cancellationToken);
 
             venue.Approve();
 
-            venueRepository.Update(venue);
+            venueAdminRepository.Update(venue);
 
             var result = new CommandResult
             {
-                Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
+                Success = await venueAdminRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = venue.Id
             };
 

@@ -36,7 +36,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IVenueRepository, VenueRepository>();
             services.AddTransient<IWorkerRepository, WorkerRepository>();
-
+            services.AddTransient<IVenueAdminRepository, VenueAdminRepository>();
             services.AddTransient<IIntegrationEventService, LoggingIntegrationEventService>();
             services.AddTransient<IEventBusService, EventBusPublishingService>();
 

@@ -8,7 +8,7 @@ using MediatR;
 namespace Loyalty.Application.DomainEvents.Handlers.Venues
 {
     public class VenueAcceptanceChangedDomainEventHandler :
-        INotificationHandler<VenueArchivedDomainEvent>
+        INotificationHandler<VenueAcceptanceChangedDomainEvent>
     {
         private readonly IEventBusService eventBusService;
 
@@ -17,7 +17,7 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
             this.eventBusService = eventBusService;
         }
 
-        public async Task Handle(VenueArchivedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public async Task Handle(VenueAcceptanceChangedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
             var venue = domainEvent.Venue;
 
