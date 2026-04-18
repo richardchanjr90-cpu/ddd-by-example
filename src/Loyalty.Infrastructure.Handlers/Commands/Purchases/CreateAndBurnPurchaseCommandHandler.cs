@@ -1,10 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;

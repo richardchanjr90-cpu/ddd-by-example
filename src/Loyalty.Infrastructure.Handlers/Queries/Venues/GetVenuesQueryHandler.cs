@@ -14,7 +14,7 @@ using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 {
-    public class GetVenuesQueryHandler 
+    public class GetVenuesQueryHandler
         : BaseDapperHandler, IRequestHandler<GetVenuesQuery, GetVenuesQueryResult>
     {
         private readonly SqlConnection connection;
@@ -27,7 +27,32 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 
         public async Task<GetVenuesQueryResult> Handle(GetVenuesQuery request, CancellationToken cancellationToken)
         {
-            var getItems = "SELECT * FROM loyalty.Venue WHERE Id in @ids AND IsArchived = 0";
+            const string getItems = @"SELECT 
+                             [Id]
+                            ,[Name]
+                            ,[OwnerId]
+                            ,[ParentId]
+                            ,[Location_City] as [City]
+                            ,[Location_Address] as [Address]
+                            ,[Location_Latitude] as [Latitude]
+                            ,[Location_Longitude] as [Longitude]
+                            ,[Details_FullDescription] as [FullDescription]
+                            ,[Details_Description] as [Description]
+                            ,[Details_WorkingHours] as [WorkingHours]
+                            ,[ContactInfo_Phones] as [Phones]
+                            ,[ContactInfo_WebSites] as [WebSites]
+                            ,[ContactInfo_Instagram] as [Instagram]
+                            ,[ContactInfo_Facebook] as [Facebook]
+                            ,[ContactInfo_Vkontakte] as [Vkontakte]
+                            ,[LogoUrl]
+                            ,[Images]
+                            ,[Type]
+                            ,[CategoryType]
+                            ,[VenueStatus]
+                            ,[AcceptsOrders]
+                        FROM [loyalty].[Venue]
+                        WHERE Id in @ids AND IsArchived = 0";
+
             var ids = Principal.GetVenueIds();
             var venues = (await connection.QueryAsync(getItems, new
             {
@@ -42,7 +67,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                 OwnerId = dynamicVenue.OwnerId,
                 Description = dynamicVenue.Description,
                 ParentId = dynamicVenue.ParentId,
-                Location = new GetLocationQueryResult()
+                Location = new GetLocationQueryResult
                 {
                     City = dynamicVenue.City,
                     Address = dynamicVenue.Address,
@@ -54,13 +79,18 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                 CategoryType = dynamicVenue.CategoryType,
                 LogoUrl = dynamicVenue.LogoUrl,
                 FullDescription = dynamicVenue.FullDescription,
-                Phones = ((string)dynamicVenue.Phones).SplitByCommaAndUnwrap() ?? new List<string>(),
-                WebSites = ((string)dynamicVenue.WebSites).SplitByCommaAndUnwrap() ?? new List<string>(),
-                WorkingHours = JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>(dynamicVenue.WorkingHours),
-                Images = ((string)dynamicVenue.Images).SplitByCommaAndUnwrap() ?? new List<string>(),
-                SocialNetworks = dynamicVenue.SocialNetworks != null ?
-                    JsonSerializer.Deserialize<GetSocialNetworksResult>(dynamicVenue.SocialNetworks)
-                    : null
+                Phones = ((string)dynamicVenue.Phones)?.SplitByCommaAndUnwrap() ?? new List<string>(),
+                WebSites = ((string)dynamicVenue.WebSites)?.SplitByCommaAndUnwrap() ?? new List<string>(),
+                WorkingHours = dynamicVenue.WorkingHours != null ?
+                    JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>((string)dynamicVenue.WorkingHours, new JsonSerializerOptions()) 
+                    : new List<GetVenueWorkingHoursQueryResult>(),
+                Images = ((string)dynamicVenue.Images)?.SplitByCommaAndUnwrap() ?? new List<string>(),
+                SocialNetworks = new GetSocialNetworksResult
+                {
+                    Vkontakte = dynamicVenue.Vkontakte,
+                    Instagram = dynamicVenue.Instagram,
+                    Facebook = dynamicVenue.Facebook
+                }
             })
                 .ToList();
 

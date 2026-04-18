@@ -8,7 +8,7 @@
   <ItemGroup>
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.15" />
     <PackageReference Include="AzureFunctions.Extensions.NotificationHubs" Version="1.0.1" />
-    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.1.6" />
+    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.2.0-beta" />
     <PackageReference Include="FirebaseAdmin" Version="1.12.0" />
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.12" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SendGrid" Version="3.0.0" />
@@ -46,7 +46,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Loyalty.Application.Storage.Dto\Loyalty.Application.Storage.Dto.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.IoC\Loyalty.Infrastructure.IoC.csproj" />
-    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
     <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
   </ItemGroup>

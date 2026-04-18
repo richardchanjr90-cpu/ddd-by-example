@@ -22,10 +22,11 @@
     <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.46" />
+    <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.47" />
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.14" />
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">

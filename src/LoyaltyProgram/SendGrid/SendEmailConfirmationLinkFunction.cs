@@ -1,5 +1,7 @@
 ﻿using Loyalty.Application.Storage.Dto;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -7,12 +9,13 @@ using SendGrid.Helpers.Mail;
 
 namespace LoyaltyProgram.SendGrid
 {
-    public class SendEmailConfirmationLinkFunction
+    public class SendEmailConfirmationLinkFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly IOptions<EmailSettings> settings;
 
         public SendEmailConfirmationLinkFunction(
-            IOptions<EmailSettings> settings)
+            IOptions<EmailSettings> settings, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.settings = settings;
         }

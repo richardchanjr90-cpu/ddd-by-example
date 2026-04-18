@@ -1,6 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -9,11 +11,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Ping
 {
-    public class PingFunction
+    public class PingFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly LoyaltyVenueAppService service;
 
-        public PingFunction(LoyaltyVenueAppService service)
+        public PingFunction(LoyaltyVenueAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

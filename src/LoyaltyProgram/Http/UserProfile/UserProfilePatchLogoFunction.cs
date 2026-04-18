@@ -12,6 +12,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,7 @@ using Microsoft.WindowsAzure.Storage;
 
 namespace LoyaltyProgram.Http.UserProfile
 {
-    public class UserProfilePatchLogoFunction
+    public class UserProfilePatchLogoFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly WorkerAppService service;
         private readonly LoyaltyVenueImageAppService imageService;
@@ -32,7 +34,8 @@ namespace LoyaltyProgram.Http.UserProfile
         public UserProfilePatchLogoFunction(
             WorkerAppService service,
             LoyaltyVenueImageAppService imageService,
-            IOptions<ImageSettings> settings)
+            IOptions<ImageSettings> settings, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
             this.imageService = imageService;

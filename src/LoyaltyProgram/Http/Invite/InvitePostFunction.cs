@@ -8,6 +8,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts.Interfaces;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -19,11 +21,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Invite
 {
-    public class InvitePostFunction
+    public class InvitePostFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly WorkerAppService service;
 
-        public InvitePostFunction(WorkerAppService service)
+        public InvitePostFunction(WorkerAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

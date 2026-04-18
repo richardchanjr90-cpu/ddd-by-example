@@ -33,7 +33,7 @@ namespace Loyalty.Application.Storage.Dto.Validators
 
             RuleFor(x => x.Image)
                 .Must(ValidateWidthAndHeight)
-                .WithMessage("Image must be between 800x600 and 2560x1440px.");
+                .WithMessage("Image must be between 800x600 and 1200x1200px.");
         }
 
         private bool ValidateWidthAndHeight(byte[] arrayImage)

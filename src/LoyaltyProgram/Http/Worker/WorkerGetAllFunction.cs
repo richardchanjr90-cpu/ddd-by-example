@@ -8,6 +8,8 @@ using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +19,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Worker
 {
-    public class WorkerGetAllFunction
+    public class WorkerGetAllFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly WorkerAppService service;
 
-        public WorkerGetAllFunction(WorkerAppService service)
+        public WorkerGetAllFunction(WorkerAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

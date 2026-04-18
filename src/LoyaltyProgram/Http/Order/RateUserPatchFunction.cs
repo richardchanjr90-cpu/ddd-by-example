@@ -5,6 +5,8 @@ using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Rate;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +16,12 @@ using Microsoft.Extensions.Logging;
 
 namespace LoyaltyProgram.Http.Order
 {
-    public class RateUserPatchFunction
+    public class RateUserPatchFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly RateUserAppService service;
 
-        public RateUserPatchFunction(RateUserAppService service)
+        public RateUserPatchFunction(RateUserAppService service, ILoyaltyTenantDbContext context) 
+            : base(context)
         {
             this.service = service;
         }

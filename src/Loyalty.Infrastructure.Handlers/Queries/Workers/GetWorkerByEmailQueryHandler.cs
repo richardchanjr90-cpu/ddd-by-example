@@ -2,14 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
-using Loyalty.Core.Entities;
-using Loyalty.Core.Entities.Aggregates.Venues;
-using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
-using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
@@ -28,43 +23,59 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
         }
 
         public async Task<GetInviteByEmailQueryResult> Handle(
-            GetWorkerByEmailQuery request, 
+            GetWorkerByEmailQuery request,
             CancellationToken cancellationToken)
         {
+            var getItemsQuery = @"SELECT 
+                                       w.[Id]
+                                      ,[Phone]
+                                      ,[Name]
+                                      ,vw.VenueId
+                                      ,vw.PositionName
+                                      ,vw.Role
+                                      FROM loyalty.Worker w 
+                                      JOIN loyalty.VenueWorker vw ON vw.WorkerId = w.Id
+                                      WHERE w.Email = @email";
+
             var email = request.Email;
 
-            using (var transaction = new TransactionScope())
+            await using (connection)
             {
-                var getItems = @"SELECT TOP 1 * FROM loyalty.Worker w WHERE w.Email = @email";
-                var getIds = @"SELECT * FROM loyalty.VenueWorker vw WHERE WorkerId = @id";
+                await connection.OpenAsync(cancellationToken);
 
-                var worker = connection.QuerySingleOrDefault<Worker>(getItems, new
-                {
-                    email
-                });
+                var dictionary = new Dictionary<long, GetInviteByEmailQueryResult>();
 
-                var id = worker?.Id;
+                var row = connection.Query<
+                        GetInviteByEmailQueryResult,
+                        GetVenueWorkerResult,
+                        GetInviteByEmailQueryResult>(
+                        getItemsQuery,
+                        (worker, venueWorker) =>
+                        {
+                            if (!dictionary.TryGetValue(worker.Id, out var workerEntry))
+                            {
+                                workerEntry = worker;
+                                workerEntry.Venues = new List<GetVenueWorkerResult>();
 
-                var venueWorkers = connection.Query<VenueWorker>(getIds, new
-                {
-                    id
-                }).ToList();
+                                dictionary.Add(worker.Id, worker);
+                            }
 
-                transaction.Complete();
+                            if (venueWorker != null)
+                            {
+                                workerEntry.Venues.Add(venueWorker);
+                            }
 
-                if (worker != null)
-                {
-                    worker.Venues = new List<VenueWorker>();
-                    foreach (var vw in venueWorkers)
-                    {
-                        worker.Venues.Add(vw);
-                    }
+                            return workerEntry;
+                        }, new
+                        {
+                            email
+                        },
+                        splitOn: "VenueId")
+                    .Distinct()
+                    .SingleOrDefault();
 
-                    return worker.ToWorkerResult();
-                }
+                return row;
             }
-
-            return null;
         }
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Loyalty.Core.Entities.Aggregates.Products;
-using Loyalty.Core.Entities.Base;
-using Loyalty.Core.Entities.Schema;
+using Loyalty.Core.Entities.Base.Interface;
+using Loyalty.Core.Entities.SeedWork;
 
 namespace Loyalty.Core.Entities.Aggregates.Orders
 {
-    public class OrderItem : TenantEntity
+    public class OrderItem : Entity, ITenantEntity
     {
         public OrderItem(
             long id,
@@ -28,7 +28,7 @@ namespace Loyalty.Core.Entities.Aggregates.Orders
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public new long Id { get; set; }
 
-        public override long TenantId => Order.TenantId;
+        public long TenantId => Order.TenantId;
 
         public int Amount { get; private set; }
 

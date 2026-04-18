@@ -1,5 +1,4 @@
-﻿using Loyalty.Core.Entities;
-using Loyalty.Core.Entities.Aggregates.Workers;
+﻿using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Core.Entities.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -28,6 +27,12 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
                 .HasIndex(u => u.WorkerId)
                 .IsUnique()
                 .HasFilter("([IsArchived] = 0 AND WorkerId IS NOT NULL)");
+
+            var navigation = builder.Metadata.FindNavigation(nameof(Worker.VenueRoles));
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(o => o.Id)
+                .UseHiLo("workereq");
         }
     }
 }

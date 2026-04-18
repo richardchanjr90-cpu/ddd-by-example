@@ -14,7 +14,7 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static Message ToMessage(this object item)
         {
-            var messageBody = JsonSerializer.Serialize(item, new JsonSerializerOptions());
+            var messageBody = JsonSerializer.Serialize(item, item.GetType());
 
             var message = new Message(Encoding.UTF8.GetBytes(messageBody))
             {

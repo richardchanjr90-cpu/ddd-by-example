@@ -14,7 +14,7 @@ using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Aggregates.Orders
 {
-    public class Order : AuditableEntity, IAggregateRoot
+    public class Order : TenantEntity, IAggregateRoot
     {
         private Order()
         {

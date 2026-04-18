@@ -32,5 +32,24 @@ namespace Loyalty.Infrastructure.Commands.Repository
 
             return venue;
         }
+
+        public async Task<Venue> AddAsync(Venue venue)
+        {
+            var result = venue;
+
+            if (venue.IsTransient())
+            {
+                result = (await context.Venues
+                    .AddAsync(venue)).Entity;
+            }
+
+            return result;
+        }
+
+        public Venue Update(Venue venue)
+        {
+            return context.Venues
+                .Update(venue).Entity;
+        }
     }
 }

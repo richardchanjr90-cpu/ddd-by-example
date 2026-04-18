@@ -62,6 +62,7 @@ namespace Loyalty.Application.Venue
                 .ToCommaSeparatedStringOrNull();
 
             var role = VenueUserRole.Owner;
+
             if (venueWorker != null)
             {
                 role = venueWorker.Role;

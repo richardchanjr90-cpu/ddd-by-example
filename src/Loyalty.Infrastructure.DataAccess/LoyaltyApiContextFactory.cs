@@ -36,7 +36,7 @@ namespace Loyalty.Infrastructure.DataAccess
                 configuration.GetSection($"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}").Value,
                 m => { m.EnableRetryOnFailure(); });
 
-            return new LoyaltyDbContext(optionsBuilder.Options);
+            return new LoyaltyDbContext(optionsBuilder.Options, new EmptyMediator());
         }
     }
 }

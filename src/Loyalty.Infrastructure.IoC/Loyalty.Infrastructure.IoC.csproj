@@ -33,6 +33,7 @@
     <ProjectReference Include="..\Loyalty.Infrastructure.Handlers.Notifications\Loyalty.Infrastructure.Handlers.Notifications.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Handlers\Loyalty.Infrastructure.Handlers.csproj" />
     <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

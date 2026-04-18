@@ -19,6 +19,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("Relational:Sequence:.producteq", "'producteq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.productgroupeq", "'productgroupeq', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("Relational:Sequence:.venueeq", "'venueeq', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("Relational:Sequence:.workereq", "'workereq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyGroupRule", b =>
@@ -381,21 +383,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "venueeq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<bool>("AcceptsOrders")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
                     b.Property<long>("CategoryType")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -403,29 +398,15 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(2000)")
-                        .HasMaxLength(2000);
-
-                    b.Property<string>("FullDescription")
-                        .HasColumnType("nvarchar(4000)")
-                        .HasMaxLength(4000);
-
                     b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
-                    b.Property<float?>("Latitude")
-                        .HasColumnType("real");
-
                     b.Property<string>("LogoUrl")
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
-
-                    b.Property<float?>("Longitude")
-                        .HasColumnType("real");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -445,30 +426,18 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<long?>("ParentId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Phones")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SocialNetworks")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<int>("VenueStatus")
                         .HasColumnType("int");
 
-                    b.Property<string>("WebSites")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WorkingHours")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Venue","loyalty");
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.Venues.VenueWorker", b =>
+            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.Workers.VenueWorker", b =>
                 {
                     b.Property<long>("VenueId")
                         .HasColumnType("bigint");
@@ -497,7 +466,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "workereq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -644,16 +614,92 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.Venues.VenueWorker", b =>
+            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.Venues.Venue", b =>
                 {
-                    b.HasOne("Loyalty.Core.Entities.Aggregates.Venues.Venue", "Venue")
-                        .WithMany("Workers")
-                        .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("Loyalty.Core.Entities.Aggregates.Venues.ValueObjects.ContactInfo", "ContactInfo", b1 =>
+                        {
+                            b1.Property<long>("VenueId")
+                                .HasColumnType("bigint");
 
-                    b.HasOne("Loyalty.Core.Entities.Aggregates.Workers.Worker", "Worker")
-                        .WithMany("Venues")
+                            b1.Property<string>("Facebook")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Instagram")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Phones")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Vkontakte")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("WebSites")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("VenueId");
+
+                            b1.ToTable("Venue");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VenueId");
+                        });
+
+                    b.OwnsOne("Loyalty.Core.Entities.Aggregates.Venues.ValueObjects.Location", "Location", b1 =>
+                        {
+                            b1.Property<long>("VenueId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Address")
+                                .HasColumnType("nvarchar(200)")
+                                .HasMaxLength(200);
+
+                            b1.Property<string>("City")
+                                .HasColumnType("nvarchar(200)")
+                                .HasMaxLength(200);
+
+                            b1.Property<float?>("Latitude")
+                                .HasColumnType("real");
+
+                            b1.Property<float?>("Longitude")
+                                .HasColumnType("real");
+
+                            b1.HasKey("VenueId");
+
+                            b1.ToTable("Venue");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VenueId");
+                        });
+
+                    b.OwnsOne("Loyalty.Core.Entities.Aggregates.Venues.ValueObjects.VenueDetails", "Details", b1 =>
+                        {
+                            b1.Property<long>("VenueId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Description")
+                                .HasColumnType("nvarchar(2000)")
+                                .HasMaxLength(2000);
+
+                            b1.Property<string>("FullDescription")
+                                .HasColumnType("nvarchar(4000)")
+                                .HasMaxLength(4000);
+
+                            b1.Property<string>("WorkingHours")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("VenueId");
+
+                            b1.ToTable("Venue");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VenueId");
+                        });
+                });
+
+            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.Workers.VenueWorker", b =>
+                {
+                    b.HasOne("Loyalty.Core.Entities.Aggregates.Workers.Worker", null)
+                        .WithMany("VenueRoles")
                         .HasForeignKey("WorkerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

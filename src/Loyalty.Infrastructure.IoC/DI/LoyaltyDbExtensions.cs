@@ -1,10 +1,18 @@
-﻿using Loyalty.Common.Shared.Settings;
+﻿using System;
+using System.Data.Common;
+using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.Interfaces.Repository;
+using Loyalty.Core.Outbox.Entities.Services;
 using Loyalty.Infrastructure.Commands.Repository;
 using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.DataAccess.Context.Scoped;
+using Loyalty.Infrastructure.Events.DataAccess.Context;
+using Loyalty.Infrastructure.Events.DataAccess.Context.Interface;
+using Loyalty.Infrastructure.Outbox;
+using Loyalty.Infrastructure.Outbox.Outbox;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +24,6 @@ namespace Loyalty.Infrastructure.IoC.DI
     {
         public static void SetupDb(this IServiceCollection services, IConfigurationRoot config)
         {
-            services.AddTransient<ILoyaltyDbContext, LoyaltyDbContext>();
-            services.AddTransient<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
             services.AddTransient<ITenantProvider, TenantTokenProvider>();
 
             var connectionString = config[$"{nameof(DbSettings)}:{nameof(DbSettings.ConnectionString)}"];
@@ -29,11 +35,30 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductGroupRepository, ProductGroupRepository>();
             services.AddTransient<IVenueRepository, VenueRepository>();
+            services.AddTransient<IWorkerRepository, WorkerRepository>();
+            services.AddTransient<IVenueAdminRepository, VenueAdminRepository>();
+            services.AddTransient<IIntegrationEventService, LoggingIntegrationEventService>();
+            services.AddTransient<IEventBusService, EventBusPublishingService>();
 
-            services.AddEntityFrameworkSqlServer()
-                .AddDbContextPool<LoyaltyDbContext>(
-                    options => options.UseSqlServer(
-                        connectionString, x => x.EnableRetryOnFailure()));
+            var optionsBuilder = new DbContextOptionsBuilder<LoyaltyDbContext>();
+            optionsBuilder.UseSqlServer(connectionString, m => { m.EnableRetryOnFailure(); });
+            var options = optionsBuilder.Options;
+
+            services.AddScopedContext<ILoyaltyDbContext, LoyaltyDbContext>();
+            services.AddScopedContext<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
+            services.AddScopedContext<IIntegrationEventsContext, IntegrationEventsContext>();
+
+            var optionsBuilder2 = new DbContextOptionsBuilder<IntegrationEventsContext>();
+
+            optionsBuilder.UseSqlServer(connectionString, m => { m.EnableRetryOnFailure(); });
+            var options2 = optionsBuilder2.Options;
+
+            services.AddTransient(x => options);
+            services.AddTransient(x => options2);
+
+            var connection = new SqlConnection(connectionString);
+
+            services.AddScopedReplacement<DbConnection>(connection);
         }
     }
 }

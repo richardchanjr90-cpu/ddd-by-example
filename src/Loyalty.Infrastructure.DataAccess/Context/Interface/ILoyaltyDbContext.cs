@@ -7,11 +7,12 @@ using Loyalty.Core.Entities.Aggregates.Products;
 using Loyalty.Core.Entities.Aggregates.Purchases;
 using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Aggregates.Workers;
+using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.DataAccess.Context.Interface
 {
-    public interface ILoyaltyDbContext : IDbContext
+    public interface ILoyaltyDbContext : IDbContext, IUnitOfWork
     {
         DbSet<LoyaltyProductGroup> LoyaltyProductGroups { get; set; }
 

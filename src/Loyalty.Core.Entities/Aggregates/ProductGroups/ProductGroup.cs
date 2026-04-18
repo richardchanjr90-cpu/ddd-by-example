@@ -5,18 +5,15 @@ using System.Linq;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
-using Loyalty.Core.Entities.Aggregates.Products;
 using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Base;
-using Loyalty.Core.Entities.Events;
 using Loyalty.Core.Entities.Events.ProductGroups;
-using Loyalty.Core.Entities.Events.Products;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Aggregates.ProductGroups
 {
-    public class ProductGroup : AuditableEntity, IAggregateRoot
+    public class ProductGroup : TenantEntity, IAggregateRoot
     {
         public ProductGroup(
             long venueId,

@@ -9,7 +9,7 @@ namespace Loyalty.Infrastructure.DataAccess
 {
     internal static class MediatorExtension
     {
-        public static async Task DispatchDomainEventsAsync(this IMediator mediator, LoyaltyTenantDbContext ctx)
+        public static async Task DispatchDomainEventsAsync(this IMediator mediator, LoyaltyDbContext ctx)
         {
             var domainEntities = ctx.ChangeTracker
                 .Entries<Entity>()
