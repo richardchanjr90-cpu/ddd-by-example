@@ -83,17 +83,17 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             RuleType = z.RuleType,
                             GroupName = z.LgroupName,
                             LoyaltyProductGroupId = z.LgroupId,
-                            Products = programs
-                                .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
-                                //.DefaultIfEmpty(null)
-                                .Select(d => new ProductPurchaseResult
-                                {
-                                    Price = d.Price,
-                                    Icon = (ProductIconType) d?.Icon,
-                                    ImageUrl = d?.ImageUri,
-                                    Name = d?.ProductName,
-                                    Id = d?.ProductId
-                                }).ToList()
+                            //Products = programs
+                            //    .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
+                            //    //.DefaultIfEmpty(null)
+                            //    .Select(d => new ProductPurchaseResult
+                            //    {
+                            //        Price = d.Price,
+                            //        Icon = (ProductIconType) d?.Icon,
+                            //        ImageUrl = d?.ImageUri,
+                            //        Name = d?.ProductName,
+                            //        Id = d?.ProductId
+                            //    }).ToList()
                         }).ToList()
                 })
                 .ToList();

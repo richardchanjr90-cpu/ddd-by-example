@@ -44,7 +44,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                                             [LoyaltyProductGroupId],
                                             [ProductId],
                                             [UserId],                                 
-                                            [InternalPurchaseMadeBySystem],
                                             [Value],
                                             [VenueId]) 
                                                         Values (
@@ -55,7 +54,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                                                         @LoyaltyProductGroupId,
                                                         @ProductId,
                                                         @UserId,
-                                                        @InternalPurchaseMadeBySystem,
                                                         @Value,
                                                         @VenueId)";
 
