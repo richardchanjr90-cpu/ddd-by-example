@@ -13,7 +13,7 @@ namespace LoyaltyProgram.Storage
         public static async Task Run(
             [QueueTrigger("neworder-notification", Connection = "QueueConnectionString")] NewOrderDto data,
             ILogger log,
-            [NotificationHubs] IAsyncCollector<HubsMessage> output)
+            [NotificationHubs(Connection = "DefaultFullSharedAccessSignature", HubsName = "VenueHubsName")] IAsyncCollector<HubsMessage> output)
         {
             log.LogInformation($"{nameof(NewOrderArrivedNotificationFunction)} was triggered.");
 
