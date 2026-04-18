@@ -38,7 +38,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                 OwnerId = dynamicVenue.OwnerId,
                 Description = dynamicVenue.Description,
                 ParentId = dynamicVenue.ParentId,
-                Location = new GetLocationQueryResult()
+                Location = new GetLocationQueryResult
                 {
                     City = dynamicVenue.City,
                     Address = dynamicVenue.Address,
@@ -50,9 +50,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
                 CategoryType = dynamicVenue.CategoryType,
                 LogoUrl = dynamicVenue.LogoUrl,
                 FullDescription = dynamicVenue.FullDescription,
-                Phones = ((string)dynamicVenue.Phones).SplitByCommaAndUnwrap() ?? new List<string>(),
-                WebSites = ((string)dynamicVenue.WebSites).SplitByCommaAndUnwrap() ?? new List<string>(),
-                WorkingHours = JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>((string) dynamicVenue.WorkingHours, new JsonSerializerOptions()),
+                Phones = ((string)dynamicVenue.Phones)?.SplitByCommaAndUnwrap() ?? new List<string>(),
+                WebSites = ((string)dynamicVenue.WebSites)?.SplitByCommaAndUnwrap() ?? new List<string>(),
+                WorkingHours = dynamicVenue.WorkingHours != null ? 
+                    JsonSerializer.Deserialize<List<GetVenueWorkingHoursQueryResult>>((string) dynamicVenue.WorkingHours, new JsonSerializerOptions()) 
+                    : new List<GetVenueWorkingHoursQueryResult>(),
                 Images = ((string)dynamicVenue.Images).SplitByCommaAndUnwrap() ?? new List<string>(),
                 SocialNetworks = dynamicVenue.SocialNetworks != null ?
                     JsonSerializer.Deserialize<GetSocialNetworksResult>(dynamicVenue.SocialNetworks)
