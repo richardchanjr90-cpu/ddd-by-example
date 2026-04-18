@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Loyalty.Core.Entities.Aggregates.Products;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Microsoft.EntityFrameworkCore;
 

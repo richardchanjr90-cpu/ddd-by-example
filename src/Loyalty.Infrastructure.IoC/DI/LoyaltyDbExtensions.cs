@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.Interfaces.Repository;
@@ -37,28 +36,26 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddTransient<IVenueRepository, VenueRepository>();
             services.AddTransient<IWorkerRepository, WorkerRepository>();
             services.AddTransient<IVenueAdminRepository, VenueAdminRepository>();
+            services.AddTransient<ILoyaltyProgramRepository, LoyaltyProgramRepository>();
+            services.AddTransient<IPurchaseRepository, PurchaseRepository>();
+
             services.AddTransient<IIntegrationEventService, LoggingIntegrationEventService>();
             services.AddTransient<IEventBusService, EventBusPublishingService>();
-
-            var optionsBuilder = new DbContextOptionsBuilder<LoyaltyDbContext>();
-            optionsBuilder.UseSqlServer(connectionString, m => { m.EnableRetryOnFailure(); });
-            var options = optionsBuilder.Options;
 
             services.AddScopedContext<ILoyaltyDbContext, LoyaltyDbContext>();
             services.AddScopedContext<ILoyaltyTenantDbContext, LoyaltyTenantDbContext>();
             services.AddScopedContext<IIntegrationEventsContext, IntegrationEventsContext>();
 
-            var optionsBuilder2 = new DbContextOptionsBuilder<IntegrationEventsContext>();
-
+            var optionsBuilder = new DbContextOptionsBuilder<LoyaltyDbContext>();
             optionsBuilder.UseSqlServer(connectionString, m => { m.EnableRetryOnFailure(); });
+            var options = optionsBuilder.Options;
+
+            var optionsBuilder2 = new DbContextOptionsBuilder<IntegrationEventsContext>();
+            optionsBuilder2.UseSqlServer(connectionString, m => { m.EnableRetryOnFailure(); });
             var options2 = optionsBuilder2.Options;
 
             services.AddTransient(x => options);
             services.AddTransient(x => options2);
-
-            var connection = new SqlConnection(connectionString);
-
-            services.AddScopedReplacement<DbConnection>(connection);
         }
     }
 }

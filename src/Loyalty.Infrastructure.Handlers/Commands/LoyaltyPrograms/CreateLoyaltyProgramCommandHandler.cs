@@ -1,14 +1,10 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -41,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
                 Url = request.Url
             };
 
-            Context.LoyaltyPrograms.Add(program);
+            await Context.LoyaltyPrograms.AddAsync(program, cancellationToken);
 
             var result = new CommandResult
             {
