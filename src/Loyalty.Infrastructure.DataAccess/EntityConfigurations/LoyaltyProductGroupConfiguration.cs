@@ -14,11 +14,6 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
             builder.Ignore(b => b.DomainEvents);
 
             builder
-                .HasOne(b => b.Group)
-                .WithMany(x => x.LoyaltyProductGroups)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder
                 .HasIndex(p => new { p.LoyaltyProgramId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
         }
