@@ -40,8 +40,6 @@ namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
             Description = description;
             this.rules = new List<LoyaltyGroupRule>();
             this.rules.AddRange(rules);
-
-            AddDomainEvent(new LoyaltyGroupCreatedDomainEvent(this));
         }
 
         private LoyaltyProductGroup()

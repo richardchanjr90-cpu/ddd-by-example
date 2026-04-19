@@ -1,16 +1,15 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
     public class CreateAndBurnPurchaseCommandHandler
-        : BaseHandler, IRequestHandler<CreateAndBurnCommand, ICommandNotificationResult>
+        : BaseHandler, IRequestHandler<CreateAndBurnCommand, ICommandResult>
     {
         private readonly IMediator mediator;
 
@@ -23,16 +22,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
             this.mediator = mediator;
         }
 
-        public async Task<ICommandNotificationResult> Handle(
+        public async Task<ICommandResult> Handle(
             CreateAndBurnCommand request,
             CancellationToken cancellationToken)
         {
-            var result = new CommandNotificationResult();
-
             var purchaseResult = await mediator.Send(request.Purchase, cancellationToken);
             var burnResult = await mediator.Send(request.Burn, cancellationToken);
 
-            return result;
+            return burnResult;
         }
     }
 }

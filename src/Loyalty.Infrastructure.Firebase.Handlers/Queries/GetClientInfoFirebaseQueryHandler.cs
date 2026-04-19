@@ -47,22 +47,29 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
             var identity = new ClaimsIdentity(claims, "Bearer");
             var claimsPrincipal = new ClaimsPrincipal(identity);
 
-            var userId = claimsPrincipal.GetUserId();
-            var name = claimsPrincipal.GetName();
-            var surname = claimsPrincipal.GetSurname();
-            var phone = claimsPrincipal.GetPhone();
-            var city = claimsPrincipal.GetCity();
-            var avatar = claimsPrincipal.GetAvatarOrNull();
-
-            return new GetClientInfoFirebaseQueryResult()
+            try
             {
-                UserId = userId,
-                Name = name,
-                City = city,
-                Phone = phone,
-                PhotoUrl = avatar,
-                Surname = surname
-            };
+                var userId = claimsPrincipal.GetUserId();
+                var name = claimsPrincipal.GetName();
+                var surname = claimsPrincipal.GetSurname();
+                var phone = claimsPrincipal.GetPhone();
+                var city = claimsPrincipal.GetCity();
+                var avatar = claimsPrincipal.GetAvatarOrNull();
+
+                return new GetClientInfoFirebaseQueryResult()
+                {
+                    UserId = userId,
+                    Name = name,
+                    City = city,
+                    Phone = phone,
+                    PhotoUrl = avatar,
+                    Surname = surname
+                };
+            }
+            catch (Exception e)
+            {
+                throw new LoyaltyValidationException("User registration is not complete.", ErrorCode.USER_DOES_NOT_EXIST);
+            }
         }
 
         public async Task<string> GetAuthTokenAsync(string uid, string key, FirebaseAuth auth)
