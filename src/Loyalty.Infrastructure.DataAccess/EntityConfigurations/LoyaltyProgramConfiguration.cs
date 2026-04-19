@@ -17,6 +17,12 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
             builder
                 .HasIndex(p => new { p.VenueId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
+
+            var navigation = builder.Metadata.FindNavigation(nameof(LoyaltyProgram.LoyaltyProductGroups));
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+            builder.Property(o => o.Id)
+                .UseHiLo("loyaltyprogrameq");
         }
     }
 }

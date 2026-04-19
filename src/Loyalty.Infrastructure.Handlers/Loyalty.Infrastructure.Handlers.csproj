@@ -20,7 +20,7 @@
     <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
     <ProjectReference Include="..\Loyalty.Core.Contracts\Loyalty.Core.Contracts.csproj" />
     <ProjectReference Include="..\Loyalty.Core.Entities\Loyalty.Core.Entities.csproj" />
-    <ProjectReference Include="..\Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj" />
+    <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj" />
   </ItemGroup>

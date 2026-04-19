@@ -1,18 +1,10 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Constants;
-using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.Venue;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues.Admin
 {

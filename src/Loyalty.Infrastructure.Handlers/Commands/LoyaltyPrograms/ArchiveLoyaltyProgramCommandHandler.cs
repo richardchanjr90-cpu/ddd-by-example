@@ -1,85 +1,46 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
-using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
-using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 {
     public class ArchiveLoyaltyProgramCommandHandler
-        : BaseHandler, IRequestHandler<ArchiveLoyaltyProgramCommand, ICommandResult>
+        : IRequestHandler<ArchiveLoyaltyProgramCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly ILoyaltyProgramRepository programRepository;
 
-        public ArchiveLoyaltyProgramCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public ArchiveLoyaltyProgramCommandHandler(ILoyaltyProgramRepository programRepository)
         {
-            this.mediator = mediator;
+            this.programRepository = programRepository;
         }
 
         public async Task<ICommandResult> Handle(
             ArchiveLoyaltyProgramCommand request,
             CancellationToken cancellationToken)
         {
-            var program = await Context.LoyaltyPrograms
-                .Include(x => x.LoyaltyProductGroups)
-                .ThenInclude(x => x.Group)
-                .Where(x => x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var program = await programRepository.GetAsync(request.Id, cancellationToken);
 
-            if (program != null)
+            if (program == null)
             {
-                program.IsArchived = true;
-
-                if (program.LoyaltyProductGroups != null)
-                {
-                    foreach (var group in program.LoyaltyProductGroups)
-                    {
-                        group.IsArchived = true;
-                    }
-                }
+                throw new LoyaltyValidationException("Does not exist.", ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
+
+            program.Archive();
+
+            programRepository.Update(program);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = program?.Id
+                Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
+                Result = program.Id
             };
 
-            if (result.Success && program != null)
-            {
-                await mediator.Publish(
-                    new ArchiveLoyaltyProgramNotification
-                    {
-                        Id = program.Id
-                    },
-                    cancellationToken);
-
-                if (program.LoyaltyProductGroups != null)
-                {
-                    foreach (var lpg in program.LoyaltyProductGroups)
-                    {
-                        await mediator.Publish(
-                            new ArchiveLoyaltyProductGroupNotification
-                            {
-                                Id = lpg.Id
-                            },
-                            cancellationToken);
-                    }
-                }
-            }
-     
             return result;
         }
     }

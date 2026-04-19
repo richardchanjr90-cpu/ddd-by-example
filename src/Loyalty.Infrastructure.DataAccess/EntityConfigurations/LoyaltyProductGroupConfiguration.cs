@@ -16,6 +16,15 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
             builder
                 .HasIndex(p => new { p.LoyaltyProgramId, p.Name }).IsUnique()
                 .HasFilter("[IsArchived] = 0");
+
+            builder.Property(o => o.Id)
+                .UseHiLo("loyaltyproductgroupeq");
+
+            builder.OwnsMany(p => p.Rules, a =>
+            {
+                a.ToTable("LoyaltyGroupRule", SchemaName.Loyalty);
+                a.HasKey(x => x.Id);
+            });
         }
     }
 }

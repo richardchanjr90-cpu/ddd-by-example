@@ -18,7 +18,7 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
 
             builder
                 .HasMany(b => b.LoyaltyPrograms)
-                .WithOne(x => x.OwnerVenue)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.Ignore(b => b.DomainEvents);

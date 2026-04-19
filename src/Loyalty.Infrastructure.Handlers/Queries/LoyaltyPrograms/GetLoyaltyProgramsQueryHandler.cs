@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;

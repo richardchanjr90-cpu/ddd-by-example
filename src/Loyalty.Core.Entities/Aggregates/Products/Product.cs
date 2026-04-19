@@ -26,7 +26,7 @@ namespace Loyalty.Core.Entities.Aggregates.Products
         {
             if (group == null)
             {
-                throw new LoyaltyValidationException("Group does not exist.", ErrorCode.INCORRECT_PRODUCT_GROUP);
+                throw new LoyaltyValidationException("Program does not exist.", ErrorCode.INCORRECT_PRODUCT_GROUP);
             }
 
             ProductGroupId = group.Id;

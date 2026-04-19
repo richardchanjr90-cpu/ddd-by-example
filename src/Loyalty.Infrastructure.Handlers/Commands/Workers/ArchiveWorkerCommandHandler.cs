@@ -1,75 +1,40 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
-using Dapper;
-using Loyalty.Common.Shared.Extensions;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 {
     public class ArchiveWorkerCommandHandler
-        : BaseDapperHandler, IRequestHandler<ArchiveWorkerCommand, ICommandResult>
+        : IRequestHandler<ArchiveWorkerCommand, ICommandResult>
     {
-        private readonly SqlConnection connection;
-        private readonly IMediator mediator;
+        private readonly IWorkerRepository workerRepository;
+        private readonly IHttpContextAccessor accessor;
 
-        public ArchiveWorkerCommandHandler(SqlConnection connection, IHttpContextAccessor accessor, IMediator mediator)
-            : base(connection, accessor)
+        public ArchiveWorkerCommandHandler(IWorkerRepository workerRepository, IHttpContextAccessor accessor)
         {
-            this.connection = connection;
-            this.mediator = mediator;
+            this.workerRepository = workerRepository;
+            this.accessor = accessor;
         }
 
         public async Task<ICommandResult> Handle(ArchiveWorkerCommand request, CancellationToken cancellationToken)
         {
-            var role = Principal.GetRole();
-            var venueId = request.VenueId;
+            var worker = await workerRepository.GetAsync(request.Id, cancellationToken);
 
-            var id = request.Id;
-            var deleteSql = "DELETE FROM loyalty.VenueWorker " +
-                            "WHERE WorkerId = @id AND " +
-                            "VenueId = @venueId AND " +
-                            "[Role] < @role";
+            var role = worker?.RemoveFromVenue(request.VenueId);
+            workerRepository?.Remove(role); 
 
-            ICommandResult result = null;
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            var commandResult = new CommandResult
             {
-                await connection.OpenAsync(cancellationToken);
+                Success = await workerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
+                Result = worker?.Id
+            };
 
-                var number = await connection.ExecuteAsync(deleteSql, new
-                {
-                    id,
-                    venueId,
-                    role
-                });
-
-                if (number > 0)
-                {
-                    scope.Complete();
-
-                    result = new CommandResult
-                    {
-                        Success = true,
-                        Result = id
-                    };
-                }
-                else
-                {
-                    result = new CommandResult
-                    {
-                        Success = false,
-                    };
-                }
-
-                return result;
-            }
+            return commandResult;
         }
     }
 }

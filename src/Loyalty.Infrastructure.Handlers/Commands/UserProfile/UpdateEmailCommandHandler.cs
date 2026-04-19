@@ -32,15 +32,6 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
         {
             var worker = await workerRepository.GetByUidAsync(request.WorkerId, cancellationToken);
 
-            //if (!request.Email.Equals(worker.Email))
-            //{
-            //    var emailUser = await workerRepository.GetByPhoneAsync(request.Email, cancellationToken);
-
-            //    if (emailUser != null)
-            //    {
-            //        throw new LoyaltyValidationException("This email is already taken.", ErrorCode.EMAIL_EXISTS);
-            //    }
-            //}
             worker.SetEmail(request.Email);
 
             workerRepository.Update(worker);

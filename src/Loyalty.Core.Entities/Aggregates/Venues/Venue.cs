@@ -173,6 +173,7 @@ namespace Loyalty.Core.Entities.Aggregates.Venues
         public void Archive()
         {
             IsArchived = true;
+            AddDomainEvent(new VenueArchivedDomainEvent(this));
         }
     }
 }

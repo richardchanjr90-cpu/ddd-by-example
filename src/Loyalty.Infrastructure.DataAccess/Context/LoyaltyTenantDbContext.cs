@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
 using Loyalty.Core.Entities.Aggregates.Orders;
@@ -69,7 +68,7 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             modelBuilder.Entity<LoyaltyProgram>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
             modelBuilder.Entity<ProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Worker>().HasQueryFilter(e => e.VenueRoles.Any(x => TenantIds.Contains(x.VenueId)) && !e.IsArchived);
-            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.Group.VenueId) && !e.IsArchived);
+            modelBuilder.Entity<LoyaltyProductGroup>().HasQueryFilter(e => TenantIds.Contains(e.LoyaltyProgram.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Purchase>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));
             modelBuilder.Entity<Product>().HasQueryFilter(e => TenantIds.Contains(e.VenueId) && !e.IsArchived);
             modelBuilder.Entity<Order>().HasQueryFilter(e => TenantIds.Contains(e.VenueId));

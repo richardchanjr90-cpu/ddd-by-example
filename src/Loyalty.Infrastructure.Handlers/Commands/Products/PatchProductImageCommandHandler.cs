@@ -4,14 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.Products;
 using Loyalty.Domain.Handlers.Queries.Commands.Products;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Products
 {

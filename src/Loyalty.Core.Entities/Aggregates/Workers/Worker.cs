@@ -163,6 +163,19 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
             venueRoles.Add(role);
         }
 
+        public VenueWorker RemoveFromVenue(
+            long venueId)
+        {
+            var venueWorker = VenueRoles.SingleOrDefault(x => x.VenueId == venueId);
+
+            if (venueWorker != null)
+            {
+                venueRoles.Remove(venueWorker);
+            }
+
+            return venueWorker;
+        }
+
         public void UpdateProfile(
             string name, 
             string lastName)

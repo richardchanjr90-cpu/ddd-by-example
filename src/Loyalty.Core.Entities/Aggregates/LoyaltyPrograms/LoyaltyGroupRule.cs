@@ -1,25 +1,46 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Loyalty.Core.Entities.Base;
-using Loyalty.Core.Entities.Base.Interface;
+﻿using System.Collections.Generic;
+using System.Text.Json;
+using Loyalty.Core.Entities.SeedWork;
 using Loyalty.Shared.Contracts.Enums;
 
 namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
 {
-    public class LoyaltyGroupRule : TenantEntity, IArchivableEntity
+    public class LoyaltyGroupRule : ValueObject
     {
-        [ForeignKey(nameof(LoyaltyProductGroup))]
-        public long LoyaltyProductGroupId { get; set; }
+        public LoyaltyGroupRule(
+              LoyaltyRuleType ruleType,
+              object rule,
+              LoyaltyRuleVersion ruleVersion)
+        {
+            RuleType = ruleType;
+            Rule = JsonSerializer.Serialize(rule);
+            RuleVersion = ruleVersion;
+        }
 
-        public LoyaltyProductGroup LoyaltyProductGroup { get; set; }
+        private LoyaltyGroupRule()
+        {
+        }
 
-        public LoyaltyRuleType RuleType { get; set; }
+        public long Id { get; set; }
 
-        public string Rule { get; set; }
+        public long LoyaltyProductGroupId { get; private set; }
 
-        public LoyaltyRuleVersion RuleVersion { get; set; }
+        public LoyaltyProductGroup LoyaltyProductGroup { get; private set; }
 
-        public bool IsArchived { get; set; }
+        public LoyaltyRuleType RuleType { get; private set; }
 
-        public override long TenantId => LoyaltyProductGroup.TenantId;
+        public string Rule { get; private set; }
+
+        public LoyaltyRuleVersion RuleVersion { get; private set; }
+
+        public long TenantId => LoyaltyProductGroup.TenantId;
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return LoyaltyProductGroupId;
+            yield return RuleType;
+            yield return Rule;
+            yield return RuleVersion;
+        }
     }
 }

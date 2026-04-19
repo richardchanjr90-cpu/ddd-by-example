@@ -18,5 +18,7 @@ namespace Loyalty.Core.Entities.Interfaces.Repository
         Task<Worker> AddAsync(Worker worker);
 
         public Worker Update(Worker worker);
+
+        public VenueWorker Remove(VenueWorker role);
     }
 }

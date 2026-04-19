@@ -1,35 +1,64 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Aggregates.Purchases;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
+using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Commands.Repository
 {
     public class PurchaseRepository: IPurchaseRepository
     {
-        public IUnitOfWork UnitOfWork { get; }
+        public IUnitOfWork UnitOfWork => context;
 
-        public Task<Purchase> GetAsync(long id, CancellationToken token = default)
+        private readonly ILoyaltyTenantDbContext context;
+
+        public PurchaseRepository(ILoyaltyTenantDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Task<List<Purchase>> GetByVenueAsync(long id, CancellationToken token = default)
+        public async Task<Purchase> GetAsync(long id, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            var purchase = await context
+                .Purchases
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync(token);
+
+            return purchase;
         }
 
-        public Task<Purchase> AddAsync(Purchase @group)
+        public async Task<Purchase> AddAsync(Purchase purchase)
         {
-            throw new NotImplementedException();
+            var result = purchase;
+
+            if (purchase.IsTransient())
+            {
+                result = (await context.Purchases
+                    .AddAsync(purchase)).Entity;
+            }
+
+            return result;
         }
 
-        public Purchase Update(Purchase @group)
+        public Purchase Update(Purchase purchase)
         {
-            throw new NotImplementedException();
+            return context.Purchases
+                .Update(purchase).Entity;
+        }
+
+        public async Task<List<Purchase>> GetPurchasesForUserAsync(string userId, CancellationToken cancellationToken)
+        {
+            var purchases = await context
+                .Purchases
+                .Where(x => x.UserId == userId)
+                .ToListAsync(cancellationToken);
+
+            return purchases;
         }
     }
 }

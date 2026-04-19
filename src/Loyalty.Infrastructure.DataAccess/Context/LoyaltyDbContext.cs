@@ -33,8 +33,6 @@ namespace Loyalty.Infrastructure.DataAccess.Context
 
         public DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
-        public DbSet<LoyaltyGroupRule> LoyaltyRules { get; set; }
-
         public DbSet<Purchase> Purchases { get; set; }
 
         public DbSet<ProductGroup> ProductGroups { get; set; }
@@ -65,7 +63,7 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             }
         }
 
-        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
         {
             await mediator.DispatchDomainEventsAsync(this);
             var result = await SaveChangesAsync(cancellationToken);
@@ -73,7 +71,7 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             return true;
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             try
             {
@@ -96,7 +94,6 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             modelBuilder.ApplyConfiguration(new OrderItemConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new ProductGroupConfiguration());
-            modelBuilder.ApplyConfiguration(new LoyaltyGroupRuleConfiguration());
             modelBuilder.ApplyConfiguration(new LoyaltyProductGroupConfiguration());
             modelBuilder.ApplyConfiguration(new LoyaltyProgramConfiguration());
             modelBuilder.ApplyConfiguration(new PurchaseConfiguration());

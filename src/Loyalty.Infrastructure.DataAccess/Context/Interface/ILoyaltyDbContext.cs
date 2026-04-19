@@ -18,8 +18,6 @@ namespace Loyalty.Infrastructure.DataAccess.Context.Interface
 
         DbSet<LoyaltyProgram> LoyaltyPrograms { get; set; }
 
-        DbSet<LoyaltyGroupRule> LoyaltyRules { get; set; }
-
         DbSet<Product> Products { get; set; }
 
         DbSet<ProductGroup> ProductGroups { get; set; }

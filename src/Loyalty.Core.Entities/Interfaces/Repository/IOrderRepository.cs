@@ -7,10 +7,8 @@ namespace Loyalty.Core.Entities.Interfaces.Repository
 {
     public interface IOrderRepository : IRepository<Order>
     {
-        Task<Order> AddAsync(Order user);
-
         Order Update(Order rate);
 
-        Task<Order> GetAsync(long orderId, string userId, CancellationToken token = default);
+        Task<Order> GetAsync(long orderId, CancellationToken token = default);
     }
 }

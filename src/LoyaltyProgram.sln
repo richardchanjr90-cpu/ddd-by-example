@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Application.ViewMod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Contracts", "Loyalty.Domain.Contracts\Loyalty.Domain.Contracts.csproj", "{479408DA-5CD9-478E-A232-E8B6FB0D1D3A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Contracts", "Loyalty.Domain.Handlers.Contracts\Loyalty.Domain.Handlers.Contracts.csproj", "{44A568CC-947F-4918-87E4-CE62CD5D1978}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Handlers", "Loyalty.Infrastructure.Handlers\Loyalty.Infrastructure.Handlers.csproj", "{047E2236-C49A-4160-A039-647DE14D6673}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Application.Venue", "Loyalty.Application.Venue\Loyalty.Application.Venue.csproj", "{E812C9E2-C220-475A-A34E-FFA12177C9FB}"
@@ -61,13 +59,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Application.DomainE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Commands.Repository", "Loyalty.Infrastructure.Commands.Repository\Loyalty.Infrastructure.Commands.Repository.csproj", "{6F7DCF9D-A464-44BD-9DD1-4D941B5EB699}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Infrastructure.Outbox", "Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj", "{07913EEC-587B-4D3C-8302-E917EA746B74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Outbox", "Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj", "{07913EEC-587B-4D3C-8302-E917EA746B74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Infrastructure.Events.DataAccess", "Loyalty.Infrastructure.Events.DataAccess\Loyalty.Infrastructure.Events.DataAccess.csproj", "{663173CA-8481-4E3E-9A32-0AFAE94FF413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Events.DataAccess", "Loyalty.Infrastructure.Events.DataAccess\Loyalty.Infrastructure.Events.DataAccess.csproj", "{663173CA-8481-4E3E-9A32-0AFAE94FF413}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Core.Outbox.Entities", "Loyalty.Core.Outbox.Entities\Loyalty.Core.Outbox.Entities.csproj", "{B2DF84C6-4234-4ED4-878A-8A003CB87B80}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Core.Outbox.Entities", "Loyalty.Core.Outbox.Entities\Loyalty.Core.Outbox.Entities.csproj", "{B2DF84C6-4234-4ED4-878A-8A003CB87B80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Domain.Handlers.Notifications", "Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj", "{B3E55438-0F44-482D-ACE2-F526620B9197}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Notifications", "Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj", "{B3E55438-0F44-482D-ACE2-F526620B9197}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,14 +123,6 @@ Global
 		{479408DA-5CD9-478E-A232-E8B6FB0D1D3A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{479408DA-5CD9-478E-A232-E8B6FB0D1D3A}.Release|x64.ActiveCfg = Release|Any CPU
 		{479408DA-5CD9-478E-A232-E8B6FB0D1D3A}.Release|x64.Build.0 = Release|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Debug|x64.Build.0 = Debug|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Release|x64.ActiveCfg = Release|Any CPU
-		{44A568CC-947F-4918-87E4-CE62CD5D1978}.Release|x64.Build.0 = Release|Any CPU
 		{047E2236-C49A-4160-A039-647DE14D6673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{047E2236-C49A-4160-A039-647DE14D6673}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{047E2236-C49A-4160-A039-647DE14D6673}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -273,7 +263,6 @@ Global
 		{F31ACEDD-E3E9-4A85-878A-9A9E2849D0CF} = {E6BC2A63-49C1-4102-8F88-9E674AA22DE6}
 		{3D6E16AE-67C3-44F3-8E3C-7155BD5A18DE} = {51418814-5480-43C8-AD08-E748119E2545}
 		{479408DA-5CD9-478E-A232-E8B6FB0D1D3A} = {2F0A21D6-7418-4ABB-BB67-33AE887342FF}
-		{44A568CC-947F-4918-87E4-CE62CD5D1978} = {0C247FF1-9D9F-4141-A3D7-5E179ABDE186}
 		{047E2236-C49A-4160-A039-647DE14D6673} = {35349DA7-5230-4D08-9994-E72E62557D0E}
 		{E812C9E2-C220-475A-A34E-FFA12177C9FB} = {51418814-5480-43C8-AD08-E748119E2545}
 		{BBA155DE-9CF5-4813-BD56-FBA5F5099F46} = {0C247FF1-9D9F-4141-A3D7-5E179ABDE186}

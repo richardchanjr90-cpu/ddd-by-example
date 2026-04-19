@@ -6,7 +6,6 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
 {

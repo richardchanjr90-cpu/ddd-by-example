@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Rate;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
@@ -13,42 +14,28 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Orders
 {
     public class PatchRateOrderCommandHandler
-        : BaseHandler, IRequestHandler<PatchRateOrderCommand, ICommandResult>
+        : IRequestHandler<PatchRateOrderCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IOrderRepository orderRepository;
 
-        public PatchRateOrderCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public PatchRateOrderCommandHandler(IOrderRepository orderRepository)
         {
-            this.mediator = mediator;
+            this.orderRepository = orderRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchRateOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = await Context.Orders
-                .Where(x => x.Id == request.OrderId)
-                .SingleOrDefaultAsync(cancellationToken);
+            var order = await orderRepository.GetAsync(request.OrderId, cancellationToken);
 
             order?.GiveRateToUser(request.Rate, request.Comment);
 
+            orderRepository.Update(order);
+
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = order?.Id
             };
-
-            //todo: move to domain events.
-            if (order != null && result.Success)
-            {
-                await mediator.Publish(
-                    new UpsertUserRateNotification
-                    {
-                        VenueId = order.VenueId,
-                        OrderId = order.Id,
-                        Rate = (int)request.Rate,
-                        UserId = order.CreatedBy
-                    }, cancellationToken);
-            }
 
             return result;
         }

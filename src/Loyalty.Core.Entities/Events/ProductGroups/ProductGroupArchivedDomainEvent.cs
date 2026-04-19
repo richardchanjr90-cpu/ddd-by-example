@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Loyalty.Core.Entities.Events.ProductGroups
 {
-    public class ProductGroupArchivedDomainEvent: INotification
+    public class ProductGroupArchivedDomainEvent : INotification
     {
         public ProductGroup Group { get; private set; }
 

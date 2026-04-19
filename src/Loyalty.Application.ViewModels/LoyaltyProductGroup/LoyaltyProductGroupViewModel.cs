@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using Loyalty.Application.ViewModels.ProductGroup;
 using Loyalty.Application.ViewModels.Rule;
 
 namespace Loyalty.Application.ViewModels.LoyaltyProductGroup

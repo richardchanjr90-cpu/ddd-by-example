@@ -1,96 +1,51 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
-using Dapper;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Common.Shared.Extensions;
-using Loyalty.Core.Entities;
-using Loyalty.Domain.Handlers.Notifications.Purchases;
+using Loyalty.Core.Entities.Aggregates.Purchases;
+using Loyalty.Core.Entities.Interfaces.Repository;
+using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
-using Loyalty.Infrastructure.DataAccess;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using MediatR.Extensions.UnitOfWork.Results;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
 {
-    public class BurnPurchaseCommandHandler : BaseDapperHandler, IRequestHandler<BurnPurchaseCommand, INotificationResult>
+    public class BurnPurchaseCommandHandler : IRequestHandler<BurnPurchaseCommand, ICommandResult>
     {
-        private readonly SqlConnection connection;
+        private readonly IPurchaseRepository purchaseRepository;
 
-        public BurnPurchaseCommandHandler(SqlConnection connection, IHttpContextAccessor accessor)
-            : base(connection, accessor)
+        public BurnPurchaseCommandHandler(IPurchaseRepository purchaseRepository)
         {
-            this.connection = connection;
+            this.purchaseRepository = purchaseRepository;
         }
 
-        private const string SelectProductsSql = @"SELECT SUM([Value]) FROM loyalty.Purchase
-                                                           WHERE LoyaltyProductGroupId = @lpgId AND UserId = @userId";
-
-        private const string InsertSQL = @"INSERT INTO [loyalty].[Purchase]
-                                           ([CreatedBy],
-                                            [ModifiedBy],
-                                            [Modified],
-                                            [Created],
-                                            [LoyaltyProductGroupId],
-                                            [UserId],                                 
-                                            [Value],
-                                            [VenueId]) 
-                                                        Values (
-                                                        @CreatedBy,
-                                                        @ModifiedBy,
-                                                        @Modified,
-                                                        @Created,
-                                                        @LoyaltyProductGroupId,
-                                                        @UserId,
-                                                        @Value,
-                                                        @VenueId)";
-
-        public async Task<INotificationResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(BurnPurchaseCommand request, CancellationToken cancellationToken)
         {
-            await connection.OpenAsync(cancellationToken);
-            var amount = connection.ExecuteScalar<int>(SelectProductsSql, new
-            {
-                lpgId = request.LoyaltyProductGroupId,
-                userId = request.UserId
-            });
+            var amount = (await purchaseRepository.GetPurchasesForUserAsync(request.UserId, cancellationToken))
+                .Sum(x => x.Value);
 
             if (amount < request.Amount)
             {
                 throw new LoyaltyValidationException("Amount of points is lower than requested", ErrorCode.INCORRECT_AMOUNT_OF_POINTS);
             }
 
-            var date = DateTime.Now.ToUniversalTime();
-            var affectedRows = await connection.ExecuteAsync(InsertSQL, new
-            {
-                CreatedBy = Principal.GetUserId(),
-                ModifiedBy = Principal.GetUserId(),
-                Modified = date,
-                Created = date,
-                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                UserId = request.UserId,
-                Value = -request.Amount,
-                VenueId = request.VenueId,
-            });
+            var purchase = Purchase.Burn(
+                request.WorkerId,
+                request.LoyaltyProductGroupId, 
+                request.VenueId, 
+                null, 
+                request.UserId, 
+                request.Amount);
 
-            var result = new NotificationResult() { Success = affectedRows > 0 };
+            await purchaseRepository.AddAsync(purchase);
 
-            var notification = new BurnPurchaseNotification
+            var result = new CommandResult
             {
-                VenueId = request.VenueId,
-                UserId = request.UserId,
-                LoyaltyProductGroupId = request.LoyaltyProductGroupId,
-                Total = request.Amount,
-                When = date,
-                WorkerId = request.WorkerId
+                Success = await purchaseRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
+                Result = purchase.Id
             };
-
-            result.OnSucceededNotifications.Add(notification);
 
             return result;
         }

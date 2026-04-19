@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Notifications.Orders;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
@@ -16,40 +15,27 @@ using Microsoft.EntityFrameworkCore;
 namespace Loyalty.Infrastructure.Handlers.Commands.Orders
 {
     public class PatchOrderCommandHandler
-        : BaseHandler, IRequestHandler<PatchOrderCommand, ICommandResult>
+        : IRequestHandler<PatchOrderCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly IOrderRepository orderRepository;
 
-        public PatchOrderCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public PatchOrderCommandHandler(IOrderRepository orderRepository)
         {
-            this.mediator = mediator;
+            this.orderRepository = orderRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchOrderCommand request, CancellationToken cancellationToken)
         {
-            var order = await Context.Orders
-                .Where(x => x.Id == request.OrderId)
-                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            var order = await orderRepository.GetAsync(request.OrderId, cancellationToken);
 
             order?.UpdateStatus(request.Status, request.VenueComment);
+            orderRepository.Update(order);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await orderRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = order?.Id
             };
-
-            if (order != null && result.Success)
-            {
-                await mediator.Publish(
-                    new UpdateOrderNotification
-                    {
-                        Id = order.Id,
-                        Status = (OrderStatus)order.Status.Id,
-                        VenueId = order.VenueId
-                    }, cancellationToken);
-            }
 
             return result;
         }

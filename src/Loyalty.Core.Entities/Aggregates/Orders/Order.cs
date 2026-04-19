@@ -8,6 +8,7 @@ using Loyalty.Core.Entities.Aggregates.Orders.Status;
 using Loyalty.Core.Entities.Aggregates.Orders.Status.Abstract;
 using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Base;
+using Loyalty.Core.Entities.Events.Orders;
 using Loyalty.Core.Entities.Schema;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
@@ -64,6 +65,8 @@ namespace Loyalty.Core.Entities.Aggregates.Orders
             
             VenueComment = venueComment;
             Rate = rate;
+
+            AddDomainEvent(new OrderUserRateGivenDomainEvent(this, venueComment, rate));
         }
 
         public void UpdateStatus(OrderStatus status, string comment)
@@ -76,6 +79,8 @@ namespace Loyalty.Core.Entities.Aggregates.Orders
             {
                 throw new LoyaltyValidationException("Comment required if declined by Venue", ErrorCode.ORDER_INVALID_STATE);
             }
+
+            AddDomainEvent(new OrderStatusChangedDomainEvent(this));
         }
 
         internal void UpdateStatus(OrderStatusEnumeration newStatus)

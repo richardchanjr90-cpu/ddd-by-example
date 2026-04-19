@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
-using Loyalty.Core.Entities.Aggregates.Purchases;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
+using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Commands.Repository
 {
@@ -16,24 +17,58 @@ namespace Loyalty.Infrastructure.Commands.Repository
 
         private readonly ILoyaltyTenantDbContext context;
 
-        public Task<LoyaltyProgram> GetAsync(long id, CancellationToken token = default)
+        public LoyaltyProgramRepository(ILoyaltyTenantDbContext context)
         {
-            throw new NotImplementedException();
+            this.context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public Task<List<LoyaltyProgram>> GetByVenueAsync(long id, CancellationToken token = default)
+        public async Task<LoyaltyProgram> GetAsync(long id, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            var program = await context
+                .LoyaltyPrograms
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync(token);
+
+            return program;
         }
 
-        public Task<LoyaltyProgram> AddAsync(LoyaltyProgram @group)
+        public async Task<List<LoyaltyProgram>> GetByVenueAsync(long id, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            var programs = await context
+                .LoyaltyPrograms
+                .Where(x => x.VenueId == id)
+                .ToListAsync(token);
+
+            return programs;
         }
 
-        public LoyaltyProgram Update(Purchase @group)
+        public async Task<LoyaltyProgram> GetByGroupId(long id, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            var purchase = await context
+                .LoyaltyPrograms
+                .Where(x => x.Id == id)
+                .SingleOrDefaultAsync(token);
+
+            return purchase;
+        }
+
+        public async Task<LoyaltyProgram> AddAsync(LoyaltyProgram program)
+        {
+            var result = program;
+
+            if (program.IsTransient())
+            {
+                result = (await context.LoyaltyPrograms
+                    .AddAsync(program)).Entity;
+            }
+
+            return result;
+        }
+
+        public LoyaltyProgram Update(LoyaltyProgram program)
+        {
+            return context.LoyaltyPrograms
+                .Update(program).Entity;
         }
     }
 }

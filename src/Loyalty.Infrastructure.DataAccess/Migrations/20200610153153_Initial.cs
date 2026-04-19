@@ -11,11 +11,23 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 name: "loyalty");
 
             migrationBuilder.CreateSequence(
+                name: "loyaltyproductgroupeq",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "loyaltyprogrameq",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
                 name: "producteq",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
                 name: "productgroupeq",
+                incrementBy: 10);
+
+            migrationBuilder.CreateSequence(
+                name: "purchaseeq",
                 incrementBy: 10);
 
             migrationBuilder.CreateSequence(
@@ -47,6 +59,27 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Purchase",
+                schema: "loyalty",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LoyaltyProductGroupId = table.Column<long>(nullable: false),
+                    VenueId = table.Column<long>(nullable: false),
+                    ProductId = table.Column<long>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
+                    Value = table.Column<decimal>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Purchase", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -129,8 +162,7 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<long>(nullable: false),
                     CreatedBy = table.Column<string>(nullable: true),
                     ModifiedBy = table.Column<string>(nullable: true),
                     Modified = table.Column<DateTime>(nullable: false),
@@ -230,10 +262,38 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_VenueWorker", x => new { x.VenueId, x.WorkerId });
                     table.ForeignKey(
-                        name: "FK_VenueWorker_Worker_VenueId",
-                        column: x => x.VenueId,
+                        name: "FK_VenueWorker_Worker_WorkerId",
+                        column: x => x.WorkerId,
                         principalSchema: "loyalty",
                         principalTable: "Worker",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoyaltyProductGroup",
+                schema: "loyalty",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false),
+                    CreatedBy = table.Column<string>(nullable: true),
+                    ModifiedBy = table.Column<string>(nullable: true),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    LoyaltyProgramId = table.Column<long>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    ProductGroupId = table.Column<long>(nullable: false),
+                    Description = table.Column<string>(maxLength: 2000, nullable: true),
+                    IsArchived = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoyaltyProductGroup", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoyaltyProductGroup_LoyaltyProgram_LoyaltyProgramId",
+                        column: x => x.LoyaltyProgramId,
+                        principalSchema: "loyalty",
+                        principalTable: "LoyaltyProgram",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,57 +328,16 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LoyaltyProductGroup",
-                schema: "loyalty",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LoyaltyProgramId = table.Column<long>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    ProductGroupId = table.Column<long>(nullable: false),
-                    Description = table.Column<string>(maxLength: 2000, nullable: true),
-                    IsArchived = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoyaltyProductGroup", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LoyaltyProductGroup_LoyaltyProgram_LoyaltyProgramId",
-                        column: x => x.LoyaltyProgramId,
-                        principalSchema: "loyalty",
-                        principalTable: "LoyaltyProgram",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LoyaltyProductGroup_ProductGroup_ProductGroupId",
-                        column: x => x.ProductGroupId,
-                        principalSchema: "loyalty",
-                        principalTable: "ProductGroup",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LoyaltyGroupRule",
-                schema: "loyalty",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
                     LoyaltyProductGroupId = table.Column<long>(nullable: false),
+                    LoyaltyProductGroupId1 = table.Column<long>(nullable: true),
                     RuleType = table.Column<int>(nullable: false),
                     Rule = table.Column<string>(nullable: true),
-                    RuleVersion = table.Column<int>(nullable: false),
-                    IsArchived = table.Column<bool>(nullable: false)
+                    RuleVersion = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -330,48 +349,24 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         principalTable: "LoyaltyProductGroup",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Purchase",
-                schema: "loyalty",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedBy = table.Column<string>(nullable: true),
-                    ModifiedBy = table.Column<string>(nullable: true),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    LoyaltyProductGroupId = table.Column<long>(nullable: false),
-                    VenueId = table.Column<long>(nullable: false),
-                    ProductId = table.Column<long>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
-                    Value = table.Column<decimal>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Purchase", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Purchase_LoyaltyProductGroup_LoyaltyProductGroupId",
-                        column: x => x.LoyaltyProductGroupId,
+                        name: "FK_LoyaltyGroupRule_LoyaltyProductGroup_LoyaltyProductGroupId1",
+                        column: x => x.LoyaltyProductGroupId1,
                         principalSchema: "loyalty",
                         principalTable: "LoyaltyProductGroup",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_LoyaltyGroupRule_LoyaltyProductGroupId",
-                schema: "loyalty",
                 table: "LoyaltyGroupRule",
                 column: "LoyaltyProductGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoyaltyProductGroup_ProductGroupId",
-                schema: "loyalty",
-                table: "LoyaltyProductGroup",
-                column: "ProductGroupId");
+                name: "IX_LoyaltyGroupRule_LoyaltyProductGroupId1",
+                table: "LoyaltyGroupRule",
+                column: "LoyaltyProductGroupId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_LoyaltyProductGroup_LoyaltyProgramId_Name",
@@ -424,17 +419,17 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 filter: "[IsArchived] = 0");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Purchase_LoyaltyProductGroupId",
-                schema: "loyalty",
-                table: "Purchase",
-                column: "LoyaltyProductGroupId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserCode_CodeValue",
                 schema: "loyalty",
                 table: "UserCode",
                 column: "CodeValue",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VenueWorker_WorkerId",
+                schema: "loyalty",
+                table: "VenueWorker",
+                column: "WorkerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VenueWorker_VenueId_WorkerId",
@@ -471,11 +466,14 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LoyaltyGroupRule",
-                schema: "loyalty");
+                name: "LoyaltyGroupRule");
 
             migrationBuilder.DropTable(
                 name: "OrderItem",
+                schema: "loyalty");
+
+            migrationBuilder.DropTable(
+                name: "ProductGroup",
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
@@ -491,15 +489,15 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
+                name: "LoyaltyProductGroup",
+                schema: "loyalty");
+
+            migrationBuilder.DropTable(
                 name: "Order",
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
                 name: "Product",
-                schema: "loyalty");
-
-            migrationBuilder.DropTable(
-                name: "LoyaltyProductGroup",
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
@@ -511,18 +509,23 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                 schema: "loyalty");
 
             migrationBuilder.DropTable(
-                name: "ProductGroup",
-                schema: "loyalty");
-
-            migrationBuilder.DropTable(
                 name: "Venue",
                 schema: "loyalty");
+
+            migrationBuilder.DropSequence(
+                name: "loyaltyproductgroupeq");
+
+            migrationBuilder.DropSequence(
+                name: "loyaltyprogrameq");
 
             migrationBuilder.DropSequence(
                 name: "producteq");
 
             migrationBuilder.DropSequence(
                 name: "productgroupeq");
+
+            migrationBuilder.DropSequence(
+                name: "purchaseeq");
 
             migrationBuilder.DropSequence(
                 name: "venueeq");

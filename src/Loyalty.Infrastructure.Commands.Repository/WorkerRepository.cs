@@ -85,5 +85,11 @@ namespace Loyalty.Infrastructure.Commands.Repository
             return context.Workers
                 .Update(worker).Entity;
         }
+
+        public VenueWorker Remove(VenueWorker role)
+        {
+            return context.VenueWorkers
+                .Remove(role).Entity;
+        }
     }
 }

@@ -1,107 +1,61 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
-using Loyalty.Core.Entities;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyProductGroups;
-using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
 {
     public class CreateLoyaltyProductGroupCommandHandler
-        : BaseHandler, ICreateLoyaltyProductGroupCommandHandler
+        : IRequestHandler<CreateLoyaltyProductGroupCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly ILoyaltyProgramRepository programRepository;
+        private readonly IProductGroupRepository groupRepository;
 
-        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyProgramRepository programRepository, IProductGroupRepository groupRepository)
         {
-            this.mediator = mediator;
+            this.programRepository = programRepository;
+            this.groupRepository = groupRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateLoyaltyProductGroupCommand request, CancellationToken cancellationToken)
         {
-            var productGroup = await Context.ProductGroups
-                .Where(x => x.Id == request.ProductGroupId)
-                .SingleOrDefaultAsync(cancellationToken);
+            var program = await programRepository.GetAsync(request.LoyaltyProgramId, cancellationToken);
+            var productGroup = await groupRepository.GetAsync(request.ProductGroupId, cancellationToken);
 
-            var loyaltyProgram = await Context.LoyaltyPrograms
-                .Where(x => x.Id == request.LoyaltyProgramId)
-                .SingleOrDefaultAsync(cancellationToken);
-
-            if (productGroup == null)
+            if (program == null)
             {
-                throw new LoyaltyValidationException("No product group with provided id was found.", ErrorCode.INCORRECT_PRODUCT_GROUP);
+                throw new LoyaltyValidationException("Does not exist.", ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
 
-            if (loyaltyProgram.VenueId != productGroup.VenueId)
-            {
-                throw new LoyaltyValidationException("Product Group and Program belong to different venues.", ErrorCode.INCORRECT_PRODUCT_GROUP);
-            }
-
-            var group = new LoyaltyProductGroup
-            {
-                LoyaltyProgramId = request.LoyaltyProgramId,
-                Description = request.Description,
-                Name = request.Name,
-                Group = productGroup,
-                ProductGroupId = request.ProductGroupId
-            };
-
-            if (request.Rule == null)
-            {
-                throw new ArgumentNullException(nameof(request.Rule));
-            }
-
-            group.Rules = new List<LoyaltyGroupRule>();
+            var group = new LoyaltyProductGroup(
+                request.Name,
+                productGroup,
+                request.Description,
+                program.VenueId,
+                null);
 
             foreach (var commandRule in request.Rule.Rules)
             {
-                var rule = new LoyaltyGroupRule
-                {
-                    Rule = JsonSerializer.Serialize(commandRule.Rule),
-                    RuleVersion = commandRule.RuleVersion,
-                    RuleType = commandRule.RuleType
-                };
-
-                group.Rules.Add(rule);
+                var rule = new LoyaltyGroupRule(commandRule.RuleType, commandRule.Rule, commandRule.RuleVersion);
+                group.AddRule(rule);
             }
 
-            Context.LoyaltyProductGroups.Add(group);
+            program.AddLoyaltyGroup(group);
+            programRepository.Update(program);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
-                Result = group.Id
+                Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
+                Result = program.Id
             };
 
-            if (result.Success)
-            {
-                await mediator.Publish(
-                    new CreateLoyaltyProductGroupNotification
-                    {
-                        Id = group.Id,
-                        LoyaltyProgramId = group.LoyaltyProgramId,
-                        GroupName = group.Name,
-                        Rule = JsonSerializer.Serialize(request.Rule.Rules)
-                    },
-                    cancellationToken);
-            }
             return result;
         }
     }

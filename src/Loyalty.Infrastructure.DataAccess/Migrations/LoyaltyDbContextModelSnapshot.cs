@@ -17,59 +17,22 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("Relational:Sequence:.loyaltyproductgroupeq", "'loyaltyproductgroupeq', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("Relational:Sequence:.loyaltyprogrameq", "'loyaltyprogrameq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.producteq", "'producteq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.productgroupeq", "'productgroupeq', '', '1', '10', '', '', 'Int64', 'False'")
+                .HasAnnotation("Relational:Sequence:.purchaseeq", "'purchaseeq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.venueeq", "'venueeq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("Relational:Sequence:.workereq", "'workereq', '', '1', '10', '', '', 'Int64', 'False'")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyGroupRule", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("LoyaltyProductGroupId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("Modified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Rule")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RuleType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RuleVersion")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LoyaltyProductGroupId");
-
-                    b.ToTable("LoyaltyGroupRule","loyalty");
-                });
 
             modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyProductGroup", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "loyaltyproductgroupeq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -101,8 +64,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductGroupId");
-
                     b.HasIndex("LoyaltyProgramId", "Name")
                         .IsUnique()
                         .HasFilter("[IsArchived] = 0");
@@ -115,7 +76,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "loyaltyprogrameq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -342,7 +304,8 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasAnnotation("SqlServer:HiLoSequenceName", "purchaseeq")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.SequenceHiLo);
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -372,8 +335,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LoyaltyProductGroupId");
 
                     b.ToTable("Purchase","loyalty");
                 });
@@ -539,15 +500,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.ToTable("UserCode","loyalty");
                 });
 
-            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyGroupRule", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyProductGroup", "LoyaltyProductGroup")
-                        .WithMany("Rules")
-                        .HasForeignKey("LoyaltyProductGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyProductGroup", b =>
                 {
                     b.HasOne("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyProgram", "LoyaltyProgram")
@@ -556,16 +508,39 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Loyalty.Core.Entities.Aggregates.ProductGroups.ProductGroup", "Group")
-                        .WithMany("LoyaltyProductGroups")
-                        .HasForeignKey("ProductGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsMany("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyGroupRule", "Rules", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint")
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<long>("LoyaltyProductGroupId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Rule")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("RuleType")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("RuleVersion")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("LoyaltyProductGroupId");
+
+                            b1.ToTable("LoyaltyGroupRule","loyalty");
+
+                            b1.WithOwner("LoyaltyProductGroup")
+                                .HasForeignKey("LoyaltyProductGroupId");
+                        });
                 });
 
             modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyProgram", b =>
                 {
-                    b.HasOne("Loyalty.Core.Entities.Aggregates.Venues.Venue", "OwnerVenue")
+                    b.HasOne("Loyalty.Core.Entities.Aggregates.Venues.Venue", null)
                         .WithMany("LoyaltyPrograms")
                         .HasForeignKey("VenueId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -601,15 +576,6 @@ namespace Loyalty.Infrastructure.DataAccess.Migrations
                     b.HasOne("Loyalty.Core.Entities.Aggregates.Venues.Venue", null)
                         .WithMany()
                         .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Loyalty.Core.Entities.Aggregates.Purchases.Purchase", b =>
-                {
-                    b.HasOne("Loyalty.Core.Entities.Aggregates.LoyaltyPrograms.LoyaltyProductGroup", null)
-                        .WithMany("Purchases")
-                        .HasForeignKey("LoyaltyProductGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

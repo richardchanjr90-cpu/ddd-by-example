@@ -14,6 +14,9 @@ namespace Loyalty.Infrastructure.DataAccess.EntityConfigurations
             builder.HasKey(o => o.Id);
 
             builder.Ignore(b => b.DomainEvents);
+
+            builder.Property(o => o.Id)
+                .UseHiLo("purchaseeq");
         }
     }
 }

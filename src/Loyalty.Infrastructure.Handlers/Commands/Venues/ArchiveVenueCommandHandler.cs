@@ -1,87 +1,38 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.LoyaltyProductGroups;
-using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.Venues
 {
-    public class ArchiveVenueCommandHandler : BaseHandler, IRequestHandler<ArchiveVenueCommand, ICommandResult>
-    {       
-        private readonly IMediator mediator;
+    public class ArchiveVenueCommandHandler :
+        IRequestHandler<ArchiveVenueCommand, ICommandResult>
+    {
+        private readonly IVenueRepository venueRepository;
 
-        public ArchiveVenueCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public ArchiveVenueCommandHandler(IVenueRepository venueRepository)
         {
-            this.mediator = mediator;
+            this.venueRepository = venueRepository;
         }
 
         public async Task<ICommandResult> Handle(ArchiveVenueCommand request, CancellationToken cancellationToken)
         {
-            var venue = await Context.Venues
-                .Include(x => x.LoyaltyPrograms)
-                .ThenInclude(x => x.LoyaltyProductGroups)
-                .Include(x => x.ProductGroups)
-                .Where(x => x.OwnerId == request.OwnerId && x.Id == request.Id)
-                .SingleOrDefaultAsync(cancellationToken);
+            var venue = await venueRepository.GetAsync(request.Id, cancellationToken);
 
             if (venue != null)
             {
-                //venue.IsArchived = true;
-                foreach (var program in venue.LoyaltyPrograms)
-                {
-                    program.IsArchived = true;
-
-                    foreach (var lpg in program.LoyaltyProductGroups)
-                    {
-                        lpg.IsArchived = true;
-                    }
-                }
-
-                foreach (var group in venue.ProductGroups)
-                {
-                    group.Archive();
-                }
+                venue.Archive();
+                venueRepository.Update(venue);
             }
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = venue?.Id
             };
-
-            if (result.Success && venue != null)
-            {
-                //await mediator.Publish(venue.ToArchiveNotification(), cancellationToken);
-                foreach (var program in venue.LoyaltyPrograms)
-                {
-                    await mediator.Publish(
-                        new ArchiveLoyaltyProgramNotification
-                        {
-                            Id = program.Id
-                        },
-                        cancellationToken);
-
-                    foreach (var lpg in program.LoyaltyProductGroups)
-                    {
-                        await mediator.Publish(
-                            new ArchiveLoyaltyProductGroupNotification
-                            {
-                                Id = lpg.Id
-                            },
-                            cancellationToken);
-                    }
-                }
-            }
 
             return result;
         }

@@ -19,7 +19,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
         {
         }
 
-        public async Task<GetLoyaltyProgramByIdQueryResult> Handle(GetLoyaltyProgramByIdQuery request,
+        public async Task<GetLoyaltyProgramByIdQueryResult> Handle(
+            GetLoyaltyProgramByIdQuery request,
             CancellationToken cancellationToken)
         {
             var item = await (from lp in Context.LoyaltyPrograms

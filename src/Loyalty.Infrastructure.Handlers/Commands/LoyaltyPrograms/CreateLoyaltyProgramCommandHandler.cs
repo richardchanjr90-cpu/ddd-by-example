@@ -1,66 +1,44 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
+using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Commands.LoyaltyPrograms;
-using Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
-using Microsoft.AspNetCore.Http;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyPrograms
 {
     public class CreateLoyaltyProgramCommandHandler
-        : BaseHandler, ICreateLoyaltyProgramCommandHandler
+        : IRequestHandler<CreateLoyaltyProgramCommand, ICommandResult>
     {
-        private readonly IMediator mediator;
+        private readonly ILoyaltyProgramRepository programRepository;
 
-        public CreateLoyaltyProgramCommandHandler(ILoyaltyTenantDbContext context, IMediator mediator, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        public CreateLoyaltyProgramCommandHandler(ILoyaltyProgramRepository programRepository)
         {
-            this.mediator = mediator;
+            this.programRepository = programRepository;
         }
 
         public async Task<ICommandResult> Handle(
             CreateLoyaltyProgramCommand request,
             CancellationToken cancellationToken)
         {
-            var program = new LoyaltyProgram
-            {
-                VenueId = request.VenueId,
-                Name = request.Name,
-                StartDate = request.StartedDate.ToUniversalTime(),
-                EndDate = request.EndedDate?.ToUniversalTime(),
-                Description = request.Description,
-                Url = request.Url
-            };
+            var program = new LoyaltyProgram(
+                request.Name,
+                request.Description,
+                request.StartedDate,
+                request.EndedDate,
+                request.VenueId,
+                request.Url);
 
-            await Context.LoyaltyPrograms.AddAsync(program, cancellationToken);
+            await programRepository.AddAsync(program);
 
             var result = new CommandResult
             {
-                Success = await Context.SaveChangesAsync(cancellationToken) > 0,
+                Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
                 Result = program.Id
             };
 
-            if (result.Success)
-            {
-                await mediator.Publish(
-                    new CreateLoyaltyProgramNotification
-                    {
-                        Id = program.Id,
-                        VenueId = program.VenueId,
-                        Name = program.Name,
-                        EndDate = program.EndDate,
-                        StartDate = program.StartDate,
-                        IsPublished = program.IsPublished,
-                        Url = program.Url?.ToString(),
-                        Description = program.Description
-                    },
-                    cancellationToken);
-            }
             return result;
         }
     }
