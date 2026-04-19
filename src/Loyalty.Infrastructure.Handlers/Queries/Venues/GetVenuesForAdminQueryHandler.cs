@@ -27,7 +27,31 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Venues
 
         public async Task<GetVenuesByUserIdQueryResult> Handle(GetVenuesForAdminQuery request, CancellationToken cancellationToken)
         {
-            var getItems = "SELECT * FROM loyalty.Venue WHERE IsArchived = 0";
+            var getItems = @"SELECT 
+                             [Id]
+                            ,[Name]
+                            ,[OwnerId]
+                            ,[ParentId]
+                            ,[Location_City] as [City]
+                            ,[Location_Address] as [Address]
+                            ,[Location_Latitude] as [Latitude]
+                            ,[Location_Longitude] as [Longitude]
+                            ,[Details_FullDescription] as [FullDescription]
+                            ,[Details_Description] as [Description]
+                            ,[Details_WorkingHours] as [WorkingHours]
+                            ,[ContactInfo_Phones] as [Phones]
+                            ,[ContactInfo_WebSites] as [WebSites]
+                            ,[ContactInfo_Instagram] as [Instagram]
+                            ,[ContactInfo_Facebook] as [Facebook]
+                            ,[ContactInfo_Vkontakte] as [Vkontakte]
+                            ,[LogoUrl]
+                            ,[Images]
+                            ,[Type]
+                            ,[CategoryType]
+                            ,[VenueStatus]
+                            ,[AcceptsOrders]
+                        FROM [loyalty].[Venue] WHERE IsArchived = 0";
+
             var venues = (await connection.QueryAsync(getItems)).ToList();
 
             var venuesList = venues.Select(dynamicVenue => new GetVenueByIdQueryResult
