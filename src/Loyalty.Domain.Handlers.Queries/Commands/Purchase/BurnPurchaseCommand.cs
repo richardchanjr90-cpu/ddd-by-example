@@ -4,7 +4,7 @@ using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Domain.Handlers.Queries.Commands.Purchase
 {
-    public class BurnPurchaseCommand : IRequest<INotificationResult>
+    public class BurnPurchaseCommand : IRequest<ICommandResult>
     {
         public long LoyaltyProductGroupId { get; set; }
 
