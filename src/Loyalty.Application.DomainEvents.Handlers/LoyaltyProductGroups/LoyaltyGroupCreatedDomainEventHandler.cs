@@ -32,9 +32,11 @@ namespace Loyalty.Application.DomainEvents.Handlers.LoyaltyProductGroups
 
             foreach (var rule in group.Rules)
             {
+                object deserializedRule = JsonSerializer.Deserialize<object>(rule.Rule);
+
                 var objectRule = new
                 {
-                    Rule = rule.Rule,
+                    Rule = deserializedRule,
                     RuleType = rule.RuleType,
                     RuleVersion = rule.RuleVersion
                 };
