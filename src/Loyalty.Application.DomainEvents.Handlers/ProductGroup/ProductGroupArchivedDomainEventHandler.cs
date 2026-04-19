@@ -10,12 +10,10 @@ namespace Loyalty.Application.DomainEvents.Handlers.ProductGroup
     public class ProductGroupArchivedDomainEventHandler :
         INotificationHandler<ProductGroupArchivedDomainEvent>
     {
-        private readonly IMediator mediator;
         private readonly IProductRepository productRepository;
 
-        public ProductGroupArchivedDomainEventHandler(IMediator mediator, IProductRepository productRepository)
+        public ProductGroupArchivedDomainEventHandler(IProductRepository productRepository)
         {
-            this.mediator = mediator;
             this.productRepository = productRepository;
         }
 
