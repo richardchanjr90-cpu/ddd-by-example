@@ -48,14 +48,12 @@ namespace Loyalty.Infrastructure.Commands.Repository
 
         public async Task<LoyaltyProgram> GetByGroupId(long id, CancellationToken token = default)
         {
-            var purchase = await context
-                .LoyaltyPrograms
-                .Include(x=> x.LoyaltyProductGroups)
-                .ThenInclude(x=> x.Rules)
-                .Where(x => x.Id == id)
+            var group = await context.LoyaltyProductGroups
+                .Include(x=> x.LoyaltyProgram)
+                .Where(x=>x.Id == id)
                 .SingleOrDefaultAsync(token);
 
-            return purchase;
+            return group?.LoyaltyProgram;
         }
 
         public async Task<LoyaltyProgram> AddAsync(LoyaltyProgram program)
