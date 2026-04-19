@@ -36,7 +36,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
                                               FROM [loyalty].[LoyaltyProductGroup] lpg 
                                               JOIN loyalty.LoyaltyGroupRule lpr ON lpg.Id = lpr.LoyaltyProductGroupId
                                               JOIN loyalty.ProductGroup pg ON lpg.ProductGroupId = pg.Id
-                                              WHERE lpg.LoyaltyProgramId = @programId AND lpg.Id = @id";
+                                              WHERE lpg.LoyaltyProgramId = @programId AND lpg.Id = @id AND lpg.IsArchived = 0";
 
         public GetLoyaltyProductGroupByIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)

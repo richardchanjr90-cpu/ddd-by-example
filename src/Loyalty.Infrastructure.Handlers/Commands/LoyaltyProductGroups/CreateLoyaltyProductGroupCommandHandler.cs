@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
@@ -34,18 +35,20 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 throw new LoyaltyValidationException("Does not exist.", ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
 
+            var rules = new List<LoyaltyGroupRule>();
+
+            foreach (var commandRule in request.Rule.Rules)
+            {
+                var rule = new LoyaltyGroupRule(commandRule.RuleType, commandRule.Rule, commandRule.RuleVersion);
+                rules.Add(rule);
+            }
+
             var group = new LoyaltyProductGroup(
                 request.Name,
                 productGroup,
                 request.Description,
                 program.VenueId,
-                null);
-
-            foreach (var commandRule in request.Rule.Rules)
-            {
-                var rule = new LoyaltyGroupRule(commandRule.RuleType, commandRule.Rule, commandRule.RuleVersion);
-                group.AddRule(rule);
-            }
+                rules);
 
             program.AddLoyaltyGroup(group);
             programRepository.Update(program);
@@ -53,7 +56,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             var result = new CommandResult
             {
                 Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
-                Result = program.Id
+                Result = group.Id
             };
 
             return result;

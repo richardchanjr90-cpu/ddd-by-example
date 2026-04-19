@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
             var result = new CommandResult
             {
                 Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
-                Result = program.Id
+                Result = request.Id
             };
 
             return result;

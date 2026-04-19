@@ -26,6 +26,8 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var program = await context
                 .LoyaltyPrograms
+                .Include(x=> x.LoyaltyProductGroups)
+                .ThenInclude(x=> x.Rules)
                 .Where(x => x.Id == id)
                 .SingleOrDefaultAsync(token);
 
@@ -36,6 +38,8 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var programs = await context
                 .LoyaltyPrograms
+                .Include(x=> x.LoyaltyProductGroups)
+                .ThenInclude(x=> x.Rules)
                 .Where(x => x.VenueId == id)
                 .ToListAsync(token);
 
@@ -46,6 +50,8 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var purchase = await context
                 .LoyaltyPrograms
+                .Include(x=> x.LoyaltyProductGroups)
+                .ThenInclude(x=> x.Rules)
                 .Where(x => x.Id == id)
                 .SingleOrDefaultAsync(token);
 
@@ -67,8 +73,19 @@ namespace Loyalty.Infrastructure.Commands.Repository
 
         public LoyaltyProgram Update(LoyaltyProgram program)
         {
-            return context.LoyaltyPrograms
+            var entity = context.LoyaltyPrograms
                 .Update(program).Entity;
+
+            foreach (var group in program.LoyaltyProductGroups)
+            {
+                if (group.Id <= 0)
+                {
+                    context.LoyaltyProductGroups
+                        .Update(group);
+                }
+            }
+
+            return entity;
         }
     }
 }

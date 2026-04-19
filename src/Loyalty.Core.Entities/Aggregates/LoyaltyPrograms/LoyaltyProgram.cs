@@ -140,18 +140,12 @@ namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
             Description = description;
 
             loyaltyGroup.Update(name, group.Id, description, rules);
-
-            AddDomainEvent(new LoyaltyGroupUpdatedDomainEvent(loyaltyGroup));
         }
 
         public void ArchiveGroup(long id)
         {
             var loyaltyGroup = LoyaltyProductGroups.SingleOrDefault(x => x.Id == id);
-
-            if (loyaltyGroup != null)
-            {
-                AddDomainEvent(new LoyaltyGroupArchivedDomainEvent(loyaltyGroup));
-            }
+            loyaltyGroup?.Archive();
         }
     }
 }

@@ -46,10 +46,12 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
                 request.Description,
                 rules);
 
+            programRepository.Update(program);
+
             var result = new CommandResult
             {
                 Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
-                Result = program.Id
+                Result = request.Id
             };
 
             return result;
