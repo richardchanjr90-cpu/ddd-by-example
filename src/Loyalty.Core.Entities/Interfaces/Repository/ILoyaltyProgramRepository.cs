@@ -12,7 +12,9 @@ namespace Loyalty.Core.Entities.Interfaces.Repository
 
         Task<List<LoyaltyProgram>> GetByVenueAsync(long id, CancellationToken token = default);
 
-        Task<LoyaltyProgram> GetByGroupId(long id, CancellationToken token = default);
+        Task<LoyaltyProgram> GetByLoyaltyGroupId(long id, CancellationToken token = default);
+
+        Task<List<LoyaltyProductGroup>> GetByGroupId(long id, CancellationToken token = default);
 
         Task<LoyaltyProgram> AddAsync(LoyaltyProgram group);
 

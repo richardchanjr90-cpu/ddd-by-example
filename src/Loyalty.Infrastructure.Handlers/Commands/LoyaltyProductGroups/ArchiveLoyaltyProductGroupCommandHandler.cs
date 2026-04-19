@@ -21,7 +21,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.LoyaltyProductGroups
         public async Task<ICommandResult> Handle(ArchiveLoyaltyProductGroupCommand request,
             CancellationToken cancellationToken)
         {
-            var program = await programRepository.GetByGroupId(request.Id, cancellationToken);
+            var program = await programRepository.GetByLoyaltyGroupId(request.Id, cancellationToken);
 
             program.ArchiveGroup(request.Id);
             programRepository.Update(program);

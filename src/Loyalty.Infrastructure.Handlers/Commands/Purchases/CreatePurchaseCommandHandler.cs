@@ -47,7 +47,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                 }
             }
 
-            var program = await programRepository.GetByGroupId(request.LoyaltyProductGroupId, cancellationToken);
+            var program = await programRepository.GetByLoyaltyGroupId(request.LoyaltyProductGroupId, cancellationToken);
             if (program == null)
             {
                 throw new LoyaltyValidationException(

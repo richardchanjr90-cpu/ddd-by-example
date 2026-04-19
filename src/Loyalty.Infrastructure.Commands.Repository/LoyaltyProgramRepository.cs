@@ -46,7 +46,7 @@ namespace Loyalty.Infrastructure.Commands.Repository
             return programs;
         }
 
-        public async Task<LoyaltyProgram> GetByGroupId(long id, CancellationToken token = default)
+        public async Task<LoyaltyProgram> GetByLoyaltyGroupId(long id, CancellationToken token = default)
         {
             var group = await context.LoyaltyProductGroups
                 .Include(x=> x.LoyaltyProgram)
@@ -54,6 +54,15 @@ namespace Loyalty.Infrastructure.Commands.Repository
                 .SingleOrDefaultAsync(token);
 
             return group?.LoyaltyProgram;
+        }
+
+        public async Task<List<LoyaltyProductGroup>> GetByGroupId(long id, CancellationToken token = default)
+        {
+            var groups = await context.LoyaltyProductGroups
+                .Where(x=>x.ProductGroupId == id)
+                .ToListAsync(token);
+
+            return groups;
         }
 
         public async Task<LoyaltyProgram> AddAsync(LoyaltyProgram program)
