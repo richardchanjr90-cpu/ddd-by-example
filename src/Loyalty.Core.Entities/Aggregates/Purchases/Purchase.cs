@@ -50,7 +50,7 @@ namespace Loyalty.Core.Entities.Aggregates.Purchases
                 workerId,
                 loyaltyProductGroupId, 
                 venueId, 
-                null, 
+                productId, 
                 userId, 
                 -value);
 
@@ -69,7 +69,7 @@ namespace Loyalty.Core.Entities.Aggregates.Purchases
                 workerId,
                 loyaltyProductGroupId, 
                 venueId, 
-                null, 
+                productId, 
                 userId, 
                 value);
 
