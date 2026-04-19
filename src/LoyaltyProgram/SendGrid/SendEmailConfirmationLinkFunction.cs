@@ -9,13 +9,12 @@ using SendGrid.Helpers.Mail;
 
 namespace LoyaltyProgram.SendGrid
 {
-    public class SendEmailConfirmationLinkFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
+    public class SendEmailConfirmationLinkFunction
     {
         private readonly IOptions<EmailSettings> settings;
 
         public SendEmailConfirmationLinkFunction(
-            IOptions<EmailSettings> settings, ILoyaltyTenantDbContext context) 
-            : base(context)
+            IOptions<EmailSettings> settings)
         {
             this.settings = settings;
         }
