@@ -114,7 +114,8 @@ namespace Loyalty.Application.Venue
                 Phone = getInviteByPhoneQueryResult.Phone
             };
             SetupVenueIdClaimsToHaveAccessToVenue(functionTokenResult, getInviteByPhoneQueryResult);
-            return await CompleteSignup(workerModel);
+            
+            return await Mediator.Send(workerModel);
         }
 
         private async Task<ICommandResult> SetupOwner(SignupViewModel model, string userId, string phone)
@@ -143,11 +144,6 @@ namespace Loyalty.Application.Venue
             }
 
             return venueWorker;
-        }
-
-        private async Task<ICommandResult> CompleteSignup(UpdateWorkerCommand model)
-        {
-            return await Mediator.Send(model);
         }
 
         private async Task<GetInviteByPhoneQueryResult> GetByPhone(string phone)
