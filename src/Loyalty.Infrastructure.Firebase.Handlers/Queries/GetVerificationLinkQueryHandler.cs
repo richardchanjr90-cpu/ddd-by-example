@@ -47,7 +47,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
 
             try
             {
-                if (!String.IsNullOrEmpty(request.NewEmail))
+                if (!String.IsNullOrEmpty(request.NewEmail) && !request.IsEmailVerified)
                 {
                     link = await FirebaseAuth.DefaultInstance.GenerateEmailVerificationLinkAsync(
                         request.NewEmail, actionCodeSettings, cancellationToken);

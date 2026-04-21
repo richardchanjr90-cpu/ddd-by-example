@@ -1,20 +1,15 @@
-﻿using System.Linq;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
-using Loyalty.Core.Contracts;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Notifications.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
 {
@@ -22,17 +17,26 @@ namespace Loyalty.Infrastructure.Handlers.Commands.UserProfile
         : IRequestHandler<UpdateEmailCommand, ICommandResult>
     {
         private readonly IWorkerRepository workerRepository;
+        private readonly IHttpContextAccessor accessor;
 
-        public UpdateEmailCommandHandler(IWorkerRepository workerRepository)
+        public UpdateEmailCommandHandler(IWorkerRepository workerRepository, IHttpContextAccessor accessor)
         {
             this.workerRepository = workerRepository;
+            this.accessor = accessor;
         }
 
         public async Task<ICommandResult> Handle(UpdateEmailCommand request, CancellationToken cancellationToken)
         {
             var worker = await workerRepository.GetByUidAsync(request.WorkerId, cancellationToken);
-
-            worker.SetEmail(request.Email);
+            var email = accessor.HttpContext.User.GetEmailOrNull();
+            if (!String.IsNullOrEmpty(request.Email) && request.IsEmailVerified && request.Email.Equals(email))
+            {
+                worker.SetEmail(request.Email);
+            }
+            else
+            {
+                throw new LoyaltyValidationException("Email not verified or not valid.", ErrorCode.INVALID_CLAIMS);
+            }
 
             workerRepository.Update(worker);
 

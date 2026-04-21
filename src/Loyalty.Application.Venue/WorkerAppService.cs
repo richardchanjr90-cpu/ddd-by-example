@@ -86,10 +86,10 @@ namespace Loyalty.Application.Venue
 
             var command = mapper.Map<UpdateInviteCommand>(model);
 
-            return await Mediator.Send(command);;
+            return await Mediator.Send(command); ;
         }
 
-        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, FunctionTokenResult token, string userId)
+        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, string userId)
         {
             new UserProfileUpdateValidator()
                 .ValidateAndThrow(model);
@@ -100,54 +100,41 @@ namespace Loyalty.Application.Venue
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> UpdateProfile(string email, string userId)
-        {
-            var commandResult = await Mediator.Send(new UpdateEmailCommand()
-            {
-                WorkerId = userId,
-                Email = email
-            });
-
-            return commandResult;
-        }
-
         public async Task<GetVerificationLinkQueryResult> SetupEmail(PatchEmailViewModel model, string userId)
         {
             new PatchEmailValidator()
                 .ValidateAndThrow(model);
-
-            GetVerificationLinkQueryResult result = null;
 
             var user = await Mediator.Send(new GetCurrentUserQuery()
             {
                 UserId = userId
             });
 
-            var updateUser = await Mediator.Send(new UpdateUserEmailCommand()
+            var result = await Mediator.Send(new GetVerificationLinkQuery()
             {
-                CurrentEmail = user.Email,
-                IsEmailVerified = user.IsEmailVerified,
-                NewEmail = model.Email,
+                Surname = user.Surname,
+                Name = user.Name,
                 UserId = user.UserId,
+                NewEmail = model.Email,
+                IsEmailVerified = user.IsEmailVerified
             });
 
-            if (updateUser.Success)
-            {
-                result = await Mediator.Send(new GetVerificationLinkQuery()
-                {
-                    Surname =  user.Surname,
-                    Name =  user.Name,
-                    UserId = user.UserId,
-                    NewEmail = model.Email
-                });
-
-                if (!String.IsNullOrEmpty(result.Link))
-                {
-                    await UpdateProfile(model.Email, userId);
-                }
-            }
-
             return result;
+        }
+
+        public async Task<ICommandResult> CompleteEmail(PatchEmailViewModel model, string userId)
+        {
+            var user = await Mediator.Send(new GetCurrentUserQuery()
+            {
+                UserId = userId
+            });
+
+            return await Mediator.Send(new UpdateEmailCommand()
+            {
+                WorkerId = userId,
+                Email = model.Email,
+                IsEmailVerified = user.IsEmailVerified
+            });
         }
 
         public async Task<ICommandResult> Archive(long venueId, long id, string userId)

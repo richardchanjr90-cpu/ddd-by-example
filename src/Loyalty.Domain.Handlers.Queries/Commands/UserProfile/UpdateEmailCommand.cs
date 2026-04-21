@@ -8,5 +8,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.UserProfile
         public string WorkerId { get; set; }
 
         public string Email { get; set; }
+
+        public bool IsEmailVerified { get; set; }
     }
 }

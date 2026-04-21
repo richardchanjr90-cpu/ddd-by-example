@@ -4,12 +4,10 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
-using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Venue;
 using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Common.Shared.Settings;
-using Loyalty.Domain.Contracts;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
@@ -22,12 +20,12 @@ using Microsoft.Extensions.Options;
 
 namespace LoyaltyProgram.Http.UserProfile
 {
-    public class UserProfilePatchEmailFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
+    public class UserProfilePatchCompleteEmailFunction : DisposeContextFilter<ILoyaltyTenantDbContext>
     {
         private readonly WorkerAppService service;
         private readonly IOptions<EmailSettings> settings;
 
-        public UserProfilePatchEmailFunction(
+        public UserProfilePatchCompleteEmailFunction(
             WorkerAppService service,
             IOptions<EmailSettings> settings, 
             ILoyaltyTenantDbContext context) 
@@ -40,40 +38,26 @@ namespace LoyaltyProgram.Http.UserProfile
         [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ICommandResult))]
         [ProducesResponseType((int)HttpStatusCode.InternalServerError, Type = typeof(Exception))]
         [RequestHttpHeader("Authorization", true)]
-        [FunctionName("UserProfilePatchEmailFunction")]
+        [FunctionName("UserProfilePatchCompleteEmailFunction")]
         public async Task<IActionResult> Run(
             string email,
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "userprofiles/emails/{email}")]
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = "userprofiles/emails/complete/{email}")]
             HttpRequestMessage req,
             ILogger log,
-            [Queue("invite-mail", Connection = "QueueConnectionString")] ICollector<EmailInvitationDto> queueItems,
             [FunctionToken] FunctionTokenResult token)
         {
-            log.LogInformation($"{nameof(UserProfilePatchEmailFunction)} was triggered.");
+            log.LogInformation($"{nameof(UserProfilePatchCompleteEmailFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var result = await service.SetupEmail(
+                var result = await service.CompleteEmail(
                     new PatchEmailViewModel()
                     {
                         Email = email
                     },
                     token.Principal.GetUserId());
 
-                if (result != null && !String.IsNullOrEmpty(result.Link))
-                {
-                    queueItems.Add(new EmailInvitationDto
-                    {
-                        Link = result.Link,
-                        CustomerEmail = result.Email,
-                        SenderEmail = settings.Value.InviteEmail
-                    });
-                }
-
-                return new OkObjectResult(new CommandResult()
-                {
-                    Success = true
-                });
+                return new OkObjectResult(result);
             });
         }
     }

@@ -12,5 +12,7 @@ namespace Loyalty.Domain.Handlers.Firebase.Queries.Queries
         public string Surname { get; set; }
 
         public string NewEmail { get; set; }
+
+        public bool IsEmailVerified { get; set; }
     }
 }

@@ -159,15 +159,5 @@ namespace Loyalty.Application.Venue
 
             return result;
         }
-
-        private async Task<GetInviteByEmailQueryResult> GetByEmail(string email)
-        {
-            var result = await Mediator.Send(new GetWorkerByEmailQuery
-            {
-                Email = email
-            });
-
-            return result;
-        }
     }
 }
