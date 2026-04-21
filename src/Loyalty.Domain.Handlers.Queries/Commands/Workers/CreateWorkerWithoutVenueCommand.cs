@@ -14,5 +14,7 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
         public string LastName { get; set; }
 
         public string Email { get; set; }
+
+        public string City { get; set; }
     }
 }

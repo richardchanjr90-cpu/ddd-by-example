@@ -9,5 +9,6 @@ namespace Loyalty.Shared.Contracts.Constants
         public const string Firstname = "firstname";
         public const string Lastname = "lastname";
         public const string Rating = "rate";
+        public const string Roles = "roles";
     }
 }

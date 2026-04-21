@@ -1,13 +1,14 @@
 ﻿using Loyalty.Core.Entities.Aggregates.Workers;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 
 namespace Loyalty.Core.Entities.Events.Workers
 {
-    public class WorkerCreatedDomainEvent : INotification
+    public class OwnerCreatedDomainEvent : INotification
     {
         public Worker Worker { get; private set; }
 
-        public WorkerCreatedDomainEvent(Worker worker)
+        public OwnerCreatedDomainEvent(Worker worker)
         {
             Worker = worker;
         }

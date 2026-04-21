@@ -1,27 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Events.Workers;
 using Loyalty.Core.Outbox.Entities.Services;
 using Loyalty.Domain.Handlers.Notifications.Workers;
-using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 
 namespace Loyalty.Application.DomainEvents.Handlers.Workers
 {
-    public class WorkerUpdatedDomainEventHandler :
-        INotificationHandler<WorkerUpdatedDomainEvent>
+    public class OwnerCreatedDomainEventHandler :
+        INotificationHandler<OwnerCreatedDomainEvent>
     {
         private readonly IEventBusService eventBusService;
 
-        public WorkerUpdatedDomainEventHandler(IEventBusService eventBusService)
+        public OwnerCreatedDomainEventHandler(IEventBusService eventBusService)
         {
             this.eventBusService = eventBusService;
         }
 
-        public async Task Handle(WorkerUpdatedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public async Task Handle(OwnerCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            await eventBusService.PersistEventAsync( new UpdatedWorkerNotification
+            await eventBusService.PersistEventAsync(new UpdatedWorkerNotification
             {
                 WorkerId = domainEvent.Worker.WorkerId,
                 LastName = domainEvent.Worker.LastName,
@@ -29,20 +29,12 @@ namespace Loyalty.Application.DomainEvents.Handlers.Workers
                 City = domainEvent.Worker.City
             });
 
-            var roles = new Dictionary<string, VenueUserRole>();
-
-            foreach (var venueRole in domainEvent.Worker.VenueRoles)
-            {
-                roles.Add(venueRole.VenueId.ToString(), venueRole.Role);
-            }
-
-            await eventBusService.PersistEventAsync( new SetupFirebaseTokenNotification
+            await eventBusService.PersistEventAsync(new SetupFirebaseTokenNotification
             {
                 WorkerId = domainEvent.Worker.WorkerId,
                 Surname = domainEvent.Worker.LastName,
                 City = domainEvent.Worker.City,
                 Name = domainEvent.Worker.Name,
-                VenueRoles = roles
             });
         }
     }

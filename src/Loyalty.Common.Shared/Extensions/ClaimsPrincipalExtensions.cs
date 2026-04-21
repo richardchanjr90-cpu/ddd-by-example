@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Shared.Contracts.Constants;
@@ -16,18 +17,6 @@ namespace Loyalty.Common.Shared.Extensions
         {
             var identity = principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
             return identity;
-        }
-
-        public static bool IsUser(this ClaimsPrincipal principal, string uid)
-        {
-            var identity = principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-            if (!identity.Equals(uid))
-            {
-                throw new AuthenticationException();
-            }
-
-            return identity.Equals(uid);
         }
 
         public static string GetPhone(this ClaimsPrincipal principal)
@@ -84,13 +73,13 @@ namespace Loyalty.Common.Shared.Extensions
         public static List<string> GetVenues(this ClaimsPrincipal principal)
         {
             var claims = new List<string>();
-            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimConstants.VENUE_CLAIM)?.Value;
+            var serialized = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.Roles)?.Value;
             var claim2 = principal.Claims.FirstOrDefault(x => x.Type == ClaimConstants.NEW_VENUE_CLAIM)?.Value;
 
-            if (!String.IsNullOrEmpty(claim))
+            if(!String.IsNullOrEmpty(serialized))
             {
-                claims = claim.Split(',')
-                    .Select(x=>x.Trim('\"')).ToList();
+                var dictionary = JsonSerializer.Deserialize<Dictionary<string, VenueUserRole>>(serialized);
+                claims = dictionary.Keys.ToList();
             }
 
             if (!String.IsNullOrEmpty(claim2))

@@ -29,13 +29,11 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 throw new ArgumentNullException(nameof(worker));
             }
 
-            worker.Update(
+            worker.Register(
                 request.WorkerId,
                 request.Name, 
-                request.LastName, 
-                request.VenueId, 
-                request.PositionName, 
-                request.Role);
+                request.LastName,
+                request.City);
 
             workerRepository.Update(worker); 
 

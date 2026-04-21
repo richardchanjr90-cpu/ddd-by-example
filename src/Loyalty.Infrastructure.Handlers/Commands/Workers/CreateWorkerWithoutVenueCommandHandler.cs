@@ -15,18 +15,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
         private readonly IWorkerRepository workerRepository;
 
         public CreateWorkerWithoutVenueCommandHandler(IWorkerRepository workerRepository)
-
         {
             this.workerRepository = workerRepository;
         }
 
         public async Task<ICommandResult> Handle(CreateWorkerWithoutVenueCommand request, CancellationToken cancellationToken)
         {
-            var worker = new Worker(
+            var worker = Worker.CreateOwner(
                 request.WorkerId,
                 request.Phone,
                 request.Name,
-                request.LastName);
+                request.LastName,
+                request.City);
 
             await workerRepository.AddAsync(worker);
 

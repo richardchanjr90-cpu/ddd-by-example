@@ -46,8 +46,9 @@ namespace LoyaltyProgram.Http.Venue
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
                 model = await req.Cast<CreateVenueViewModel>();
-                log.LogDebug($"Venue created: {model}", model);
-                return new OkObjectResult(await service.Create(model, token.Principal));
+                log.LogInformation("Venue created: {@Model}", model);
+
+                return new OkObjectResult(await service.Create(model));
             });
         }
     }

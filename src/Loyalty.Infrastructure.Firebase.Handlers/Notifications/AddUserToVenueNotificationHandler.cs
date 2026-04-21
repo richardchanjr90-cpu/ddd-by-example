@@ -1,10 +1,10 @@
 ﻿using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
-using Loyalty.Common.Shared.Constants;
-using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Notifications.Venue;
+using Loyalty.Shared.Contracts.Constants;
 using MediatR;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Notifications
@@ -19,7 +19,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Notifications
                 kvp => kvp.Key, 
                 kvp => kvp.Value);
 
-            claims[ClaimConstants.VENUE_CLAIM] = notification.VenueIds.ToCommaSeparatedStringOrNull();
+            claims[CustomClaimsConstants.Roles] = JsonSerializer.Serialize(notification.VenueRoles);
+
             await FirebaseAuth.DefaultInstance.SetCustomUserClaimsAsync(notification.UserId, claims, cancellationToken);
         }
     }

@@ -5,8 +5,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
 {
     public class CreateWorkerCommand : IRequest<ICommandResult>
     {
-        public string Phone { get; set; }
-
         public string Name { get; set; }
 
         public string Surname { get; set; }

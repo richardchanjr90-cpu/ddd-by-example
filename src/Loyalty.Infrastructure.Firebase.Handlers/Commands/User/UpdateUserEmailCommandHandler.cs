@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
-using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
-using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
-using Loyalty.Shared.Contracts.Constants;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;

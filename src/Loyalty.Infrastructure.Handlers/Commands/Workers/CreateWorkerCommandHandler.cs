@@ -8,6 +8,7 @@ using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Core.Entities.Interfaces.Repository;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
+using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;
@@ -38,13 +39,18 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                 .Claims
                 .First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-            var worker = await workerRepository.GetByPhoneAsync(request.Phone, cancellationToken);
+            var worker = await workerRepository.GetByPhoneAsync(phone, cancellationToken);
 
             if (worker != null)
             {
                 if (String.IsNullOrEmpty(worker.WorkerId))
                 {
-                    await SetupInvitedWorkerAsync(worker, userId, request);
+                    await SetupInvitedWorkerAsync(
+                        worker, 
+                        request.Name, 
+                        request.Surname,
+                        request.City,
+                        userId);
                 }
             }
             else
@@ -54,7 +60,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
                     WorkerId = userId,
                     Name = request.Name,
                     LastName = request.Surname,
-                    Phone = phone
+                    Phone = phone,
+                    City = request.City
                 };
 
                 return await mediator.Send(createWorkerCommand, cancellationToken);
@@ -63,7 +70,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
             var commandResult = new CommandResult
             {
                 Success = await workerRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
-                Result = worker?.Id
+                Result = worker.Id
             };
 
             return commandResult;
@@ -71,30 +78,24 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers
 
         private async Task<ICommandResult> SetupInvitedWorkerAsync(
             Worker model,
-            string userId,
-            CreateWorkerCommand request)
+            string name,
+            string surname,
+            string city,
+            string userId)
         {
-            void SetupVenueIdClaimsToHaveAccessToVenue(Worker worker)
-            {
-                foreach (var venue in worker.VenueRoles)
-                {
-                    accessor.HttpContext.User.AddVenues(venue.VenueId);
-                }
-            }
-
             var workerModel = new UpdateWorkerCommand
             {
                 WorkerId = userId,
-                Name = model.Name,
-                LastName = model.LastName,
-                Id = model.Id,
-                PositionName = request.PositionName,
-                Role = venueWorker.Role,
-                VenueId = venueWorker.VenueId,
-                Phone = model.Phone
+                Name = name,
+                LastName = surname,
+                City = city,
+                Id = model.Id
             };
 
-            SetupVenueIdClaimsToHaveAccessToVenue(model);
+            foreach (var venue in model.VenueRoles)
+            {
+                accessor.HttpContext.User.AddVenues(venue.VenueId);
+            }
 
             return await mediator.Send(workerModel);
         }

@@ -13,16 +13,10 @@ namespace Loyalty.Domain.Handlers.Notifications.Workers
         [JsonPropertyName("workerId")]
         public string WorkerId { get; set; }
 
-        [JsonPropertyName("venueId")]
-        public long VenueId { get; set; }
-
         [JsonPropertyName("lastName")]
         public string LastName { get; set; }
 
-        [JsonPropertyName("photoUri")]
-        public string PhotoUri { get; set; }
-
-        [JsonPropertyName("role")]
-        public VenueUserRole Role { get; set; }
+        [JsonPropertyName("city")]
+        public string City { get; set; }
     }
 }

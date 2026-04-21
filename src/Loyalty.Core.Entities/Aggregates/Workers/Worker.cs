@@ -11,21 +11,24 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
 {
     public class Worker : AuditableEntity, IAggregateRoot
     {
-        public Worker(
+        private Worker(
             string workerId,
             string phone,
             string name,
-            string lastName)
+            string lastName,
+            string city)
         {
             WorkerId = workerId;
             Phone = phone;
             Name = name;
             LastName = lastName;
+            City = city;
 
             venueRoles = new List<VenueWorker>();
+            AddDomainEvent(new OwnerCreatedDomainEvent(this));
         }
 
-        public Worker(
+        private Worker(
             string phone,
             string name)
         {
@@ -40,6 +43,23 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
             //ef core
         }
 
+        public static Worker CreateWorker(
+            string phone,
+            string name)
+        {
+            return new Worker(phone, name);
+        }
+
+        public static Worker CreateOwner(
+            string workerId,
+            string phone,
+            string name,
+            string lastName,
+            string city)
+        {
+            return new Worker(workerId, phone, name, lastName, city);
+        }
+
         public string WorkerId { get; private set; }
 
         public string Phone { get; private set; }
@@ -47,6 +67,8 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
         public string Name { get; private set; }
 
         public string LastName { get; private set; }
+
+        public string City { get; private set; }
 
         public string Email { get; private set; }
 
@@ -135,26 +157,18 @@ namespace Loyalty.Core.Entities.Aggregates.Workers
             return this;
         }
 
-        public void Update(
+        public void Register(
             string workerId,
             string name, 
-            string lastName, 
-            long venueId, 
-            string positionName, 
-            VenueUserRole role)
+            string lastName,
+            string city)
         {
-            if (role == VenueUserRole.Owner)
-            {
-                throw new LoyaltyValidationException(
-                    "Impossible to create a second owner.", 
-                    ErrorCode.SECOND_OWNER_NOT_ALLOWED);
-            }
-
             WorkerId = workerId;
             Name = name;
             LastName = lastName;
+            City = city;
 
-            AddDomainEvent(new WorkerUpdatedDomainEvent(this, role, venueId, positionName));
+            AddDomainEvent(new WorkerUpdatedDomainEvent(this));
         }
 
         public void AddToVenue(

@@ -106,7 +106,6 @@ namespace Loyalty.Application.AutoMapper
             CreateMap<InviteViewModel, CreateInviteCommand>();
             CreateMap<UpdateInviteViewModel, UpdateInviteCommand>();
             CreateMap<GetVenueWorkerResult, VenueWorkerViewModel>();
-            CreateMap<CreateWorkerViewModel, UpdateWorkerCommand>();
         }
 
         private void MapVenue()

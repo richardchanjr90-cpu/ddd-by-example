@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,18 +37,22 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
 
             var worker = await workerRepository.GetByUidAsync(domainEvent.WorkerId, cancellationToken);
 
-            var ids = worker.VenueRoles
-                .Select(x => x.VenueId)
-                .Select(x => x.ToString())
-                .ToList();
+            var roles = new Dictionary<string, VenueUserRole>();
 
-            ids.Add(item.Id.ToString());
+            var newRole = VenueUserRole.Owner;
+
+            foreach (var venueRole in worker.VenueRoles)
+            {
+                roles.Add(venueRole.VenueId.ToString(), newRole);
+            }
+
+            roles.Add(item.Id.ToString(), newRole);
 
             await eventBusService.PersistEventAsync(new WorkerAddedToVenueNotification
             {
                 VenueId = domainEvent.Venue.Id,
                 PositionName = "Владелец",
-                Role =  VenueUserRole.Owner,
+                Role =  newRole,
                 WorkerId = domainEvent.WorkerId
             });
 
@@ -79,15 +84,13 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
                 WorkerId = worker.WorkerId,
                 LastName = worker.LastName,
                 Name = worker.Name,
-                PhotoUri = worker.PhotoUri,
-                Role = VenueUserRole.Owner,
-                VenueId = item.Id
+                City = worker.City
             });
 
             await eventBusService.PersistEventAsync(new AddUserToVenueNotification
             {
                 UserId = domainEvent.WorkerId,
-                VenueIds = ids
+                VenueRoles =  roles
             });
         }
     }

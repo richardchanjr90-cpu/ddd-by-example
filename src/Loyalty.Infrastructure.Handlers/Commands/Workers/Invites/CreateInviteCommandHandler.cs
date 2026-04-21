@@ -28,7 +28,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Workers.Invites
             var userRole = accessor.HttpContext.User.GetRole();
             var dbWorker = await workerRepository.GetByPhoneAsync(request.Phone, cancellationToken);
 
-            var worker = new Worker(request.Phone, request.Name);
+            var worker = Worker.CreateWorker(request.Phone, request.Name);
 
             if (dbWorker != null)
             {

@@ -8,22 +8,12 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
     {
         public long Id { get; set; }
 
-        public long VenueId { get; set; }
-
         public string WorkerId { get; set; }
-
-        public VenueUserRole Role { get; set; }
-
-        public string Phone { get; set; }
 
         public string Name { get; set; }
 
         public string LastName { get; set; }
 
-        public string Email { get; set; }
-
-        public string PhotoUri { get; set; }
-
-        public string PositionName { get; set; }
+        public string City { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
         }
 
-        public async Task<ICommandResult> Create(CreateVenueViewModel model, ClaimsPrincipal principal)
+        public async Task<ICommandResult> Create(CreateVenueViewModel model)
         {
             new CreateVenueValidator()
                 .ValidateAndThrow(model);
