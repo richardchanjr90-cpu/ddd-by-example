@@ -23,13 +23,15 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
         {
             try
             {
-                var serializedRequest = JsonSerializer.Serialize(request, new JsonSerializerOptions()
-                {
-                    AllowTrailingCommas = true,
-                });
-
+                //var serializedRequest = JsonSerializer.Serialize(request, new JsonSerializerOptions()
+                //{
+                //    AllowTrailingCommas = true,
+                //});
                 var log = logFactory.CreateLogger(typeof(TRequest)?.Name);
-                log.LogInformation($"----- Handling {typeof(TResponse)?.Name}: {serializedRequest}");
+                log.LogInformation(
+                    "----- Handling {Type}: {@Request}",
+                    typeof(TResponse)?.Name, 
+                    request);
 
                 var response = await next();
 

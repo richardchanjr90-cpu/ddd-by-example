@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Reflection;
-using AzureExtensions.FunctionToken.Extensions;
-using AzureExtensions.FunctionToken.FunctionBinding.Options;
-using AzureFunctions.Extensions.NotificationHubs.Extensions;
 using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.Handlers.Notifications;
+using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
 using LoyaltyProgram;
+using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
@@ -34,6 +32,10 @@ namespace LoyaltyProgram
             builder.Services.SetupServiceBus(config);
             builder.Services.SetupSettings(config);
             builder.Services.AddHttpContextAccessor();
+
+            builder.Services.Decorate(
+                typeof(INotificationHandler<>), 
+                typeof(TransactionalNotificationDecorator<>));
 
             builder.AddSwashBuckle(
                 Assembly.GetExecutingAssembly(), opts =>
