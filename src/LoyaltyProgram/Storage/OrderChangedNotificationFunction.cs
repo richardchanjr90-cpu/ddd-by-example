@@ -29,7 +29,7 @@ namespace LoyaltyProgram.Storage
                 _ => String.Empty
             };
 
-            if (String.IsNullOrEmpty(data.UserId) && !String.IsNullOrEmpty(message))
+            if (!String.IsNullOrEmpty(data.UserId) && !String.IsNullOrEmpty(message))
             {
                 await output.AddAsync(new HubsMessage(message, Android, "platform:android", $"user:{data.UserId}"));
                 await output.AddAsync(new HubsMessage(message, Apple, "platform:apple", $"user:{data.UserId}"));
