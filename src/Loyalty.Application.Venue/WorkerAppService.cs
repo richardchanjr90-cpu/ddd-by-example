@@ -96,22 +96,8 @@ namespace Loyalty.Application.Venue
 
             var command = mapper.Map<UpdateUserProfileCommand>(model);
             command.WorkerId = userId;
-            var commandResult = await Mediator.Send(command);
 
-            ICommandResult result2 = null;
-
-            if (commandResult.Success)
-            {
-                result2 = await Mediator.Send(new UpdateFirebaseTokenCommand
-                {
-                    Surname = model.LastName,
-                    Name = model.Name,
-                    Token = token
-                });
-            }
-
-            //todo: do it in a transaction.
-            return result2 ?? commandResult;
+            return await Mediator.Send(command);
         }
 
         public async Task<ICommandResult> UpdateProfile(string email, string userId)

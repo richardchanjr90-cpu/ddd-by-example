@@ -8,7 +8,7 @@ using MediatR;
 namespace Loyalty.Application.DomainEvents.Handlers.Workers
 {
     public class WorkerProfileDomainEventHandler :
-        INotificationHandler<WorkerArchivedDomainEvent>
+        INotificationHandler<WorkerProfileDomainEvent>
     {
         private readonly IEventBusService eventBusService;
 
@@ -17,7 +17,7 @@ namespace Loyalty.Application.DomainEvents.Handlers.Workers
             this.eventBusService = eventBusService;
         }
 
-        public async Task Handle(WorkerArchivedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public async Task Handle(WorkerProfileDomainEvent domainEvent, CancellationToken cancellationToken)
         {
             var worker = domainEvent.Worker;
 
