@@ -31,7 +31,6 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
 
         public async Task Handle(VenueCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-
             var item = domainEvent.Venue;
             accessor.HttpContext.User.AddVenues(item.Id);
 

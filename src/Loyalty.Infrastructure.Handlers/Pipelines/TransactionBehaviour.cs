@@ -2,7 +2,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Outbox.Entities.Services;
-using Loyalty.Infrastructure.DataAccess.Context;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +69,12 @@ namespace Loyalty.Infrastructure.Handlers.Pipelines
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "ERROR Handling transaction for {CommandName} ({@Command})", typeName, request);
+                logger.LogError(
+                    ex, 
+                    "ERROR Handling transaction for {CommandName} ({@Command})", 
+                    typeName, 
+                    request);
+
                 throw;
             }
         }
