@@ -4,6 +4,7 @@ using AzureExtensions.FunctionToken.Extensions;
 using AzureExtensions.FunctionToken.FunctionBinding.Options;
 using AzureFunctions.Extensions.NotificationHubs.Extensions;
 using AzureFunctions.Extensions.Swashbuckle;
+using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Infrastructure.IoC.DI;
 using LoyaltyProgram;
@@ -12,6 +13,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace LoyaltyProgram
@@ -34,7 +36,25 @@ namespace LoyaltyProgram
             builder.Services.AddHttpContextAccessor();
 
             builder.AddSwashBuckle(
-                Assembly.GetExecutingAssembly());
+                Assembly.GetExecutingAssembly(), opts =>
+                {
+                    opts.SpecVersion = OpenApiSpecVersion.OpenApi3_0;
+                    opts.AddCodeParameter = false;
+                    opts.PrependOperationWithRoutePrefix = true;
+                    opts.XmlPath = "TestFunction.xml";
+                    opts.Documents = new[]
+                    {
+                        new SwaggerDocument
+                        {
+                            Name = "v1",
+                            Title = "Swagger document",
+                            Description = "Swagger document",
+                            Version = "v2"
+                        }
+                    };
+                    opts.Title = "Swagger";
+                    opts.OverridenPathToSwaggerJson = new Uri(config[$"{nameof(SwaggerSettings)}:{nameof(SwaggerSettings.SwaggerJsonUri)}"]);
+                });
         }
     }
 }
