@@ -55,6 +55,13 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Purchases
                     ErrorCode.INCORRECT_LOYALTY_GROUP);
             }
 
+            if (program != null && !program.IsPublished)
+            {
+                throw new LoyaltyValidationException(
+                    "Cannot purchase not published program",
+                    ErrorCode.INCORRECT_LOYALTY_PROGRAM);
+            }
+
             var purchase = Purchase.Assign(
                 request.WorkerId,
                 request.LoyaltyProductGroupId, 
