@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
 using Loyalty.Core.Entities.Aggregates.ProductGroups;
+using Loyalty.Core.Entities.Aggregates.Products;
 using Loyalty.Core.Entities.Aggregates.Venues.ValueObjects;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Events.Venues;
@@ -146,8 +148,15 @@ namespace Loyalty.Core.Entities.Aggregates.Venues
             VenueStatus = VenueApprovalStatus.Rejected;
         }
 
-        public void AcceptNewOrders()
+        public void AcceptNewOrders(IEnumerable<Product> products)
         {
+            if (!products.Any(x => x.IsAvailableForOrder))
+            {
+                throw new LoyaltyValidationException(
+                    "Cannot set as available for order, when no products are available", 
+                    ErrorCode.VENUE_ACCEPT_ORDERS_INVALID_STATE);
+            }
+
             AcceptsOrders = true;
             AddDomainEvent(new VenueAcceptanceChangedDomainEvent(this));
         }

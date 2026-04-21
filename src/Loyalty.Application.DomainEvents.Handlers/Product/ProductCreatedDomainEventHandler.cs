@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Core.Entities.Events.Products;
+using Loyalty.Core.Outbox.Entities.Services;
 using Loyalty.Domain.Handlers.Notifications.Products;
 using MediatR;
 
@@ -9,11 +10,11 @@ namespace Loyalty.Application.DomainEvents.Handlers.Product
     public class ProductCreatedDomainEventHandler :
         INotificationHandler<ProductCreatedDomainEvent>
     {
-        private readonly IMediator mediator;
+        private readonly IEventBusService eventBusService;
 
-        public ProductCreatedDomainEventHandler(IMediator mediator)
+        public ProductCreatedDomainEventHandler(IEventBusService eventBusService)
         {
-            this.mediator = mediator;
+            this.eventBusService = eventBusService;
         }
 
         public async Task Handle(ProductCreatedDomainEvent domainEvent, CancellationToken cancellationToken)
@@ -21,7 +22,7 @@ namespace Loyalty.Application.DomainEvents.Handlers.Product
             var product = domainEvent.Product;
             var group = domainEvent.ProductGroup;
 
-            await mediator.Publish(
+            await eventBusService.PersistEventAsync(
                 new CreateProductNotification
                 {
                     Price = product.Price,
@@ -31,7 +32,7 @@ namespace Loyalty.Application.DomainEvents.Handlers.Product
                     GroupIcon = group.Icon,
                     GroupName = group.Name,
                     VenueId = group.VenueId
-                }, cancellationToken);
+                });
         }
     }
 }

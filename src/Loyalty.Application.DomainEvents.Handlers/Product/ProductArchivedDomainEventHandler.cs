@@ -24,6 +24,11 @@ namespace Loyalty.Application.DomainEvents.Handlers.Product
                 Id = domainEvent.Product.Id,
                 IsArchived = true,
             });
+
+            await eventBusService.PersistEventAsync(new ProductAcceptanceChangedNotification
+            {
+                Id = domainEvent.Product.VenueId,
+            });
         }
     }
 }

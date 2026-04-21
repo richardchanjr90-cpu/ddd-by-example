@@ -21,7 +21,6 @@ namespace Loyalty.Infrastructure.Handlers.Notifications.Input
             this.accessor = accessor;
         }
 
-
         public async Task Handle(WorkerAddedToVenueNotification notification, CancellationToken cancellationToken)
         {
             var worker = await workerRepository.GetByUidAsync(notification.WorkerId, cancellationToken);

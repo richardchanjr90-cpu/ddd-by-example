@@ -12,19 +12,22 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Venues
         : IRequestHandler<PatchOrderAcceptanceCommand, ICommandResult>
     {
         private readonly IVenueRepository venueRepository;
+        private readonly IProductRepository productRepository;
 
-        public PatchOrderAcceptanceCommandHandler(IVenueRepository venueRepository)
+        public PatchOrderAcceptanceCommandHandler(IVenueRepository venueRepository, IProductRepository productRepository)
         {
             this.venueRepository = venueRepository;
+            this.productRepository = productRepository;
         }
 
         public async Task<ICommandResult> Handle(PatchOrderAcceptanceCommand request, CancellationToken cancellationToken)
         {
             var venue = await venueRepository.GetAsync(request.VenueId, cancellationToken);
+            var products = await productRepository.GetByVenueAsync(request.VenueId, cancellationToken);
 
             if (request.Accept)
             {
-                venue.AcceptNewOrders();
+                venue.AcceptNewOrders(products);
             }
             else
             {
