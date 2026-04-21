@@ -15,7 +15,7 @@ namespace LoyaltyProgram.Storage
         public static async Task Run(
             [QueueTrigger("changedorder-notification", Connection = "QueueConnectionString")] OrderChangedDto data,
             ILogger log,
-            [NotificationHubs(Connection = "DefaultFullSharedAccessSignature", HubsName = "VenueHubsName")] IAsyncCollector<HubsMessage> output)
+            [NotificationHubs] IAsyncCollector<HubsMessage> output)
         {
             log.LogInformation($"{nameof(OrderChangedNotificationFunction)} was triggered.");
 
