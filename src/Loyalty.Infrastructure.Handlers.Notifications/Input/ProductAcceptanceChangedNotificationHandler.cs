@@ -30,6 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Notifications.Input
                 var venue = await venueRepository.GetAsync(notification.Id, cancellationToken);
                 venue.RejectNewOrders();
                 venueRepository.Update(venue);
+                await venueRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
             }
         }
     }
