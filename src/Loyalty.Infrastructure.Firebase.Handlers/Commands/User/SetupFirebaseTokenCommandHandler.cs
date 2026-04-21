@@ -35,9 +35,9 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
             var additionalClaims = new Dictionary<string, object>
             {
                 { ClaimTypes.Role, request.Role },
-                { CustomClaimsConstants.Firstname, Regex.Escape(request.Name) },
-                { CustomClaimsConstants.Lastname, Regex.Escape(request.Surname) },
-                { CustomClaimsConstants.City, Regex.Escape(request.City) }
+                { CustomClaimsConstants.Firstname, request.Name },
+                { CustomClaimsConstants.Lastname, request.Surname },
+                { CustomClaimsConstants.City, request.City }
             };
 
             foreach (var claim in additionalClaims)
