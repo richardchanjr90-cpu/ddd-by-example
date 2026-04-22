@@ -23,7 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                                                   ,[IsPublished]
                                                   ,[Url] as ExternalProgramUri
                                               FROM [loyalty].[LoyaltyProgram]
-                                          WHERE VenueId = @id";
+                                          WHERE VenueId = @id AND IsArchived = 0";
 
         public GetLoyaltyProgramsQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)
