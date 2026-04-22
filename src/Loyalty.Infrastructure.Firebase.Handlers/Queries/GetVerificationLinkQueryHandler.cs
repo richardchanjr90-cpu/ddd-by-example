@@ -29,22 +29,35 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
 
         public async Task<GetVerificationLinkQueryResult> Handle(GetVerificationLinkQuery request, CancellationToken cancellationToken)
         {
+            //var actionCodeSettings = new ActionCodeSettings
+            //{
+            //    HandleCodeInApp = true,
+            //    Url = "https://zalikstage.page.link/29hQ"
+            //};
+            var customToken = await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(request.UserId, cancellationToken);
+            var domain = "zalikstage.page.link";
+            var deepLink = HttpUtility.UrlEncode($"https://zalik.app?customToken={customToken}");
+            var packageName = options.Value.AndroidPackageName;
+            var bundleId = options.Value.IOsBundleId;
+
+            var customUrl =
+                $"https://{domain}/?link={deepLink}&apn={packageName}$ibi={bundleId}";
+
             var actionCodeSettings = new ActionCodeSettings
             {
                 HandleCodeInApp = true,
-                Url = "https://zalikstage.page.link/29hQ"
+                Url = customUrl
             };
 
-            if (!String.IsNullOrEmpty(options.Value.AndroidPackageName))
-            {
-                actionCodeSettings.AndroidPackageName = options.Value.AndroidPackageName;
-            }
+            //if (!String.IsNullOrEmpty(options.Value.AndroidPackageName))
+            //{
+            //    actionCodeSettings.AndroidPackageName = options.Value.AndroidPackageName;
+            //}
 
-            if (!String.IsNullOrEmpty(options.Value.IOsBundleId))
-            {
-                actionCodeSettings.AndroidPackageName = options.Value.IOsBundleId;
-            }
-
+            //if (!String.IsNullOrEmpty(options.Value.IOsBundleId))
+            //{
+            //    actionCodeSettings.AndroidPackageName = options.Value.IOsBundleId;
+            //}
             var link = String.Empty;
 
             try
