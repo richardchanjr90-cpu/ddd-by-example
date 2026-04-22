@@ -30,7 +30,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
                                               ,pr.ImageUri as ImageUrl
                                           FROM [loyalty].[Order] o JOIN [loyalty].OrderItem oir ON o.Id = oir.OrderId
                                           JOIN [loyalty].Product pr ON pr.Id = oir.ProductId
-                                          WHERE o.CustomerId = @userId AND o.VenueId = @venueId";
+                                          WHERE o.CreatedBy = @userId AND o.VenueId = @venueId";
 
         public GetOrdersByUserIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)
