@@ -67,7 +67,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Core.Outbox.Entitie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Notifications", "Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj", "{B3E55438-0F44-482D-ACE2-F526620B9197}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Infrastructure.Handlers.Commands", "Loyalty.Infrastructure.Handlers.Commands\Loyalty.Infrastructure.Handlers.Commands.csproj", "{BF3413A4-0104-4C36-9B48-B0C22563D720}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Infrastructure.Handlers.Commands", "Loyalty.Infrastructure.Handlers.Commands\Loyalty.Infrastructure.Handlers.Commands.csproj", "{BF3413A4-0104-4C36-9B48-B0C22563D720}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{3BAFCACE-4AC1-4425-BE2B-0DD128E7F154}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Infrastructure.Logging.AppInsights", "Loyalty.Infrastructure.Logging.AppInsights\Loyalty.Infrastructure.Logging.AppInsights.csproj", "{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -261,6 +265,14 @@ Global
 		{BF3413A4-0104-4C36-9B48-B0C22563D720}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF3413A4-0104-4C36-9B48-B0C22563D720}.Release|x64.ActiveCfg = Release|Any CPU
 		{BF3413A4-0104-4C36-9B48-B0C22563D720}.Release|x64.Build.0 = Release|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Debug|x64.Build.0 = Debug|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Release|x64.ActiveCfg = Release|Any CPU
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -297,6 +309,8 @@ Global
 		{B2DF84C6-4234-4ED4-878A-8A003CB87B80} = {D458F396-0D6C-480E-B9E7-0286C993DFF0}
 		{B3E55438-0F44-482D-ACE2-F526620B9197} = {0C247FF1-9D9F-4141-A3D7-5E179ABDE186}
 		{BF3413A4-0104-4C36-9B48-B0C22563D720} = {35349DA7-5230-4D08-9994-E72E62557D0E}
+		{3BAFCACE-4AC1-4425-BE2B-0DD128E7F154} = {35349DA7-5230-4D08-9994-E72E62557D0E}
+		{1E6C9EAA-112E-4978-A61E-6B8DDF1B680C} = {3BAFCACE-4AC1-4425-BE2B-0DD128E7F154}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {666B230A-1B30-4B4D-B6E5-48D3BE37B5D4}

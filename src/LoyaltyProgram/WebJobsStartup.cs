@@ -1,13 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using AzureExtensions.FunctionToken.Extensions;
 using AzureExtensions.FunctionToken.FunctionBinding.Options;
 using AzureFunctions.Extensions.NotificationHubs.Extensions;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.Logging.AppInsights;
 using LoyaltyProgram;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: WebJobsStartup(typeof(WebJobsStartup))]
 namespace LoyaltyProgram
@@ -30,6 +35,29 @@ namespace LoyaltyProgram
             });
 
             builder.AddNotificationHubs();
+
+            var configDescriptor = builder.Services.SingleOrDefault(tc => tc.ServiceType == typeof(TelemetryConfiguration));
+
+            var implFactory = configDescriptor?.ImplementationFactory;
+
+            if (implFactory != null)
+            {
+                builder.Services.Remove(configDescriptor);
+                builder.Services.AddSingleton(provider =>
+                {
+                    if (implFactory.Invoke(provider) is TelemetryConfiguration telemetryConfiguration)
+                    {
+                        var httpAccessor = provider.GetService<IHttpContextAccessor>();
+
+                        telemetryConfiguration.TelemetryInitializers.Add(new TelemetryInitializer(httpAccessor));
+                        telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new MyTelemetryProcessor(next));
+                        telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
+
+                        return config;
+                    }
+                    return null;
+                });
+            }
         }
     }
 }

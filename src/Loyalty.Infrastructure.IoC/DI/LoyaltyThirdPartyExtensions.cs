@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using AutoMapper;
 using Loyalty.Application.AutoMapper;
 using Loyalty.Application.DomainEvents.Handlers.ProductGroup;
@@ -8,7 +9,10 @@ using Loyalty.Infrastructure.Handlers;
 using Loyalty.Infrastructure.Handlers.Commands;
 using Loyalty.Infrastructure.Handlers.Commands.Pipelines;
 using Loyalty.Infrastructure.Handlers.Notifications.Base;
+using Loyalty.Infrastructure.Logging.AppInsights;
 using MediatR;
+using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Loyalty.Infrastructure.IoC.DI

@@ -40,16 +40,6 @@ namespace Loyalty.Infrastructure.Outbox
             }
         }
 
-        private static List<Type> LoadEventTypes()
-        {
-            var interfaceType = typeof(INotification);
-
-            return typeof(IVenueIntegrationEventsNotification).Assembly
-                .GetTypes()
-                .Where(t => interfaceType.IsAssignableFrom(t) && t.IsClass)
-                .ToList();
-        }
-
         public virtual async Task<List<IntegrationEventLogEntry>> RetrieveNotProcessedEvents(Guid transactionId)
         {
             var result = await dbContext.IntegrationEvents
@@ -78,6 +68,16 @@ namespace Loyalty.Infrastructure.Outbox
         public Task MarkEventAsFailedAsync(Guid eventId)
         {
             return UpdateEventStatus(eventId, EventStateEnum.PublishedFailed);
+        }
+
+        private static List<Type> LoadEventTypes()
+        {
+            var interfaceType = typeof(INotification);
+
+            return typeof(IVenueIntegrationEventsNotification).Assembly
+                .GetTypes()
+                .Where(t => interfaceType.IsAssignableFrom(t) && t.IsClass)
+                .ToList();
         }
 
         private Task UpdateEventStatus(Guid eventId, EventStateEnum status)
