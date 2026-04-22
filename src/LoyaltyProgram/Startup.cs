@@ -3,7 +3,6 @@ using System.Reflection;
 using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
-using Loyalty.Infrastructure.Handlers.Notifications;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
 using LoyaltyProgram;

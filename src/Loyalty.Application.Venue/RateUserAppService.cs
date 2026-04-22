@@ -4,7 +4,6 @@ using FluentValidation;
 using Loyalty.Application.ViewModels.Rate;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Handlers.Notifications.Rate;
 using Loyalty.Domain.Handlers.Queries.Commands.Orders;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;

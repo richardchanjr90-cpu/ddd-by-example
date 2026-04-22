@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.15" />
     <PackageReference Include="MediatR" Version="8.0.1" />
   </ItemGroup>
 

@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Http;

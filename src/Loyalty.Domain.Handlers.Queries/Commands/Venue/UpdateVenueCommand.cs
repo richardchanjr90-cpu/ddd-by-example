@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Shared.Contracts.Enums;

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using AzureExtensions.FunctionToken;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;

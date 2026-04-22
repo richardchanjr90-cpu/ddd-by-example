@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 

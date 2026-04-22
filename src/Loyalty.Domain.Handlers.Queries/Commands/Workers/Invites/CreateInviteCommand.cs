@@ -1,5 +1,4 @@
-﻿using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Shared.Contracts.Enums;
+﻿using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 

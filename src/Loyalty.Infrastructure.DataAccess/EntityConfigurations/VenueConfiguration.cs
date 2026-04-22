@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using Loyalty.Core.Entities.Aggregates.Venues;
+﻿using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Aggregates.Venues.ValueObjects;
 using Loyalty.Core.Entities.Schema;
 using Microsoft.EntityFrameworkCore;

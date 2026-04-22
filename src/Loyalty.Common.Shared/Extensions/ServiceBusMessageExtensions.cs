@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using System.Text.Json;
-using MediatR;
 using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Common.Shared.Extensions
