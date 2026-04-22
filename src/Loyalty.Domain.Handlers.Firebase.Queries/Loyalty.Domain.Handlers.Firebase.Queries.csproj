@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.15" />
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.15" />
-    <PackageReference Include="FirebaseAdmin" Version="1.12.0" />
+    <PackageReference Include="FirebaseAdmin" Version="1.13.0" />
   </ItemGroup>
 
   <ItemGroup>

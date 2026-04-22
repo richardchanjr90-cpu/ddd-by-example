@@ -14,8 +14,8 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Loyalty.Application.Venue
 {

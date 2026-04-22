@@ -8,17 +8,17 @@
   <ItemGroup>
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.15" />
     <PackageReference Include="AzureFunctions.Extensions.NotificationHubs" Version="1.0.1" />
-    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.2.0-beta" />
-    <PackageReference Include="FirebaseAdmin" Version="1.12.0" />
+    <PackageReference Include="AzureExtensions.Swashbuckle" Version="3.2.2" />
+    <PackageReference Include="FirebaseAdmin" Version="1.13.0" />
     <PackageReference Include="LoyaltyClient.Domain.Handlers.Notifications" Version="1.0.13" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SendGrid" Version="3.0.0" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="4.1.2" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="3.0.11" />
+    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="4.0.2" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Scrutor" Version="3.2.1" />
-    <PackageReference Include="SendGrid" Version="9.15.1" />
+    <PackageReference Include="SendGrid" Version="9.16.0" />
   </ItemGroup>
   
   <ItemGroup>

@@ -16,11 +16,11 @@ using Loyalty.Shared.Contracts.Enums;
 using LoyaltyProgram.Http.Write.VenueImages;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.Write.VenueLogo
 {
@@ -33,7 +33,8 @@ namespace LoyaltyProgram.Http.Write.VenueLogo
         public VenueCreateLogoFunction(
             LoyaltyVenueAppService service, 
             LoyaltyVenueImageAppService imageService,
-            IOptions<ImageSettings> imageSettings, ILoyaltyTenantDbContext context) 
+            IOptions<ImageSettings> imageSettings, 
+            ILoyaltyTenantDbContext context) 
             : base(context)
         {
             this.service = service;

@@ -5,14 +5,12 @@ using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace LoyaltyProgram.Http.Read.VenueImages
 {
