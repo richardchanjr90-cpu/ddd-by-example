@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Loyalty.Application.Venue;
@@ -25,9 +26,9 @@ namespace LoyaltyProgram.Http.Read.Ping
         {
             log.LogInformation($"{nameof(PingFunction)} was triggered.");
 
-            var result = await service.GetAllVenuesForAdmin();
+            var result = await service.Get(String.Empty);
 
-            return new OkObjectResult(result.FirstOrDefault());
+            return new OkObjectResult(result);
         }
     }
 }
