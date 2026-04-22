@@ -21,7 +21,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                                                   ,[EndDate]
                                                   ,[VenueId]
                                                   ,[IsPublished]
-                                                  ,[ExternalProgramUri] as ExternalProgramUri
+                                                  ,[Url] as ExternalProgramUri
                                               FROM [loyalty].[LoyaltyProgram]
                                           WHERE VenueId = @id";
 
