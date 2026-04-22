@@ -38,8 +38,7 @@ namespace Loyalty.Infrastructure.Logging.AppInsights
                     if (accessor.HttpContext.User != null && !String.IsNullOrEmpty(userId))
                     {
                         telemetry.Context.User.Id = userId;
-                        telemetry.Context.Session.Id = accessor.HttpContext.Session.Id;
-
+                        //telemetry.Context.Session.Id = accessor.HttpContext.Session.Id;
                         requestTelemetry.Properties.Add(City, city);
                         requestTelemetry.Properties.Add(Phone, phone);
                         requestTelemetry.Properties.Add(Role, role);
