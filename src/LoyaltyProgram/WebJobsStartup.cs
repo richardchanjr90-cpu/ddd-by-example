@@ -36,6 +36,7 @@ namespace LoyaltyProgram
 
             builder.AddNotificationHubs();
 
+            builder.Services.AddHttpContextAccessor();
             var configDescriptor = builder.Services.SingleOrDefault(tc => tc.ServiceType == typeof(TelemetryConfiguration));
 
             var implFactory = configDescriptor?.ImplementationFactory;
@@ -53,7 +54,7 @@ namespace LoyaltyProgram
                         telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new MyTelemetryProcessor(next));
                         telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
 
-                        return config;
+                        return telemetryConfiguration;
                     }
                     return null;
                 });
