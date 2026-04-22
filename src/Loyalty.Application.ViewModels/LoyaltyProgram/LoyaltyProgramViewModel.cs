@@ -23,7 +23,7 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
         [JsonPropertyName("endedDate")]
         public DateTime EndedDate { get; set; }
 
-        [JsonPropertyName("url")]
-        public string Url { get; set; }
+        [JsonPropertyName("externalProgramUri")]
+        public string ExternalProgramUri { get; set; }
     }
 }

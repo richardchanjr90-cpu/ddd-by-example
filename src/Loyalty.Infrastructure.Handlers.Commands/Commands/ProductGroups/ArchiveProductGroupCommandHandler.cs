@@ -43,7 +43,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.ProductGroups
 
             group?.Archive();
 
-            groupRepository.Update(group);
+            if (group != null)
+            {
+                groupRepository.Update(group);
+            }
 
             var result = new CommandResult
             {

@@ -16,6 +16,6 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram
 
         public DateTime? EndedDate { get; set; }
 
-        public Uri Url { get; set; }
+        public Uri ExternalProgramUri { get; set; }
     }
 }

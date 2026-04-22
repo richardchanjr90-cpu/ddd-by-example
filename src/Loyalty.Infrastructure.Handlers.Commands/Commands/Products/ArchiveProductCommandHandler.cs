@@ -25,7 +25,10 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.Products
 
             product?.Archive();
 
-            productRepository.Update(product);
+            if (product != null)
+            {
+                productRepository.Update(product);
+            }
 
             var result = new CommandResult
             {

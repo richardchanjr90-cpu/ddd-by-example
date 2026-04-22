@@ -23,13 +23,16 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyProductGroups
         {
             var program = await programRepository.GetByLoyaltyGroupId(request.Id, cancellationToken);
 
-            program.ArchiveGroup(request.Id);
-            programRepository.Update(program);
+            if (program != null)
+            {
+                program.ArchiveGroup(request.Id);
+                programRepository.Update(program);
+            }
 
             var result = new CommandResult
             {
                 Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
-                Result = request.Id
+                Result = request?.Id
             };
 
             return result;

@@ -26,19 +26,17 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyPrograms
         {
             var program = await programRepository.GetAsync(request.Id, cancellationToken);
 
-            if (program == null)
+            program?.Archive();
+
+            if (program != null)
             {
-                throw new LoyaltyValidationException("Does not exist.", ErrorCode.INCORRECT_LOYALTY_PROGRAM);
+                programRepository.Update(program);
             }
-
-            program.Archive();
-
-            programRepository.Update(program);
 
             var result = new CommandResult
             {
                 Success = await programRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken),
-                Result = program.Id
+                Result = program?.Id
             };
 
             return result;
