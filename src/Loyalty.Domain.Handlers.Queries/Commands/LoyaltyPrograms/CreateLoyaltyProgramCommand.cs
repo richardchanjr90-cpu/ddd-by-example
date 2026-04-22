@@ -18,6 +18,6 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms
 
         public string UserId { get; set; }
 
-        public Uri Url { get; set; }
+        public Uri ExternalProgramUri { get; set; }
     }
 }

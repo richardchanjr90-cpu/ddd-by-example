@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
@@ -20,7 +19,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                                                   ,[EndDate]
                                                   ,[VenueId]
                                                   ,[IsPublished]
-                                                  ,[Url] as ExternalProgramUri
+                                                  ,[ExternalProgramUri] as ExternalProgramUri
                                               FROM [loyalty].[LoyaltyProgram]
                                           WHERE Id = @id";
 

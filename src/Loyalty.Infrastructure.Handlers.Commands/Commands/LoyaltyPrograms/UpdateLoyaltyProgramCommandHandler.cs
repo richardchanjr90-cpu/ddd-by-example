@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyPrograms
                 request.StartedDate, 
                 request.EndedDate, 
                 request.IsPublished,
-                request.Url);
+                request.ExternalProgramUri);
 
             programRepository.Update(program);
 

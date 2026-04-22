@@ -29,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyPrograms
                 request.StartedDate,
                 request.EndedDate,
                 request.VenueId,
-                request.Url);
+                request.ExternalProgramUri);
 
             await programRepository.AddAsync(program);
 
