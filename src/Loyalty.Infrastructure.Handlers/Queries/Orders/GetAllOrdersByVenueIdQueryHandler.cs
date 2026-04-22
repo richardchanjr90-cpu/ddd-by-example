@@ -37,7 +37,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
         {
         }
 
-        public Task<GetOrdersByVenueIdQueryResult> Handle(GetAllOrdersByVenueIdQuery request, CancellationToken cancellationToken)
+        public Task<GetOrdersByVenueIdQueryResult> Handle(
+            GetAllOrdersByVenueIdQuery request, 
+            CancellationToken cancellationToken)
         {
             var id = request.VenueId;
 
