@@ -15,13 +15,13 @@ namespace Loyalty.Common.Shared.Extensions
     {
         public static string GetUserId(this ClaimsPrincipal principal)
         {
-            var identity = principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var identity = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             return identity;
         }
 
         public static string GetPhone(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.MobilePhone)?.Value;
             return claim;
         }
 
@@ -59,7 +59,7 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static string GetCity(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.City).Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.City)?.Value;
             return claim;
         }
 

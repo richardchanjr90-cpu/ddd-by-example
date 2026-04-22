@@ -31,17 +31,21 @@ namespace Loyalty.Infrastructure.Logging.AppInsights
                 if (requestTelemetry != null)
                 {
                     var userId = accessor.HttpContext.User?.GetUserId();
-                    var city = accessor.HttpContext.User?.GetCity();
-                    var phone = accessor.HttpContext.User?.GetPhone();
-                    var role = accessor.HttpContext.User?.GetRole().ToString();
 
-                    if (accessor.HttpContext.User != null && !String.IsNullOrEmpty(userId))
+                    if (!String.IsNullOrEmpty(userId))
                     {
-                        telemetry.Context.User.Id = userId;
-                        //telemetry.Context.Session.Id = accessor.HttpContext.Session.Id;
-                        requestTelemetry.Properties.Add(City, city);
-                        requestTelemetry.Properties.Add(Phone, phone);
-                        requestTelemetry.Properties.Add(Role, role);
+                        var city = accessor.HttpContext.User?.GetCity();
+                        var phone = accessor.HttpContext.User?.GetPhone();
+                        var role = accessor.HttpContext.User?.GetRole().ToString();
+
+                        if (accessor.HttpContext.User != null && !String.IsNullOrEmpty(userId))
+                        {
+                            telemetry.Context.User.Id = userId;
+                            //telemetry.Context.Session.Id = accessor.HttpContext.Session.Id;
+                            requestTelemetry.Properties.Add(City, city);
+                            requestTelemetry.Properties.Add(Phone, phone);
+                            requestTelemetry.Properties.Add(Role, role);
+                        }
                     }
                 }
             }
