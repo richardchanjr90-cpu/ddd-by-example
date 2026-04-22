@@ -26,7 +26,6 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehaviour<,>));
 
             if (!EnvironmentExtensions.IsProd())
