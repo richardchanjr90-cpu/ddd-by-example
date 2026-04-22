@@ -1,36 +1,57 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Products
 {
-    public class GetProductsQueryHandler 
-        : BaseHandler, IRequestHandler<GetProductsQuery, GetProductsQueryResult>
+    public class GetProductsQueryHandler
+        : BaseDapperHandler, IRequestHandler<GetProductsQuery, GetProductsQueryResult>
     {
-        public GetProductsQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private const string SelectQuery = @"SELECT [Id]
+                                              ,[Name]
+                                              ,[Icon]
+                                              ,[ProductGroupId]
+                                              ,[ImageUri]
+                                              ,[Price]
+                                              ,[IsAvailableForOrder]
+                                              ,[ExternalUid]
+                                              ,[Description]
+                                          FROM [loyalty].[Product]
+                                          WHERE ProductGroupId = @id AND IsArchived = 0";
+
+        public GetProductsQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
         }
 
-        public async Task<GetProductsQueryResult> Handle(GetProductsQuery request, CancellationToken cancellationToken)
+        public Task<GetProductsQueryResult> Handle(
+            GetProductsQuery request,
+            CancellationToken cancellationToken)
         {
-            var items = await (from lp in Context.Products
-                where lp.ProductGroupId == request.ProductGroupId
-                select lp)
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
-
-            return new GetProductsQueryResult
+            using (Connection)
             {
-                Result = items.ToResults()
-            };
+                Connection.Open();
+
+                var rows = Connection.Query<GetProductByIdQueryResult>(
+                    SelectQuery,
+                    new
+                    {
+                        id = request.ProductGroupId
+                    })
+                    .ToList();
+
+                return Task.FromResult(new GetProductsQueryResult()
+                {
+                    Result = rows ?? new List<GetProductByIdQueryResult>()
+                });
+            }
         }
     }
 }

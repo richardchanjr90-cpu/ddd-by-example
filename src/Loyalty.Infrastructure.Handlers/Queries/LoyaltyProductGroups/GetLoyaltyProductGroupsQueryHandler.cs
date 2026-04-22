@@ -18,7 +18,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
         : BaseDapperHandler, IRequestHandler<GetLoyaltyProductGroupQuery, GetLoyaltyProductGroupsQueryResult>
     {
         private readonly SqlConnection connection;
-        private readonly IHttpContextAccessor accessor;
 
         private const string SelectQuery = @"SELECT 
                                                    lpg.[Id]
@@ -42,7 +41,6 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyProductGroups
             : base(connection, accessor)
         {
             this.connection = connection;
-            this.accessor = accessor;
         }
 
         public async Task<GetLoyaltyProductGroupsQueryResult> Handle(

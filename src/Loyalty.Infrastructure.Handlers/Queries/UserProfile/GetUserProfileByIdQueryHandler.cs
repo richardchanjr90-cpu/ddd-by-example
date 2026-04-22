@@ -1,45 +1,51 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
 {
-    public class GetUserProfileByIdQueryHandler 
-        : BaseHandler, IRequestHandler<GetUserProfileByIdQuery, GetUserProfileByIdQueryResult>
+    public class GetUserProfileByIdQueryHandler
+        : BaseDapperHandler, IRequestHandler<GetUserProfileByIdQuery, GetUserProfileByIdQueryResult>
     {
-        public GetUserProfileByIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private const string SelectQuery = @"SELECT [Id]
+                                              ,[WorkerId]
+                                              ,[Phone]
+                                              ,[Name]
+                                              ,[LastName]
+                                              ,[Email]
+                                              ,[PhotoUri]
+                                              ,[IsArchived]
+                                              ,[City]
+                                          FROM [loyalty].[Worker]
+                                          WHERE WorkerId = @id";
+
+        public GetUserProfileByIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
         }
 
-        public async Task<GetUserProfileByIdQueryResult> Handle(
+        public Task<GetUserProfileByIdQueryResult> Handle(
             GetUserProfileByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var worker = await Context.Workers
-                .IgnoreQueryFilters()
-                .Include(x => x.VenueRoles)
-                .Where(x => x.WorkerId == request.UserId)
-                .AsNoTracking()
-                .SingleAsync(cancellationToken);
-
-            var result = new GetUserProfileByIdQueryResult()
+            using (Connection)
             {
-                PhotoUri = worker.PhotoUri,
-                Email = worker.Email,
-                LastName = worker.LastName,
-                Name = worker.Name,
-                Phone = worker.Phone,
-            };
+                Connection.Open();
 
-            return result;
+                var row = Connection.QuerySingle<GetUserProfileByIdQueryResult>(
+                    SelectQuery,
+                    new
+                    {
+                        id = request.UserId
+                    });
+
+                return Task.FromResult(row);
+            }
         }
     }
 }

@@ -1,41 +1,81 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Orders;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Infrastructure.Handlers.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Orders
 {
     public class GetAllOrdersByVenueIdQueryHandler
-        : BaseHandler, IRequestHandler<GetAllOrdersByVenueIdQuery, GetOrdersByVenueIdQueryResult>
+        : BaseDapperHandler, IRequestHandler<GetAllOrdersByVenueIdQuery, GetOrdersByVenueIdQueryResult>
     {
-        public GetAllOrdersByVenueIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private const string SelectQuery = @"SELECT 
+                                               o.[Id]
+                                              ,o.[VenueId]
+                                              ,o.[PlacedDate]
+                                              ,o.[CreatedBy] as CustomerId
+                                              ,o.[PickUpTime]
+                                              ,o.[Comment]
+                                              ,o.[Status]
+                                              ,oir.[Id]
+                                              ,oir.[Amount]
+                                              ,oir.[ProductId]
+                                              ,pr.[Price]
+                                              ,pr.[Name] as [ProductName]
+                                              ,pr.ImageUri as ImageUrl
+                                          FROM [loyalty].[Order] o JOIN [loyalty].OrderItem oir ON o.Id = oir.OrderId
+                                          JOIN [loyalty].Product pr ON pr.Id = oir.ProductId
+                                          WHERE o.VenueId = @id";
+
+        public GetAllOrdersByVenueIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
         }
 
-        public async Task<GetOrdersByVenueIdQueryResult> Handle(
-            GetAllOrdersByVenueIdQuery request,
-            CancellationToken cancellationToken)
+        public Task<GetOrdersByVenueIdQueryResult> Handle(GetAllOrdersByVenueIdQuery request, CancellationToken cancellationToken)
         {
-            var orders = await Context.Orders
-                .Include(x => x.OrderItems)
-                .ThenInclude(x => x.Product)
-                .Where(x => x.VenueId == request.VenueId)
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+            var id = request.VenueId;
 
-            return new GetOrdersByVenueIdQueryResult
+            using (Connection)
             {
-                Orders = orders.ToResults()
-            };
+                Connection.Open();
+
+                var orderDictionary = new Dictionary<long, GetOrderByVenueIdQueryResult>();
+
+                var rows = Connection.Query<
+                        GetOrderByVenueIdQueryResult,
+                        GetOrderItemByVenueIdQueryResult,
+                        GetOrderByVenueIdQueryResult>(
+                        SelectQuery,
+                        (order, orderItem) =>
+                        {
+                            if (!orderDictionary.TryGetValue(order.Id, out var orderEntry))
+                            {
+                                orderEntry = order;
+                                orderEntry.OrderItems = new List<GetOrderItemByVenueIdQueryResult>();
+                                orderDictionary.Add(order.Id, order);
+                            }
+
+                            orderEntry.OrderItems.Add(orderItem);
+                            return orderEntry;
+                        }, new
+                        {
+                            id
+                        },
+                        splitOn: "Id")
+                    .Distinct()
+                    .ToList();
+
+                return Task.FromResult(new GetOrdersByVenueIdQueryResult()
+                {
+                    Orders = rows ?? new List<GetOrderByVenueIdQueryResult>()
+                });
+            }
         }
     }
 }

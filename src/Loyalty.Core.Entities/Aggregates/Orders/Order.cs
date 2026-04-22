@@ -9,7 +9,6 @@ using Loyalty.Core.Entities.Aggregates.Orders.Status.Abstract;
 using Loyalty.Core.Entities.Aggregates.Venues;
 using Loyalty.Core.Entities.Base;
 using Loyalty.Core.Entities.Events.Orders;
-using Loyalty.Core.Entities.Schema;
 using Loyalty.Core.Entities.SeedWork.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 

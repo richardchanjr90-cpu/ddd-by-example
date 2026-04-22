@@ -1,43 +1,51 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProgram;
 using Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
 {
-    public class GetLoyaltyProgramByIdQueryHandler 
-        : BaseHandler, IRequestHandler<GetLoyaltyProgramByIdQuery, GetLoyaltyProgramByIdQueryResult>
+    public class GetLoyaltyProgramByIdQueryHandler
+        : BaseDapperHandler,  IRequestHandler<GetLoyaltyProgramByIdQuery, GetLoyaltyProgramByIdQueryResult>
     {
-        public GetLoyaltyProgramByIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private const string SelectQuery = @"SELECT [Id]
+                                                  ,[Name]
+                                                  ,[Description]
+                                                  ,[StartDate]
+                                                  ,[EndDate]
+                                                  ,[VenueId]
+                                                  ,[IsPublished]
+                                                  ,[Url]
+                                              FROM [loyalty].[LoyaltyProgram]
+                                          WHERE o.Id = @id";
+
+        public GetLoyaltyProgramByIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
         }
 
-        public async Task<GetLoyaltyProgramByIdQueryResult> Handle(
+        public Task<GetLoyaltyProgramByIdQueryResult> Handle(
             GetLoyaltyProgramByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var item = await (from lp in Context.LoyaltyPrograms
-                where lp.VenueId == request.VenueId && lp.Id == request.Id
-                select new GetLoyaltyProgramByIdQueryResult
-                {
-                    Id = lp.Id,
-                    Description = lp.Description,
-                    StartedDate = lp.StartDate,
-                    EndedDate = lp.EndDate,
-                    Name = lp.Name,
-                    IsPublished = lp.IsPublished
-                })
-                .AsNoTracking()
-                .SingleOrDefaultAsync(cancellationToken);
+            using (Connection)
+            {
+                Connection.Open();
 
-            return item;
+                var row = Connection.QuerySingle<GetLoyaltyProgramByIdQueryResult>(
+                    SelectQuery,
+                    new
+                    {
+                        id = request.Id
+                    });
+
+                return Task.FromResult(row);
+            }
         }
     }
 }
