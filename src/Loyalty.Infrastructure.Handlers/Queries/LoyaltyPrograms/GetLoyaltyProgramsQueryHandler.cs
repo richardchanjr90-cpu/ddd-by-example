@@ -23,7 +23,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                                                   ,[IsPublished]
                                                   ,[Url]
                                               FROM [loyalty].[LoyaltyProgram]
-                                          WHERE o.VenueId = @id";
+                                          WHERE VenueId = @id";
 
         public GetLoyaltyProgramsQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)

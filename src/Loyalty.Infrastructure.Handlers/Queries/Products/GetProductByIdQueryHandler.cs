@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Products
             {
                 Connection.Open();
 
-                var row = Connection.QuerySingle<GetProductByIdQueryResult>(
+                var row = Connection.QuerySingleOrDefault<GetProductByIdQueryResult>(
                     SelectQuery,
                     new
                     {

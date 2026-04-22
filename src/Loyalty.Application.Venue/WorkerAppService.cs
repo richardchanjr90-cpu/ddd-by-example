@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureExtensions.FunctionToken;
 using FluentValidation;
 using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Application.ViewModels.UserProfile;
@@ -73,7 +72,9 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Invite(InviteViewModel model)
         {
-            new WorkerInviteValidator().ValidateAndThrow(model);
+            new WorkerInviteValidator()
+                .ValidateAndThrow(model);
+
             var command = mapper.Map<CreateInviteCommand>(model);
 
             return await Mediator.Send(command);
@@ -107,6 +108,14 @@ namespace Loyalty.Application.Venue
 
             var user = await Mediator.Send(new GetCurrentUserQuery()
             {
+                UserId = userId
+            });
+
+            var updateEmailResult = await Mediator.Send(new UpdateUserEmailCommand()
+            {
+                CurrentEmail = user.Email,
+                IsEmailVerified = user.IsEmailVerified,
+                NewEmail = model.Email,
                 UserId = userId
             });
 

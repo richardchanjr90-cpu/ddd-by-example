@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using FirebaseAdmin.Auth;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
@@ -52,7 +54,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                     link = await FirebaseAuth.DefaultInstance.GenerateEmailVerificationLinkAsync(
                         request.NewEmail, actionCodeSettings, cancellationToken);
 
-                    //await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(request.UserId, cancellationToken);
+                    var customToken = await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(request.UserId, cancellationToken);
+                    link = $"{link}" + HttpUtility.UrlEncode($"&customToken={customToken}");
                 }
             }
             catch (Exception e)

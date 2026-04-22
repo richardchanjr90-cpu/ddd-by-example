@@ -22,7 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
                                                   ,[IsPublished]
                                                   ,[Url]
                                               FROM [loyalty].[LoyaltyProgram]
-                                          WHERE o.Id = @id";
+                                          WHERE Id = @id";
 
         public GetLoyaltyProgramByIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
             : base(connection, accessor)
@@ -37,7 +37,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.LoyaltyPrograms
             {
                 Connection.Open();
 
-                var row = Connection.QuerySingle<GetLoyaltyProgramByIdQueryResult>(
+                var row = Connection.QuerySingleOrDefault<GetLoyaltyProgramByIdQueryResult>(
                     SelectQuery,
                     new
                     {
