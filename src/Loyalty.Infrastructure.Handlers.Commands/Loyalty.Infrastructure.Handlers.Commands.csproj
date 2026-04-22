@@ -5,8 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\Cards\**" />
+    <Compile Remove="Commands\Stamps\**" />
     <Compile Remove="Queries\Cards\**" />
+    <EmbeddedResource Remove="Commands\Cards\**" />
+    <EmbeddedResource Remove="Commands\Stamps\**" />
     <EmbeddedResource Remove="Queries\Cards\**" />
+    <None Remove="Commands\Cards\**" />
+    <None Remove="Commands\Stamps\**" />
     <None Remove="Queries\Cards\**" />
   </ItemGroup>
 
@@ -17,11 +23,6 @@
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
-    <PackageReference Include="Dapper" Version="2.0.35" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,4 +38,5 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+
 </Project>

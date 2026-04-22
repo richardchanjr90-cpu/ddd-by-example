@@ -5,6 +5,7 @@ using Loyalty.Application.DomainEvents.Handlers.ProductGroup;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Infrastructure.Firebase.Handlers;
 using Loyalty.Infrastructure.Handlers;
+using Loyalty.Infrastructure.Handlers.Commands.Commands.Workers;
 using Loyalty.Infrastructure.Handlers.Notifications.Base;
 using Loyalty.Infrastructure.Handlers.Pipelines;
 using MediatR;
@@ -21,6 +22,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddMediatR(typeof(BaseNotificationHandler).Assembly);
             services.AddMediatR(typeof(BaseFirebaseHandler).Assembly);
             services.AddMediatR(typeof(ProductGroupArchivedDomainEventHandler).Assembly);
+            services.AddMediatR(typeof(UpdateWorkerCommandHandler).Assembly);
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 

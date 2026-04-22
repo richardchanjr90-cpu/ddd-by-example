@@ -51,6 +51,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                 {
                     link = await FirebaseAuth.DefaultInstance.GenerateEmailVerificationLinkAsync(
                         request.NewEmail, actionCodeSettings, cancellationToken);
+
+                    //await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(request.UserId, cancellationToken);
                 }
             }
             catch (Exception e)
