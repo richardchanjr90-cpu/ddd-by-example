@@ -66,10 +66,11 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                 {
                     link = await FirebaseAuth.DefaultInstance.GenerateEmailVerificationLinkAsync(
                         request.NewEmail, actionCodeSettings, cancellationToken);
-
-                    var customToken = await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(request.UserId, cancellationToken);
-                    link = $"{link}" + HttpUtility.UrlEncode($"&customToken={customToken}");
                 }
+            }
+            catch (FirebaseAuthException ex)
+            {
+                throw new LoyaltyValidationException("Failed to change email.", ex);
             }
             catch (Exception e)
             {
@@ -79,6 +80,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                         "Failed to change email. Too many attempts.", 
                         ErrorCode.TOO_MANY_ATTEMPTS_TRY_LATER);
                 }
+
+                throw;
             }
 
             return new GetVerificationLinkQueryResult
