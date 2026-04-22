@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
-using Loyalty.Core.Entities;
 using Loyalty.Domain.Handlers.Queries.Queries.Code;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Code;
 using MediatR;
@@ -30,7 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Code
                                   FROM [loyalty].[UserCode]
                                   WHERE CodeValue = @Code";
 
-            var result = connection.QueryFirstOrDefault<UserCode>(getUserByCodeQuery, new
+            var result = await connection.QueryFirstAsync(getUserByCodeQuery, new
             {
                 request.Code
             });
