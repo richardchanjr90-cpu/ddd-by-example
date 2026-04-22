@@ -8,7 +8,7 @@ using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace Loyalty.Infrastructure.Handlers.Pipelines
+namespace Loyalty.Infrastructure.Handlers.Commands.Pipelines
 {
     public class TransactionBehaviour<TRequest, TResponse>
         : IPipelineBehavior<TRequest, TResponse>

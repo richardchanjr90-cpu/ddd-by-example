@@ -1,10 +1,8 @@
 ﻿using System.Security.Claims;
-using Loyalty.Core.Contracts;
-using Loyalty.Infrastructure.DataAccess;
 using Loyalty.Infrastructure.DataAccess.Context.Interface;
 using Microsoft.AspNetCore.Http;
 
-namespace Loyalty.Infrastructure.Handlers
+namespace Loyalty.Infrastructure.Handlers.Commands
 {
     public abstract class BaseHandler
     {

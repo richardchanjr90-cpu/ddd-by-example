@@ -22,7 +22,7 @@ namespace Loyalty.Infrastructure.IoC.DI
             services.AddMediatR(typeof(BaseNotificationHandler).Assembly);
             services.AddMediatR(typeof(BaseFirebaseHandler).Assembly);
             services.AddMediatR(typeof(ProductGroupArchivedDomainEventHandler).Assembly);
-            services.AddMediatR(typeof(UpdateWorkerCommandHandler).Assembly);
+            services.AddMediatR(typeof(BaseDapperHandler).Assembly);
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
