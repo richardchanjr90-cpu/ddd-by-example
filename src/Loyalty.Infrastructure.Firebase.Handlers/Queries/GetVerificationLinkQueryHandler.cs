@@ -36,7 +36,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
             //};
             var customToken = await FirebaseAuth.DefaultInstance.CreateCustomTokenAsync(request.UserId, cancellationToken);
             var domain = "zalikstage.page.link";
-            var deepLink = HttpUtility.UrlEncode($"https://zalik.app?customToken={customToken}");
+            var deepLink = HttpUtility.UrlEncode($"https://zalikstage.page.link/29hQ?customToken={customToken}");
             var packageName = options.Value.AndroidPackageName;
             var bundleId = options.Value.IOsBundleId;
 
