@@ -131,21 +131,6 @@ namespace Loyalty.Application.Venue
             return result;
         }
 
-        public async Task<ICommandResult> CompleteEmail(PatchEmailViewModel model, string userId)
-        {
-            var user = await Mediator.Send(new GetCurrentUserQuery()
-            {
-                UserId = userId
-            });
-
-            return await Mediator.Send(new UpdateEmailCommand()
-            {
-                WorkerId = userId,
-                Email = model.Email,
-                IsEmailVerified = user.IsEmailVerified
-            });
-        }
-
         public async Task<ICommandResult> Archive(long venueId, long id, string userId)
         {
             var command = new ArchiveWorkerCommand

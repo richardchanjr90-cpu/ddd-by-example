@@ -9,5 +9,9 @@
         public string AndroidPackageName { get; set; }
 
         public string IOsBundleId { get; set; }
+
+        public string EmailLink { get; set; }
+
+        public string LinkDomain { get; set; }
     }
 }
