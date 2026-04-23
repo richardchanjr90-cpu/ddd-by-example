@@ -15,13 +15,13 @@ namespace LoyaltyProgram
 
         public void Process(ITelemetry item)
         {
-            if (item is RequestTelemetry request)
-            {
-                if (request.ResponseCode == "200")
-                {
-                    return;
-                }
-            }
+            //if (item is RequestTelemetry request)
+            //{
+            //    if (request.ResponseCode == "200")
+            //    {
+            //        return;
+            //    }
+            //}
             this.next.Process(item);
         }
     }
