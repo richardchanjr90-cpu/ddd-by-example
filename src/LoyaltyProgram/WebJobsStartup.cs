@@ -58,6 +58,8 @@ namespace LoyaltyProgram
                     return null;
                 });
             }
+
+            builder.Services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
         }
     }
 }
