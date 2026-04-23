@@ -69,6 +69,8 @@ namespace Loyalty.Infrastructure.IoC
             catch (Exception ex)
             {
                 logger?.LogError(ex.Message, ex);
+                logger?.LogError("Unhandled exception: {@Exception} with error {Message}", ex, ex.Message);
+
                 return new BadRequestObjectResult(new CommandResult
                 {
                     Success = false,
