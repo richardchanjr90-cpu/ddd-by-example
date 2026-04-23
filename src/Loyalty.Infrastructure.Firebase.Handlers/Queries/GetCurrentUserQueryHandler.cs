@@ -6,6 +6,7 @@ using Loyalty.Domain.Handlers.Firebase.Queries.Queries;
 using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
 {

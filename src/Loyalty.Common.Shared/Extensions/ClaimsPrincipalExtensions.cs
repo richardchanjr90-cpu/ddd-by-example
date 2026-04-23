@@ -52,7 +52,7 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static VenueUserRole GetRole(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.Role).Value;
+            var claim = principal.Claims.First(x => x.Type == ClaimTypes.Role)?.Value;
             Enum.TryParse(claim, out VenueUserRole value);
             return value;
         }
