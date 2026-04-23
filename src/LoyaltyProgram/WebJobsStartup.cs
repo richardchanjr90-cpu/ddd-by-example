@@ -49,7 +49,7 @@ namespace LoyaltyProgram
                     {
                         var httpAccessor = provider.GetService<IHttpContextAccessor>();
 
-                        telemetryConfiguration.TelemetryInitializers.Add(new TelemetryInitializer(httpAccessor));
+                        //telemetryConfiguration.TelemetryInitializers.Add(new TelemetryInitializer(httpAccessor));
                         telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new MyTelemetryProcessor(next));
                         telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
 
