@@ -5,7 +5,6 @@
   </PropertyGroup>    
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.14.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7" />
     <PackageReference Include="MediatR" Version="8.0.1" />
@@ -35,7 +34,6 @@
     <ProjectReference Include="..\Loyalty.Infrastructure.Handlers.Notifications\Loyalty.Infrastructure.Handlers.Notifications.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Handlers\Loyalty.Infrastructure.Handlers.csproj" />
     <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
-    <ProjectReference Include="..\Loyalty.Infrastructure.Logging.AppInsights\Loyalty.Infrastructure.Logging.AppInsights.csproj" />
     <ProjectReference Include="..\Loyalty.Infrastructure.Outbox\Loyalty.Infrastructure.Outbox.csproj" />
   </ItemGroup>
 

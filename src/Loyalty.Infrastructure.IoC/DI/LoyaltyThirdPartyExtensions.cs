@@ -10,8 +10,6 @@ using Loyalty.Infrastructure.Handlers.Commands;
 using Loyalty.Infrastructure.Handlers.Commands.Pipelines;
 using Loyalty.Infrastructure.Handlers.Notifications.Base;
 using MediatR;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Loyalty.Infrastructure.IoC.DI
