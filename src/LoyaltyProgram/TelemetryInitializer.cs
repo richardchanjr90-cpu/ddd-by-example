@@ -5,15 +5,15 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
 
-namespace Loyalty.Infrastructure.Logging.AppInsights
+namespace LoyaltyProgram
 {
     public class TelemetryInitializer : ITelemetryInitializer
     {
         private readonly IHttpContextAccessor accessor;
 
-        private const string City = "User-City";
-        private const string Phone = "User-Phone";
-        private const string Role = "User-Role";
+        private const string City = "User_City";
+        private const string Phone = "User_Phone";
+        private const string Role = "User_Role";
 
         public TelemetryInitializer(IHttpContextAccessor accessor)
         {
