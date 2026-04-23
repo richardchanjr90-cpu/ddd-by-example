@@ -32,6 +32,7 @@ namespace LoyaltyProgram
                 {
                     requestTelemetry.Properties.Add("TEST_TEST", Guid.NewGuid().ToString());
                     requestTelemetry.Properties.Add("testprops", Guid.NewGuid().ToString());
+                    requestTelemetry.Properties["TEST_NEW"] = Guid.NewGuid().ToString();
 
                     var userId = accessor.HttpContext.User?.GetUserId();
 
