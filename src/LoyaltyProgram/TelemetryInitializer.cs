@@ -30,8 +30,6 @@ namespace LoyaltyProgram
 
                 if (requestTelemetry != null)
                 {
-                    requestTelemetry.Properties["TEST_NEW"] = Guid.NewGuid().ToString();
-
                     var userId = accessor.HttpContext.User?.GetUserId();
 
                     if (!String.IsNullOrEmpty(userId))
@@ -43,9 +41,9 @@ namespace LoyaltyProgram
                         if (accessor.HttpContext.User != null && !String.IsNullOrEmpty(userId))
                         {
                             telemetry.Context.User.Id = userId;
-                            requestTelemetry.Properties[City] = city;
-                            requestTelemetry.Properties[Phone] = phone;
-                            requestTelemetry.Properties[Role] = role;
+                            requestTelemetry.Properties.Add(City, city);
+                            requestTelemetry.Properties.Add(Phone, phone);
+                            requestTelemetry.Properties.Add(Role, role);
                         }
                     }
                 }

@@ -36,25 +36,26 @@ namespace LoyaltyProgram
             builder.AddNotificationHubs();
 
             builder.Services.AddHttpContextAccessor();
-            //var configDescriptor = builder.Services.SingleOrDefault(tc => tc.ServiceType == typeof(TelemetryConfiguration));
+            var configDescriptor = builder.Services.SingleOrDefault(tc => tc.ServiceType == typeof(TelemetryConfiguration));
 
-            //var implFactory = configDescriptor?.ImplementationFactory;
+            var implFactory = configDescriptor?.ImplementationFactory;
 
-            //if (implFactory != null)
-            //{
-            //    //builder.Services.Remove(configDescriptor);
-            //    builder.Services.AddSingleton(provider =>
-            //    {
-            //        if (implFactory.Invoke(provider) is TelemetryConfiguration telemetryConfiguration)
-            //        {
-            //            telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new MyTelemetryProcessor(next));
-            //            telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
+            if (implFactory != null)
+            {
+                builder.Services.Remove(configDescriptor);
+                builder.Services.AddSingleton(provider =>
+                {
+                    if (implFactory.Invoke(provider) is TelemetryConfiguration telemetryConfiguration)
+                    {
+                        telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new MyTelemetryProcessor(next));
+                        telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
 
-            //            return telemetryConfiguration;
-            //        }
-            //        return null;
-            //    });
-            //}
+                        return telemetryConfiguration;
+                    }
+                    return null;
+                });
+            }
+
             builder.Services.AddSingleton<ITelemetryInitializer, TelemetryInitializer>();
         }
     }
