@@ -27,9 +27,12 @@ namespace LoyaltyProgram
             if (ctx != null)
             {
                 var requestTelemetry = telemetry as RequestTelemetry;
- 
+
                 if (requestTelemetry != null)
                 {
+                    requestTelemetry.Properties.Add("TEST_TEST", Guid.NewGuid().ToString());
+                    requestTelemetry.Properties.Add("testprops", Guid.NewGuid().ToString());
+
                     var userId = accessor.HttpContext.User?.GetUserId();
 
                     if (!String.IsNullOrEmpty(userId))

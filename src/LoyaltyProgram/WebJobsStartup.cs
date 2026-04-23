@@ -5,7 +5,6 @@ using AzureExtensions.FunctionToken.Extensions;
 using AzureExtensions.FunctionToken.FunctionBinding.Options;
 using AzureFunctions.Extensions.NotificationHubs.Extensions;
 using Loyalty.Common.Shared.Settings;
-using Loyalty.Infrastructure.Logging.AppInsights;
 using LoyaltyProgram;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
