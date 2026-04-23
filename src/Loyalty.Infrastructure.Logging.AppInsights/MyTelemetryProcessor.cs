@@ -2,7 +2,7 @@
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 
-namespace LoyaltyProgram
+namespace Loyalty.Infrastructure.Logging.AppInsights
 {
     public class MyTelemetryProcessor : ITelemetryProcessor
     {

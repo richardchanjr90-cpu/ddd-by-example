@@ -5,7 +5,7 @@ using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Http;
 
-namespace LoyaltyProgram
+namespace Loyalty.Infrastructure.Logging.AppInsights
 {
     public class TelemetryInitializer : ITelemetryInitializer
     {
@@ -41,6 +41,8 @@ namespace LoyaltyProgram
                         if (accessor.HttpContext.User != null && !String.IsNullOrEmpty(userId))
                         {
                             telemetry.Context.User.Id = userId;
+                            telemetry.Context.User.AuthenticatedUserId = userId;
+
                             requestTelemetry.Properties.Add(City, city);
                             requestTelemetry.Properties.Add(Phone, phone);
                             requestTelemetry.Properties.Add(Role, role);

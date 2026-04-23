@@ -49,6 +49,7 @@
     <ProjectReference Include="..\Loyalty.Infrastructure.IoC\Loyalty.Infrastructure.IoC.csproj" />
     <ProjectReference Include="..\Loyalty.Domain.Handlers.Queries\Loyalty.Domain.Handlers.Queries.csproj" />
     <ProjectReference Include="..\Loyalty.Application.Venue\Loyalty.Application.Venue.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Logging.AppInsights\Loyalty.Infrastructure.Logging.AppInsights.csproj" />
   </ItemGroup>
 
   <ItemGroup>
