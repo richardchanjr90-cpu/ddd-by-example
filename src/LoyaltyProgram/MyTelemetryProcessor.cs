@@ -15,9 +15,7 @@ namespace LoyaltyProgram
 
         public void Process(ITelemetry item)
         {
-            var request = item as DependencyTelemetry;
-            
-            if (request != null && request.Duration.Milliseconds < 200)
+            if (item is DependencyTelemetry request && request.Duration.Milliseconds < 200)
             {
                 return;
             }

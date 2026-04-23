@@ -42,14 +42,11 @@ namespace LoyaltyProgram
 
             if (implFactory != null)
             {
-                builder.Services.Remove(configDescriptor);
+                //builder.Services.Remove(configDescriptor);
                 builder.Services.AddSingleton(provider =>
                 {
                     if (implFactory.Invoke(provider) is TelemetryConfiguration telemetryConfiguration)
                     {
-                        var httpAccessor = provider.GetService<IHttpContextAccessor>();
-
-                        //telemetryConfiguration.TelemetryInitializers.Add(new TelemetryInitializer(httpAccessor));
                         telemetryConfiguration.TelemetryProcessorChainBuilder.Use(next => new MyTelemetryProcessor(next));
                         telemetryConfiguration.TelemetryProcessorChainBuilder.Build();
 
