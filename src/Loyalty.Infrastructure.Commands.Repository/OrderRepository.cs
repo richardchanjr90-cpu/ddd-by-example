@@ -31,6 +31,7 @@ namespace Loyalty.Infrastructure.Commands.Repository
         {
             var order = await context
                 .Orders
+                .Include(x=> x.OrderItems)
                 .Where(x => x.Id == orderId)
                 .SingleOrDefaultAsync(token);
 
