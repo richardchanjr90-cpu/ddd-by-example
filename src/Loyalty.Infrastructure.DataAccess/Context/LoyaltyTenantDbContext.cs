@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Contracts;
 using Loyalty.Core.Entities.Aggregates.LoyaltyPrograms;
 using Loyalty.Core.Entities.Aggregates.Orders;
@@ -98,11 +99,11 @@ namespace Loyalty.Infrastructure.DataAccess.Context
             {
                 if (entry.State == EntityState.Added)
                 {
-                    //((IAuditableEntity)entry.Entity).CreatedBy = provider.Principal.GetUserId();
+                    ((IAuditableEntity)entry.Entity).CreatedBy = provider.Principal?.GetUserId();
                     ((IAuditableEntity)entry.Entity).Created = DateTime.UtcNow;
                 }
 
-                //((IAuditableEntity)entry.Entity).ModifiedBy = provider.Principal.GetUserId();
+                ((IAuditableEntity)entry.Entity).ModifiedBy = provider.Principal?.GetUserId();
                 ((IAuditableEntity)entry.Entity).Modified = DateTime.UtcNow;
             }
         }
