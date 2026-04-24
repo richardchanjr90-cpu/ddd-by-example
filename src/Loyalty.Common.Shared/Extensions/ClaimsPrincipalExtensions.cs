@@ -40,19 +40,19 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static string GetSurname(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Lastname)?.Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.Lastname)?.Value;
             return Regex.Unescape(claim ?? string.Empty);
         }
 
         public static string GetName(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Firstname)?.Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.Firstname)?.Value;
             return Regex.Unescape(claim ?? string.Empty);
         }
 
         public static VenueUserRole GetRole(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.Role)?.Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             Enum.TryParse(claim, out VenueUserRole value);
             return value;
         }
