@@ -1,8 +1,6 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Loyalty.Domain.Handlers.Notifications.Base;
 using Loyalty.Shared.Contracts.Enums;
-using MediatR;
 
 namespace Loyalty.Domain.Handlers.Notifications.Venue
 {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 using Loyalty.Domain.Handlers.Notifications.Base;
 using Loyalty.Shared.Contracts.Enums;

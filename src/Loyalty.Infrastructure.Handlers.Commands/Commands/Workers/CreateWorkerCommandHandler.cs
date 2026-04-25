@@ -3,6 +3,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Loyalty.Common.Shared.Constants;
+using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Core.Entities.Aggregates.Workers;
 using Loyalty.Core.Entities.Interfaces.Repository;
@@ -39,6 +41,15 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.Workers
                 .First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
             var worker = await workerRepository.GetByPhoneAsync(phone, cancellationToken);
+
+            if (worker != null && 
+                String.IsNullOrEmpty(worker.WorkerId) && 
+                worker.WorkerId.Equals(userId))
+            {
+                throw new LoyaltyValidationException(
+                    "UserId does not match or user already signed up.", 
+                    ErrorCode.DUPLICATED_ENTITY);
+            }
 
             if (worker != null)
             {

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Loyalty.Domain.Handlers.Notifications.Base;
 
 namespace Loyalty.Domain.Handlers.Notifications.Venue
