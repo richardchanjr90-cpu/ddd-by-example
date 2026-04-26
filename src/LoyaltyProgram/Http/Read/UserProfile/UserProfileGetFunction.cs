@@ -6,8 +6,6 @@ using AzureFunctions.Extensions.Swashbuckle.Attribute;
 using Loyalty.Application.Venue;
 using Loyalty.Common.Shared.Extensions;
 using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
-using Loyalty.Infrastructure.DataAccess.Context.Interface;
-using Loyalty.Infrastructure.DataAccess.Context.Scoped;
 using Loyalty.Infrastructure.IoC;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

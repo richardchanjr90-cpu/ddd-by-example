@@ -22,6 +22,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Orders
                                               ,o.[PickUpTime]
                                               ,o.[Comment]
                                               ,o.[Status]
+                                              ,o.[Rate]
                                               ,oir.[Id]
                                               ,oir.[Amount]
                                               ,oir.[ProductId]

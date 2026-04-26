@@ -25,5 +25,8 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.Orders
 
         [JsonPropertyName("comment")]
         public string Comment { get; set; }
+
+        [JsonPropertyName("rate")]
+        public string Rate { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.UserProfile
         {
             var worker = await workerRepository.GetByUidAsync(request.WorkerId, cancellationToken);
             var email = accessor.HttpContext.User.GetEmailOrNull();
+
             if (!String.IsNullOrEmpty(request.Email) && request.IsEmailVerified && request.Email.Equals(email))
             {
                 worker.SetEmail(request.Email);
