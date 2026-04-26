@@ -17,10 +17,10 @@ namespace Loyalty.Application.ViewModels.LoyaltyProgram
         [JsonPropertyName("isPublished")]
         public bool IsPublished { get; set; }
 
-        [JsonPropertyName("startedDate")]
+        [JsonPropertyName("startDate")]
         public DateTime StartDate { get; set; }
 
-        [JsonPropertyName("endedDate")]
+        [JsonPropertyName("endDate")]
         public DateTime EndDate { get; set; }
 
         [JsonPropertyName("externalProgramUri")]
