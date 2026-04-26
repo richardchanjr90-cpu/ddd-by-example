@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using Loyalty.Shared.Contracts.Enums;
+﻿using System.Text.Json.Serialization;
 
 namespace Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile
 {
@@ -12,11 +10,11 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile
         [JsonPropertyName("lastName")]
         public string LastName { get; set; }
 
-        [JsonPropertyName("email")]
-        public string Email { get; set; }
-
         [JsonPropertyName("phone")]
         public string Phone { get; set; }
+
+        [JsonPropertyName("city")]
+        public string City { get; set; }
 
         [JsonPropertyName("photoUri")]
         public string PhotoUri { get; set; }

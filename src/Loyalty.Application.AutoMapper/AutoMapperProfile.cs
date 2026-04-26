@@ -50,8 +50,6 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.WorkerId, opt => opt.Ignore())
                 .ForSourceMember(x => x.PositionName, opt => opt.DoNotValidate());
 
-            CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
-
             CreateMap<GetClientInfoFirebaseQueryResult, ClientInfoViewModel>();
         }
 

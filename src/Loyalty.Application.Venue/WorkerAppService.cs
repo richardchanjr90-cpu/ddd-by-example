@@ -119,13 +119,6 @@ namespace Loyalty.Application.Venue
                 UserId = userId
             });
 
-            //await Mediator.Send(new UpdateEmailCommand()
-            //{
-            //   Email = user.Email,
-            //   IsEmailVerified = user.IsEmailVerified,
-            //   WorkerId = userId
-            //});
-
             var result = await Mediator.Send(new GetVerificationLinkQuery()
             {
                 Surname = user.Surname,

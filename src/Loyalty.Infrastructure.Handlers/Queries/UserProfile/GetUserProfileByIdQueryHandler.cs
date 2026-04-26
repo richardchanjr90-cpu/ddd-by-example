@@ -12,14 +12,11 @@ namespace Loyalty.Infrastructure.Handlers.Queries.UserProfile
     public class GetUserProfileByIdQueryHandler
         : BaseDapperHandler, IRequestHandler<GetUserProfileByIdQuery, GetUserProfileByIdQueryResult>
     {
-        private const string SelectQuery = @"SELECT [Id]
-                                              ,[WorkerId]
-                                              ,[Phone]
+        private const string SelectQuery = @"SELECT
+                                               [Phone]
                                               ,[Name]
                                               ,[LastName]
-                                              ,[Email]
                                               ,[PhotoUri]
-                                              ,[IsArchived]
                                               ,[City]
                                           FROM [loyalty].[Worker]
                                           WHERE WorkerId = @id";
