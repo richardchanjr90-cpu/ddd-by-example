@@ -4,7 +4,7 @@ using Microsoft.Azure.ServiceBus;
 
 namespace Loyalty.Infrastructure.Handlers.Notifications.Base
 {
-    public class ServiceBusTopic: IIntegrationTopicClient, IUserTopicClient
+    public class ServiceBusTopic : IIntegrationTopicClient, IUserTopicClient
     {
         public ITopicClient Client { get; }
 
