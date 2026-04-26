@@ -12,9 +12,9 @@ namespace Loyalty.Domain.Handlers.Queries.QueryResults.LoyaltyProgram
 
         public bool IsPublished { get; set; }
 
-        public DateTime? StartedDate { get; set; }
+        public DateTime? StartDate { get; set; }
 
-        public DateTime? EndedDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public string ExternalProgramUri { get; set; }
     }

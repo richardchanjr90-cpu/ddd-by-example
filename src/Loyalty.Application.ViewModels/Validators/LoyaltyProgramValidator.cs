@@ -21,18 +21,18 @@ namespace Loyalty.Application.ViewModels.Validators
                 .When(x => x.IsPublished)
                 .WithMessage("You can't publish a program without a description");
 
-            RuleFor(x => x.StartedDate)
+            RuleFor(x => x.StartDate)
                 .GreaterThanOrEqualTo(DateTime.Today);
 
-            RuleFor(x => x.EndedDate)
+            RuleFor(x => x.EndDate)
                 .GreaterThanOrEqualTo(DateTime.Today.AddDays(1))
                 .WithMessage("End date should be at least 1 day greater then current date.");
 
-            RuleFor(x => x.StartedDate)
-                .LessThanOrEqualTo(x=>x.EndedDate.AddDays(1))
+            RuleFor(x => x.StartDate)
+                .LessThanOrEqualTo(x=>x.EndDate.AddDays(1))
                 .WithMessage("End date should be at least 1 day greater then current date.");
 
-            RuleFor(x => x.EndedDate)
+            RuleFor(x => x.EndDate)
                 .LessThanOrEqualTo(DateTime.Today.AddYears(99))
                 .WithMessage("You can't create a program with Finish date more than 99 years.");
         }
