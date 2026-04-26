@@ -26,8 +26,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyPrograms
             var program = new LoyaltyProgram(
                 request.Name,
                 request.Description,
-                request.StartedDate,
-                request.EndedDate,
+                request.StartDate,
+                request.EndDate,
                 request.VenueId,
                 request.ExternalProgramUri);
 

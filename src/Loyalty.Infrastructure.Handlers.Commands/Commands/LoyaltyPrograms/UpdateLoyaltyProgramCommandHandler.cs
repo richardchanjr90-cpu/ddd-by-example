@@ -34,8 +34,8 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyPrograms
             program.Update(
                 request.Name, 
                 request.Description, 
-                request.StartedDate, 
-                request.EndedDate, 
+                request.StartDate, 
+                request.EndDate, 
                 request.IsPublished,
                 request.ExternalProgramUri);
 

@@ -14,9 +14,9 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.LoyaltyPrograms
 
         public bool IsPublished { get; set; }
 
-        public DateTime StartedDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime EndedDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public long VenueId { get; set; }
 
