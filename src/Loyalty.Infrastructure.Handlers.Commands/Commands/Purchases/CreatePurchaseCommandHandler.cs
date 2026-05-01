@@ -34,13 +34,16 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.Purchases
             CancellationToken cancellationToken)
         {
             Product product = null;
+
             if (request.ProductId.HasValue)
             {
                 product = await productRepository.GetAsync(request.ProductId.Value, cancellationToken);
 
                 if (product == null)
                 {
-                    throw new LoyaltyValidationException("Product does not belong to this venue or does not exist.", ErrorCode.INCORRECT_PRODUCT);
+                    throw new LoyaltyValidationException(
+                        "Product does not belong to this venue or does not exist.", 
+                        ErrorCode.INCORRECT_PRODUCT);
                 }
             }
 

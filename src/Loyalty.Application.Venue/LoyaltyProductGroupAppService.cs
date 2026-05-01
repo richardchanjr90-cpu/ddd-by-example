@@ -50,7 +50,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(LoyaltyProductGroupViewModel model)
         {
-            new LoyaltyProductGroupValidator().ValidateAndThrow(model);
+            new LoyaltyProductGroupValidator()
+                .ValidateAndThrow(model);
 
             var command = new CreateLoyaltyProductGroupCommand
             {
@@ -81,7 +82,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(LoyaltyProductGroupViewModel model)
         {
-            new LoyaltyProductGroupValidator().ValidateAndThrow(model);
+            new LoyaltyProductGroupValidator()
+                .ValidateAndThrow(model);
 
             var command = new UpdateLoyaltyProductGroupCommand
             {

@@ -21,10 +21,10 @@ namespace LoyaltyProgram.Storage
 
             var message = data.ChangedStatus switch
             {
-                OrderStatus.Started => "Ваш заказ начат.",
-                OrderStatus.Ready => "Ваш заказ уже готов!",
+                OrderStatus.Started => "Ваш заказ начали готовить.",
+                OrderStatus.Ready => "Ваш заказ готов",
                 OrderStatus.DeclinedByVenue => "Ваш заказ отменен владельцем заведения." + data?.VenueComment,
-                OrderStatus.Finished => "Заказ закончен!",
+                OrderStatus.Finished => String.Empty,
                 OrderStatus.NotRedeemed => "Вы не забрали ваш заказ. Заказ закончен.",
                 _ => String.Empty
             };

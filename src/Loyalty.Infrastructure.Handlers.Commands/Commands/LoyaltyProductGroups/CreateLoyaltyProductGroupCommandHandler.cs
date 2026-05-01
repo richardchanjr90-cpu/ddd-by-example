@@ -18,27 +18,37 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.LoyaltyProductGroups
         private readonly ILoyaltyProgramRepository programRepository;
         private readonly IProductGroupRepository groupRepository;
 
-        public CreateLoyaltyProductGroupCommandHandler(ILoyaltyProgramRepository programRepository, IProductGroupRepository groupRepository)
+        public CreateLoyaltyProductGroupCommandHandler(
+            ILoyaltyProgramRepository programRepository, 
+            IProductGroupRepository groupRepository)
         {
             this.programRepository = programRepository;
             this.groupRepository = groupRepository;
         }
 
-        public async Task<ICommandResult> Handle(CreateLoyaltyProductGroupCommand request, CancellationToken cancellationToken)
+        public async Task<ICommandResult> Handle(
+            CreateLoyaltyProductGroupCommand request, 
+            CancellationToken cancellationToken)
         {
             var program = await programRepository.GetAsync(request.LoyaltyProgramId, cancellationToken);
             var productGroup = await groupRepository.GetAsync(request.ProductGroupId, cancellationToken);
 
             if (program == null)
             {
-                throw new LoyaltyValidationException("Does not exist.", ErrorCode.INCORRECT_LOYALTY_PROGRAM);
+                throw new LoyaltyValidationException(
+                    "Does not exist.", 
+                    ErrorCode.INCORRECT_LOYALTY_PROGRAM);
             }
 
             var rules = new List<LoyaltyGroupRule>();
 
             foreach (var commandRule in request.Rule.Rules)
             {
-                var rule = new LoyaltyGroupRule(commandRule.RuleType, commandRule.Rule, commandRule.RuleVersion);
+                var rule = new LoyaltyGroupRule(
+                    commandRule.RuleType, 
+                    commandRule.Rule, 
+                    commandRule.RuleVersion);
+
                 rules.Add(rule);
             }
 

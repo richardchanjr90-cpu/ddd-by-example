@@ -43,7 +43,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Commands.Workers
             var worker = await workerRepository.GetByPhoneAsync(phone, cancellationToken);
 
             if (worker != null && 
-                String.IsNullOrEmpty(worker.WorkerId) && 
+                !String.IsNullOrEmpty(worker.WorkerId) && 
                 worker.WorkerId.Equals(userId))
             {
                 throw new LoyaltyValidationException(
