@@ -11,6 +11,7 @@ using Loyalty.Domain.Handlers.Firebase.Queries.Queries;
 using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
@@ -18,13 +19,13 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
     public class GetVerificationLinkQueryHandler
         : BaseFirebaseHandler, IRequestHandler<GetVerificationLinkQuery, GetVerificationLinkQueryResult>
     {
-        private readonly IHttpContextAccessor accessor;
         private readonly IOptions<EmailSettings> options;
+        private readonly ILogger<GetVerificationLinkQueryHandler> logger;
 
-        public GetVerificationLinkQueryHandler(IHttpContextAccessor accessor, IOptions<EmailSettings> options)
+        public GetVerificationLinkQueryHandler(IOptions<EmailSettings> options, ILogger<GetVerificationLinkQueryHandler> logger)
         {
-            this.accessor = accessor;
             this.options = options;
+            this.logger = logger;
         }
 
         public async Task<GetVerificationLinkQueryResult> Handle(GetVerificationLinkQuery request, CancellationToken cancellationToken)
@@ -40,6 +41,9 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
 
             var customUrl =
                 $"https://{domain}/?link={deepLink}&apn={packageName}$ibi={bundleId}";
+
+            logger.LogInformation($"Custom url for the user ({request.UserId}): {request.Name} {request.Surname} " +
+                                  $"is {customUrl}");
 
             var actionCodeSettings = new ActionCodeSettings
             {
@@ -59,6 +63,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
             }
             catch (FirebaseAuthException ex)
             {
+                logger.LogCritical("Firebase error {@Exception}", ex);
                 throw new LoyaltyValidationException("Failed to change email.", ex);
             }
             catch (Exception e)
