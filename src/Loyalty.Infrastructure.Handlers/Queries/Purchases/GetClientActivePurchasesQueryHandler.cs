@@ -2,15 +2,17 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
-using Loyalty.Domain.Handlers.Contracts.Queries.Purchases;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Purchase;
+using Loyalty.Shared.Contracts.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 {
-    public class GetClientActivePurchasesQueryHandler : BaseDapperHandler, IGetClientActivePurchasesQueryHandler
+    public class GetClientActivePurchasesQueryHandler 
+        : BaseDapperHandler, IRequestHandler<GetClientActivePurchasesQuery, GetActivePurchasesResult>
     {
         private readonly SqlConnection connection;
 
@@ -34,6 +36,9 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     lpg.[Name] as LgroupName,
                     pr.Id as ProductId,
                     pr.[Name] as ProductName,
+                    pr.[Icon] as Icon,
+                    pr.[ImageUri] as ImageUri,
+                    pr.[Price] as Price,
                     lgr.[Rule] as [Rule],
                     lgr.RuleType as RuleType,
                     lgr.RuleVersion as RuleVersion,
@@ -43,7 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                     JOIN loyalty.LoyaltyGroupRule lgr ON lgr.LoyaltyProductGroupId = lpg.Id
                     LEFT JOIN loyalty.ProductGroup pg ON pg.Id = lpg.ProductGroupId
 					LEFT JOIN loyalty.Purchase pur ON pur.LoyaltyProductGroupId = lpg.Id
-                    LEFT JOIN loyalty.Product pr ON pr.Id = pur.ProductId
+                    LEFT JOIN loyalty.Product pr ON pr.ProductGroupId = pg.Id
 					LEFT JOIN (SELECT LoyaltyProductGroupId, 
 					COALESCE(SUM([Value]), 0) as total 
 					FROM loyalty.Purchase
@@ -53,7 +58,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
 
             var programs = connection.Query(getPrograms, new
             {
-                request.VenueId, request.UserId
+                request.VenueId, 
+                request.UserId
             }).ToList();
 
             var programsDistinct = programs
@@ -79,9 +85,12 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Purchases
                             LoyaltyProductGroupId = z.LgroupId,
                             //Products = programs
                             //    .Where(q => q.LgroupId == z.LgroupId && q.ProductId > 0)
-                            //    .DefaultIfEmpty(null)
+                            //    //.DefaultIfEmpty(null)
                             //    .Select(d => new ProductPurchaseResult
                             //    {
+                            //        Price = d.Price,
+                            //        Icon = (ProductIconType) d?.Icon,
+                            //        ImageUrl = d?.ImageUri,
                             //        Name = d?.ProductName,
                             //        Id = d?.ProductId
                             //    }).ToList()

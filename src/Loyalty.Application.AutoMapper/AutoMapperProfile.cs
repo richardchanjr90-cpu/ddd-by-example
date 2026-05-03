@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using Loyalty.Application.ViewModels.ClientInfo;
 using Loyalty.Application.ViewModels.Location;
 using Loyalty.Application.ViewModels.LoyaltyProductGroup;
@@ -49,10 +50,7 @@ namespace Loyalty.Application.AutoMapper
                 .ForMember(x => x.WorkerId, opt => opt.Ignore())
                 .ForSourceMember(x => x.PositionName, opt => opt.DoNotValidate());
 
-            CreateMap<GetUserProfileByIdQueryResult, FullUserProfileViewModel>();
-
             CreateMap<GetClientInfoFirebaseQueryResult, ClientInfoViewModel>();
-            CreateMap<GetVenueWorkerResult, VenueWorkerViewModel>();
         }
 
         private void MapLoyaltyPrograms()
@@ -75,35 +73,44 @@ namespace Loyalty.Application.AutoMapper
 
         private void MapProductsAndGroups()
         {
-            CreateMap<GetProductByIdQueryResult, ProductViewModel>();
-            CreateMap<ProductViewModel, CreateProductCommand>()
+            CreateMap<GetProductByIdQueryResult, GetProductViewModel>()
+                .ForSourceMember(x => x.IsArchived, opt => opt.DoNotValidate());
+
+            CreateMap<CreateProductViewModel, CreateProductCommand>();
+
+            CreateMap<UpdateProductViewModel, UpdateProductCommand>();
+
+            CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
+
+            CreateMap<GetProductViewModel, CreateProductCommand>()
                 .ForMember(x => x.ProductGroupId, opt => opt.Ignore())
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
 
-            CreateMap<ProductViewModel, UpdateProductCommand>()
-                .ForMember(x => x.ProductGroupId, opt => opt.Ignore());
-
-            CreateMap<GetProductGroupByIdQueryResult, ProductGroupViewModel>();
             CreateMap<ProductGroupViewModel, CreateProductGroupCommand>()
                 .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
+
             CreateMap<ProductGroupViewModel, UpdateProductGroupCommand>();
+
+            CreateMap<PatchProductViewModel, PatchProductCommand>();
+            CreateMap<ProductGroupPatchViewModel, PatchProductGroupCommand>();
+
+            CreateMap<GetProductViewModel, UpdateProductCommand>()
+                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
         }
 
         private void MapWorker()
         {
             CreateMap<GetWorkerByIdQueryResult, WorkerViewModel>();
-
-            CreateMap<InviteViewModel, CreateInviteCommand>()
-                .ForSourceMember(x => x.Id, opt => opt.DoNotValidate());
-            CreateMap<InviteViewModel, UpdateInviteCommand>();
-
-            CreateMap<CreateWorkerViewModel, UpdateWorkerCommand>();
+            CreateMap<InviteViewModel, CreateInviteCommand>();
+            CreateMap<UpdateInviteViewModel, UpdateInviteCommand>();
+            CreateMap<GetVenueWorkerResult, VenueWorkerViewModel>();
         }
 
         private void MapVenue()
         {
             CreateMap<GetVenueWorkingHoursQueryResult, WorkingHoursViewModel>();
-            CreateMap<WorkingHoursViewModel, GetVenueWorkingHoursQueryResult>();
+            CreateMap<WorkingHoursViewModel, WorkingHoursCommand>();
+
             CreateMap<LocationViewModel, CreateLocationCommand>();
             CreateMap<LocationViewModel, UpdateLocationCommand>();
 

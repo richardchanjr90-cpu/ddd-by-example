@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
+using System.Text.Json;
+using System.Text.RegularExpressions;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Shared.Contracts.Constants;
 using Loyalty.Shared.Contracts.Enums;
@@ -13,25 +15,13 @@ namespace Loyalty.Common.Shared.Extensions
     {
         public static string GetUserId(this ClaimsPrincipal principal)
         {
-            var identity = principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var identity = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             return identity;
-        }
-
-        public static bool IsUser(this ClaimsPrincipal principal, string uid)
-        {
-            var identity = principal.Claims.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
-
-            if (!identity.Equals(uid))
-            {
-                throw new AuthenticationException();
-            }
-
-            return identity.Equals(uid);
         }
 
         public static string GetPhone(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.MobilePhone).Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.MobilePhone)?.Value;
             return claim;
         }
 
@@ -50,26 +40,26 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static string GetSurname(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Lastname).Value;
-            return claim;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.Lastname)?.Value;
+            return Regex.Unescape(claim ?? string.Empty);
         }
 
         public static string GetName(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.Firstname).Value;
-            return claim;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.Firstname)?.Value;
+            return Regex.Unescape(claim ?? string.Empty);
         }
 
         public static VenueUserRole GetRole(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == ClaimTypes.Role).Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             Enum.TryParse(claim, out VenueUserRole value);
             return value;
         }
 
         public static string GetCity(this ClaimsPrincipal principal)
         {
-            var claim = principal.Claims.First(x => x.Type == CustomClaimsConstants.City).Value;
+            var claim = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.City)?.Value;
             return claim;
         }
 
@@ -83,13 +73,13 @@ namespace Loyalty.Common.Shared.Extensions
         public static List<string> GetVenues(this ClaimsPrincipal principal)
         {
             var claims = new List<string>();
-            var claim = principal.Claims.FirstOrDefault(x => x.Type == ClaimConstants.VENUE_CLAIM)?.Value;
+            var serialized = principal.Claims.FirstOrDefault(x => x.Type == CustomClaimsConstants.Roles)?.Value;
             var claim2 = principal.Claims.FirstOrDefault(x => x.Type == ClaimConstants.NEW_VENUE_CLAIM)?.Value;
 
-            if (!String.IsNullOrEmpty(claim))
+            if(!String.IsNullOrEmpty(serialized))
             {
-                claims = claim.Split(',')
-                    .Select(x=>x.Trim('\"')).ToList();
+                var dictionary = JsonSerializer.Deserialize<Dictionary<string, VenueUserRole>>(serialized);
+                claims = dictionary.Keys.ToList();
             }
 
             if (!String.IsNullOrEmpty(claim2))

@@ -5,9 +5,6 @@ namespace Loyalty.Application.ViewModels.Worker
 {
     public class InviteViewModel
     {
-        [JsonPropertyName("id")]
-        public long Id { get; set; }
-
         [JsonPropertyName("venueId")]
         public long VenueId { get; set; }
 

@@ -15,5 +15,14 @@ namespace Loyalty.Common.Shared.Exceptions
                 Code.AddRange(code);
             }
         }
+
+        public LoyaltyValidationException(string message, params string [] code)
+            : base(message)
+        {
+            if (code != null)
+            {
+                Code.AddRange(code);
+            }
+        }
     }
 }

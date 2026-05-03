@@ -7,19 +7,10 @@
   <ItemGroup>
     <Compile Remove="Commands\Cards\**" />
     <Compile Remove="Commands\Stamps\**" />
-    <Compile Remove="Queries\Cards\**" />
-    <Compile Remove="Queries\LoyaltyProducts\**" />
-    <Compile Remove="Queries\Stamps\**" />
     <EmbeddedResource Remove="Commands\Cards\**" />
     <EmbeddedResource Remove="Commands\Stamps\**" />
-    <EmbeddedResource Remove="Queries\Cards\**" />
-    <EmbeddedResource Remove="Queries\LoyaltyProducts\**" />
-    <EmbeddedResource Remove="Queries\Stamps\**" />
     <None Remove="Commands\Cards\**" />
     <None Remove="Commands\Stamps\**" />
-    <None Remove="Queries\Cards\**" />
-    <None Remove="Queries\LoyaltyProducts\**" />
-    <None Remove="Queries\Stamps\**" />
   </ItemGroup>
 
   <ItemGroup>

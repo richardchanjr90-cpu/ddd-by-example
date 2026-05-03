@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using AzureExtensions.FunctionToken;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
@@ -21,8 +20,6 @@ namespace Loyalty.Domain.Handlers.Firebase.Queries.Commands.User
         public string Name { get; set; }
 
         public string Surname { get; set; }
-
-        public string Email { get; set; }
 
         public string City { get; set; }
 

@@ -9,6 +9,7 @@ using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.ProductGroups;
 using Loyalty.Domain.Handlers.Queries.Queries.ProductGroup;
+using Loyalty.Domain.Handlers.Queries.QueryResults.ProductGroup;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 
@@ -24,24 +25,24 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<ProductGroupViewModel> Get(long id)
+        public async Task<GetProductGroupByIdQueryResult> Get(long id)
         {
             var result = await Mediator.Send(new GetProductGroupByIdQuery
             {
                 Id = id
             });
 
-            return mapper.Map<ProductGroupViewModel>(result);
+            return result;
         }
 
-        public async Task<List<ProductGroupViewModel>> Get(string userId)
+        public async Task<List<GetProductGroupByIdQueryResult>> Get(string userId)
         {
             var result = await Mediator.Send(new GetProductGroupsByUserIdQuery
             {
                 UserId = userId
             });
 
-            return mapper.Map<List<ProductGroupViewModel>>(result.Result);
+            return result.Result;
         }
 
         public async Task<ICommandResult> Create(ProductGroupViewModel model)
@@ -58,6 +59,13 @@ namespace Loyalty.Application.Venue
             new ProductGroupValidator().ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateProductGroupCommand>(model);
+            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> Patch(ProductGroupPatchViewModel model)
+        {
+            var command = mapper.Map<PatchProductGroupCommand>(model);
             var commandResult = await Mediator.Send(command);
             return commandResult;
         }

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation;
-using FluentValidation.TestHelper;
 using Loyalty.Application.ViewModels.Purchase;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Purchase;
+using Loyalty.Domain.Handlers.Queries.Queries.Orders;
 using Loyalty.Domain.Handlers.Queries.Queries.Purchase;
 using MediatR;
 using MediatR.Extensions.UnitOfWork;
@@ -29,21 +28,28 @@ namespace Loyalty.Application.Venue
 
         public async Task<ClientInfoPurchasesViewModel> GetActivePurchases(string userId, long venueId)
         {
-            var result = await Mediator.Send(new GetClientActivePurchasesQuery
+            var purchases = await Mediator.Send(new GetClientActivePurchasesQuery
             {
                 UserId = userId,
                 VenueId = venueId
             });
 
-            var purchases = mapper.Map<List<ActivePurchasesViewModel>>(result.Result);
+            var orders = await Mediator.Send(new GetOrdersByUserIdQuery
+            {
+                UserId = userId,
+                VenueId = venueId
+            });
+
+            var result = mapper.Map<List<ActivePurchasesViewModel>>(purchases.Result);
 
             var clientInfo = await clientService.Get(userId);
-            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(purchases);
+            var purchasesModels = mapper.Map<List<ActivePurchasesViewModel>>(result);
 
-            return new ClientInfoPurchasesViewModel()
+            return new ClientInfoPurchasesViewModel
             {
                 ActivePurchases = purchasesModels,
-                ClientInfo = clientInfo
+                ClientInfo = clientInfo,
+                Orders =  orders.Orders
             };
         }
 
@@ -52,7 +58,7 @@ namespace Loyalty.Application.Venue
             new PurchaseValidator()
                 .ValidateAndThrow(model);
 
-            var result = await Mediator.SendThenPublish(new CreatePurchaseCommand
+            var result = await Mediator.Send(new CreatePurchaseCommand
             {
                 WorkerId = workerId,
                 UserId = model.UserId,
@@ -62,10 +68,7 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return new CommandResult()
-            {
-                Success = result.Success
-            };
+            return result;
         }
 
         public async Task<ICommandResult> CreateAndBurn(PurchaseAndBurnViewModel model, long venueId,string workerId)
@@ -92,19 +95,22 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             };
 
-            var result = await Mediator.RunAllScopedThenPublish(command1, command2);
-
-            return new CommandResult()
+            var burnandPurchase = new CreateAndBurnCommand
             {
-                Success = result.Success
+                Purchase = command1,
+                Burn = command2
             };
+
+            var result = await Mediator.Send(burnandPurchase);
+
+            return result;
         }
 
         public async Task<ICommandResult> Burn(PurchaseViewModel model, long venueId, string workerId)
         {
             new PurchaseValidator().ValidateAndThrow(model);
 
-            var result = await Mediator.SendThenPublish(new BurnPurchaseCommand
+            var result = await Mediator.Send(new BurnPurchaseCommand
             {
                 WorkerId = workerId,
                 UserId = model.UserId,
@@ -113,10 +119,7 @@ namespace Loyalty.Application.Venue
                 LoyaltyProductGroupId = model.LoyaltyProductGroupId
             });
 
-            return new CommandResult()
-            {
-                Success = result.Success
-            };
+            return result;
         }
     }
 }

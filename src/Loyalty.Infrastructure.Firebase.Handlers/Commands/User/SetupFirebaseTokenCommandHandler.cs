@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using FirebaseAdmin.Auth;
 using Loyalty.Common.Shared.Constants;
 using Loyalty.Common.Shared.Exceptions;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
 using Loyalty.Shared.Contracts.Constants;
 using Loyalty.Shared.Contracts.Enums;
@@ -35,10 +33,9 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
             var additionalClaims = new Dictionary<string, object>
             {
                 { ClaimTypes.Role, request.Role },
-                { CustomClaimsConstants.Firstname, Regex.Escape(request.Name) },
-                { CustomClaimsConstants.Lastname, Regex.Escape(request.Surname) },
-                { ClaimTypes.Email, request.Email },
-                { CustomClaimsConstants.City, Regex.Escape(request.City) }
+                { CustomClaimsConstants.Firstname, request.Name },
+                { CustomClaimsConstants.Lastname, request.Surname },
+                { CustomClaimsConstants.City, request.City }
             };
 
             foreach (var claim in additionalClaims)
@@ -56,7 +53,7 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Commands.User
             {
                 if (request.Role != VenueUserRole.Owner)
                 {
-                    throw new LoyaltyValidationException("Internal Error. Should have at least 1 venue.", null, ErrorCode.INVALID_CLAIMS);
+                    throw new LoyaltyValidationException("Internal Error. Should have at least 1 venue.", ErrorCode.INVALID_CLAIMS);
                 }
             }
             

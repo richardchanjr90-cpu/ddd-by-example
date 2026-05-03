@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Loyalty.Common.Shared.Constants
 {
@@ -30,6 +28,12 @@ namespace Loyalty.Common.Shared.Constants
 
         public const string SECOND_OWNER_NOT_ALLOWED = "SECOND_OWNER_NOT_ALLOWED";
 
+        public const string OWNER_CHANGE_DENIED = "OWNER_CHANGE_DENIED";
+
+        public const string INVALID_ROLE = "INVALID_ROLE";
+
+        public const string TOO_MANY_ATTEMPTS_TRY_LATER = "TOO_MANY_ATTEMPTS_TRY_LATER";
+
         public const string IMPOSSIBLE_TO_CREATE_WITH_ROLE = "INCORRECT_AMOUNT_OF_POINTS";
 
         public const string VENUE_NOT_FOUND = "VENUE_NOT_FOUND";
@@ -43,5 +47,13 @@ namespace Loyalty.Common.Shared.Constants
         public const string USER_DOES_NOT_EXIST = "USER_DOES_NOT_EXIST";
 
         public const string INVALID_CLAIMS = "INVALID_CLAIMS";
+
+        public const string PRODUCT_PRICE_INVALID = "PRODUCT_PRICE_INVALID";
+
+        public const string PRODUCT_INVALID_STATE = "PRODUCT_INVALID_STATE";
+
+        public const string VENUE_ACCEPT_ORDERS_INVALID_STATE = "VENUE_ACCEPT_ORDERS_INVALID_STATE";
+
+        public const string ORDER_INVALID_STATE = "ORDER_INVALID_STATE";
     }
 }

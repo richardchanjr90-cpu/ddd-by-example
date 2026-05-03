@@ -4,17 +4,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dapper;
 using Loyalty.Common.Shared.Extensions;
-using Loyalty.Domain.Handlers.Contracts.Queries.Workers;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using Loyalty.Shared.Contracts.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Workers
 {
-    public class GetWorkersByUserIdQueryHandler : BaseDapperHandler, IGetWorkersByUserIdQueryHandler
+    public class GetWorkersByUserIdQueryHandler
+        : BaseDapperHandler, IRequestHandler<GetWorkersByUserIdQuery, GetWorkersByUserIdQueryResult>
     {
+        private const string Query = @"SELECT w.*, vw.[Role] as [Role], vw.VenueId as VenueId, vw.PositionName as PositionName FROM loyalty.Worker w 
+                    join loyalty.VenueWorker vw on w.Id = vw.WorkerId
+                    WHERE 
+                    vw.VenueId in @ids AND
+                    (w.WorkerId != @userId OR w.WorkerId IS NULL) AND vw.[Role] in @roles
+                    AND w.IsArchived = 0";
+
         private readonly SqlConnection connection;
 
         public GetWorkersByUserIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
@@ -23,7 +31,8 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
             this.connection = connection;
         }
 
-        public async Task<GetWorkersByUserIdQueryResult> Handle(GetWorkersByUserIdQuery request,
+        public async Task<GetWorkersByUserIdQueryResult> Handle(
+            GetWorkersByUserIdQuery request,
             CancellationToken cancellationToken)
         {
             var role = Principal.GetRole();
@@ -40,20 +49,12 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                 roles.Add((int)VenueUserRole.Director);
             }
 
-            var getItems =
-                @"SELECT w.*, vw.[Role] as [Role], vw.VenueId as VenueId, vw.PositionName as PositionName FROM loyalty.Worker w 
-                    join loyalty.VenueWorker vw on w.Id = vw.WorkerId
-                    WHERE 
-                    vw.VenueId in @ids AND
-                    (w.WorkerId != @userId OR w.WorkerId IS NULL) AND vw.[Role] in @roles
-                    AND w.IsArchived = 0";
-
-            var workers = connection.Query(getItems, new
+            var workers = (await connection.QueryAsync(Query, new
             {
                 ids,
                 userId,
                 roles
-            }).ToList();
+            })).ToList();
 
             var groupedCustomerList = workers
                 .GroupBy(t => new
@@ -76,7 +77,7 @@ namespace Loyalty.Infrastructure.Handlers.Queries.Workers
                 LastName = g.Key.LastName,
                 Email = g.Key.Email,
                 PhotoUri = g.Key.PhotoUri,
-                Venues = g.Select(o => new GetVenueWorkerResult()
+                Venues = g.Select(o => new GetVenueWorkerResult
                 {
                     VenueId = o.VenueId,
                     Role = (VenueUserRole)o.Role,

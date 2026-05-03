@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.5" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.6" />
+    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.15" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +17,14 @@
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.7.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <AdditionalFiles Include="..\stylecop.json" />
-    <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Common.Shared\Loyalty.Common.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Events\NewFolder\" />
   </ItemGroup>
 
   <PropertyGroup>

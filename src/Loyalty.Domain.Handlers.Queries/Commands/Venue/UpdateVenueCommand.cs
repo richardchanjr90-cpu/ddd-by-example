@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.Locations;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using Loyalty.Shared.Contracts.Enums;
@@ -25,8 +24,8 @@ namespace Loyalty.Domain.Handlers.Queries.Commands.Venue
 
         public List<string> WebSites { get; set; } = new List<string>();
 
-        public List<GetVenueWorkingHoursQueryResult> WorkingHours { get; set; } =
-            new List<GetVenueWorkingHoursQueryResult>();
+        public List<WorkingHoursCommand> WorkingHours { get; set; } =
+            new List<WorkingHoursCommand>();
 
         public CreateSocialNetworksCommand SocialNetworks { get; set; }
 

@@ -1,32 +1,51 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using Loyalty.Core.Contracts;
-using Loyalty.Domain.Handlers.Contracts.Queries.Products;
+using Dapper;
 using Loyalty.Domain.Handlers.Queries.Queries.Product;
 using Loyalty.Domain.Handlers.Queries.QueryResults.Product;
-using Loyalty.Infrastructure.DataAccess;
-using Loyalty.Infrastructure.Handlers.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace Loyalty.Infrastructure.Handlers.Queries.Products
 {
-    public class GetProductByIdQueryHandler : BaseHandler, IGetProductByIdQueryHandler
+    public class GetProductByIdQueryHandler
+        : BaseDapperHandler, IRequestHandler<GetProductByIdQuery, GetProductByIdQueryResult>
     {
-        public GetProductByIdQueryHandler(ILoyaltyTenantDbContext context, IHttpContextAccessor accessor)
-            : base(context, accessor)
+        private const string SelectQuery = @"SELECT [Id]
+                                              ,[Name]
+                                              ,[Icon]
+                                              ,[ProductGroupId]
+                                              ,[ImageUri]
+                                              ,[Price]
+                                              ,[IsAvailableForOrder]
+                                              ,[ExternalUid]
+                                              ,[Description]
+                                          FROM [loyalty].[Product]
+                                          WHERE Id = @id AND IsArchived = 0";
+
+        public GetProductByIdQueryHandler(SqlConnection connection, IHttpContextAccessor accessor)
+            : base(connection, accessor)
         {
         }
 
-        public async Task<GetProductByIdQueryResult> Handle(GetProductByIdQuery request,
+        public Task<GetProductByIdQueryResult> Handle(
+            GetProductByIdQuery request,
             CancellationToken cancellationToken)
         {
-            var item = await (from lp in Context.Products
-                where lp.Id == request.Id
-                select lp).SingleOrDefaultAsync(cancellationToken);
+            using (Connection)
+            {
+                Connection.Open();
 
-            return item?.ToResult();
+                var row = Connection.QuerySingleOrDefault<GetProductByIdQueryResult>(
+                    SelectQuery,
+                    new
+                    {
+                        id = request.Id
+                    });
+
+                return Task.FromResult(row);
+            }
         }
     }
 }

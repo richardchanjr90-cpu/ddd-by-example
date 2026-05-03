@@ -1,5 +1,5 @@
 using System;
-using Loyalty.Infrastructure.DataAccess;
+using Loyalty.Infrastructure.DataAccess.Context;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 

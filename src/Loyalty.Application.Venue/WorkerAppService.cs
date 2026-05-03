@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using AzureExtensions.FunctionToken;
 using FluentValidation;
+using Loyalty.Application.ViewModels.Signup;
 using Loyalty.Application.ViewModels.UserProfile;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Application.ViewModels.Worker;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Firebase.Queries.Commands.User;
+using Loyalty.Domain.Handlers.Firebase.Queries.Queries;
+using Loyalty.Domain.Handlers.Firebase.Queries.QueryResults;
 using Loyalty.Domain.Handlers.Queries.Commands.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers;
 using Loyalty.Domain.Handlers.Queries.Commands.Workers.Invites;
 using Loyalty.Domain.Handlers.Queries.Queries.UserProfile;
 using Loyalty.Domain.Handlers.Queries.Queries.Worker;
+using Loyalty.Domain.Handlers.Queries.QueryResults.UserProfile;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Worker;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.Extensions.Options;
@@ -36,66 +40,95 @@ namespace Loyalty.Application.Venue
             this.imageStorageSettings = imageStorageSettings;
         }
 
-        public async Task<FullUserProfileViewModel> GetProfile(string userId)
+        public async Task<GetUserProfileByIdQueryResult> GetProfile(string userId)
         {
             var result = await Mediator.Send(new GetUserProfileByIdQuery
             {
                 UserId = userId
             });
 
-            return mapper.Map<FullUserProfileViewModel>(result);
+            return result;
         }
 
-        public async Task<List<WorkerViewModel>> Get(string userId)
+        public async Task<GetWorkerByIdQueryResult> Get(long id)
+        {
+            var result = await Mediator.Send(new GetWorkerByIdQuery
+            {
+                Id = id
+            });
+
+            return result;
+        }
+
+        public async Task<List<GetWorkerByIdQueryResult>> Get(string userId)
         {
             var result = await Mediator.Send(new GetWorkersByUserIdQuery
             {
                 UserId = userId
             });
 
-            return mapper.Map<List<WorkerViewModel>>(result.Result);
+            return result.Result;
         }
 
         public async Task<ICommandResult> Invite(InviteViewModel model)
         {
-            new WorkerInviteValidator().ValidateAndThrow(model);
+            new WorkerInviteValidator()
+                .ValidateAndThrow(model);
+
             var command = mapper.Map<CreateInviteCommand>(model);
 
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> UpdateInvited(InviteViewModel model)
+        public async Task<ICommandResult> UpdateInvited(UpdateInviteViewModel model)
         {
-            new WorkerInviteValidator().ValidateAndThrow(model);
+            new UpdateWorkerInviteValidator()
+                .ValidateAndThrow(model);
+
             var command = mapper.Map<UpdateInviteCommand>(model);
 
-            var commandResult = await Mediator.Send(command);
-            return commandResult;
+            return await Mediator.Send(command); ;
         }
 
-        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, FunctionTokenResult token, string userId)
+        public async Task<ICommandResult> UpdateProfile(UserProfileViewModel model, string userId)
         {
-            new UserProfileUpdateValidator().ValidateAndThrow(model);
+            new UserProfileUpdateValidator()
+                .ValidateAndThrow(model);
 
             var command = mapper.Map<UpdateUserProfileCommand>(model);
             command.WorkerId = userId;
-            var commandResult = await Mediator.Send(command);
 
-            ICommandResult result2 = null;
+            return await Mediator.Send(command);
+        }
 
-            if (commandResult.Success)
+        public async Task<GetVerificationLinkQueryResult> SetupEmail(PatchEmailViewModel model, string userId)
+        {
+            new PatchEmailValidator()
+                .ValidateAndThrow(model);
+
+            var user = await Mediator.Send(new GetCurrentUserQuery()
             {
-                result2 = await Mediator.Send(new UpdateFirebaseTokenCommand
-                {
-                    Email = model.Email,
-                    Surname = model.LastName,
-                    Name = model.Name,
-                    Token = token
-                });
-            }
+                UserId = userId
+            });
 
-            //todo: do it in a transaction.
-            return result2 ?? commandResult;
+            var updateEmailResult = await Mediator.Send(new UpdateUserEmailCommand()
+            {
+                CurrentEmail = user.Email,
+                IsEmailVerified = user.IsEmailVerified,
+                NewEmail = model.Email,
+                UserId = userId
+            });
+
+            var result = await Mediator.Send(new GetVerificationLinkQuery()
+            {
+                Surname = user.Surname,
+                Name = user.Name,
+                UserId = user.UserId,
+                NewEmail = model.Email,
+                IsEmailVerified = user.IsEmailVerified
+            });
+
+            return result;
         }
 
         public async Task<ICommandResult> Archive(long venueId, long id, string userId)

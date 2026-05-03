@@ -1,0 +1,14 @@
+using MediatR;
+using MediatR.Extensions.UnitOfWork.Interface;
+
+namespace Loyalty.Domain.Handlers.Queries.Commands.Workers
+{
+    public class CreateWorkerCommand : IRequest<ICommandResult>
+    {
+        public string Name { get; set; }
+
+        public string Surname { get; set; }
+
+        public string City { get; set; }
+    }
+}

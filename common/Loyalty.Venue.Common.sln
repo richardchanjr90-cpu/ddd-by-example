@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Shared.Contracts", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loyalty.Domain.Handlers.Notifications", "Loyalty.Domain.Handlers.Notifications\Loyalty.Domain.Handlers.Notifications.csproj", "{99A69768-E83D-44AC-ABDA-161B4AE69D9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loyalty.Client.Notifications", "Loyalty.Client.Notifications\Loyalty.Client.Notifications.csproj", "{356524A6-2F92-4B99-85F0-34D6783A301B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoyaltyClient.Domain.Handlers.Notifications", "LoyaltyClient.Domain.Handlers.Notifications\LoyaltyClient.Domain.Handlers.Notifications.csproj", "{F9C8CC99-217C-4693-9881-FDACD43B39B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{99A69768-E83D-44AC-ABDA-161B4AE69D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99A69768-E83D-44AC-ABDA-161B4AE69D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99A69768-E83D-44AC-ABDA-161B4AE69D9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{356524A6-2F92-4B99-85F0-34D6783A301B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{356524A6-2F92-4B99-85F0-34D6783A301B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{356524A6-2F92-4B99-85F0-34D6783A301B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{356524A6-2F92-4B99-85F0-34D6783A301B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9C8CC99-217C-4693-9881-FDACD43B39B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9C8CC99-217C-4693-9881-FDACD43B39B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9C8CC99-217C-4693-9881-FDACD43B39B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9C8CC99-217C-4693-9881-FDACD43B39B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

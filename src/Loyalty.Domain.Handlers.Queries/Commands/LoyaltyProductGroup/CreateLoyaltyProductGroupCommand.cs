@@ -1,5 +1,4 @@
-﻿using Loyalty.Domain.Contracts.Interfaces;
-using Loyalty.Domain.Handlers.Queries.Commands.Rules;
+﻿using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 

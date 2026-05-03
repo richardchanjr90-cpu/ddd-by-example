@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using FluentValidation;
 using Loyalty.Application.Storage.Dto;
 using Loyalty.Application.Storage.Dto.Validators;
+using Loyalty.Application.Storage.Dto.Validators.Interface;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Loyalty.Application.Venue
 {
@@ -49,13 +50,19 @@ namespace Loyalty.Application.Venue
 
         public void ValidateImage(VenueNewBlobImageDto image)
         {
-            new VenueNewImageValidator(settings.Value)
+            new VenueNewImageValidator(settings.Value, new ImageValidator())
                 .ValidateAndThrow(image);
         }
 
         public void ValidateLogo(VenueNewBlobImageDto image)
         {
-            new VenueLogoValidator(settings.Value)
+            new VenueLogoValidator(settings.Value, new ImageValidator())
+                .ValidateAndThrow(image);
+        }
+
+        public void ValidateProductPhoto(byte [] image)
+        {
+            new ProductPhotoValidator(settings.Value, new ImageValidator())
                 .ValidateAndThrow(image);
         }
 

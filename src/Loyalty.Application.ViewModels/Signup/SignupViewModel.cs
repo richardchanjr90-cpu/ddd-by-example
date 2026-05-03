@@ -10,9 +10,6 @@ namespace Loyalty.Application.ViewModels.Signup
         [JsonPropertyName("surname")]
         public string Surname { get; set; }
 
-        [JsonPropertyName("email")]
-        public string Email { get; set; }
-
         [JsonPropertyName("city")]
         public string City { get; set; }
     }

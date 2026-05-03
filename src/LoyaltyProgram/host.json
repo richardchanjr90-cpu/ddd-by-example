@@ -1,13 +1,7 @@
 {
   "version": "2.0",
   "logging": {
-    "fileLoggingMode": "always",
-    "logLevel": {
-      "default": "Information",
-      "Host.Results": "Error",
-      "Function": "Trace",
-      "Host.Aggregator": "Trace"
-    },
+    "fileLoggingMode": "debugOnly",
     "applicationInsights": {
       "samplingSettings": {
         "isEnabled": true,
@@ -19,13 +13,5 @@
     "http": {
       "routePrefix": "api"
     }
-  },
-
-  "healthMonitor": {
-    "enabled": true,
-    "healthCheckInterval": "00:00:10",
-    "healthCheckWindow": "00:02:00",
-    "healthCheckThreshold": 6,
-    "counterThreshold": 0.80
   }
 }

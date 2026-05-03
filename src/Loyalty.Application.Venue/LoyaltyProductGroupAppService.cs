@@ -8,14 +8,12 @@ using Loyalty.Application.ViewModels.LoyaltyProductGroup;
 using Loyalty.Application.ViewModels.Rule;
 using Loyalty.Application.ViewModels.Validators;
 using Loyalty.Domain.Contracts;
-using Loyalty.Domain.Contracts.Interfaces;
 using Loyalty.Domain.Handlers.Queries.Commands.LoyaltyProductGroup;
 using Loyalty.Domain.Handlers.Queries.Commands.Rules;
 using Loyalty.Domain.Handlers.Queries.Queries.LoyaltyProductGroup;
 using Loyalty.Shared.Contracts.Enums;
 using MediatR;
-using System.Text.Json.Serialization;
-using Loyalty.Core.Entities.Base;
+using Loyalty.Core.Entities.SeedWork;
 using MediatR.Extensions.UnitOfWork.Interface;
 
 namespace Loyalty.Application.Venue
@@ -52,7 +50,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Create(LoyaltyProductGroupViewModel model)
         {
-            new LoyaltyProductGroupValidator().ValidateAndThrow(model);
+            new LoyaltyProductGroupValidator()
+                .ValidateAndThrow(model);
 
             var command = new CreateLoyaltyProductGroupCommand
             {
@@ -83,7 +82,8 @@ namespace Loyalty.Application.Venue
 
         public async Task<ICommandResult> Update(LoyaltyProductGroupViewModel model)
         {
-            new LoyaltyProductGroupValidator().ValidateAndThrow(model);
+            new LoyaltyProductGroupValidator()
+                .ValidateAndThrow(model);
 
             var command = new UpdateLoyaltyProductGroupCommand
             {

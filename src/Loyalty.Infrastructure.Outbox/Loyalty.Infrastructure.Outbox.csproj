@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.52" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Loyalty.Core.Outbox.Entities\Loyalty.Core.Outbox.Entities.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.DataAccess\Loyalty.Infrastructure.DataAccess.csproj" />
+    <ProjectReference Include="..\Loyalty.Infrastructure.Events.DataAccess\Loyalty.Infrastructure.Events.DataAccess.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <AdditionalFiles Include="..\stylecop.json" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>..\StyleCop.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+</Project>

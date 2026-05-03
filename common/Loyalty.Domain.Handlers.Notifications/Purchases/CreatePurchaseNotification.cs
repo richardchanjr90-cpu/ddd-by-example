@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using Loyalty.Domain.Handlers.Notifications.Base;
-using MediatR;
 
 namespace Loyalty.Domain.Handlers.Notifications.Purchases
 {

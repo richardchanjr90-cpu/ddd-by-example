@@ -24,5 +24,8 @@ namespace Loyalty.Domain.Handlers.Notifications.LoyaltyPrograms
 
         [JsonPropertyName("url")]
         public string Url { get; set; }
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
     }
 }

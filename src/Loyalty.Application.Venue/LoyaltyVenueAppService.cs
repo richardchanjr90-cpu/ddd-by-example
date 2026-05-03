@@ -10,6 +10,7 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Domain.Contracts;
 using Loyalty.Domain.Handlers.Queries.Commands.Venue;
 using Loyalty.Domain.Handlers.Queries.Queries.Venue;
+using Loyalty.Domain.Handlers.Queries.QueryResults.Venue;
 using MediatR;
 using MediatR.Extensions.UnitOfWork.Interface;
 using Microsoft.Extensions.Options;
@@ -32,24 +33,24 @@ namespace Loyalty.Application.Venue
             this.mapper = mapper;
         }
 
-        public async Task<UpdateVenueViewModel> Get(long id)
+        public async Task<GetVenueByIdQueryResult> Get(long id)
         {
             var result = await Mediator.Send(new GetVenueByIdQuery
             {
                 Id = id
             });
 
-            return mapper.Map<UpdateVenueViewModel>(result);
+            return result;
         }
 
-        public async Task<List<UpdateVenueViewModel>> Get(string userId)
+        public async Task<List<GetVenueByIdQueryResult>> Get(string userId)
         {
             var result = await Mediator.Send(new GetVenuesQuery
             {
                 UserId = userId
             });
 
-            return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
+            return result.Venues;
         }
 
         public async Task<List<UpdateVenueViewModel>> GetAllVenuesForAdmin()
@@ -60,20 +61,34 @@ namespace Loyalty.Application.Venue
             return mapper.Map<List<UpdateVenueViewModel>>(result.Venues);
         }
 
-        public async Task<ICommandResult> Create(CreateVenueViewModel model, ClaimsPrincipal principal)
+        public async Task<ICommandResult> Create(CreateVenueViewModel model)
         {
-            new CreateVenueValidator().ValidateAndThrow(model);
+            new CreateVenueValidator()
+                .ValidateAndThrow(model);
 
             var command = mapper.Map<CreateVenueCommand>(model);
             return await Mediator.Send(command);
         }
 
-        public async Task<ICommandResult> Update(UpdateVenueViewModel model)
+        public async Task<ICommandResult> AcceptOrders(long venueId)
         {
-            new UpdateVenueValidator().ValidateAndThrow(model);
+            var commandResult = await Mediator.Send(new PatchOrderAcceptanceCommand
+            {
+                Accept = true,
+                VenueId = venueId
+            });
 
-            var command = mapper.Map<UpdateVenueCommand>(model);
-            var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> DeclineOrders(long venueId)
+        {
+            var commandResult = await Mediator.Send(new PatchOrderAcceptanceCommand
+            {
+                Accept = false,
+                VenueId = venueId
+            });
+
             return commandResult;
         }
 
@@ -137,6 +152,16 @@ namespace Loyalty.Application.Venue
             };
 
             var commandResult = await Mediator.Send(command);
+            return commandResult;
+        }
+
+        public async Task<ICommandResult> Update(UpdateVenueViewModel model)
+        {
+            new UpdateVenueValidator().ValidateAndThrow(model);
+
+            var command = mapper.Map<UpdateVenueCommand>(model);
+            var commandResult = await Mediator.Send(command);
+
             return commandResult;
         }
     }

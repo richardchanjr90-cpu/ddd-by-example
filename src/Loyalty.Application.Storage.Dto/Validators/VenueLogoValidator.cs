@@ -2,17 +2,20 @@
 using System.Drawing;
 using System.IO;
 using FluentValidation;
+using Loyalty.Application.Storage.Dto.Validators.Interface;
 using Loyalty.Common.Shared.Settings;
 
 namespace Loyalty.Application.Storage.Dto.Validators
 {
-    public class VenueNewImageValidator : AbstractValidator<VenueNewBlobImageDto>
+    public class VenueLogoValidator : AbstractValidator<VenueNewBlobImageDto>
     {
         private readonly ImageSettings settings;
+        private readonly ImageValidator validator;
 
-        public VenueNewImageValidator(ImageSettings settings)
+        public VenueLogoValidator(ImageSettings settings, ImageValidator validator)
         {
             this.settings = settings;
+            this.validator = validator;
 
             RuleFor(x => x.Image)
                 .NotNull()
@@ -23,68 +26,23 @@ namespace Loyalty.Application.Storage.Dto.Validators
                 .GreaterThan(0);
 
             RuleFor(x => x.Image)
-                .Must(SizeIsLessThan1MbPlusSmallOverhead)
+                .Must(x=> validator.SizeIsLessThan1MbPlusSmallOverhead(x ,settings.MaxImageSizeInBytes))
                 .WithMessage("Image must be up to 1 MB.")
-                .Must(IsImageValid)
+                .Must(validator.IsImageValid)
                 .WithMessage("Image must be in PNG or JPG format.");
 
             RuleFor(x => x.Image)
                 .Must(ValidateWidthAndHeight)
-                .WithMessage("Image must be between 800x600 and 2560x1440px.");
-        }
-
-        private bool IsImageValid(byte[] arrayImage)
-        {
-            var isValid = false;
-
-            try
-            {
-                using var image = Image.FromStream(new MemoryStream(arrayImage));
-                {
-                    //
-                }
-                isValid = true;
-            }
-            catch (Exception ex)
-            {
-                isValid = false;
-                //Just validation; 
-            }
-
-            return isValid;
+                .WithMessage("Image must be between 800x600 and 1200x1200px.");
         }
 
         private bool ValidateWidthAndHeight(byte[] arrayImage)
         {
-            bool isValid;
-            try
-            {
-                using var image = Image.FromStream(new MemoryStream(arrayImage));
-                {
-                    isValid = image.Width <= settings.MaxGalleryImageWidth;
-                    isValid = isValid && image.Height <= settings.MaxGalleryImageHeight;
-                    isValid = isValid && image.Height >= settings.MinGalleryImageHeight;
-                    isValid = isValid && image.Width >= settings.MinGalleryImageWidth;
-                }
-            }
-            catch (Exception)
-            {
-                isValid = false;
-            }
-
-            return isValid;
-        }
-
-        private bool SizeIsLessThan1MbPlusSmallOverhead(byte[] array)
-        {
-            var isValid = false;
-
-            if (array != null)
-            {
-                isValid = array.Length <= settings.MaxImageSizeInBytes;
-            }
-
-            return isValid;
+            return validator.ValidateWidthAndHeight(arrayImage,
+                settings.MaxLogoImageWidth,
+                settings.MaxLogoImageHeight,
+                settings.MinLogoImageWidth,
+                settings.MinLogoImageHeight);
         }
     }
 }

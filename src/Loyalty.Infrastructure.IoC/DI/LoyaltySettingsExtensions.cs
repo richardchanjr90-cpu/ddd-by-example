@@ -1,5 +1,4 @@
 ﻿using Loyalty.Common.Shared.Settings;
-using Loyalty.Core.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,6 +22,14 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             services.Configure<VenueSettings>(
                 options => config.GetSection(nameof(VenueSettings))
+                    .Bind(options));
+
+            services.Configure<SmsSettings>(
+                options => config.GetSection(nameof(SmsSettings))
+                    .Bind(options));
+
+            services.Configure<EmailSettings>(
+                options => config.GetSection(nameof(EmailSettings))
                     .Bind(options));
         }
     }

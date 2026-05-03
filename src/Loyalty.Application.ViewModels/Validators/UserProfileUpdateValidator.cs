@@ -15,10 +15,6 @@ namespace Loyalty.Application.ViewModels.Validators
                 .NotEmpty()
                 .MaximumLength(50);
 
-            RuleFor(x => x.Email)
-                .NotEmpty()
-                .EmailAddress();
-
             RuleFor(x => x.PositionName)
                 .MaximumLength(100);
         }

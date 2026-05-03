@@ -36,7 +36,7 @@ namespace Loyalty.Application.ViewModels.Validators.Venue
                 .When(x => x.Phones != null);
 
             RuleForEach(x => x.WorkingHours)
-                .Must(x => !string.IsNullOrWhiteSpace(x.Day) && x.To <= 24*60)
+                .Must(x => x.Day >= 0 && x.Day < 7 && x.To <= 24 * 60)
                 .When(x => x.WorkingHours != null);
 
             RuleFor(x => x)
