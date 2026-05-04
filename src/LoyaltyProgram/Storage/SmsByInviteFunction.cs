@@ -54,7 +54,7 @@ namespace LoyaltyProgram.Storage
 
                 var alphaResponse = await Client.GetAsync(new Uri(alphaUri));
 
-                if (!alphaResponse.IsSuccessStatusCode)
+                if (alphaResponse.IsSuccessStatusCode)
                 {
                     var alpha = await alphaResponse.Content.ReadAsStringAsync();
                     var alphaId = (JsonElement)JsonSerializer.Deserialize<object>(alpha);
