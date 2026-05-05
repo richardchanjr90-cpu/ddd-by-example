@@ -8,7 +8,7 @@
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.15" />
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.15" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.2" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.7">
+    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.9">
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.3">
