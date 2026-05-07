@@ -48,7 +48,7 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Pipelines
                     using (var transaction = await dbContext.BeginTransactionAsync())
                     {
                         logger.LogInformation(
-                            "----- Begin transaction {TransactionId} for {CommandName} ({@Request})",
+                            "----- Begin transaction {TransactionId} for {CommandName} ({@Command})",
                             transaction.TransactionId,
                             typeName,
                             request);
