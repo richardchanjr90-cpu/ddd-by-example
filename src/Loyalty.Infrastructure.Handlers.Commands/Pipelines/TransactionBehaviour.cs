@@ -14,14 +14,14 @@ namespace Loyalty.Infrastructure.Handlers.Commands.Pipelines
         : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<ICommandResult>
     {
-        private readonly ILogger<TransactionBehaviour<TRequest, TResponse>> logger;
+        private readonly ILogger logger;
         private readonly ILoyaltyTenantDbContext dbContext;
         private readonly IEventBusService eventService;
 
         public TransactionBehaviour(
             ILoyaltyTenantDbContext dbContext,
             IEventBusService eventService,
-            ILogger<TransactionBehaviour<TRequest, TResponse>> logger)
+            ILogger logger)
         {
             this.dbContext = dbContext ?? throw new ArgumentException(nameof(ILoyaltyTenantDbContext));
             this.eventService = eventService ?? throw new ArgumentException(nameof(eventService));
