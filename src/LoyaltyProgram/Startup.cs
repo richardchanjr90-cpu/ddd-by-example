@@ -62,7 +62,7 @@ namespace LoyaltyProgram
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
+                .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
                 .CreateLogger();
 
             builder.Services.AddLogging(lb => lb.AddSerilog(logger));
