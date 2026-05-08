@@ -7,6 +7,7 @@ using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
 using LoyaltyProgram;
 using MediatR;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -61,6 +62,7 @@ namespace LoyaltyProgram
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .WriteTo.ApplicationInsights(TelemetryConfiguration.Active, TelemetryConverter.Traces)
                 .CreateLogger();
 
             builder.Services.AddLogging(lb => lb.AddSerilog(logger));
