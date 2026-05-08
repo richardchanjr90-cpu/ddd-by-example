@@ -63,8 +63,7 @@ namespace LoyaltyProgram
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.ApplicationInsights(LoggingExtensions.OperationIdEvents)
-                .Enrich.WithOperationId()
+                .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
                 .Filter.ByExcluding(x => true)
                 .CreateLogger();
 
