@@ -5,6 +5,7 @@ using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
+using Loyalty.Infrastructure.Logging.AppInsights;
 using LoyaltyProgram;
 using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -62,7 +63,8 @@ namespace LoyaltyProgram
 
             var logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
+                .WriteTo.ApplicationInsights(LoggingExtensions.OperationIdEvents)
+                .Enrich.WithOperationId()
                 .Filter.ByExcluding(x => true)
                 .CreateLogger();
 
