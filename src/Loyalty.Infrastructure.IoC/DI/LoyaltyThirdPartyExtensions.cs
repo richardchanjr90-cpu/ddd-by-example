@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Loyalty.Application.AutoMapper;
 using Loyalty.Application.DomainEvents.Handlers.ProductGroup;
 using Loyalty.Common.Shared.Extensions;

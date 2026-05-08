@@ -10,7 +10,9 @@ using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi;
+using Serilog;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace LoyaltyProgram
@@ -56,6 +58,12 @@ namespace LoyaltyProgram
                     opts.Title = "Swagger";
                     opts.OverridenPathToSwaggerJson = new Uri(config[$"{nameof(SwaggerSettings)}:{nameof(SwaggerSettings.SwaggerJsonUri)}"]);
                 });
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            builder.Services.AddLogging(lb => lb.AddSerilog(logger));
         }
     }
 }
