@@ -2,6 +2,12 @@
   "version": "2.0",
   "logging": {
     "fileLoggingMode": "debugOnly",
+    "logLevel": {
+      "default": "Information",
+      "Host.Results": "Error",
+      "Function": "Trace",
+      "Host.Aggregator": "Trace"
+    },
     "applicationInsights": {
       "samplingSettings": {
         "isEnabled": true,
