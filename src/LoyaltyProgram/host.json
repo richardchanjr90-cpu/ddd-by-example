@@ -6,7 +6,7 @@
       "default": "Information",
       "Host.Results": "Error",
       "Function": "Trace",
-      "Host.Aggregator": "Warning"
+      "Host.Aggregator": "Error"
     },
     "applicationInsights": {
       "samplingSettings": {
