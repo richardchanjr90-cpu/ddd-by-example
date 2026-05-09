@@ -43,7 +43,7 @@ namespace LoyaltyProgram.Http.Write.UserProfile
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<UserProfileViewModel>();
+                model = await req.Cast<UserProfileViewModel>(log);
                 var result = await service.UpdateProfile(model, token.Principal.GetUserId());
 
                 return new OkObjectResult(result);

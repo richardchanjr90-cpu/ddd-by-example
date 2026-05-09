@@ -22,8 +22,10 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
         private readonly IWorkerRepository workerRepository;
         private readonly IHttpContextAccessor accessor;
 
-        public VenueCreatedDomainEventHandler(IEventBusService eventBusService, 
-            IWorkerRepository workerRepository, IHttpContextAccessor accessor)
+        public VenueCreatedDomainEventHandler(
+            IEventBusService eventBusService, 
+            IWorkerRepository workerRepository, 
+            IHttpContextAccessor accessor)
         {
             this.eventBusService = eventBusService;
             this.workerRepository = workerRepository;

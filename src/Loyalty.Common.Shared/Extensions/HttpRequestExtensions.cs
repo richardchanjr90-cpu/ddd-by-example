@@ -6,7 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Loyalty.Common.Shared.Extensions
 {
@@ -14,7 +14,6 @@ namespace Loyalty.Common.Shared.Extensions
     {
         public static async Task<T> Cast<T>(this HttpRequest request)
         {
-            Log.Logger.Warning("---- Here ----");
 
             if (request == null)
             {
@@ -22,15 +21,6 @@ namespace Loyalty.Common.Shared.Extensions
             }
 
             var req = request.HttpContext.Request;
-            req.Body.Position = 0;
-
-            Log.Logger.Warning("Request body length: {Body}", req.Body.Length);
-            Log.Logger.Warning("Request body length: {Body}", req.Body.Length);
-            Log.Logger.Warning("Request body: {@Body}", req.Body);
-            Log.Logger.Warning("Request: {@Req}", req);
-
-            var str = request.ReadAsStringAsync();
-            Log.Logger.Warning("Request: {str}", str);
             req.Body.Position = 0;
             var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
             req.Body.Position = 0;
@@ -39,7 +29,7 @@ namespace Loyalty.Common.Shared.Extensions
 
         public static async Task<T> Cast<T>(this HttpRequest request, ILogger log)
         {
-            log.Warning("---- Here ----");
+            log.LogWarning("---- Here ----");
 
             if (request == null)
             {
@@ -49,13 +39,13 @@ namespace Loyalty.Common.Shared.Extensions
             var req = request.HttpContext.Request;
             req.Body.Position = 0;
 
-            log.Warning("Request body length: {Body}", req.Body.Length);
-            log.Warning("Request body length: {Body}", req.Body.Length);
-            log.Warning("Request body: {@Body}", req.Body);
-            log.Warning("Request: {@Req}", req);
+            log.LogWarning("Request body length: {Body}", req.Body.Length);
+            log.LogWarning("Request body length: {Body}", req.Body.Length);
+            log.LogWarning("Request body: {@Body}", req.Body);
+            log.LogWarning("Request: {@Req}", req);
 
             var str = request.ReadAsStringAsync();
-            log.Warning("Request: {str}", str);
+            log.LogWarning("Request: {str}", str);
             req.Body.Position = 0;
             var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
             req.Body.Position = 0;
