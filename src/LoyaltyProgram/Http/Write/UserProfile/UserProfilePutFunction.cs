@@ -35,7 +35,7 @@ namespace LoyaltyProgram.Http.Write.UserProfile
         [FunctionName("UserProfilePutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "userprofiles")]
-            HttpRequestMessage req,
+            [RequestBodyType(typeof(UserProfileViewModel), "UserProfileViewModel")] UserProfileViewModel model,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
@@ -43,7 +43,6 @@ namespace LoyaltyProgram.Http.Write.UserProfile
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                var model = await req.Cast<UserProfileViewModel>(log);
                 var result = await service.UpdateProfile(model, token.Principal.GetUserId());
 
                 return new OkObjectResult(result);

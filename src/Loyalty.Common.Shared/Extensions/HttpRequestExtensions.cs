@@ -52,7 +52,7 @@ namespace Loyalty.Common.Shared.Extensions
             return result;
         }
 
-        public static async Task<T> Cast<T>(this HttpRequestMessage request, ILogger log)
+        public static async Task<T> Cast<T>(this HttpRequestMessage request)
         {
             if (request == null)
             {
@@ -61,32 +61,8 @@ namespace Loyalty.Common.Shared.Extensions
 
             var body = await request.Content.ReadAsStringAsync();
 
-            log.LogWarning("Request body: {@Body}", body);
-            log.LogWarning("Request body: {Body}", body);
-            log.LogWarning("Request length: {Length}", body.Length);
-            log.LogWarning("Request: {@Req}", request.Content);
-
             var result = JsonSerializer.Deserialize<T>(body);
             return result;
-        }
-
-        public static Guid ValidateAuthTempGuid(this HttpRequest request)
-        {
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            var headers = request.Headers["X-AUTH-TEMP-GUID"];
-
-            if (!headers.Any())
-            {
-                throw new ArgumentNullException("request");
-            }
-
-            var stringHeader = headers.ToString();
-
-            return Guid.Parse(stringHeader);
         }
 
         public static void ValidateSecret(this HttpRequest request)

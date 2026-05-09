@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -35,8 +36,8 @@ namespace LoyaltyProgram.Http.Write.Venue
         [FunctionName("VenuePutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "venues")]
-            [RequestBodyType(typeof(UpdateVenueViewModel), "VenueViewModel")] UpdateVenueViewModel model,
-            HttpRequest req,
+            //[RequestBodyType(typeof(UpdateVenueViewModel), "VenueViewModel")] UpdateVenueViewModel model,
+            HttpRequestMessage req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director))] FunctionTokenResult token,
             ILogger log)
         {
@@ -44,7 +45,7 @@ namespace LoyaltyProgram.Http.Write.Venue
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<UpdateVenueViewModel>();
+                var model = await req.Cast<UpdateVenueViewModel>();
                 return new OkObjectResult(await service.Update(model));
             });
         }
