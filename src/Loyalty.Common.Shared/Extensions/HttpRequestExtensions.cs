@@ -5,6 +5,8 @@ using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Serilog;
 
 namespace Loyalty.Common.Shared.Extensions
 {
@@ -19,6 +21,14 @@ namespace Loyalty.Common.Shared.Extensions
 
             var req = request.HttpContext.Request;
             req.Body.Position = 0;
+
+            Log.Logger.Warning("Request body length: {Body}", req.Body.Length);
+            Log.Logger.Warning("Request body length: {Body}", req.Body.Length);
+            Log.Logger.Warning("Request body: {@Body}", req.Body);
+            Log.Logger.Warning("Request: {@Req}", req);
+
+            var str = request.ReadAsStringAsync();
+            Log.Logger.Warning("Request: {str}", str);
 
             var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
             req.Body.Position = 0;
