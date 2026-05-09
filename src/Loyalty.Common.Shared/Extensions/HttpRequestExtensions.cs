@@ -14,6 +14,8 @@ namespace Loyalty.Common.Shared.Extensions
     {
         public static async Task<T> Cast<T>(this HttpRequest request)
         {
+            Log.Logger.Warning("---- Here ----");
+
             if (request == null)
             {
                 throw new ArgumentNullException(nameof(request));
@@ -29,7 +31,7 @@ namespace Loyalty.Common.Shared.Extensions
 
             var str = request.ReadAsStringAsync();
             Log.Logger.Warning("Request: {str}", str);
-
+            req.Body.Position = 0;
             var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
             req.Body.Position = 0;
             return result;
