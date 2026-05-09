@@ -37,6 +37,31 @@ namespace Loyalty.Common.Shared.Extensions
             return result;
         }
 
+        public static async Task<T> Cast<T>(this HttpRequest request, ILogger log)
+        {
+            log.Warning("---- Here ----");
+
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            var req = request.HttpContext.Request;
+            req.Body.Position = 0;
+
+            log.Warning("Request body length: {Body}", req.Body.Length);
+            log.Warning("Request body length: {Body}", req.Body.Length);
+            log.Warning("Request body: {@Body}", req.Body);
+            log.Warning("Request: {@Req}", req);
+
+            var str = request.ReadAsStringAsync();
+            log.Warning("Request: {str}", str);
+            req.Body.Position = 0;
+            var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
+            req.Body.Position = 0;
+            return result;
+        }
+
         public static async Task<T> Cast<T>(this HttpRequestMessage request)
         {
             if (request == null)
