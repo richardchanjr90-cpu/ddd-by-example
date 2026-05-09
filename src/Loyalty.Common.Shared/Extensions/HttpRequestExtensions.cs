@@ -5,8 +5,6 @@ using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-
 
 namespace Loyalty.Common.Shared.Extensions
 {
@@ -19,8 +17,11 @@ namespace Loyalty.Common.Shared.Extensions
                 throw new ArgumentNullException(nameof(request));
             }
 
-            var body = await request.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<T>(body);
+            var req = request.HttpContext.Request;
+            req.Body.Position = 0;
+
+            var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
+            req.Body.Position = 0;
             return result;
         }
 
