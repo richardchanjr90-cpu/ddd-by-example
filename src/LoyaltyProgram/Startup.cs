@@ -5,7 +5,6 @@ using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
-using Loyalty.Infrastructure.Logging.AppInsights;
 using LoyaltyProgram;
 using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
@@ -13,8 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
 using Serilog;
-using Serilog.Events;
-using Serilog.Filters;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace LoyaltyProgram
