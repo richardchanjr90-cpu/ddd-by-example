@@ -3,11 +3,13 @@ using System.Reflection;
 using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.DataAccess.Context;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
 using LoyaltyProgram;
 using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
@@ -65,6 +67,15 @@ namespace LoyaltyProgram
                 .CreateLogger();
 
             builder.Services.AddLogging(lb => lb.AddSerilog(logger));
+
+            var context = builder.Services.BuildServiceProvider()
+                .GetRequiredService<LoyaltyDbContext>();
+
+            var m = context.Model;
+            var f = context.Venues.IgnoreQueryFilters().FirstAsync();
+
+            Console.WriteLine(m);
+            Console.WriteLine(f);
         }
     }
 }
