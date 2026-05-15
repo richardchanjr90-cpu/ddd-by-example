@@ -56,6 +56,15 @@ namespace Loyalty.Infrastructure.IoC.DI
 
             services.AddTransient(x => options);
             services.AddTransient(x => options2);
+
+            LoyaltyTenantDbContext context = (LoyaltyTenantDbContext) services.BuildServiceProvider()
+                .GetRequiredService<ILoyaltyTenantDbContext>();
+
+            var m = context.Model;
+            var f = context.Venues.IgnoreQueryFilters().FirstAsync();
+
+            Console.WriteLine(m);
+            Console.WriteLine(f);
         }
     }
 }
