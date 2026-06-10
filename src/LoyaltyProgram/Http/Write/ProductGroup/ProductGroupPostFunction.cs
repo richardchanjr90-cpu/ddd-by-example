@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -35,12 +36,12 @@ namespace LoyaltyProgram.Http.Write.ProductGroup
         [FunctionName("ProductGroupPostFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "productgroups")]
-            [RequestBodyType(typeof(ProductGroupViewModel), "ProductGroupViewModel")] ProductGroupViewModel model,
-            HttpRequest req,
+            //[RequestBodyType(typeof(ProductGroupViewModel), "ProductGroupViewModel")] ProductGroupViewModel model,
+            HttpRequestMessage req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             ILogger log)
         {
-            model = await req.Cast<ProductGroupViewModel>();
+            var model = await req.Cast<ProductGroupViewModel>();
             log.LogInformation($"{nameof(ProductGroupPostFunction)} was triggered.");
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>

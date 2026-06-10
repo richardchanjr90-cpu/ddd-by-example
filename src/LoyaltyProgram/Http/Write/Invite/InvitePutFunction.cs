@@ -37,7 +37,6 @@ namespace LoyaltyProgram.Http.Write.Invite
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers/invited")]
             [RequestBodyType(typeof(UpdateInviteViewModel), "InviteViewModel")] UpdateInviteViewModel model,
-            HttpRequest req,
             [FunctionToken(nameof(VenueUserRole.Owner), nameof(VenueUserRole.Director), nameof(VenueUserRole.Manager))] FunctionTokenResult token,
             [Queue("worker-invite", Connection = "QueueConnectionString")] ICollector<WorkerInviteDto> queueItems,
             ILogger log)
@@ -46,7 +45,6 @@ namespace LoyaltyProgram.Http.Write.Invite
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<UpdateInviteViewModel>();
                 var result = await service.UpdateInvited(model);
                 var worker = await service.Get(model.Id);
 

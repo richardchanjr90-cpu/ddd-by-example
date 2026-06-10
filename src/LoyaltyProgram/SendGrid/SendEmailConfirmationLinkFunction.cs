@@ -23,7 +23,9 @@ namespace LoyaltyProgram.SendGrid
         [return: SendGrid(ApiKey = "SendGridKey", To = "{CustomerEmail}", From = "{SenderEmail}")]
         public SendGridMessage Run([QueueTrigger("invite-mail", Connection = "")]EmailInvitationDto emailInvitation, ILogger log)
         {
-            log.LogInformation($"{nameof(SendEmailConfirmationLinkFunction)} processed email: {emailInvitation.CustomerEmail}");
+            log.LogInformation($"{nameof(SendEmailConfirmationLinkFunction)} " +
+                                $"processed email: {emailInvitation.CustomerEmail} " +
+                                $"with link: {emailInvitation.Link}");
 
             SendGridMessage message = null;
 
@@ -39,6 +41,8 @@ namespace LoyaltyProgram.SendGrid
                     VerifyLink = emailInvitation.Link,
                 };
                 message.SetTemplateData(dynamicTemplateData);
+
+                log.LogInformation($"{nameof(SendEmailConfirmationLinkFunction)} Sent email: {emailInvitation.CustomerEmail}");
             }
             else
             {

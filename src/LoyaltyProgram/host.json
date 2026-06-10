@@ -2,6 +2,10 @@
   "version": "2.0",
   "logging": {
     "fileLoggingMode": "debugOnly",
+    "logLevel": {
+      "default": "Information",
+      "Function": "Trace"
+    },
     "applicationInsights": {
       "samplingSettings": {
         "isEnabled": true,

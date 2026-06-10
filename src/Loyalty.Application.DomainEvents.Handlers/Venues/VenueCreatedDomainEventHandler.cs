@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Loyalty.Common.Shared.Extensions;
@@ -22,8 +20,10 @@ namespace Loyalty.Application.DomainEvents.Handlers.Venues
         private readonly IWorkerRepository workerRepository;
         private readonly IHttpContextAccessor accessor;
 
-        public VenueCreatedDomainEventHandler(IEventBusService eventBusService, 
-            IWorkerRepository workerRepository, IHttpContextAccessor accessor)
+        public VenueCreatedDomainEventHandler(
+            IEventBusService eventBusService, 
+            IWorkerRepository workerRepository, 
+            IHttpContextAccessor accessor)
         {
             this.eventBusService = eventBusService;
             this.workerRepository = workerRepository;

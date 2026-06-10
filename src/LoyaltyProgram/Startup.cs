@@ -3,14 +3,17 @@ using System.Reflection;
 using AzureFunctions.Extensions.Swashbuckle;
 using AzureFunctions.Extensions.Swashbuckle.Settings;
 using Loyalty.Common.Shared.Settings;
+using Loyalty.Infrastructure.DataAccess.Context;
 using Loyalty.Infrastructure.IoC;
 using Loyalty.Infrastructure.IoC.DI;
 using LoyaltyProgram;
 using MediatR;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi;
+using Serilog;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 namespace LoyaltyProgram
@@ -56,6 +59,23 @@ namespace LoyaltyProgram
                     opts.Title = "Swagger";
                     opts.OverridenPathToSwaggerJson = new Uri(config[$"{nameof(SwaggerSettings)}:{nameof(SwaggerSettings.SwaggerJsonUri)}"]);
                 });
+
+            var logger = new LoggerConfiguration()
+                .WriteTo.Console()
+                .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
+                .Filter.ByExcluding(x => true)
+                .CreateLogger();
+
+            builder.Services.AddLogging(lb => lb.AddSerilog(logger));
+
+            var context = builder.Services.BuildServiceProvider()
+                .GetRequiredService<LoyaltyDbContext>();
+
+            var m = context.Model;
+            var f = context.Venues.IgnoreQueryFilters().FirstAsync();
+
+            Console.WriteLine(m);
+            Console.WriteLine(f);
         }
     }
 }

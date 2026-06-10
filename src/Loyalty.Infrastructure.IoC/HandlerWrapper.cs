@@ -44,7 +44,8 @@ namespace Loyalty.Infrastructure.IoC
             }
             catch (LoyaltyValidationException ex)
             {
-                logger?.LogWarning(ex.Message, ex);
+                logger?.LogError("LoyaltyValidationException: {@Exception} with error {Message}", ex, ex.Message);
+
                 return new BadRequestObjectResult(new CommandResult
                 {
                     Success = false,
@@ -63,12 +64,11 @@ namespace Loyalty.Infrastructure.IoC
             }
             catch (AuthenticationException ex)
             {
-                logger?.LogWarning(ex.Message, ex);
+                logger?.LogError("AuthenticationException: {@Exception} with error {Message}", ex, ex.Message);
                 return new UnauthorizedResult();
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex.Message, ex);
                 logger?.LogError("Unhandled exception: {@Exception} with error {Message}", ex, ex.Message);
 
                 return new BadRequestObjectResult(new CommandResult

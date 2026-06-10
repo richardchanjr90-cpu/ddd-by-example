@@ -71,8 +71,8 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
             }
             catch (FirebaseAuthException ex)
             {
-                logger.LogCritical("Firebase error {@Exception}", ex);
-                throw new LoyaltyValidationException("Failed to change email.", ex);
+                logger.LogError("Firebase error: {@Exception} for {Email}", ex, request.NewEmail);
+                throw;
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -35,7 +36,6 @@ namespace LoyaltyProgram.Http.Write.UserProfile
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "userprofiles")]
             [RequestBodyType(typeof(UserProfileViewModel), "UserProfileViewModel")] UserProfileViewModel model,
-            HttpRequest req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
@@ -43,7 +43,6 @@ namespace LoyaltyProgram.Http.Write.UserProfile
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<UserProfileViewModel>();
                 var result = await service.UpdateProfile(model, token.Principal.GetUserId());
 
                 return new OkObjectResult(result);

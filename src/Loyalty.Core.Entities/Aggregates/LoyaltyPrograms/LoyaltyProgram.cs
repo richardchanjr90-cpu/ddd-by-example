@@ -85,7 +85,7 @@ namespace Loyalty.Core.Entities.Aggregates.LoyaltyPrograms
                 throw new LoyaltyValidationException("You can't change already published program.", ErrorCode.IS_PUBLISHED);
             }
 
-            if (LoyaltyProductGroups.Count == 0)
+            if (IsPublished && LoyaltyProductGroups.Count == 0)
             {
                 throw new LoyaltyValidationException("You can't publish group without any LoyaltyProductGroups attached.", ErrorCode.FAILED_TO_PUBLISH);
             }
