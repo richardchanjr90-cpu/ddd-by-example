@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using AzureExtensions.FunctionToken;
 using AzureFunctions.Extensions.Swashbuckle.Attribute;
@@ -34,8 +35,8 @@ namespace LoyaltyProgram.Http.Write.Worker
         [FunctionName("WorkerPutFunction")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "put", Route = "workers")]
-            [RequestBodyType(typeof(UpdateInviteViewModel), "UpdateWorkerViewModel")] UpdateInviteViewModel model,
-            HttpRequest req,
+            //[RequestBodyType(typeof(UpdateInviteViewModel), "UpdateWorkerViewModel")] UpdateInviteViewModel model,
+            HttpRequestMessage req,
             [FunctionToken] FunctionTokenResult token,
             ILogger log)
         {
@@ -43,7 +44,7 @@ namespace LoyaltyProgram.Http.Write.Worker
 
             return await HandlerWrapper.WrapAsync(log, token, async () =>
             {
-                model = await req.Cast<UpdateInviteViewModel>();
+                var model = await req.Cast<UpdateInviteViewModel>();
                 var result = await service.UpdateInvited(model);
 
                 return new OkObjectResult(result);

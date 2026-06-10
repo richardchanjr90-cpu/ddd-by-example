@@ -33,7 +33,8 @@ namespace LoyaltyProgram.Http.Write.VenueImages
         public VenueCreateImageFunction(
             IOptions<ImageSettings> imageSettings,
             LoyaltyVenueAppService service,
-            LoyaltyVenueImageAppService imageService, ILoyaltyTenantDbContext context) 
+            LoyaltyVenueImageAppService imageService, 
+            ILoyaltyTenantDbContext context) 
             : base(context)
         {
             this.imageSettings = imageSettings;

@@ -35,7 +35,8 @@ namespace LoyaltyProgram.Http.Write.UserProfile
         public UserProfilePatchLogoFunction(
             WorkerAppService service,
             LoyaltyVenueImageAppService imageService,
-            IOptions<ImageSettings> settings, ILoyaltyTenantDbContext context) 
+            IOptions<ImageSettings> settings, 
+            ILoyaltyTenantDbContext context) 
             : base(context)
         {
             this.service = service;

@@ -30,7 +30,8 @@ namespace LoyaltyProgram.Http.Write.VenueImages
         public VenuePutImageFunction(
             IOptions<ImageSettings> imageSettings,
             LoyaltyVenueAppService service,
-            LoyaltyVenueImageAppService imageService, ILoyaltyTenantDbContext context) 
+            LoyaltyVenueImageAppService imageService, 
+            ILoyaltyTenantDbContext context) 
             : base(context)
         {
             this.imageSettings = imageSettings;

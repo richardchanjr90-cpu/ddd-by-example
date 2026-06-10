@@ -32,7 +32,8 @@ namespace LoyaltyProgram.Http.Write.Product
         public ProductImagePatchFunction(
             ProductAppService service,
             LoyaltyVenueImageAppService imageService,
-            IOptions<ImageSettings> settings, ILoyaltyTenantDbContext context) 
+            IOptions<ImageSettings> settings, 
+            ILoyaltyTenantDbContext context) 
             : base(context)
         {
             this.service = service;

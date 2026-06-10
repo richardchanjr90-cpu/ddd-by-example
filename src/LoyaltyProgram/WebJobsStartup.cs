@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using AzureExtensions.FunctionToken.Extensions;
 using AzureExtensions.FunctionToken.FunctionBinding.Options;
@@ -8,7 +7,6 @@ using Loyalty.Common.Shared.Settings;
 using Loyalty.Infrastructure.Logging.AppInsights;
 using LoyaltyProgram;
 using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Hosting;
 using Microsoft.Extensions.Configuration;

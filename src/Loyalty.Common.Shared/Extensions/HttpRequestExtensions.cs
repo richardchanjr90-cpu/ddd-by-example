@@ -5,53 +5,11 @@ using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
 
 namespace Loyalty.Common.Shared.Extensions
 {
     public static class HttpRequestExtensions
     {
-        public static async Task<T> Cast<T>(this HttpRequest request)
-        {
-
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            var req = request.HttpContext.Request;
-            req.Body.Position = 0;
-            var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
-            req.Body.Position = 0;
-            return result;
-        }
-
-        public static async Task<T> Cast<T>(this HttpRequest request, ILogger log)
-        {
-            log.LogWarning("---- Here ----");
-
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            var req = request.HttpContext.Request;
-            req.Body.Position = 0;
-
-            log.LogWarning("Request body length: {Body}", req.Body.Length);
-            log.LogWarning("Request body length: {Body}", req.Body.Length);
-            log.LogWarning("Request body: {@Body}", req.Body);
-            log.LogWarning("Request: {@Req}", req);
-
-            var str = request.ReadAsStringAsync();
-            log.LogWarning("Request: {str}", str);
-            req.Body.Position = 0;
-            var result = await JsonSerializer.DeserializeAsync<T>(req.Body);
-            req.Body.Position = 0;
-            return result;
-        }
-
         public static async Task<T> Cast<T>(this HttpRequestMessage request)
         {
             if (request == null)
