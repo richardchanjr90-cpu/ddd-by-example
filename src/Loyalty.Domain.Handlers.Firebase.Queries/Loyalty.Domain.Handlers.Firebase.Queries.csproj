@@ -7,7 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.15" />
     <PackageReference Include="AzureExtensions.FunctionToken" Version="1.0.15" />
-    <PackageReference Include="FirebaseAdmin" Version="1.14.0" />
+    <PackageReference Include="FirebaseAdmin" Version="1.16.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +15,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
     <AdditionalFiles Include="..\stylecop.json" />
   </ItemGroup>

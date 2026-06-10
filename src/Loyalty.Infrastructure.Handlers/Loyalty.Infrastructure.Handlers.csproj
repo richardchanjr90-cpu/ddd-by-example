@@ -17,7 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Loyalty.Domain.Handlers.Notifications" Version="1.0.52" />
     <PackageReference Include="Loyalty.Shared.Contracts" Version="1.0.15" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
