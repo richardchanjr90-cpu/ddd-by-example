@@ -59,23 +59,12 @@ namespace LoyaltyProgram
                     opts.Title = "Swagger";
                     opts.OverridenPathToSwaggerJson = new Uri(config[$"{nameof(SwaggerSettings)}:{nameof(SwaggerSettings.SwaggerJsonUri)}"]);
                 });
-
-            var logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
-                .Filter.ByExcluding(x => true)
-                .CreateLogger();
-
-            builder.Services.AddLogging(lb => lb.AddSerilog(logger));
-
-            var context = builder.Services.BuildServiceProvider()
-                .GetRequiredService<LoyaltyDbContext>();
-
-            var m = context.Model;
-            var f = context.Venues.IgnoreQueryFilters().FirstAsync();
-
-            Console.WriteLine(m);
-            Console.WriteLine(f);
+            //var logger = new LoggerConfiguration()
+            //    .WriteTo.Console()
+            //    .WriteTo.ApplicationInsights(TelemetryConverter.Traces)
+            //    .Filter.ByExcluding(x => true)
+            //    .CreateLogger();
+            //builder.Services.AddLogging(lb => lb.AddSerilog(logger));
         }
     }
 }
