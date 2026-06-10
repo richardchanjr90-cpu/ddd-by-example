@@ -60,6 +60,14 @@ namespace Loyalty.Infrastructure.Firebase.Handlers.Queries
                     link = await FirebaseAuth.DefaultInstance.GenerateEmailVerificationLinkAsync(
                         request.NewEmail, actionCodeSettings, cancellationToken);
                 }
+                else
+                {
+                    logger.LogWarning(
+                        "GenerateEmailVerificationLinkAsync failed: {Email} and {IsVerified} for user: {User}",  
+                        request.NewEmail, 
+                        request.IsEmailVerified,
+                        request.UserId);
+                }
             }
             catch (FirebaseAuthException ex)
             {
