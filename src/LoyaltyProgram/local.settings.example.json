@@ -1,0 +1,63 @@
+{
+  "IsEncrypted": false,
+  "_comment": "Copy this file to 'local.settings.json' and fill in your own values. The real local.settings.json is git-ignored and must never be committed.",
+
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "FUNCTION_ENV": "local",
+    "QueueConnectionString": "UseDevelopmentStorage=true",
+    "ServiceBusConnectionString": "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=<your-key>",
+    "DefaultFullSharedAccessSignature": "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=<your-key>",
+    "DefaultFullSharedAccessSignatureVenue": "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=DefaultFullSharedAccessSignature;SharedAccessKey=<your-key>",
+    "HubsName": "notification-loyalty-dev",
+    "VenueHubsName": "notification-venue-dev",
+    "ServiceBusClientsTopicName": "local-clienteventstopic",
+    "AdminPhones": "+10000000000",
+    "SendGridKey": "<your-sendgrid-api-key>",
+    "APPINSIGHTS_INSTRUMENTATIONKEY": "<your-app-insights-key>"
+  },
+
+  "GoogleAuthSettings": {
+    "ProjectName": "your-project-local",
+    "Issuer": "https://securetoken.google.com/your-project-local",
+    "JsonUri": "https://<your-storage>.blob.core.windows.net/firebase-local/<service-account>.json?<sas-token>",
+    "AuthKey": "<your-firebase-web-api-key>",
+    "ClientJsonBase64": "<base64-encoded-firebase-service-account-json>"
+  },
+
+  "VenueSettings": {
+    "MaxVenueNumber": 10
+  },
+
+  "ServiceBusSettings": {
+    "ConnectionString": "Endpoint=sb://<your-namespace>.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=<your-key>",
+    "BusinessActivitiesQueueName": "local-integrationtopic",
+    "UserTopicName": "local-usertopic"
+  },
+
+  "DbSettings": {
+    "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=loyaltyprogram-local;Trusted_Connection=True;MultipleActiveResultSets=true"
+  },
+
+  "SwaggerSettings": {
+    "SwaggerJsonUri": "http://localhost:7071/api/Swagger/json"
+  },
+
+  "SmsSettings": {
+    "Host": "http://app.sms.by/api/v1",
+    "Token": "<your-sms-provider-token>",
+    "AlphaNameId": "YourBrand",
+    "AllowedPrefix": "375"
+  },
+
+  "EmailSettings": {
+    "InviteTemplateId": "<your-sendgrid-template-id>",
+    "InviteEmail": "hello@example.com",
+    "AndroidPackageName": "app.example.vendor",
+    "IOsBundleId": "vendor.example.app",
+    "EmailLink": "https://example.page.link/xxxx",
+    "LinkDomain": "example.page.link"
+  }
+}

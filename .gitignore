@@ -260,3 +260,8 @@ paket-files/
 __pycache__/
 *.pyc
 publish*
+
+# Azure Functions local settings — NEVER commit real secrets.
+# Use local.settings.example.json as a template.
+local.settings.json
+src/LoyaltyProgram/local.settings.json
