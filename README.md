@@ -41,8 +41,10 @@ publishable draft in [`docs/articles`](docs/articles):
 | 1 | [**Stop Writing Anemic Domain Models**](docs/articles/01-rich-domain-model.md) | Ubiquitous language, Entities, Value Objects, Aggregates & roots, rich vs. anemic models, factory methods | [`LoyaltyProgram`](src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProgram.cs), [`Location`](src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/Location.cs), [`Purchase`](src/Loyalty.Core.Entities/Aggregates/Purchases/Purchase.cs) |
 | 2 | [**Your `enum` Is a Code Smell**](docs/articles/02-state-machine-enumeration.md) | The Enumeration-class pattern, modelling an order lifecycle as a state machine, persisting it with EF Core | [`OrderStatusEnumeration`](src/Loyalty.Core.Entities/Aggregates/Orders/Status), [`Order`](src/Loyalty.Core.Entities/Aggregates/Orders/Order.cs) |
 | 3 | [**Domain Events & the Dual-Write Bug**](docs/articles/03-domain-events-outbox.md) | Domain events, deferred dispatch (dispatch-before-save), the dual-write problem, the transactional outbox | [`MediatorExtension`](src/Loyalty.Infrastructure.DataAccess/MediatorExtension.cs), [`IntegrationEventLogEntry`](src/Loyalty.Core.Outbox.Entities/IntegrationEventLogEntry.cs) |
+| 4 | [**Versioning Business Rules**](docs/articles/04-versioned-rules-strategy.md) | Volatile business rules as versioned strategies, persisted as type+version-tagged JSON, evolved with zero migrations | [`LoyaltyGroupRule`](src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyGroupRule.cs), [`Rules/`](src/Loyalty.Core.Entities/Rules) |
+| 5 | [**Multi-Tenancy in EF Core**](docs/articles/05-multitenancy-query-filters.md) | Row-level multi-tenancy: global query filters for read isolation + a write-side guard that blocks cross-tenant leaks | [`LoyaltyTenantDbContext`](src/Loyalty.Infrastructure.DataAccess/Context/LoyaltyTenantDbContext.cs), [`TenantTokenProvider`](src/Loyalty.Infrastructure.DataAccess/TenantTokenProvider.cs) |
 
-A reading guide with the order and prerequisites lives in [`docs/articles/README.md`](docs/articles/README.md).
+A reading guide with the order and prerequisites lives in [`docs/articles/README.md`](docs/articles/README.md). Medium-ready versions (with embedded diagrams) are in [`docs/articles/medium/`](docs/articles/medium).
 
 ## Architecture at a glance
 

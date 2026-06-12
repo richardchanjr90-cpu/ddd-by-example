@@ -8,6 +8,11 @@ single running example. Read them in order; each builds on the last.
 | 1 | [Stop Writing Anemic Domain Models](01-rich-domain-model.md) | The tactical building blocks — ubiquitous language, entities, value objects, aggregates, and putting behaviour back into your model | ~11 min |
 | 2 | [Your `enum` Is a Code Smell](02-state-machine-enumeration.md) | Modelling a real lifecycle as a state machine with the Enumeration-class pattern, and persisting it cleanly | ~10 min |
 | 3 | [Domain Events & the Dual-Write Bug](03-domain-events-outbox.md) | Decoupling side effects with domain events, and guaranteeing delivery with a transactional outbox | ~12 min |
+| 4 | [Versioning Business Rules](04-versioned-rules-strategy.md) | Modelling volatile business rules as versioned strategies that evolve without data migrations | ~10 min |
+| 5 | [Multi-Tenancy in EF Core](05-multitenancy-query-filters.md) | One database serving many tenants with zero leaks — global query filters for reads, a write-side guard for writes | ~11 min |
+
+> **Publishing to Medium?** Ready-to-paste versions of every part — with embedded diagram images and
+> absolute repo links — live in [`medium/`](medium/).
 
 ## How these are meant to be used
 

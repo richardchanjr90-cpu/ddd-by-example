@@ -1,10 +1,14 @@
-# Stop Writing Anemic Domain Models: Building Blocks of DDD in C#
+# Stop Writing Anemic Domain Models: The Building Blocks of DDD in C#
 
-*Part 1 of 5 — Domain-Driven Design, learned from a real loyalty-program backend, not a toy
-`Order`/`Customer` example.*
+> ### A code-first tour of entities, value objects, and aggregates — built from a real loyalty-program backend, not a toy Order/Customer.
+
+*Part 1 of 5 in “Domain-Driven Design by Example” · ~11 min read*
+
+**Suggested Medium tags:** Domain Driven Design, Dotnet, CSharp, Software Architecture, Programming
+
+> 🧩 Part of an open-source series — every code link points to the real file in the [ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example) repository, a production loyalty-program backend (not a toy example). Diagrams are embedded as images so they render directly here.
 
 ---
-
 You've seen this class. Maybe you wrote it last week:
 
 ```csharp
@@ -44,9 +48,9 @@ to *serve* the language, not the other way around.
 In our domain, the words are concrete: a **Venue** runs a **LoyaltyProgram** made of
 **LoyaltyProductGroups**, each governed by **Rules**. A customer makes a **Purchase** that either
 *assigns* or *burns* points. An **Order** is **Placed**, then **Started**, **Ready**, **Finished**.
-Open the codebase and those are the exact class names — [`LoyaltyProgram`](../../src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProgram.cs),
-[`Purchase`](../../src/Loyalty.Core.Entities/Aggregates/Purchases/Purchase.cs),
-[`Order`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Order.cs). When a product manager says
+Open the codebase and those are the exact class names — [`LoyaltyProgram`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProgram.cs),
+[`Purchase`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Purchases/Purchase.cs),
+[`Order`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Order.cs). When a product manager says
 "you can't edit a published program," there is one method, in one place, that says exactly that. That
 alignment is the whole game.
 
@@ -57,7 +61,7 @@ field values. Two customers named "John Smith" are different people; a venue tha
 still the same venue. Identity is what matters, so equality is based on identity — not on comparing every
 property.
 
-Here's the base [`Entity`](../../src/Loyalty.Core.Entities/SeedWork/Entity.cs) every aggregate in the
+Here's the base [`Entity`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/SeedWork/Entity.cs) every aggregate in the
 codebase inherits from (trimmed):
 
 ```csharp
@@ -90,7 +94,7 @@ Not everything has an identity. A venue's **location** — city, address, latitu
 "who"; it's just a value. If two venues have the exact same coordinates and address, those locations
 *are* the same location. That's a **Value Object**: immutable, identity-free, and compared by value.
 
-[`Location`](../../src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/Location.cs):
+[`Location`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/Location.cs):
 
 ```csharp
 public class Location : ValueObject
@@ -119,17 +123,22 @@ public class Location : ValueObject
 ```
 
 The whole class is set through the constructor and never mutated. The base
-[`ValueObject`](../../src/Loyalty.Core.Entities/SeedWork/ValueObject.cs) implements equality by walking
+[`ValueObject`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/SeedWork/ValueObject.cs) implements equality by walking
 `GetAtomicValues()` — so two `Location`s are equal when *all their components* are equal, exactly the
 semantics [Fowler describes](https://martinfowler.com/bliki/ValueObject.html).
 
 Why bother? Because a Value Object is a magnet for behaviour and validation. Instead of a `Venue` with
 four loose `string City`, `string Address`, `float Lat`, `float Lng` fields that any service can scramble
 independently, you have one cohesive concept that's always internally consistent. The codebase does the
-same for [`ContactInfo`](../../src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/ContactInfo.cs)
-and [`SocialNetworks`](../../src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/SocialNetworks.cs).
+same for [`ContactInfo`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/ContactInfo.cs)
+and [`SocialNetworks`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Venues/ValueObjects/SocialNetworks.cs).
 
 ## Aggregates: the consistency boundary
+
+![The LoyaltyProgram aggregate — callers reach children only through the root](https://mermaid.ink/img/Zmxvd2NoYXJ0IFRCCiAgc3ViZ3JhcGggQUdHWyJMb3lhbHR5UHJvZ3JhbSDigJQgQWdncmVnYXRlIFJvb3QiXQogICAgUlsiTG95YWx0eVByb2dyYW08YnIvPklzUHVibGlzaGVkLCBkYXRlcywgVXJsIl0KICAgIEcxWyJMb3lhbHR5UHJvZHVjdEdyb3VwIl0KICAgIEcyWyJMb3lhbHR5R3JvdXBSdWxlICh2YWx1ZSBvYmplY3QpIl0KICAgIFIgLS0-fG93bnN8IEcxCiAgICBHMSAtLT58b3duc3wgRzIKICBlbmQKICBFWFRbIkFwcGxpY2F0aW9uIC8gY2FsbGVycyJdIC0tPnwib25seSB2aWEgcm9vdCBtZXRob2RzPGJyLz5VcGRhdGUoKSwgQWRkTG95YWx0eUdyb3VwKCkifCBSCiAgUiAtLiAicmVmZXJlbmNlcyBieSBpZCIgLi0-IFBHWyJQcm9kdWN0R3JvdXAgKG90aGVyIGFnZ3JlZ2F0ZSkiXQo=?type=png)
+
+*The LoyaltyProgram aggregate — callers reach children only through the root.*
+
 
 This is the building block that pays the rent.
 
@@ -141,7 +150,7 @@ the root the *consistency guardian*.
 Our `LoyaltyProgram` is an aggregate root. It owns a collection of `LoyaltyProductGroup`s, and it has a
 real business rule: **once a program is published, it's frozen.** Watch how that rule is *impossible to
 violate* because the data and the behaviour live together
-([`LoyaltyProgram`](../../src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProgram.cs)):
+([`LoyaltyProgram`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProgram.cs)):
 
 ```csharp
 public class LoyaltyProgram : TenantEntity, IAggregateRoot
@@ -187,7 +196,7 @@ Three things make this a rich model rather than an anemic one:
 
 A subtle but important rule from Vernon's *Effective Aggregate Design*: keep aggregates **small**, and
 reference *other* aggregates **by identity**, not by holding the whole object. Look at how a
-[`LoyaltyProductGroup`](../../src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProductGroup.cs)
+[`LoyaltyProductGroup`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/LoyaltyPrograms/LoyaltyProductGroup.cs)
 links to a product group:
 
 ```csharp
@@ -220,7 +229,7 @@ can construct one, it's correct.
 
 ## Factory methods: making intent explicit
 
-Sometimes "new it up" doesn't capture intent. A [`Purchase`](../../src/Loyalty.Core.Entities/Aggregates/Purchases/Purchase.cs)
+Sometimes "new it up" doesn't capture intent. A [`Purchase`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Purchases/Purchase.cs)
 in our domain can mean two opposite things: a customer *earning* points or *spending* (burning) them.
 Same data shape, opposite meaning. A constructor called `new Purchase(...)` can't express that — so the
 aggregate hides its constructor and exposes named **factory methods**:
@@ -252,7 +261,7 @@ If the aggregate holds the rules, what's left for the service layer? **Orchestra
 An *Application Service* (or command handler) loads the aggregate, calls a method on it, and commits the
 unit of work. Evans is explicit that the application layer is "kept thin… it does not contain business
 rules." Here's the actual handler that creates a program
-([`CreateLoyaltyProgramCommandHandler`](../../src/Loyalty.Infrastructure.Handlers.Commands/Commands/LoyaltyPrograms/CreateLoyaltyProgramCommandHandler.cs)):
+([`CreateLoyaltyProgramCommandHandler`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Infrastructure.Handlers.Commands/Commands/LoyaltyPrograms/CreateLoyaltyProgramCommandHandler.cs)):
 
 ```csharp
 public async Task<ICommandResult> Handle(CreateLoyaltyProgramCommand request, CancellationToken ct)
@@ -272,7 +281,7 @@ public async Task<ICommandResult> Handle(CreateLoyaltyProgramCommand request, Ca
 ```
 
 No `if` statements about business rules. No validation of the published state. It builds the aggregate,
-hands it to a [repository](../../src/Loyalty.Core.Entities/Interfaces/Repository/ILoyaltyProgramRepository.cs)
+hands it to a [repository](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Interfaces/Repository/ILoyaltyProgramRepository.cs)
 (an in-memory-collection abstraction over persistence — **one per aggregate root**, never one per table),
 and saves. All the *meaning* lives in the domain.
 
@@ -312,3 +321,7 @@ that an order can move forward but *never* backward.
 *The complete, runnable source for every snippet above is in the
 [ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example) repository. If this was useful,
 the repo's README maps every DDD pattern to the file that implements it.*
+
+---
+
+*Written by **Richard Chan** — I build and write about Domain-Driven Design and clean architecture in .NET. This is part 1 of a five-part series; the complete, runnable source is open-source at [github.com/richardchanjr90-cpu/ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example). If it helped, a clap and a follow help others find it.*

@@ -1,9 +1,14 @@
 # Your `enum` Is a Code Smell: Modelling a State Machine with the Enumeration Pattern in C#
 
-*Part 2 of 5 — Domain-Driven Design, learned from a real loyalty-program backend.*
+> ### Model an order lifecycle so it can move forward but never backward — and persist it cleanly with EF Core.
+
+*Part 2 of 5 in “Domain-Driven Design by Example” · ~10 min read*
+
+**Suggested Medium tags:** Domain Driven Design, Dotnet, CSharp, Design Patterns, Programming
+
+> 🧩 Part of an open-source series — every code link points to the real file in the [ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example) repository, a production loyalty-program backend (not a toy example). Diagrams are embedded as images so they render directly here.
 
 ---
-
 In [Part 1](01-rich-domain-model.md) we put behaviour back into our aggregates and made invalid states
 unrepresentable. Now let's tackle the place where invalid states love to hide: **status fields.**
 
@@ -45,7 +50,7 @@ a real one — a state machine where illegal transitions are impossible by const
 
 The idea: instead of a labelled integer, a status is an **object** — a class whose instances are static
 readonly fields. Because it's a class, it can carry data *and behaviour*. Here's the
-[`Enumeration`](../../src/Loyalty.Core.Entities/SeedWork/Enumeration.cs) base from our SeedWork (trimmed):
+[`Enumeration`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/SeedWork/Enumeration.cs) base from our SeedWork (trimmed):
 
 ```csharp
 public abstract class Enumeration : IComparable
@@ -75,7 +80,7 @@ gives you. But the real win is the next step.
 
 Each order status becomes its **own class** that overrides a single method: `Set(Order)`, which knows
 whether *it* is a legal next state and either applies itself or refuses. The abstract base
-([`OrderStatusEnumeration`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/Abstract/OrderStatusEnumeration.cs)):
+([`OrderStatusEnumeration`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/Abstract/OrderStatusEnumeration.cs)):
 
 ```csharp
 public abstract class OrderStatusEnumeration : Enumeration
@@ -102,7 +107,7 @@ public abstract class OrderStatusEnumeration : Enumeration
 ```
 
 The default `Set` **throws**. A state is reachable only if its class explicitly overrides `Set` to allow
-the transition. Here's [`StartedOrder`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/StartedOrder.cs):
+the transition. Here's [`StartedOrder`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/StartedOrder.cs):
 
 ```csharp
 public class StartedOrder : OrderStatusEnumeration
@@ -123,37 +128,27 @@ public class StartedOrder : OrderStatusEnumeration
 
 The rule "you can move an order forward but never backward" becomes a single comparison —
 `order.Status.Id > Started.Id` — made possible because the `Enumeration` base is `IComparable` and the
-ids are ordered by the lifecycle. [`ReadyOrder`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/ReadyOrder.cs)
-and [`FinishedOrder`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/FinishedOrder.cs) follow
+ids are ordered by the lifecycle. [`ReadyOrder`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/ReadyOrder.cs)
+and [`FinishedOrder`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/FinishedOrder.cs) follow
 the same shape with `>` and `>=` guards;
-[`DeclinedByVenueOrder`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/DeclinedByVenueOrder.cs)
+[`DeclinedByVenueOrder`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/DeclinedByVenueOrder.cs)
 allows declining at any point *before* the order is finished. And the terminal/customer-driven states —
-[`DeclinedByCustomerOrder`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/DeclinedByCustomerOrder.cs),
-[`PlacedOrder`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status/PlacedOrder.cs) — *don't*
+[`DeclinedByCustomerOrder`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/DeclinedByCustomerOrder.cs),
+[`PlacedOrder`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status/PlacedOrder.cs) — *don't*
 override `Set` at all, so the base class's "refuse" is the behaviour. The set of legal transitions is
 described entirely by which classes override `Set` and what guard they use.
 
-```mermaid
-stateDiagram-v2
-    [*] --> Placed
-    Placed --> Started
-    Started --> Ready
-    Ready --> Finished
-    Placed --> DeclinedByVenue
-    Started --> DeclinedByVenue
-    Ready --> DeclinedByVenue
-    Placed --> DeclinedByCustomer
-    Finished --> [*]
-    DeclinedByVenue --> [*]
-    DeclinedByCustomer --> [*]
-    note right of Finished : Finished is terminal\n(Set throws once Id >= Finished)
-```
+
+![Order state machine — forward-only transitions, illegal moves rejected by construction](https://mermaid.ink/img/c3RhdGVEaWFncmFtLXYyCiAgWypdIC0tPiBQbGFjZWQKICBQbGFjZWQgLS0-IFN0YXJ0ZWQKICBTdGFydGVkIC0tPiBSZWFkeQogIFJlYWR5IC0tPiBGaW5pc2hlZAogIFBsYWNlZCAtLT4gRGVjbGluZWRCeVZlbnVlCiAgU3RhcnRlZCAtLT4gRGVjbGluZWRCeVZlbnVlCiAgUmVhZHkgLS0-IERlY2xpbmVkQnlWZW51ZQogIFBsYWNlZCAtLT4gRGVjbGluZWRCeUN1c3RvbWVyCiAgRmluaXNoZWQgLS0-IFsqXQogIERlY2xpbmVkQnlWZW51ZSAtLT4gWypdCiAgRGVjbGluZWRCeUN1c3RvbWVyIC0tPiBbKl0K?type=png)
+
+*Order state machine — forward-only transitions, illegal moves rejected by construction.*
+
 
 ## The aggregate drives the transition
 
 The `Order` aggregate root never lets a caller assign a status directly. It exposes intention —
 `UpdateStatus` — and delegates the *decision* to the state object
-([`Order`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Order.cs)):
+([`Order`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Order.cs)):
 
 ```csharp
 public OrderStatusEnumeration Status { get; private set; }
@@ -186,7 +181,7 @@ A fair objection: "Great, but my database column is an `int`. Doesn't an object-
 persistence?" No — and this is where the design stays honest about the dependency rule from Part 1. The
 domain stays persistence-ignorant; the mapping lives in infrastructure. EF Core's **value converter**
 bridges the two
-([`OrderConfiguration`](../../src/Loyalty.Infrastructure.DataAccess/EntityConfigurations/OrderConfiguration.cs)):
+([`OrderConfiguration`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Infrastructure.DataAccess/EntityConfigurations/OrderConfiguration.cs)):
 
 ```csharp
 builder
@@ -252,4 +247,8 @@ outbox** stops the dual-write bug from silently losing your "your order is ready
 ---
 
 *Full source: [ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example). The eight order
-states live in [`Aggregates/Orders/Status`](../../src/Loyalty.Core.Entities/Aggregates/Orders/Status).*
+states live in [`Aggregates/Orders/Status`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/Aggregates/Orders/Status).*
+
+---
+
+*Written by **Richard Chan** — I build and write about Domain-Driven Design and clean architecture in .NET. This is part 2 of a five-part series; the complete, runnable source is open-source at [github.com/richardchanjr90-cpu/ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example). If it helped, a clap and a follow help others find it.*

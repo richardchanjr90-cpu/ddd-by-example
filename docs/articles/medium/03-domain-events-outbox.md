@@ -1,9 +1,14 @@
-# Domain Events & the Dual-Write Bug You Don't Know You Have
+# Domain Events and the Dual-Write Bug You Don't Know You Have
 
-*Part 3 of 5 — Domain-Driven Design, learned from a real loyalty-program backend.*
+> ### Decouple side effects with domain events, then guarantee delivery with the transactional outbox pattern.
+
+*Part 3 of 5 in “Domain-Driven Design by Example” · ~12 min read*
+
+**Suggested Medium tags:** Domain Driven Design, Dotnet, Microservices, Software Architecture, Distributed Systems
+
+> 🧩 Part of an open-source series — every code link points to the real file in the [ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example) repository, a production loyalty-program backend (not a toy example). Diagrams are embedded as images so they render directly here.
 
 ---
-
 In [Part 2](02-state-machine-enumeration.md), changing an order's status ended with one quiet line:
 
 ```csharp
@@ -36,7 +41,7 @@ occurred in the domain — `OrderStatusChangedDomainEvent`, `PurchaseMadeEvent`,
 *announces* what happened and stays ignorant of who's listening.
 
 In our model, the aggregate doesn't dispatch anything. It just records events on itself. That capability
-lives in the base [`Entity`](../../src/Loyalty.Core.Entities/SeedWork/Entity.cs):
+lives in the base [`Entity`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Entities/SeedWork/Entity.cs):
 
 ```csharp
 public abstract class Entity
@@ -72,7 +77,7 @@ and Microsoft's reference apps adopted) is to **collect events off all tracked e
 as part of the unit of work**, right before `SaveChanges`.
 
 The unit of work is the `DbContext`. Its
-[`SaveEntitiesAsync`](../../src/Loyalty.Infrastructure.DataAccess/Context/LoyaltyDbContext.cs) is the
+[`SaveEntitiesAsync`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Infrastructure.DataAccess/Context/LoyaltyDbContext.cs) is the
 single choke point:
 
 ```csharp
@@ -84,7 +89,7 @@ public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = 
 }
 ```
 
-And the [`DispatchDomainEventsAsync`](../../src/Loyalty.Infrastructure.DataAccess/MediatorExtension.cs)
+And the [`DispatchDomainEventsAsync`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Infrastructure.DataAccess/MediatorExtension.cs)
 extension drains every event off every tracked entity and publishes it through MediatR:
 
 ```csharp
@@ -108,23 +113,14 @@ Why dispatch *before* the save rather than after? Because the domain-event handl
 balance), and we want all of those changes to land in the **same `SaveChanges`** — one transaction, one
 atomic commit. The command handler from Part 1 stays blissfully thin: it calls `order.UpdateStatus(...)`
 and `SaveEntitiesAsync()`, and never mentions push notifications. The
-[handler that reacts](../../src/Loyalty.Application.DomainEvents.Handlers) to the event lives off to the
+[handler that reacts](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Application.DomainEvents.Handlers) to the event lives off to the
 side, registered by MediatR.
 
-```mermaid
-sequenceDiagram
-    participant H as Command Handler
-    participant A as Order (aggregate)
-    participant UoW as DbContext (Unit of Work)
-    participant M as MediatR
-    participant DH as Domain-Event Handler
-    H->>A: UpdateStatus(Ready)
-    A->>A: AddDomainEvent(OrderStatusChanged)
-    H->>UoW: SaveEntitiesAsync()
-    UoW->>M: Publish(OrderStatusChanged)
-    M->>DH: Handle(...)  (may modify aggregates)
-    UoW->>UoW: SaveChanges()  ← single transaction
-```
+
+![Deferred domain-event dispatch inside the unit of work](https://mermaid.ink/img/c2VxdWVuY2VEaWFncmFtCiAgcGFydGljaXBhbnQgSCBhcyBDb21tYW5kIEhhbmRsZXIKICBwYXJ0aWNpcGFudCBBIGFzIE9yZGVyIChhZ2dyZWdhdGUpCiAgcGFydGljaXBhbnQgVSBhcyBEYkNvbnRleHQgKFVuaXQgb2YgV29yaykKICBwYXJ0aWNpcGFudCBNIGFzIE1lZGlhdFIKICBwYXJ0aWNpcGFudCBEIGFzIERvbWFpbi1FdmVudCBIYW5kbGVyCiAgSC0-PkE6IFVwZGF0ZVN0YXR1cyhSZWFkeSkKICBBLT4-QTogQWRkRG9tYWluRXZlbnQoT3JkZXJTdGF0dXNDaGFuZ2VkKQogIEgtPj5VOiBTYXZlRW50aXRpZXNBc3luYygpCiAgVS0-Pk06IFB1Ymxpc2goT3JkZXJTdGF0dXNDaGFuZ2VkKQogIE0tPj5EOiBIYW5kbGUgKG1heSBtb2RpZnkgYWdncmVnYXRlcykKICBVLT4-VTogU2F2ZUNoYW5nZXMgKHNpbmdsZSB0cmFuc2FjdGlvbikK?type=png)
+
+*Deferred domain-event dispatch inside the unit of work.*
+
 
 ## Domain events vs integration events — don't blur them
 
@@ -134,7 +130,7 @@ boundary. That's a different animal — an **integration event** — and it must
 synchronous in-memory call.
 
 The codebase keeps the two separate. The integration-event model lives in its own project, starting with
-[`IntegrationEvent`](../../src/Loyalty.Core.Outbox.Entities/IntegrationEvent.cs):
+[`IntegrationEvent`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Outbox.Entities/IntegrationEvent.cs):
 
 ```csharp
 public class IntegrationEvent : INotification
@@ -179,7 +175,7 @@ separate process reads those records and publishes them. If both commit, great. 
 back, *neither* the order nor the event exists. They can never disagree.
 
 The event record is an
-[`IntegrationEventLogEntry`](../../src/Loyalty.Core.Outbox.Entities/IntegrationEventLogEntry.cs) — the
+[`IntegrationEventLogEntry`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Core.Outbox.Entities/IntegrationEventLogEntry.cs) — the
 event serialized to JSON, with a state and the id of the transaction that produced it:
 
 ```csharp
@@ -202,7 +198,7 @@ public class IntegrationEventLogEntry
 ```
 
 The crucial move is in
-[`PersistentIntegrationEventService`](../../src/Loyalty.Infrastructure.Outbox/PersistentIntegrationEventService.cs):
+[`PersistentIntegrationEventService`](https://github.com/richardchanjr90-cpu/ddd-by-example/blob/main/src/Loyalty.Infrastructure.Outbox/PersistentIntegrationEventService.cs):
 the outbox writer **enlists in the same database transaction** as the business change, by reusing the
 business `DbContext`'s connection and current transaction:
 
@@ -245,16 +241,11 @@ public Task MarkEventAsFailedAsync(Guid eventId) =>
     UpdateEventStatus(eventId, EventStateEnum.PublishedFailed);
 ```
 
-```mermaid
-flowchart LR
-    A["Business change<br/>(Order → Ready)"] --> T{{"Single DB transaction"}}
-    E["IntegrationEventLogEntry<br/>State = NotPublished"] --> T
-    T --> DB[("SQL Server")]
-    DB -.->|relay reads unpublished| R["Outbox relay"]
-    R -->|publish| BUS["Azure Service Bus"]
-    R -->|on success| M["State = Published"]
-    R -->|on failure| F["State = PublishedFailed<br/>TimesSent++ → retry"]
-```
+
+![The transactional outbox — the business change and the event commit in one transaction](https://mermaid.ink/img/Zmxvd2NoYXJ0IExSCiAgQVsiQnVzaW5lc3MgY2hhbmdlPGJyLz5PcmRlciB0byBSZWFkeSJdIC0tPiBUe3siU2luZ2xlIERCIHRyYW5zYWN0aW9uIn19CiAgRVsiSW50ZWdyYXRpb25FdmVudExvZ0VudHJ5PGJyLz5TdGF0ZSA9IE5vdFB1Ymxpc2hlZCJdIC0tPiBUCiAgVCAtLT4gREJbKCJTUUwgU2VydmVyIildCiAgREIgLS4tPnxyZWxheSByZWFkcyB1bnB1Ymxpc2hlZHwgUlsiT3V0Ym94IHJlbGF5Il0KICBSIC0tPnxwdWJsaXNofCBCVVNbIkF6dXJlIFNlcnZpY2UgQnVzIl0KICBSIC0tPnxzdWNjZXNzfCBQWyJTdGF0ZSA9IFB1Ymxpc2hlZCJdCiAgUiAtLT58ZmFpbHVyZXwgRlsiU3RhdGUgPSBQdWJsaXNoZWRGYWlsZWQ8YnIvPnJldHJ5Il0K?type=png)
+
+*The transactional outbox — the business change and the event commit in one transaction.*
+
 
 The guarantee this buys you is **at-least-once delivery**: an event might be sent twice (the relay
 publishes, then crashes before marking it `Published`, then retries), so downstream consumers should be
@@ -303,3 +294,7 @@ migration. [Read Part 4 →](04-versioned-rules-strategy.md)
 *If this series was useful, the repo's [README](https://github.com/richardchanjr90-cpu/ddd-by-example)
 maps every DDD pattern to the exact file that implements it — a good companion while you apply these to
 your own codebase.*
+
+---
+
+*Written by **Richard Chan** — I build and write about Domain-Driven Design and clean architecture in .NET. This is part 3 of a five-part series; the complete, runnable source is open-source at [github.com/richardchanjr90-cpu/ddd-by-example](https://github.com/richardchanjr90-cpu/ddd-by-example). If it helped, a clap and a follow help others find it.*
